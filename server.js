@@ -11,6 +11,8 @@ const argv = require('minimist')(process.argv.slice(2))
 const staticify = require('staticify')(path.join(__dirname, 'public'))
 const compression = require('compression')
 const nunjucks = require('nunjucks')
+const session = require('express-session')
+const MemoryStore = require('memorystore')(session)
 
 // Local dependencies
 const router = require('./app/router')
@@ -53,6 +55,17 @@ function initialiseGlobalMiddleware (app) {
   app.use(bodyParser.urlencoded({ extended: true }))
 
   app.use('*', correlationHeader)
+
+  const maxAge = 86400000 // Prune expired entries every 24 hours.
+  app.use(session({
+    secret: 'beis-spl-planner',
+    cookie: { maxAge },
+    store: new MemoryStore({
+      checkPeriod: maxAge
+    }),
+    resave: false,
+    saveUninitialized: false
+  }))
 }
 
 function initialiseProxy (app) {
