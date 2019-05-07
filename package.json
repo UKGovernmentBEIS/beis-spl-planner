@@ -10,13 +10,14 @@
   "scripts": {
     "compile": "grunt generate-assets",
     "clean": "grunt clean",
+    "dev": "grunt",
     "server": "node ./start.js",
     "start": "npm run compile && npm run server",
     "watch": "chokidar app test *.js --initial -c \"npm run test\"",
-    "watch-live-reload": "./node_modules/.bin/grunt watch",
-    "lint-sass": "./node_modules/.bin/sass-lint -v",
-    "test": "standard && node ./node_modules/mocha/bin/mocha \"!(node_modules)/**/*+(.test|.tests)\".js",
-    "snyk-protect": "./node_modules/.bin/snyk protect",
+    "watch-live-reload": "grunt watch",
+    "lint-sass": "sass-lint -v",
+    "test": "standard && mocha \"!(node_modules)/**/*+(.test|.tests)\".js",
+    "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
