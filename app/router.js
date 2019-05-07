@@ -1,11 +1,9 @@
-'use strict'
+const express = require('express')
+const router = express.Router()
 
-// Local dependencies
-const healthcheck = require('./healthcheck')
-const index = require('./index')
+router.route('/')
+  .get(function (req, res) {
+    res.render('index', { message: 'Hello world!' })
+  })
 
-// Export
-module.exports.bind = app => {
-  app.use(healthcheck.router)
-  app.use(index.router)
-}
+module.exports = router

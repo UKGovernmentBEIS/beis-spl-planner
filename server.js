@@ -29,7 +29,8 @@ const JAVASCRIPT_PATH = staticify.getVersionedPath('/javascripts/application.js'
 // Define app views
 const APP_VIEWS = [
   path.join(__dirname, 'node_modules/govuk-frontend/'),
-  __dirname
+  path.join(__dirname, 'node_modules/govuk-frontend/components/'),
+  path.join(__dirname, 'app/views/')
 ]
 
 function initialiseGlobalMiddleware (app) {
@@ -92,7 +93,7 @@ function initialisePublic (app) {
 }
 
 function initialiseRoutes (app) {
-  router.bind(app)
+  app.use('/', router)
 }
 
 function listen () {

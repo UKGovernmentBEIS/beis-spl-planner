@@ -1,11 +1,11 @@
-{% from "components/footer/macro.njk" import govukFooter %}
+{% from "footer/macro.njk" import govukFooter %}
 
 {% extends "template.njk" %}
 
 {% block pageTitle %}GDS Node.js boilerplate{% endblock %}
 
 {% block head %}
-  {% include "common/templates/includes/head.njk" %}
+  {% include "./includes/head.njk" %}
 {% endblock %}
 
 {% block footer %}
@@ -19,5 +19,5 @@
 {% endblock %}
 
 {% block bodyEnd %}
-  {% include "common/templates/includes/scripts.njk" %}
+  {% include "./includes/scripts.njk" %}
 {% endblock %}
