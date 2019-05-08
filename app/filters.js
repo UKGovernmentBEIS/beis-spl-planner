@@ -1,6 +1,49 @@
+const { getWeeksArray } = require('./utils')
+
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
 module.exports = function (env) {
+  const isBirth = env.getFilter('isBirth')
+
+  function weekCheckboxes (data, parent, govukCheckboxes) {
+    const minWeek = isBirth(data) ? -2 : -2 // TODO: Change minimum birth week to -11.
+    const maxWeek = 2
+    const checkboxes = []
+    const leaveWeeks = getWeeksArray(data, parent, 'leave')
+    const payWeeks = getWeeksArray(data, parent, 'pay')
+    for (let i = minWeek; i <= maxWeek; i++) {
+      checkboxes.push({
+        id: `${parent}-leave_${i}`,
+        value: i,
+        text: `Week ${i}`,
+        checked: leaveWeeks.includes(i),
+        attributes: {
+          'data-parent': parent,
+          'data-property': 'leave'
+        },
+        conditional: {
+          html: govukCheckboxes({
+            name: parent + '[pay]',
+            items: [
+              {
+                id: `${parent}-pay_${i}`,
+                value: i,
+                text: 'Paid',
+                checked: payWeeks.includes(i),
+                attributes: {
+                  'data-parent': parent,
+                  'data-property': 'pay'
+                }
+              }
+            ]
+          })
+        }
+      })
+    }
+    return checkboxes
+  }
+
   return {
+    weekCheckboxes
   }
 }

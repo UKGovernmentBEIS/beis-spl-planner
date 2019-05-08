@@ -1,5 +1,6 @@
 const path = require('path')
 const nodeSass = require('node-sass')
+const envify = require('envify/custom')
 
 module.exports = function (grunt) {
   const sass = {
@@ -57,7 +58,8 @@ module.exports = function (grunt) {
     },
     js: {
       files: [
-        'common/browsered/index.js',
+        'app/frontend/**/*.{js,vue}',
+        'common/browsered/**/*.js',
         'common/assets/javascripts/**/*.js'
       ],
       tasks: ['browserify', 'babel', 'concat', 'compress'],
@@ -89,6 +91,16 @@ module.exports = function (grunt) {
     options: {
       browserifyOptions: {
         standalone: 'module'
+      },
+      // Function to deviate from grunt-browserify's default order
+      configure: function (bundle) {
+        return bundle.transform('vueify')
+          .transform(
+            // Required in order to process node_modules files
+            { global: true },
+            envify({ NODE_ENV: process.env.NODE_ENV })
+          )
+          .bundle()
       }
     }
   }

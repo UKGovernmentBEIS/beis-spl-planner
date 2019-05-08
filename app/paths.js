@@ -1,3 +1,5 @@
 module.exports = {
-  root: '/'
+  root: '/',
+  birthOrAdoption: '/birth-or-adoption',
+  planner: '/planner'
 }
