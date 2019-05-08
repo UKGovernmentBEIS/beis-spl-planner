@@ -1,4 +1,6 @@
-# GDS Node.js boilerplate
+# BEIS SPL common
+
+*Forked from [GDS Node.js boilerplate](https://github.com/alphagov/gds-nodejs-boilerplate).*
 
 This is a skeleton Node.js app running on [Express] with [Nunjucks] as a template engine.
 
@@ -12,7 +14,7 @@ It includes:
 - [Snyk]
 - [StandardJS] for linting
 
-To get started clone the repo and run 
+To get started clone the repo and run
 
 ``` bash
 $ npm install
