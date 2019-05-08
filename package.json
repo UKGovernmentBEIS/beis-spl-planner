@@ -1,6 +1,5 @@
 {
-  "name": "gds-nodejs-boilerplate",
-  "description": "A Node.js project boilerplate for production apps",
+  "name": "beis-spl-common",
   "version": "0.0.1",
   "private": true,
   "license": "MIT",
