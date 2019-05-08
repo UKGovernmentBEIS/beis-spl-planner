@@ -18,6 +18,7 @@ const MemoryStore = require('memorystore')(session)
 const router = require('./app/router')
 const noCache = require('./common/utils/no-cache')
 const correlationHeader = require('./common/middleware/correlation-header')
+const sessionData = require('./common/utils/session-data')
 
 // Global constants
 const unconfiguredApp = express()
@@ -66,6 +67,8 @@ function initialiseGlobalMiddleware (app) {
     resave: false,
     saveUninitialized: false
   }))
+
+  app.use(sessionData)
 }
 
 function initialiseProxy (app) {
