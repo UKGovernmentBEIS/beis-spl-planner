@@ -98,6 +98,13 @@ function initialiseTemplateEngine (app) {
   // if it's not production we want to re-evaluate the assets on each file change
   nunjucksEnvironment.addGlobal('css_path', NODE_ENV === 'production' ? CSS_PATH : staticify.getVersionedPath('/stylesheets/application.min.css'))
   nunjucksEnvironment.addGlobal('js_path', NODE_ENV === 'production' ? JAVASCRIPT_PATH : staticify.getVersionedPath('/javascripts/application.js'))
+
+  // Add filters
+  const commonFilters = require('./common/spl-common-filters')(nunjucksEnvironment)
+  Object.entries(commonFilters).forEach(nameAndFunction => nunjucksEnvironment.addFilter(...nameAndFunction))
+  // App filters must be imported after common filters have been added so that common filters are available for use in app filters
+  const appFilters = require('./app/filters')(nunjucksEnvironment)
+  Object.entries(appFilters).forEach(nameAndFunction => nunjucksEnvironment.addFilter(...nameAndFunction))
 }
 
 function initialisePublic (app) {
