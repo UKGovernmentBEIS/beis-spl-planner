@@ -10,6 +10,7 @@ module.exports = function (env) {
   }
 
   return {
+    ...require('./macros/hidden-fields/filters')(env),
     primaryName,
     isBirth
   }
