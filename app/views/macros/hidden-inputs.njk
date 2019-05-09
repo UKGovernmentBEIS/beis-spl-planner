@@ -1,8 +1,0 @@
-{% macro hiddenInputs(data, options) %}
-  {% for name, value in data() %}
-    {% set exclude = options.exclude or [] %}
-    {% if exclude.indexOf(name) === -1 %}
-      <input type="hidden" name="{{ name }}" value="{{ value }}">
-    {% endif %}
-  {% endfor %}
-{% endmacro %}
