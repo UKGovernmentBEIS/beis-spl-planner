@@ -5,12 +5,23 @@ module.exports = function (env) {
     return data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary adopter'
   }
 
+  function secondaryName (data) {
+    return data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary adopter'
+  }
+
+  function currentParentName (data, currentParent) {
+    return currentParent === 'primary' ? primaryName(data) : secondaryName(data)
+  }
+
   function isBirth (data) {
     return data['birth-or-adoption'] === 'birth'
   }
 
   return {
     primaryName,
-    isBirth
+    secondaryName,
+    currentParentName,
+    isBirth,
+    ...require('./macros/hidden-fields/filters')(env)
   }
 }
