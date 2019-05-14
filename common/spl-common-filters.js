@@ -6,7 +6,7 @@ module.exports = function (env) {
   }
 
   function secondaryName (data) {
-    return data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary adopter'
+    return 'partner'
   }
 
   function currentParentName (data, currentParent) {
