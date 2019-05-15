@@ -4,6 +4,10 @@ function convertToMoment (year, month, day) {
   return moment([year, month, day].join('-'), 'YYYY-MM-DD')
 }
 
+function isInPast (standardFormatDate) {
+  return moment(standardFormatDate).isBefore(moment(), 'day')
+}
+
 function formatForDisplay (standardFormatDate) {
   return moment(standardFormatDate).format('D MMMM YYYY')
 }
@@ -14,6 +18,7 @@ function standardFormat (momentDate) {
 
 module.exports = {
   convertToMoment,
+  isInPast,
   formatForDisplay,
   standardFormat
 }
