@@ -1,6 +1,6 @@
 const moment = require('moment')
 
-class Week {
+class Day {
   constructor (yearOrMoment, month, day) {
     if (moment.isMoment(yearOrMoment)) {
       this.createdWith = yearOrMoment
@@ -9,14 +9,14 @@ class Week {
     }
   }
 
-  start () {
+  startOfWeek () {
     const newMoment = this.createdWith.clone().startOf('week')
-    return new Week(newMoment)
+    return new Day(newMoment)
   }
 
   subtract (amount, unit) {
     const newMoment = this.createdWith.clone().subtract(amount, unit)
-    return new Week(newMoment)
+    return new Day(newMoment)
   }
 
   isInPast () {
@@ -28,4 +28,4 @@ class Week {
   }
 }
 
-module.exports = Week
+module.exports = Day
