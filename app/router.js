@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router()
+const paths = require('./paths')
 
-router.route('/')
+router.route(paths.root)
   .get(function (req, res) {
     res.render('index', { message: 'Hello world!' })
   })

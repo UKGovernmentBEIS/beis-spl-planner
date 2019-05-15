@@ -16,6 +16,7 @@ const MemoryStore = require('memorystore')(session)
 
 // Local dependencies
 const router = require('./app/router')
+const paths = require('./app/paths')
 const noCache = require('./common/utils/no-cache')
 const correlationHeader = require('./common/middleware/correlation-header')
 const sessionData = require('./common/utils/session-data')
@@ -117,6 +118,7 @@ function initialisePublic (app) {
 }
 
 function initialiseRoutes (app) {
+  app.locals.paths = paths
   app.use('/', router)
 }
 
