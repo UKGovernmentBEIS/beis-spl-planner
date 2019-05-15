@@ -33,6 +33,7 @@
     "pino": "^5.12.2",
     "qs": "^6.7.0",
     "serve-favicon": "^2.5.0",
+    "sinon": "^7.3.2",
     "staticify": "^3.3.1",
     "throng": "4.0.x"
   },
