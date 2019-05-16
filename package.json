@@ -21,6 +21,7 @@
   "dependencies": {
     "body-parser": "1.18.x",
     "compression": "^1.7.4",
+    "dlv": "^1.1.2",
     "express": "4.16.x",
     "express-session": "^1.16.1",
     "govuk-frontend": "^2.10.0",
