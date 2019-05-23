@@ -1,6 +1,6 @@
 const Vue = require('vue/dist/vue.common')
 const Planner = require('./components/Planner.vue')
-const { getWeeksArray, nameAndLeaveType } = require('../utils')
+const { getWeeksArray, nameAndNonSplLeaveType } = require('../utils')
 
 Vue.filter('capitalise', function (value) {
   if (!value) {
@@ -15,7 +15,8 @@ function init (data) {
     el: '#planner',
     data: {
       primary: parseParent(data, 'primary'),
-      secondary: parseParent(data, 'secondary')
+      secondary: parseParent(data, 'secondary'),
+      onClick: () => console.log('bananana')
     }
   })
 
@@ -25,7 +26,7 @@ function init (data) {
       const parent = this.getAttribute('data-parent')
       const property = this.getAttribute('data-property')
       const week = parseInt(this.value)
-      planner.toggleWeek(parent, property, week, this.checked)
+      planner.updateWeek(parent, property, week, this.checked)
     })
   }
 }
@@ -34,7 +35,7 @@ function parseParent (data, parent) {
   return {
     leave: getWeeksArray(data, parent, 'leave'),
     pay: getWeeksArray(data, parent, 'pay'),
-    ...nameAndLeaveType(data, parent)
+    ...nameAndNonSplLeaveType(data, parent)
   }
 }
 

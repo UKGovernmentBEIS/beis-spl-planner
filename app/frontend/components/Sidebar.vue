@@ -4,8 +4,8 @@
       Leave and pay totals
     </h2>
     <p>
-      Any unused {{ primary.leaveType }} leave can be taken as shared parental leave,
-      and any unused {{ primary.leaveType }} pay can be taken as shared parental pay.
+      Any unused {{ primary.nonSplLeaveType }} leave can be taken as shared parental leave,
+      and any unused {{ primary.nonSplLeaveType }} pay can be taken as shared parental pay.
     </p>
   </div>
 </template>
