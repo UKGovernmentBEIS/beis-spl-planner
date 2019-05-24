@@ -1,5 +1,5 @@
 <template>
-  <table class="govuk-table">
+  <table class="govuk-table" :class="{ 'dragging': isDragging }" @mouseleave="endDrag" @mouseup.left="endDrag">
     <colgroup>
       <col class="col-date" />
       <col class="col-leave" />
@@ -28,7 +28,7 @@
             {{ week.day.format('MMMM YYYY') }}
           </th>
         </tr>
-        <tr :key="'first-week-' + week.id" v-if="week.number === 0" class="first-week" >
+        <tr :key="'first-week-' + week.id" v-if="week.number === 0" class="first-week">
           <th></th>
           <th colspan="4">
             <div class="govuk-heading-s no-margin">
@@ -36,7 +36,7 @@
             </div>
           </th>
         </tr>
-        <tr :key="week.id" class="govuk-table__row">
+        <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week.number)">
           <th class="govuk-table__cell date">
             {{ week.day.format('DD') }}<br>
             {{ week.day.format('MMM') }}
@@ -47,7 +47,9 @@
               <td :key="parent + '-pay'" class="govuk-table__cell disabled"></td>
             </template>
             <template v-else>
-              <td :key="parent + '-leave'" class="govuk-table__cell leave" :class="week[parent].compulsory ? 'compulsory' : week[parent].leave">
+              <td :key="parent + '-leave'" class="govuk-table__cell leave"
+                  :class="week[parent].compulsory ? 'compulsory' : week[parent].leave"
+                  @mousedown.left="onCellMouseDown(parent, 'leave', week.number, !week[parent].leave)">
                 <div v-if="week[parent].leave">
                   <div class="govuk-body no-margin">
                     {{ week[parent].pay || 'Unpaid' }}
@@ -61,7 +63,8 @@
                 </div>
               </td>
               <td :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
-                  :class="{ 'unpaid': week[parent].leave && !week[parent].pay }">
+                  :class="{ 'unpaid': week[parent].leave && !week[parent].pay }"
+                  @mousedown.left="onCellMouseDown(parent, 'pay', week.number, !week[parent].pay)">
                 <div v-if="week[parent].leave">
                   <div class="govuk-body no-margin">
                     {{ week[parent].pay ? '✔' : '✘' }}
@@ -83,6 +86,7 @@
 </template>
 
 <script>
+  const _ = require('lodash')
   const dlv = require('dlv')
 
   const LEAVE_LABELS = Object.freeze({
@@ -93,11 +97,15 @@
   })
 
   module.exports = {
+    data: () => ({
+      isDragging: false,
+      lastDraggedRow: null,
+      onDrag: null
+    }),
     props: {
       isBirth: Boolean,
       weeks: Array,
-      primary: Object,
-      secondary: Object
+      updateLeaveOrPay: Function
     },
     computed: {
       names: function () {
@@ -114,6 +122,41 @@
           label = 'compulsory ' + label
         }
         return label
+      }
+    },
+    methods: {
+      onCellMouseDown: function (parent, property, week, value) {
+        this.isDragging = true
+        this.onDrag = function (week) {
+          this.updateLeaveOrPay(parent, property, week, value)
+        }
+        // Perfom drag action on initial cell.
+        this.onRowMouseEnter(week)
+      },
+      onRowMouseEnter: function (week) {
+        if (this.onDrag) {
+          const rowsToUpdate = this.getRowsToUpdate(week)
+          for (let row of rowsToUpdate) {
+            this.onDrag(row)
+          }
+          this.lastDraggedRow = week
+        }
+      },
+      endDrag: function () {
+        this.isDragging = false
+        this.lastDraggedRow = null
+        this.onDrag = null
+      },
+      getRowsToUpdate: function (currentRow) {
+        if (this.lastDraggedRow === null) {
+          return [currentRow]
+        }
+        // Avoid skips.
+         if (this.lastDraggedRow < currentRow) {
+          return _.range(this.lastDraggedRow + 1, currentRow + 1)
+        } else {
+          return _.range(currentRow, this.lastDraggedRow)
+        }
       }
     }
   }
@@ -135,6 +178,7 @@
     "disabled": govuk-colour('grey-2'),
     "unpaid": lighten(govuk-colour('yellow'), 25%)
   );
+
   @each $class, $colour in $cell-colours {
     .#{$class} {
       background-color: $colour;
@@ -143,9 +187,11 @@
       background-color: $colour;
     }
   }
+
   .no-margin {
     margin: 0;
   }
+
   .govuk-table {
     user-select: none;
     table-layout: fixed;
@@ -158,13 +204,29 @@
     .col-pay {
       width: 10%;
     }
+    &.dragging {
+      cursor: ns-resize;
+    }
+    &:not(.dragging) {
+      .govuk-table__cell {
+        &.leave, &.pay {
+          cursor: cell;
+        }
+        &.disabled, &.compulsory {
+          cursor: not-allowed;
+        }
+      }
+    }
   }
+
   .govuk-table__header, .govuk-table__cell {
     padding: 10px 5px;
   }
+
   .govuk-table__head {
     background-color: $colour-header;
   }
+
   .govuk-table__body {
     .govuk-table__header {
       &.month {
@@ -179,12 +241,6 @@
       &.pay {
         text-align: center;
       }
-      &.leave, &.pay {
-        cursor: cell;
-      }
-      &.disabled, &.compulsory-maternity.leave {
-        cursor: not-allowed;
-      }
       &.leave:hover, &.leave:hover + .pay, &.pay:hover {
         position: relative;
         ::after {
@@ -198,6 +254,7 @@
         }
       }
     }
+
     .first-week {
       border-left: $cell-border;
       border-right: $cell-border;

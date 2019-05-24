@@ -1,7 +1,7 @@
 <template>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full-width">
-      <Calendar :primary="primary" :secondary="secondary" :weeks="weeks" />
+      <Calendar :weeks="weeks" :updateLeaveOrPay="updateLeaveOrPay" />
     </div>
     <div class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full-width">
       <Sidebar :primary="primary" :secondary="secondary" />
@@ -20,6 +20,9 @@
       Sidebar
     },
     computed: {
+      minimumWeek: function () {
+        return this.isBirth ? -11 : -2
+      },
       primaryLeaveType: function () {
         return this.isBirth ? 'maternity' : 'adoption'
       },
@@ -38,25 +41,25 @@
         const weeks = []
         let initialPrimaryLeaveBlock = this.getInitialLeaveBlockTracker()
         let initialSecondaryLeaveBlock = this.getInitialLeaveBlockTracker()
-        for (let i = -2; i <= 2; i++) {
+        for (let i = this.minimumWeek; i <= 52; i++) {
           const week = this.getBaseWeek(i)
-          const leaveAndPay = this.getWeekLeaveAndPay(i)
+          const weekLeaveAndPay = this.getWeekLeaveAndPay(i)
 
-          initialPrimaryLeaveBlock.update(leaveAndPay.primary.leave)
-          if (leaveAndPay.primary.leave) {
+          initialPrimaryLeaveBlock.next(weekLeaveAndPay.primary.leave)
+          if (weekLeaveAndPay.primary.leave) {
             week.primary.leave = !initialPrimaryLeaveBlock.ended ? this.primaryLeaveType : 'shared'
-            if (leaveAndPay.primary.pay) {
+            if (weekLeaveAndPay.primary.pay) {
               const useInitialPayRate = !initialPrimaryLeaveBlock.ended && initialPrimaryLeaveBlock.length <= 6
               week.primary.pay = useInitialPayRate ? this.payRates.primary.initial : this.payRates.primary.statutory
             }
           }
 
           if (!week.secondary.disabled) {
-            initialSecondaryLeaveBlock.update(leaveAndPay.secondary.leave)
-            if (leaveAndPay.secondary.leave) {
+            initialSecondaryLeaveBlock.next(weekLeaveAndPay.secondary.leave)
+            if (weekLeaveAndPay.secondary.leave) {
               const usePaternityLeave = i < 8 && !initialSecondaryLeaveBlock.ended && initialSecondaryLeaveBlock.length <= 2
               week.secondary.leave = usePaternityLeave ? 'paternity' : 'shared'
-              if (leaveAndPay.secondary.pay) {
+              if (weekLeaveAndPay.secondary.pay) {
                 week.secondary.pay = this.payRates.secondary.statutory
               }
             }
@@ -82,7 +85,7 @@
           id: 'week_' + i,
           number: i,
           day: moment.utc(this.startWeek).add(i, 'weeks'),
-          primary: { disabled: false, compulsory: 0 <= i && i < 2, leave: undefined, pay: undefined },
+          primary: { disabled: false, compulsory: i === 0 || i === 1, leave: undefined, pay: undefined },
           secondary: { disabled: i < 0, compulsory: false, leave: undefined, pay: undefined }
         }
       },
@@ -104,9 +107,9 @@
           started: false,
           ended: false,
           length: 0,
-          update: function (current) {
-            this.started = this.started || current
-            this.ended = this.ended || (this.started && !current)
+          next: function (value) {
+            this.started = this.started || value
+            this.ended = this.ended || (this.started && !value)
             if (this.started && !this.ended) {
               this.length++
             }
@@ -115,7 +118,9 @@
       },
       getStatutoryPay: function (weeklyPay) {
         const STATUTORY_MAXIMUM = 148.68
-        return weeklyPay ? this.formatPay(Math.min(weeklyPay * 0.9, STATUTORY_MAXIMUM)) : 'Up to ' + this.formatPay(STATUTORY_MAXIMUM)
+        return weeklyPay ?
+          this.formatPay(Math.min(weeklyPay * 0.9, STATUTORY_MAXIMUM)) :
+          'Up to ' + this.formatPay(STATUTORY_MAXIMUM)
       },
       formatPay: function (pay) {
         const payAsFloat = parseFloat(pay)

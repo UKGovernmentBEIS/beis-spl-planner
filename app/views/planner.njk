@@ -42,7 +42,7 @@
   </div>
   <form id="leave-and-pay" method="POST">
     {% call appendHiddenFields(data) %}
-      <div class="govuk-grid-row">
+      <div class="govuk-grid-row js-hide">
         <div class="govuk-grid-column-one-half">
           {{ leaveAndPayCheckboxes("primary") }}
           <!-- Compulsory weeks are disabled checkboxes, so we need to include the values manually. -->

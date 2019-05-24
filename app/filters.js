@@ -6,12 +6,11 @@ module.exports = function (env) {
   const isBirth = env.getFilter('isBirth')
 
   function weekCheckboxes (data, parent, govukCheckboxes) {
-    const minWeek = isBirth(data) ? -2 : -2 // TODO: Change minimum birth week to -11.
-    const maxWeek = 2
+    const minWeek = isBirth(data) ? -11 : -2
     const checkboxes = []
     const leaveWeeks = getWeeksArray(data, parent, 'leave')
     const payWeeks = getWeeksArray(data, parent, 'pay')
-    for (let i = minWeek; i <= maxWeek; i++) {
+    for (let i = minWeek; i <= 52; i++) {
       const compulsory = parent === 'primary' && (i === 0 || i === 1)
       const disabled = compulsory || (parent === 'secondary' && i < 0)
       checkboxes.push({
