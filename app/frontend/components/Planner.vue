@@ -87,10 +87,11 @@
         }
       },
       getWeekLeaveAndPay: function (i) {
+        const isCompulsoryPrimaryWeek = (i === 0 || i === 1)
         return {
           primary: {
-            leave: this.primary.leaveWeeks.includes(i),
-            pay: this.primary.payWeeks.includes(i)
+            leave: this.primary.leaveWeeks.includes(i) || isCompulsoryPrimaryWeek,
+            pay: this.primary.payWeeks.includes(i) || isCompulsoryPrimaryWeek
           },
           secondary: {
             leave: this.secondary.leaveWeeks.includes(i),

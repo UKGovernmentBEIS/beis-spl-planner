@@ -45,6 +45,11 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-half">
           {{ leaveAndPayCheckboxes("primary") }}
+          <!-- Compulsory weeks are disabled checkboxes, so we need to include the values manually. -->
+          <input type="hidden" name="primary[leave]" value="0" />
+          <input type="hidden" name="primary[leave]" value="1" />
+          <input type="hidden" name="primary[pay]" value="0" />
+          <input type="hidden" name="primary[pay]" value="1" />
         </div>
         <div class="govuk-grid-column-one-half">
           {{ leaveAndPayCheckboxes("secondary") }}
