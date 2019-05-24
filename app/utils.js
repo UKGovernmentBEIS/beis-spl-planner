@@ -3,24 +3,24 @@ const _ = require('lodash')
 
 const MOTHER = Object.freeze({
   name: 'mother',
-  nonSplLeaveType: 'maternity'
+  nonSharedLeaveType: 'maternity'
 })
 
 const PRIMARY_ADOPTER = Object.freeze({
   name: 'primary adopter',
-  nonSplLeaveType: 'adoption'
+  nonSharedLeaveType: 'adoption'
 })
 
 const PARTNER = Object.freeze({
   name: 'partner',
-  nonSplLeaveType: 'paternity'
+  nonSharedLeaveType: 'paternity'
 })
 
 function getWeeksArray (data, parent, property) {
   return _.castArray(dlv(data, [parent, property], [])).map(i => parseInt(i))
 }
 
-function nameAndNonSplLeaveType (data, parent) {
+function nameAndNonSharedLeaveType (data, parent) {
   if (parent === 'secondary') {
     return PARTNER
   } else if (data['birth-or-adoption'] === 'birth') {
@@ -32,5 +32,5 @@ function nameAndNonSplLeaveType (data, parent) {
 
 module.exports = {
   getWeeksArray,
-  nameAndNonSplLeaveType
+  nameAndNonSharedLeaveType
 }

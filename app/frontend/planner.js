@@ -1,6 +1,6 @@
 const Vue = require('vue/dist/vue.common')
 const Planner = require('./components/Planner.vue')
-const { getWeeksArray, nameAndNonSplLeaveType } = require('../utils')
+const { getWeeksArray } = require('../utils')
 
 Vue.filter('capitalise', function (value) {
   if (!value) {
@@ -14,9 +14,11 @@ function init (data) {
   const planner = new (Vue.extend(Planner))({
     el: '#planner',
     data: {
+      isBirth: data['birth-or-adoption'] === 'birth',
+      // TODO: Get start week from data.
+      startWeek: '2019-09-08',
       primary: parseParent(data, 'primary'),
-      secondary: parseParent(data, 'secondary'),
-      onClick: () => console.log('bananana')
+      secondary: parseParent(data, 'secondary')
     }
   })
 
@@ -33,9 +35,10 @@ function init (data) {
 
 function parseParent (data, parent) {
   return {
-    leave: getWeeksArray(data, parent, 'leave'),
-    pay: getWeeksArray(data, parent, 'pay'),
-    ...nameAndNonSplLeaveType(data, parent)
+    leaveWeeks: getWeeksArray(data, parent, 'leave'),
+    payWeeks: getWeeksArray(data, parent, 'pay'),
+    // TODO: Get weekly pay from data.
+    weeklyPay: parent === 'primary' ? 1000 : null
   }
 }
 

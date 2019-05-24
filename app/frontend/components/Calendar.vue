@@ -10,8 +10,8 @@
     <thead class="govuk-table__head">
       <tr class="govuk-table__row not-pay">
         <th class="govuk-table__header" scope="col"></th>
-        <th class="govuk-table__header" scope="col" colspan="2">{{ primary.name | capitalise }}</th>
-        <th class="govuk-table__header" scope="col" colspan="2">{{ secondary.name | capitalise }}</th>
+        <th class="govuk-table__header" scope="col" colspan="2">{{ names.primary | capitalise }}</th>
+        <th class="govuk-table__header" scope="col" colspan="2">{{ names.secondary | capitalise }}</th>
       </tr>
       <tr class="govuk-table__row">
         <th class="govuk-table__header" scope="col"></th>
@@ -22,7 +22,12 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      <template v-for="week in weeks">
+      <template v-for="(week, i) in weeks">
+        <tr :key="'month-header-' + week.id" v-if="i === 0 || week.day.date() <= 7">
+          <th class="govuk-table__header month" colspan="5">
+            {{ week.day.format('MMMM YYYY') }}
+          </th>
+        </tr>
         <tr :key="'first-week-' + week.id" v-if="week.number === 0" class="first-week" >
           <th></th>
           <th colspan="4">
@@ -33,32 +38,40 @@
         </tr>
         <tr :key="week.id" class="govuk-table__row">
           <th class="govuk-table__cell date">
-            {{ week.date }}
+            {{ week.day.format('DD') }}<br>
+            {{ week.day.format('MMM') }}
           </th>
-          <template v-for="(wk, i) in [week.primary, week.secondary]">
-            <template v-if="wk.disabled">
-              <td :key="'parent-' + (i + 1) + '-leave'" class="govuk-table__cell disabled"></td>
-              <td :key="'parent-' + (i + 1) + '-pay'" class="govuk-table__cell disabled"></td>
+          <template v-for="parent in ['primary', 'secondary']">
+            <template v-if="week[parent].disabled">
+              <td :key="parent + '-leave'" class="govuk-table__cell disabled"></td>
+              <td :key="parent + '-pay'" class="govuk-table__cell disabled"></td>
             </template>
             <template v-else>
-              <td :key="'parent-' + (i + 1) + '-leave'" class="govuk-table__cell leave" :class="wk.leave.type">
-                <div v-if="wk.leave">
+              <td :key="parent + '-leave'" class="govuk-table__cell leave" :class="week[parent].compulsory ? 'compulsory' : week[parent].leave">
+                <div v-if="week[parent].leave">
                   <div class="govuk-body no-margin">
-                    {{ wk.pay ? wk.pay.amount : 'Unpaid' }}
+                    {{ week[parent].pay || 'Unpaid' }}
                   </div>
                   <div class="govuk-body-s no-margin">
-                    {{ wk.leave.label }}
+                    {{ week[parent].leave | leaveLabel(week[parent].compulsory) | capitalise }}
                   </div>
                 </div>
+                <div v-else>
+                  <!-- Needed for hover pseudo element. -->
+                </div>
               </td>
-              <td :key="'parent-' + (i + 1) + '-pay'" class="govuk-table__cell govuk-table__cell pay" :class="wk.leave ? (wk.pay ? wk.leave.type : 'unpaid') : ''">
-                <div v-if="wk.leave">
+              <td :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
+                  :class="{ 'unpaid': week[parent].leave && !week[parent].pay }">
+                <div v-if="week[parent].leave">
                   <div class="govuk-body no-margin">
-                    {{ wk.pay ? '✔' : '✘' }}
+                    {{ week[parent].pay ? '✔' : '✘' }}
                   </div>
                   <div class="govuk-body-s no-margin">
-                    {{ wk.pay ? 'Paid' : 'Unpaid' }}
+                    {{ week[parent].pay ? 'Paid' : 'Unpaid' }}
                   </div>
+                </div>
+                <div v-else>
+                  <!-- Needed for hover pseudo element. -->
                 </div>
               </td>
             </template>
@@ -72,56 +85,36 @@
 <script>
   const dlv = require('dlv')
 
+  const LEAVE_LABELS = Object.freeze({
+    'maternity': 'maternity leave',
+    'adoption': 'adoption leave',
+    'paternity': 'paternity leave',
+    'shared': 'shared parental leave'
+  })
+
   module.exports = {
-    data: () => ({
-      isBirth: true,
-      weeks: [
-        {
-          id: 'week_0',
-          number: 0,
-          date: '01 May',
-          primary: {
-            disabled: false,
-            leave: {
-              type: 'maternity',
-              label: 'Maternity leave'
-            },
-            pay: {
-              amount: '£100.00'
-            }
-          },
-          secondary: {
-            disabled: true,
-            leave: false,
-            pay: false
-          }
-        },
-        {
-          id: 'week_1',
-          number: 1,
-          date: '08 May',
-          primary: {
-            leave: {
-              type: 'compulsory-maternity',
-              label: 'Maternity leave'
-            },
-            pay: false
-          },
-          secondary: {
-            leave: {
-              type: 'paternity',
-              label: 'Paternity leave'
-            },
-            pay: {
-              amount: 'Up to £148.68'
-            }
-          }
-        }
-      ]
-    }),
     props: {
+      isBirth: Boolean,
+      weeks: Array,
       primary: Object,
       secondary: Object
+    },
+    computed: {
+      names: function () {
+        return {
+          primary: this.isBirth ? 'mother' : 'primary adopter',
+          secondary: 'partner'
+        }
+      }
+    },
+    filters: {
+      leaveLabel: function (type, compulsory) {
+        let label = LEAVE_LABELS[type]
+        if (compulsory) {
+          label = 'compulsory ' + label
+        }
+        return label
+      }
     }
   }
 </script>
@@ -134,15 +127,19 @@
 
   $cell-colours: (
     "first-week": govuk-colour('yellow'),
+    "adoption": lighten(govuk-colour('blue'), 50%),
     "maternity": lighten(govuk-colour('blue'), 50%),
-    "compulsory-maternity": lighten(govuk-colour('blue'), 25%),
+    "compulsory": lighten(govuk-colour('blue'), 25%),
     "paternity": lighten(govuk-colour('red'), 50%),
     "shared": lighten(govuk-colour('light-green'), 25%),
     "disabled": govuk-colour('grey-2'),
     "unpaid": lighten(govuk-colour('yellow'), 25%)
   );
   @each $class, $colour in $cell-colours {
-    &.#{$class} {
+    .#{$class} {
+      background-color: $colour;
+    }
+    .leave.#{$class} + .pay:not(.unpaid) {
       background-color: $colour;
     }
   }
@@ -150,6 +147,7 @@
     margin: 0;
   }
   .govuk-table {
+    user-select: none;
     table-layout: fixed;
     .col-date {
       width: 10%;
@@ -161,17 +159,20 @@
       width: 10%;
     }
   }
+  .govuk-table__header, .govuk-table__cell {
+    padding: 10px 5px;
+  }
   .govuk-table__head {
     background-color: $colour-header;
-    .govuk-table__header {
-      text-align: center;
-    }
   }
   .govuk-table__body {
-    user-select: none;
+    .govuk-table__header {
+      &.month {
+        background-color: $colour-header;
+      }
+    }
     .govuk-table__cell {
       border: $cell-border;
-      padding: 10px 5px;
       &.date {
         font-weight: normal;
       }
@@ -193,7 +194,7 @@
           right: 0;
           bottom: 0;
           left: 0;
-          background-color: rgba(0, 0, 0, 0.05);
+          background-color: rgba(0, 0, 0, 0.1);
         }
       }
     }
@@ -208,5 +209,3 @@
     }
   }
 </style>
-
-
