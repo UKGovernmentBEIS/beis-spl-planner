@@ -104,16 +104,9 @@
     }),
     props: {
       isBirth: Boolean,
+      names: Object,
       weeks: Array,
       updateLeaveOrPay: Function
-    },
-    computed: {
-      names: function () {
-        return {
-          primary: this.isBirth ? 'mother' : 'primary adopter',
-          secondary: 'partner'
-        }
-      }
     },
     filters: {
       leaveLabel: function (type, compulsory) {

@@ -1,10 +1,10 @@
 <template>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full-width">
-      <Calendar :weeks="weeks" :updateLeaveOrPay="updateLeaveOrPay" />
+      <Calendar :weeks="weeks" :names="names" :updateLeaveOrPay="updateLeaveOrPay" />
     </div>
     <div class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full-width">
-      <Sidebar :primary="primary" :secondary="secondary" />
+      <Sidebar :weeks="weeks" :names="names" :primaryLeaveType="primaryLeaveType" />
     </div>
   </div>
 </template>
@@ -22,6 +22,12 @@
     computed: {
       minimumWeek: function () {
         return this.isBirth ? -11 : -2
+      },
+      names: function () {
+        return {
+          primary: this.isBirth ? 'mother' : 'primary adopter',
+          secondary: 'partner'
+        }
       },
       primaryLeaveType: function () {
         return this.isBirth ? 'maternity' : 'adoption'
