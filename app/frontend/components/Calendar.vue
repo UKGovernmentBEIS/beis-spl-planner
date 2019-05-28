@@ -156,7 +156,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "node_modules/govuk-frontend/helpers/colour";
+  @import "node_modules/govuk-frontend/settings/colours-applied";
 
   $colour-header: govuk-colour('grey-3');
   $cell-border: 1px solid govuk-colour('grey-3');
@@ -212,12 +212,14 @@
     }
   }
 
-  .govuk-table__header, .govuk-table__cell {
-    padding: 10px 5px;
+  .govuk-table__head {
+    .govuk-table__header {
+      background-color: $colour-header;
+    }
   }
 
-  .govuk-table__head {
-    background-color: $colour-header;
+  .govuk-table__header, .govuk-table__cell {
+    padding: 10px 5px;
   }
 
   .govuk-table__body {

@@ -1,9 +1,9 @@
 <template>
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full-width">
+    <div class="calendar govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full-width">
       <Calendar :weeks="weeks" :names="names" :updateLeaveOrPay="updateLeaveOrPay" />
     </div>
-    <div class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full-width">
+    <div class="sidebar govuk-grid-column-one-third-from-desktop govuk-grid-column-full-width">
       <Sidebar :weeks="weeks" :names="names" :primaryLeaveType="primaryLeaveType" />
     </div>
   </div>
@@ -135,3 +135,43 @@
     }
   }
 </script>
+
+<style lang="scss">
+  @import "node_modules/govuk-frontend/settings/colours-applied";
+
+  .calendar {
+    thead {
+      /* Various styling to patch sticky headers. */
+      $th-height: 45px;
+      th {
+        position: sticky;
+        z-index: 1;
+
+        height: $th-height;
+        box-sizing: border-box;
+        border: none;
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          border-bottom: 1px solid $govuk-border-colour;
+        }
+      }
+      tr:first-child th {
+        top: 0;
+      }
+      tr:nth-child(2) th {
+        top: $th-height;
+      }
+    }
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 10px;
+  }
+</style>
