@@ -72,6 +72,6 @@
 {% block bodyEnd %}
   {{ super() }}
   <script>
-    planner.init({{ data | dump | safe }})
+    window.planner.init({{ data | dump | safe }})
   </script>
 {% endblock %}
