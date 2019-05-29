@@ -1,14 +1,36 @@
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+
 {% extends "layout.njk" %}
 
-{% block pageTitle %}
-  {{ message }}
-{% endblock %}
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
-        {{ message }}
+        Plan leave and pay when you have a child
       </h1>
+      <p class="govuk-body">
+        Find out:
+      </p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>how to take shared parental leave alongside maternity, adoption and paternity leave</li>
+        <li>how much you’ll be paid while you take leave</li>
+        <li>when and how to give notice to your employer</li>
+      </ul>
+      <p class="govuk-body">
+        Before you start, you'll need to know:
+      </p>
+      <ul class="govuk-list govuk-list--bullet">
+        {# TODO: Fill in eligibility tool link. #}
+        <li>if you, your partner or both of you are <a href="#" class="govuk-link">eligible for shared parental leave and pay</a></li>
+        <li>your child's due date, birth date or placement date</li>
+        <li>salary information for you and your partner</li>
+      </ul>
+      <form method="POST">
+        {% call appendHiddenFields(data) %}{% endcall %}
+        <button type="submit" class="govuk-button govuk-button--start">
+          Start now
+        </button>
+      </form>
     </div>
   </div>
 {% endblock %}

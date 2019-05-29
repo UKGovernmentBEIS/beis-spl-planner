@@ -1,0 +1,57 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "radios/macro.njk" import govukRadios %}
+
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+
+{% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: withData(paths.index)
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: "birth-or-adoption",
+            name: "birth-or-adoption",
+            fieldset: {
+              legend: {
+                text: "Are you having a child through birth or adoption?",
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            hint: {
+              text: "Shared parental leave and pay is available for birth and adoptive parents."
+            },
+            items: [
+              {
+                value: "birth",
+                text: "Birth",
+                checked: data["birth-or-adoption"] === "birth"
+              },
+              {
+                value: "adoption",
+                text: "Adoption",
+                checked: data["birth-or-adoption"] === "adoption"
+              }
+            ]
+          }) }}
+        {% endcall %}
+        <button type="submit" class="govuk-button">
+          Continue
+        </button>
+      </form>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <pre style="background-color: lightgrey; padding: 10px;">{{ data | dump(2)}}</pre>
+    </div>
+  </div>
+{% endblock %}

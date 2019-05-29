@@ -1,0 +1,77 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "checkboxes/macro.njk" import govukCheckboxes %}
+
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+
+{% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {# TODO: Fill in back link. #}
+  {{ govukBackLink({
+    text: "Back",
+    href: withData('/birth-or-adoption')
+  }) }}
+{% endblock %}
+
+{% macro leaveAndPayCheckboxes(parent) %}
+  {{ govukCheckboxes({
+    name: parent + "[leave]",
+    fieldset: {
+      legend: {
+        text: (data | currentParentName(parent) | capitalize) + "’s leave",
+        classes: "govuk-fieldset__legend--m"
+      }
+    },
+    hint: {
+      text: "Select all that apply."
+    },
+    items: data | weekCheckboxes(parent, govukCheckboxes)
+  }) }}
+{% endmacro %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        Plan leave and pay when you have a child
+      </h1>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <pre style="background-color: lightgrey; padding: 10px;">{{ data | dump(2)}}</pre>
+    </div>
+  </div>
+  <form id="leave-and-pay" method="POST">
+    {% call appendHiddenFields(data) %}
+      <div class="govuk-grid-row js-hide">
+        <div class="govuk-grid-column-one-half">
+          {{ leaveAndPayCheckboxes("primary") }}
+          <!-- Compulsory weeks are disabled checkboxes, so we need to include the values manually. -->
+          <input type="hidden" name="primary[leave]" value="0" />
+          <input type="hidden" name="primary[leave]" value="1" />
+          <input type="hidden" name="primary[pay]" value="0" />
+          <input type="hidden" name="primary[pay]" value="1" />
+        </div>
+        <div class="govuk-grid-column-one-half">
+          {{ leaveAndPayCheckboxes("secondary") }}
+        </div>
+      </div>
+    {% endcall %}
+    <div id="planner">
+      {# JavaScript enhanced calendar component. See /app/frontend/planner.js and associated Vue components. #}
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-half">
+        <button type="submit" class="govuk-button">
+          Continue
+        </button>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script>
+    planner.init({{ data | dump | safe }})
+  </script>
+{% endblock %}
