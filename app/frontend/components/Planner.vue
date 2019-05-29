@@ -150,16 +150,6 @@
         height: $th-height;
         box-sizing: border-box;
         border: none;
-
-        &::after {
-          content: "";
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          border-bottom: 1px solid $govuk-border-colour;
-        }
       }
       tr:first-child th {
         top: 0;

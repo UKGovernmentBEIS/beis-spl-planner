@@ -43,8 +43,8 @@
           </th>
           <template v-for="parent in ['primary', 'secondary']">
             <template v-if="week[parent].disabled">
-              <td :key="parent + '-leave'" class="govuk-table__cell disabled"></td>
-              <td :key="parent + '-pay'" class="govuk-table__cell disabled"></td>
+              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled"></td>
+              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled"></td>
             </template>
             <template v-else>
               <td :key="parent + '-leave'" class="govuk-table__cell leave"
@@ -161,25 +161,7 @@
   $colour-header: govuk-colour('grey-3');
   $cell-border: 1px solid govuk-colour('grey-3');
 
-  $cell-colours: (
-    "first-week": govuk-colour('yellow'),
-    "adoption": lighten(govuk-colour('blue'), 50%),
-    "maternity": lighten(govuk-colour('blue'), 50%),
-    "compulsory": lighten(govuk-colour('blue'), 25%),
-    "paternity": lighten(govuk-colour('red'), 50%),
-    "shared": lighten(govuk-colour('light-green'), 25%),
-    "disabled": govuk-colour('grey-2'),
-    "unpaid": lighten(govuk-colour('yellow'), 25%)
-  );
-
-  @each $class, $colour in $cell-colours {
-    .#{$class} {
-      background-color: $colour;
-    }
-    .leave.#{$class} + .pay:not(.unpaid) {
-      background-color: $colour;
-    }
-  }
+  $first-week-colour: govuk-colour('yellow');
 
   .no-margin {
     margin: 0;
@@ -239,27 +221,65 @@
       &.pay {
         text-align: center;
       }
-      &.leave:hover, &.leave:hover + .pay, &.pay:hover {
-        position: relative;
-        ::after {
-          content: "";
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          background-color: rgba(0, 0, 0, 0.1);
-        }
-      }
     }
 
     .first-week {
+      background-color: $first-week-colour;
       border-left: $cell-border;
       border-right: $cell-border;
       text-align: left;
       + tr > .date {
-        background-color: map-get($cell-colours, 'first-week');
+        background-color: $first-week-colour;
         border-top: none;
+      }
+    }
+  }
+
+  /*
+    Previous incaranations of this hover styling used a translucent ::after pseudo-element
+    with absolute positioning, however this is unsuitable for IE11.
+  */
+  @function hoverify($colour) {
+    @return darken($colour, 10%);
+  }
+
+  $cell-colours: (
+    "adoption": lighten(govuk-colour('blue'), 50%),
+    "maternity": lighten(govuk-colour('blue'), 50%),
+    "paternity": lighten(govuk-colour('red'), 50%),
+    "shared": lighten(govuk-colour('light-green'), 25%),
+    "compulsory": lighten(govuk-colour('blue'), 25%),
+    "disabled": govuk-colour('grey-2'),
+    "unpaid": lighten(govuk-colour('yellow'), 25%)
+  );
+
+  $empty-cell-background-colour: govuk-colour('white');
+  .leave, .pay {
+    &:hover {
+      background-color: hoverify($empty-cell-background-colour);
+    }
+  }
+  .leave:hover + .pay {
+    background-color: hoverify($empty-cell-background-colour);
+  }
+  @each $class, $colour in $cell-colours {
+    .leave, .pay {
+      &.#{$class} {
+        background-color: $colour;
+        &:hover {
+          background-color: hoverify($colour);
+        }
+      }
+    }
+    .leave.#{$class} {
+      + .pay:not(.unpaid) {
+        background-color: $colour;
+        &:hover {
+          background-color: hoverify($colour);
+        }
+      }
+      &:hover + .pay:not(.unpaid) {
+        background-color: hoverify($colour);
       }
     }
   }
