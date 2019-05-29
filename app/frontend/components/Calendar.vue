@@ -66,8 +66,8 @@
                   :class="{ 'unpaid': week[parent].leave && !week[parent].pay }"
                   @mousedown.left="onCellMouseDown(parent, 'pay', week.number, !week[parent].pay)">
                 <div v-if="week[parent].leave">
-                  <div class="govuk-body no-margin">
-                    {{ week[parent].pay ? '✔' : '✘' }}
+                  <div class="govuk-body govuk-!-font-weight-bold no-margin">
+                    {{ week[parent].pay ? '✓' : '✗' }}
                   </div>
                   <div class="govuk-body-s no-margin">
                     {{ week[parent].pay ? 'Paid' : 'Unpaid' }}
@@ -186,7 +186,10 @@
   }
 
   .govuk-table {
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
+
     table-layout: fixed;
     .col-date {
       width: 10%;
