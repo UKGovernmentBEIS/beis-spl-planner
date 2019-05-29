@@ -1,32 +1,49 @@
-# BEIS SPL common
+# BEIS SPL Planner
 
-*Forked from [GDS Node.js boilerplate](https://github.com/alphagov/gds-nodejs-boilerplate).*
+This repository contains the code for the Shared Parental Leave (SPL) and Stautory Shared Parental Pay (ShPP) eligibility tool service.
 
-This is a skeleton Node.js app running on [Express] with [Nunjucks] as a template engine.
+It is built on top of the [BEIS SPL common](https://github.com/UKGovernmentBEIS/beis-spl-common) baseline project, which in turn is forked from the [GDS Node.js boilerplate](https://github.com/alphagov/gds-nodejs-boilerplate) project.
 
-It includes:
-- Grunt for compliation of sass/js
-- [GOV.UK Frontend]
-- [Browserify] with babelify and Nunjucksify
-- Mocha for testing
-- Middleware to set correlation headers
-- i18n language support
-- [Snyk]
-- [StandardJS] for linting
+## Getting started on development
 
-To get started clone the repo and run
+### Installs
 
-``` bash
-$ npm install
-$ npm start
+#### Required
+* [Git](https://git-scm.com/)
+* [Node](https://nodejs.org/en/)
+
+#### Recommended
+
+* [Visual Studio Code](https://code.visualstudio.com/) and these extensions:
+  * [Nunjucks VSCode Extension Pack](https://marketplace.visualstudio.com/items?itemName=douglaszaltron.nunjucks-vscode-extensionpack)
+  * [EditorConfig for VSCode](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+  * [StandardJS - JavaScript Standard Style](https://marketplace.visualstudio.com/items?itemName=chenxsan.vscode-standardjs)
+* [LiveReload](http://livereload.com/extensions/) browser extension
+
+### Set up
+
+Clone this code with Git:
 ```
-(`npm install` might error about Snyk if it’s not set up but ignore for now)
+git clone git@github.com:UKGovernmentBEIS/beis-spl-planner.git
+```
 
-Then go to [http://localhost:3000/](http://localhost:3000/) to see it in action.
+Add the common project as a second remote in Git, to pull changes from there when needed:
+```
+git remote add common git@github.com:UKGovernmentBEIS/beis-spl-common.git
+git fetch common
+```
 
-[Express]: https://expressjs.com/
-[Nunjucks]: https://mozilla.github.io/nunjucks/
-[Snyk]: https://snyk.io/
-[GOV.UK Frontend]: https://design-system.service.gov.uk/
-[Browserify]: http://browserify.org/
-[StandardJS]: https://standardjs.com/
+Navigate to the root of the project and install NPM packages:
+```
+npm install
+```
+
+### Running the project in development
+
+Once NPM packages have been installed, run the project locally with:
+```
+npm run dev
+```
+You should now be able to see the project running at http://localhost:3000/ in your browser.
+
+If you have installed the LiveReload browser extension as above, then you can enable it once on the page. This will cause the page to automatically reload when you make changes to any file.

@@ -2,29 +2,52 @@ const moment = require('moment')
 
 class Day {
   constructor (yearOrMoment, month, day) {
-    if (moment.isMoment(yearOrMoment)) {
-      this.createdWith = yearOrMoment
+    if (arguments.length === 0) {
+      this.moment = moment.utc()
+    } else if (moment.isMoment(yearOrMoment)) {
+      this.moment = yearOrMoment
     } else {
-      this.createdWith = moment([yearOrMoment, month, day].join('-'), 'YYYY-MM-DD')
+      this.moment = moment.utc([yearOrMoment, month, day].join('-'), 'YYYY-MM-DD')
     }
   }
 
   startOfWeek () {
-    const newMoment = this.createdWith.clone().startOf('week')
+    const newMoment = this.moment.clone().startOf('week')
     return new Day(newMoment)
   }
 
   subtract (amount, unit) {
-    const newMoment = this.createdWith.clone().subtract(amount, unit)
+    const newMoment = this.moment.clone().subtract(amount, unit)
+    return new Day(newMoment)
+  }
+
+  add (amount, unit) {
+    const newMoment = this.moment.clone().add(amount, unit)
     return new Day(newMoment)
   }
 
   isInPast () {
-    return this.createdWith.isBefore(moment(), 'days')
+    return this.moment.isBefore(moment.utc(), 'days')
+  }
+
+  isValid () {
+    return this.moment.isValid()
+  }
+
+  invalidAt () {
+    return this.moment.invalidAt()
+  }
+
+  isBetween (earlierDay, laterDay) {
+    return this.moment.isBetween(earlierDay.moment, laterDay.moment)
   }
 
   formatForDisplay () {
-    return this.createdWith.format('D MMMM YYYY')
+    return this.moment.format('D MMMM YYYY')
+  }
+
+  formatForExample () {
+    return this.moment.format('D M YYYY')
   }
 }
 
