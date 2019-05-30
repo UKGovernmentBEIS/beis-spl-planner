@@ -58,6 +58,10 @@
                     {{ week[parent].leave | leaveLabel(week[parent].compulsory) | capitalise }}
                   </div>
                 </div>
+                <div v-else-if="week.number > leaveBoundaries[parent].firstWeek && week.number < leaveBoundaries[parent].lastWeek"
+                  class="govuk-body-s work-or-other-leave">
+                    Work or other leave
+                </div>
               </td>
               <td :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
                   :class="{ 'unpaid': week[parent].leave && !week[parent].pay }"
@@ -100,6 +104,7 @@
       isBirth: Boolean,
       names: Object,
       weeks: Array,
+      leaveBoundaries: Object,
       updateLeaveOrPay: Function
     },
     filters: {
@@ -213,6 +218,7 @@
         background-color: $colour-header;
       }
     }
+
     .govuk-table__cell {
       &.date {
         font-weight: normal;
@@ -246,6 +252,10 @@
           }
         }
       }
+    }
+
+    .work-or-other-leave {
+      color: $govuk-secondary-text-colour;
     }
   }
 

@@ -1,10 +1,10 @@
 <template>
   <div class="govuk-grid-row">
     <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full-width">
-      <Calendar :weeks="weeks" :names="names" :updateLeaveOrPay="updateLeaveOrPay" />
+      <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :names="names" :updateLeaveOrPay="updateLeaveOrPay" />
     </div>
     <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full-width">
-      <Sidebar :weeks="weeks" :names="names" :primaryLeaveType="primaryLeaveType" />
+      <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" />
     </div>
   </div>
 </template>
@@ -43,27 +43,27 @@
           }
         }
       },
-      weeks: function () {
+      leaveAndPay: function () {
         const weeks = []
-        let initialPrimaryLeaveBlock = this.getInitialLeaveBlockTracker()
-        let initialSecondaryLeaveBlock = this.getInitialLeaveBlockTracker()
+        let primaryLeaveTracker = this.getLeaveTracker()
+        let secondaryLeaveTracker = this.getLeaveTracker()
         for (let i = this.minimumWeek; i <= 52; i++) {
           const week = this.getBaseWeek(i)
           const weekLeaveAndPay = this.getWeekLeaveAndPay(i)
 
-          initialPrimaryLeaveBlock.next(weekLeaveAndPay.primary.leave)
+          primaryLeaveTracker.next(weekLeaveAndPay.primary.leave, i)
           if (weekLeaveAndPay.primary.leave) {
-            week.primary.leave = !initialPrimaryLeaveBlock.ended ? this.primaryLeaveType : 'shared'
+            week.primary.leave = !primaryLeaveTracker.initialBlockEnded ? this.primaryLeaveType : 'shared'
             if (weekLeaveAndPay.primary.pay) {
-              const useInitialPayRate = !initialPrimaryLeaveBlock.ended && initialPrimaryLeaveBlock.length <= 6
+              const useInitialPayRate = !primaryLeaveTracker.initialBlockEnded && primaryLeaveTracker.initialBlockLength <= 6
               week.primary.pay = useInitialPayRate ? this.payRates.primary.initial : this.payRates.primary.statutory
             }
           }
 
           if (!week.secondary.disabled) {
-            initialSecondaryLeaveBlock.next(weekLeaveAndPay.secondary.leave)
+            secondaryLeaveTracker.next(weekLeaveAndPay.secondary.leave, i)
             if (weekLeaveAndPay.secondary.leave) {
-              const usePaternityLeave = i < 8 && !initialSecondaryLeaveBlock.ended && initialSecondaryLeaveBlock.length <= 2
+              const usePaternityLeave = i < 8 && !secondaryLeaveTracker.initialBlockEnded && secondaryLeaveTracker.initialBlockLength <= 2
               week.secondary.leave = usePaternityLeave ? 'paternity' : 'shared'
               if (weekLeaveAndPay.secondary.pay) {
                 week.secondary.pay = this.payRates.secondary.statutory
@@ -73,7 +73,13 @@
 
           weeks.push(week)
         }
-        return weeks
+        return {
+          weeks,
+          leaveBoundaries: {
+            primary: primaryLeaveTracker.getLeaveBoundaries(),
+            secondary: secondaryLeaveTracker.getLeaveBoundaries()
+          }
+        }
       }
     },
     methods: {
@@ -91,8 +97,18 @@
           id: 'week_' + i,
           number: i,
           day: moment.utc(this.startWeek).add(i, 'weeks'),
-          primary: { disabled: false, compulsory: i === 0 || i === 1, leave: undefined, pay: undefined },
-          secondary: { disabled: i < 0, compulsory: false, leave: undefined, pay: undefined }
+          primary: {
+            disabled: false,
+            compulsory: i === 0 || i === 1,
+            leave: undefined,
+            pay: undefined
+          },
+          secondary: {
+            disabled: i < 0,
+            compulsory: false,
+            leave: undefined,
+            pay: undefined
+          }
         }
       },
       getWeekLeaveAndPay: function (i) {
@@ -108,16 +124,28 @@
           }
         }
       },
-      getInitialLeaveBlockTracker: function () {
+      getLeaveTracker: function () {
         return {
-          started: false,
-          ended: false,
-          length: 0,
-          next: function (value) {
-            this.started = this.started || value
-            this.ended = this.ended || (this.started && !value)
-            if (this.started && !this.ended) {
-              this.length++
+          firstLeaveWeek: null,
+          lastLeaveWeek: null,
+          initialBlockStarted: false,
+          initialBlockEnded: false,
+          initialBlockLength: 0,
+          next: function (value, weekNumber) {
+            if (value) {
+              this.firstLeaveWeek = this.firstLeaveWeek !== null ? this.firstLeaveWeek : weekNumber
+              this.lastLeaveWeek = weekNumber
+            }
+            this.initialBlockStarted = this.firstLeaveWeek !== null
+            this.initialBlockEnded = this.initialBlockEnded || (this.initialBlockStarted && !value)
+            if (this.initialBlockStarted && !this.initialBlockEnded) {
+              this.initialBlockLength++
+            }
+          },
+          getLeaveBoundaries: function () {
+            return {
+              firstWeek: this.firstLeaveWeek,
+              lastWeek: this.lastLeaveWeek
             }
           }
         }
