@@ -76,7 +76,7 @@ function updateLeave (parent, week, value) {
 function updatePay (parent, week, value) {
   if (value) {
     // Leave must always be taken with pay.
-    toggleLeave(parent, week, true)
+    updateLeave(parent, week, true)
     togglePay(parent, week, true)
   } else {
     togglePay(parent, week, false)
