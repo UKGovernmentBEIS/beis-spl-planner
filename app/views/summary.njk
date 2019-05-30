@@ -1,0 +1,51 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "tabs/macro.njk" import govukTabs %}
+
+{% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {# TODO: Fill in back link. #}
+  {{ govukBackLink({
+    text: "Back",
+    href: withData('/planner')
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {% set paySummary %}
+    {% include "./tabs/pay-summary.njk" %}
+  {% endset %}
+  {% set leaveSummary %}
+    {% include "./tabs/leave-summary.njk" %}
+  {% endset %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <h1 class="govuk-heading-xl">
+        Plan leave and pay when you have a child
+      </h1>
+    </div>
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      {{ govukTabs({
+        items: [
+          {
+            label: "Leave summary",
+            id: "leave-summary",
+            panel: {
+              html: leaveSummary
+            }
+          },
+          {
+            label: "Pay summary",
+            id: "pay-summary",
+            panel: {
+              html: paySummary
+            }
+          }
+        ]
+      }) }}
+    </div>
+  </div>
+{% endblock %}

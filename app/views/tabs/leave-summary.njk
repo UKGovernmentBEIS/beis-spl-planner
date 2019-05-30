@@ -1,0 +1,128 @@
+{% from "summary-list/macro.njk" import govukSummaryList %}
+{% from "inset-text/macro.njk" import govukInsetText %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <p>
+      This is a summary of your leave plan.
+      It shows your leave dates, when you need to notify your employer and how you can apply.
+    </p>
+
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: {
+            text: "Baby is due" if data | isBirth else "Placement date"
+          },
+          value: {
+            text: "PLACEHOLDER DUE DATE"
+          }
+        }
+      ]
+    }) }}
+
+    <h2 class="govuk-heading-l">
+      Mother‘s leave dates
+    </h2>
+    <h3 class="govuk-heading-m">
+      Maternity leave
+    </h3>
+{# TODO add maternity leave component #}
+    <h4 class="govuk-heading-s">
+      How to apply
+    </h4>
+    <p>
+      Tell your employer when the baby is due and when you want to start your maternity leave.
+      Your employer can ask for this in writing.
+      Your employer must write to you within 28 days confirming your start and end dates.
+    </p>
+    <h4 class="govuk-heading-s">
+      Changing your plans
+    </h4>
+    <p>
+      You must give 28 days notice to your employer if you want to change your maternity leave dates.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      Mother's shared parental leave
+    </h3>
+{# TODO add maternity leave component #}
+    <h4 class="govuk-heading-s">
+      How to apply
+    </h4>
+    <p>
+{# TODO fix the href of this link#}
+      To take SPL you can complete the <a href="#" target="_blank">Mother’s SPL and ShPP notice form</a> and submit it to the mother’s employer by the notice dates above.
+    </p>
+    <p>
+      If the employer has their own forms, they can be used instead as long as the relevant notices and declarations are included.
+    </p>
+
+    {% set insetHtml %}
+{# TODO fix the href of this link#}
+      You can also <a href="#">complete these notice forms using an online tool</a>. Your key dates will be filled out for you based on your chosen plan (you'll have the opportunity to change them), but you'll need to provide a name, address and National Insurance number for you and your partner.
+    {% endset %}
+    {{ govukInsetText({
+      html: insetHtml
+    }) }}
+    <h4 class="govuk-heading-s">
+      Changing your plans
+    </h4>
+    <p>
+      You can change your shared parental leave plan later but you must give your employer at least 8 weeks’ notice before you want to begin a block of leave.
+    </p>
+
+    <h2 class="govuk-heading-l">
+      Partner's leave dates
+    </h2>
+    <h3 class="govuk-heading-m">
+      Paternity leave
+    </h3>
+{# TODO add paternity leave componenet #}
+    <h4 class="govuk-heading-s">
+      How to apply
+    </h4>
+    <p>
+{# TODO check this form link #}
+      Use <a href="https://public-online.hmrc.gov.uk/lc/content/xfaforms/profiles/forms.html?contentRoot=repository:///Applications/PersonalTax_iForms/1.0/SC3&template=SC3.xdp" target="_blank">form SC3</a> to apply to your employer for Statutory Paternity Pay (SPP) and Leave.
+    </p>
+
+    <h4 class="govuk-heading-s">
+      Changing your plans
+    </h4>
+    <p>
+      You must give 28 days notice to your employer if you want to change your maternity leave dates.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      Partner‘s shared parental leave
+    </h3>
+{# TODO add paternity leave componenet #}
+    <h4 class="govuk-heading-s">
+      How to apply
+    </h4>
+    <p>
+{# TODO check link href for this link#}
+      To take SPL you’ll need to <a class="govuk-link" href="#">complete the necessary notice and declaration forms</a> and submit them to the partner’s employer by the notice dates above.
+    </p>
+    <p>
+      If the employer has their own forms, they can be used instead as long as the relevant notices and declarations are included.
+    </p>
+    {% set insetHtml %}
+      You can also <a href="/notice" class="govuk-link">complete these notice forms using an online tool</a>. Your key dates will be filled out for you based on your chosen plan (you'll have the opportunity to change them), but you'll need to provide a name, address and National Insurance number for you and your partner.
+    {% endset %}
+    {{ govukInsetText({
+      html: insetHtml
+    }) }}
+    <h4 class="govuk-heading-s">
+      Changing your plans
+    </h4>
+    <p>
+      You can change your shared parental leave plan later but you must give your employer at least 8 weeks’ notice before you want to begin a block of leave.
+    </p>
+{# TODO where are these buttons going #}
+    <button class="govuk-button" onclick="alert('Printing is coming soon.')">Print this plan</button>
+    <button class="govuk-button" onclick="alert('Share links will be available soon.')">Share this page</button>
+  </div>
+</div>
+
