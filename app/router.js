@@ -23,7 +23,12 @@ router.route(paths.getPath('planner'))
     res.render('planner')
   })
   .post(function (req, res) {
-    res.redirect('back')
+    res.redirect(paths.getPath('summary'))
+  })
+
+router.route(paths.getPath('summary'))
+  .get(function (req, res) {
+    res.render('summary')
   })
 
 module.exports = router
