@@ -1,0 +1,81 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <p>
+      This summary shows your statutory pay entitlements while on leave.
+      Your employer may offer some additional pay.
+    </p>
+    <p>
+{# TODO check href for this link #}
+      To see a more accurate summary of what your income will be while on leave, you can ask your employer to fill in <a href="#">a parental leave and pay plan</a>.
+    </p>
+
+{# TODO add payblock components #}
+    {% set primaryNoticeFormLink %}
+      {% if data | isBirth%}
+{# TODO href below #}
+        <a href="#" target="_blank">Mother’s SPL and ShPP notice form</a>
+      {% else %}
+{# TODO href below #}
+        <a href="#" target="_blank">Primary adopter’s SPL and ShPP notice form</a>
+      {% endif %}
+    {% endset %}
+    {% set secondaryNoticeFormLink %}
+      {% if data | isBirth %}
+{# TODO href below #}
+        <a href="#" target="_blank">Father or Partner’s SPL and ShPP notice form</a>
+      {% else %}
+{# TODO href below #}
+        <a href="#" target="_blank">Partner’s SPL and ShPP notice form</a>
+      {% endif %}
+    {% endset %}
+
+    {% if data | isBirth %}
+      <h4 class="govuk-heading-s">
+        Statutory maternity pay (SMP)
+      </h4>
+      <p>
+        To apply for <a href="https://www.gov.uk/maternity-pay-leave">statutory maternity pay</a> tell your employer you want to stop work to have a baby and the day you want your SMP to start.
+        You must give them at least 28 days’ notice (in writing if they ask for it) and proof that you’re pregnant.
+      </p>
+      <p>
+        Your employer must confirm within 28 days how much SMP you’ll get and when it will start and stop.
+      </p>
+      <p>
+        If they decide you’re not eligible, they must give you form SMP1 within 7 days of making their decision and explain why.
+      </p>
+
+    {% else %}
+      <h4 class="govuk-heading-s">
+        Statutory adoption pay (SAP)
+      </h4>
+      <p>
+        To apply for <a href="https://www.gov.uk/adoption-pay-leave">statutory adoption pay<a> tell your employer you want to stop work to adopt a child and when you want your Statutory Adoption Pay to start.
+        You must give them at least 28 days’ notice. They can ask for this in writing and for proof of the adoption.
+      </p>
+      <p>
+        Your employer must confirm within 28 days how much SMP you’ll get and when it will start and stop.
+      </p>
+      <p>
+        If they decide you’re not eligible, they must give you form SMP1 within 7 days of making their decision and explain why.
+      </p>
+    {% endif %}
+
+    <h4>
+      Statutory shared parental pay (ShPP)
+    </h4>
+    <p>
+      To apply for shared parental pay, the mother can fill out the {{ primaryNoticeFormLink | safe }} and the mother’s partner can fill out the {{ secondaryNoticeFormLink | safe }}.
+    </p>
+    <p>
+      Your employer must confirm within 28 days how much Statutory Adoption Pay you’ll get and when it will start and stop.
+    </p>
+    <p>
+      If they decide you’re not eligible, they must give you form SAP1 within 7 days of making their decision and explain why.
+    </p>
+
+    <button class="govuk-button" onclick="alert('Printing is coming soon.')">Print this plan</button>
+    <button class="govuk-button" onclick="alert('Share links will be available soon.')">Share this page</button>
+
+  </div>
+</div>
+
