@@ -58,9 +58,6 @@
                     {{ week[parent].leave | leaveLabel(week[parent].compulsory) | capitalise }}
                   </div>
                 </div>
-                <div v-else>
-                  <!-- Needed for hover pseudo element. -->
-                </div>
               </td>
               <td :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
                   :class="{ 'unpaid': week[parent].leave && !week[parent].pay }"
@@ -72,9 +69,6 @@
                   <div class="govuk-body-s no-margin">
                     {{ week[parent].pay ? 'Paid' : 'Unpaid' }}
                   </div>
-                </div>
-                <div v-else>
-                  <!-- Needed for hover pseudo element. -->
                 </div>
               </td>
             </template>
@@ -274,32 +268,40 @@
   );
 
   $empty-cell-background-colour: govuk-colour('white');
-  .leave, .pay {
-    &:hover {
+  @media (hover: hover) {
+    .leave, .pay {
+      &:hover {
+        background-color: hoverify($empty-cell-background-colour);
+      }
+    }
+    .leave:hover + .pay {
       background-color: hoverify($empty-cell-background-colour);
     }
-  }
-  .leave:hover + .pay {
-    background-color: hoverify($empty-cell-background-colour);
   }
   @each $class, $colour in $cell-colours {
     .leave, .pay {
       &.#{$class} {
         background-color: $colour;
-        &:hover {
-          background-color: hoverify($colour);
+        @media (hover: hover) {
+          &:hover {
+            background-color: hoverify($colour);
+          }
         }
       }
     }
     .leave.#{$class} {
       + .pay:not(.unpaid) {
         background-color: $colour;
-        &:hover {
-          background-color: hoverify($colour);
+        @media (hover: hover) {
+          &:hover {
+            background-color: hoverify($colour);
+          }
         }
       }
-      &:hover + .pay:not(.unpaid) {
-        background-color: hoverify($colour);
+      @media (hover: hover) {
+        &:hover + .pay:not(.unpaid) {
+          background-color: hoverify($colour);
+        }
       }
     }
   }
