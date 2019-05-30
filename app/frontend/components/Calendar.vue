@@ -172,6 +172,8 @@
     -ms-user-select: none;
     user-select: none;
 
+    touch-action: manipulation;
+
     table-layout: fixed;
     .col-date {
       width: 10%;
