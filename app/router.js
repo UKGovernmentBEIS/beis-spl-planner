@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const paths = require('./paths')
+const blocks = require('./lib/blocks')
 
 router.route(paths.getPath('root'))
   .get(function (req, res) {
@@ -28,7 +29,12 @@ router.route(paths.getPath('planner'))
 
 router.route(paths.getPath('summary'))
   .get(function (req, res) {
-    res.render('summary')
+    // until the rest of the form is implemented
+    Object.assign(req.session.data, { 'start-date-day': '01', 'start-date-month': '09', 'start-date-year': '2019' })
+
+    const leaveBlocks = blocks.getLeaveBlocks(req.session.data)
+    const payBlocks = blocks.getPayBlocks(req.session.data)
+    res.render('summary', { leaveBlocks, payBlocks })
   })
 
 module.exports = router
