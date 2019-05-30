@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div>
     <h2 class="govuk-heading-m">
       Leave and pay totals
     </h2>
@@ -156,12 +156,6 @@
 
 <style lang="scss" scoped>
   @import "node_modules/govuk-frontend/settings/colours-applied";
-
-  .sidebar {
-    position: sticky;
-    top: 10px;
-  }
-
   .govuk-summary-list {
     .govuk-summary-list__key {
       width: 50%;

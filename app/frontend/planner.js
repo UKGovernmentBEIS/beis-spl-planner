@@ -1,5 +1,8 @@
 const _ = require('lodash')
 const Vue = require('vue/dist/vue.common')
+const isIexplorer = require('is-iexplorer')
+const stickybits = require('stickybits')
+const Stickyfill = require('stickyfill')
 const Planner = require('./components/Planner.vue')
 const { getWeeksArray } = require('../utils')
 
@@ -21,6 +24,11 @@ function init (data) {
       primary: parseParent(data, 'primary'),
       secondary: parseParent(data, 'secondary'),
       updateLeaveOrPay: updateLeaveOrPay
+    },
+    mounted: function () {
+      if (!stickyIsSupported()) {
+        patchStickyStyling()
+      }
     }
   })
 
@@ -106,6 +114,47 @@ function parseParent (data, parent) {
     payWeeks: getWeeksArray(data, parent, 'pay'),
     // TODO: Get weekly pay from data.
     weeklyPay: parent === 'primary' ? 1000 : null
+  }
+}
+
+// Idea taken from implementation of stickybits.js feature detection.
+// See: https://github.com/dollarshaveclub/stickybits/blob/e3762698a3c034e3add5456a294604dec6cfb53a/src/stickybits.js#L110
+function stickyIsSupported () {
+  const test = document.head.style
+  test.position = 'sticky'
+  const isSupported = !!test.position
+  test.position = ''
+  return isSupported
+}
+
+function patchStickyStyling () {
+  // Unfortunately, we need to use two separate polyfill libraries and then some manual handling to deal with sticky
+  // styling of the elements on the planner page where it is not natively supported (e.g. iOS and Internet Explorer).
+
+  // The Stickyfill library works for the sidebar, but not for table headers.
+  const sidebar = document.getElementById('sidebar')
+  const stickyfill = Stickyfill()
+  stickyfill.add(sidebar)
+
+  if (!isIexplorer) {
+    // The stickybits library does not work for the sidebar,
+    // but it does mostly work for table headers (except on Internet Explorer).
+    stickybits('#calendar table thead tr:first-child th')
+    stickybits('#calendar table thead tr:nth-child(2) th', { stickyBitStickyOffset: 48 })
+  } else {
+    // Internet Explorer needs special handling.
+    // Inspiration comes from: https://stackoverflow.com/a/25902860/1213714
+    const table = document.querySelector('#calendar table')
+    window.addEventListener('scroll', function () {
+      const boundingClientRect = table.getBoundingClientRect()
+      const { top, bottom } = boundingClientRect
+      const offset = (top < 0 && bottom > 0) ? -top : 0
+      const headers = document.querySelectorAll('thead th')
+      for (let th of headers) {
+        const translate = `translate(0, ${offset}px)`
+        th.style.transform = translate
+      }
+    })
   }
 }
 

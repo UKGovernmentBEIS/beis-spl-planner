@@ -174,6 +174,9 @@
 
     touch-action: manipulation;
 
+    /* Required to keep borders on sticky table headers. */
+    border-collapse: separate;
+
     table-layout: fixed;
     .col-date {
       width: 10%;
@@ -184,6 +187,7 @@
     .col-pay {
       width: 10%;
     }
+
     &.dragging {
       cursor: ns-resize;
     }
@@ -216,13 +220,22 @@
       }
     }
     .govuk-table__cell {
-      border: $cell-border;
       &.date {
         font-weight: normal;
       }
       &.pay {
         text-align: center;
       }
+
+      /*
+        Fiddling borders to work with "border-collapse: separate;" which
+        is required to keep borders on sticky table headers.
+      */
+      &:first-child {
+        border-left: $cell-border;
+      }
+      border-bottom: $cell-border;
+      border-right: $cell-border;
     }
 
     .first-week {
@@ -230,9 +243,14 @@
       border-left: $cell-border;
       border-right: $cell-border;
       text-align: left;
-      + tr > .date {
-        background-color: $first-week-colour;
-        border-top: none;
+      + tr {
+        .govuk-table__cell {
+          border-top: $cell-border;
+          &.date {
+            background-color: $first-week-colour;
+            border-top: none;
+          }
+        }
       }
     }
   }

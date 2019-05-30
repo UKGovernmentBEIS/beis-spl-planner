@@ -26,6 +26,7 @@
     "express": "4.16.x",
     "express-session": "^1.16.1",
     "govuk-frontend": "^2.10.0",
+    "is-iexplorer": "^1.0.0",
     "jsdom": "^15.0.0",
     "lodash": "^4.17.4",
     "memorystore": "^1.6.1",
@@ -38,6 +39,8 @@
     "serve-favicon": "^2.5.0",
     "sinon": "^7.3.2",
     "staticify": "^3.3.1",
+    "stickybits": "^3.6.6",
+    "stickyfill": "^1.1.1-strict",
     "throng": "4.0.x",
     "vue": "^2.6.10"
   },
