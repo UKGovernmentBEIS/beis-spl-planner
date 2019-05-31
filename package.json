@@ -14,7 +14,7 @@
     "start": "npm run compile && npm run server",
     "lint": "standard && sass-lint -v",
     "test": "mocha \"!(node_modules)/**/*+(.test|.tests)\".js",
-    "test:watch": "chokidar app test *.js --initial -c \"npm run test\"",
+    "test:watch": "chokidar app common test *.js --initial -c \"npm run test\"",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect"
   },

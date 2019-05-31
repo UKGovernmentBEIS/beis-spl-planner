@@ -1,4 +1,5 @@
 const qs = require('qs')
+const paths = require('../../app/paths')
 
 module.exports = function (req, res, next) {
   if (req.method === 'GET' && req.query['data-in-query']) {
@@ -16,7 +17,8 @@ module.exports = function (req, res, next) {
   res.locals.data = req.session.data
   res.locals.withData = function (path) {
     const queryData = { 'data-in-query': true, ...req.session.data }
-    return `${path}?${qs.stringify(queryData)}`
+    const backPath = paths.getPreviousWorkFlowPath(req.path)
+    return `${backPath}?${qs.stringify(queryData)}`
   }
   next()
 }
