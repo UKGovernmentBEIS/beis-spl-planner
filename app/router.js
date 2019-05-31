@@ -7,18 +7,18 @@ router.route(paths.getPath('root'))
     res.render('index')
   })
   .post(function (req, res) {
-    res.redirect(paths.birthOrAdoption)
+    res.redirect(paths.getPath('birthOrAdoption'))
   })
 
-router.route(paths.birthOrAdoption)
+router.route(paths.getPath('birthOrAdoption'))
   .get(function (req, res) {
     res.render('birth-or-adoption')
   })
   .post(function (req, res) {
-    res.redirect(paths.planner)
+    res.redirect(paths.getPath('planner'))
   })
 
-router.route(paths.planner)
+router.route(paths.getPath('planner'))
   .get(function (req, res) {
     res.render('planner')
   })

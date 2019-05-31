@@ -40,10 +40,12 @@ class Paths {
         url: '/'
       },
       birthOrAdoption: {
-        url: '/birth-or-adoption'
+        url: '/birth-or-adoption',
+        workflowParentPath: '/'
       },
       planner: {
-        url: '/planner'
+        url: '/planner',
+        workflowParentPath: '/birth-or-adoption'
       }
     }
   }
