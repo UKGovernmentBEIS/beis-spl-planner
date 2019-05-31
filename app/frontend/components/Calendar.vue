@@ -85,9 +85,6 @@
                   <div class="govuk-body govuk-!-font-weight-bold no-margin">
                     {{ week[parent].pay ? '✓' : '✗' }}
                   </div>
-                  <div class="govuk-body-s no-margin">
-                    {{ week[parent].pay ? 'Paid' : 'Unpaid' }}
-                  </div>
                 </div>
               </td>
             </template>
@@ -128,11 +125,7 @@
     },
     filters: {
       leaveLabel: function (type, compulsory) {
-        let label = LEAVE_LABELS[type]
-        if (compulsory) {
-          label = 'compulsory ' + label
-        }
-        return label
+        return compulsory ? 'compulsory leave' : LEAVE_LABELS[type]
       }
     },
     created: function () {
@@ -212,6 +205,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import "node_modules/govuk-frontend/settings/media-queries";
+  @import "node_modules/govuk-frontend/helpers/media-queries";
   @import "node_modules/govuk-frontend/settings/colours-applied";
 
   $colour-header: govuk-colour('grey-3');
@@ -248,6 +243,24 @@
       width: 10%;
     }
 
+    @include govuk-media-query($until: tablet) {
+      .col-date {
+        width: 12%;
+      }
+      .col-leave {
+        width: 28%;
+      }
+      .col-pay {
+        width: 16%;
+      }
+      .govuk-table__cell {
+        &.leave, &.pay {
+          height: 114px;
+          box-sizing: border-box;
+        }
+      }
+    }
+
     &.dragging {
       cursor: ns-resize;
     }
@@ -270,7 +283,7 @@
   }
 
   .govuk-table__header, .govuk-table__cell {
-    padding: 10px 5px;
+    padding: 10px 2px;
   }
 
   .govuk-table__body {

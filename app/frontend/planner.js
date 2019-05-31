@@ -113,7 +113,7 @@ function parseParent (data, parent) {
     leaveWeeks: getWeeksArray(data, parent, 'leave'),
     payWeeks: getWeeksArray(data, parent, 'pay'),
     // TODO: Get weekly pay from data.
-    weeklyPay: parent === 'primary' ? 1000 : null
+    weeklyPay: null
   }
 }
 

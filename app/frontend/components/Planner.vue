@@ -189,6 +189,9 @@
 
   #sidebar {
     position: sticky;
-    top: 10px;
+    top: 0;
+    padding: 10px 15px;
+    max-height: 100vh;
+    overflow-y: auto;
   }
 </style>
