@@ -1,5 +1,6 @@
 <template>
-  <table class="govuk-table" :class="{ 'dragging': isDragging }" @mouseleave="endDrag" @mouseup.left="endDrag">
+  <table ref="calendar" class="govuk-table" :class="{ 'dragging': isDragging, 'hide-focus': hideFocus }"
+    @mouseleave="endDrag" @mouseup.left="endDrag">
     <colgroup>
       <col class="col-date" />
       <col class="col-leave" />
@@ -41,7 +42,7 @@
             {{ week.day.format('DD') }}<br>
             {{ week.day.format('MMM') }}
           </th>
-          <template v-for="parent in ['primary', 'secondary']">
+          <template v-for="(parent, j) in ['primary', 'secondary']">
             <template v-if="week[parent].disabled">
               <td :key="parent + '-leave'" class="govuk-table__cell leave disabled"></td>
               <td :key="parent + '-pay'" class="govuk-table__cell pay disabled"></td>
@@ -49,7 +50,14 @@
             <template v-else>
               <td :key="parent + '-leave'" class="govuk-table__cell leave"
                   :class="week[parent].compulsory ? 'compulsory' : week[parent].leave"
-                  @mousedown.left="onCellMouseDown(parent, 'leave', week.number, !week[parent].leave)">
+                  tabindex="0" :data-row="i" :data-column="2*j"
+                  @keydown.tab="onCellTab($event)"
+                  @keydown.up.stop.prevent="focusCell(i - 1, 2*j)"
+                  @keydown.down.stop.prevent="focusCell(i + 1, 2*j)"
+                  @keydown.left.stop.prevent="focusCell(i, 2*j - 1)"
+                  @keydown.right.stop.prevent="focusCell(i, 2*j + 1)"
+                  @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'leave', week.number, !week[parent].leave)"
+                  @mousedown.left="onCellMouseDown($event, parent, 'leave', week.number, !week[parent].leave)">
                 <div v-if="week[parent].leave">
                   <div class="govuk-body no-margin">
                     {{ week[parent].pay || 'Unpaid' }}
@@ -65,7 +73,14 @@
               </td>
               <td :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
                   :class="{ 'unpaid': week[parent].leave && !week[parent].pay }"
-                  @mousedown.left="onCellMouseDown(parent, 'pay', week.number, !week[parent].pay)">
+                  tabindex="0" :data-row="i" :data-column="2*j + 1"
+                  @keydown.tab="onCellTab($event)"
+                  @keydown.up.stop.prevent="focusCell(i - 1, 2*j + 1)"
+                  @keydown.down.stop.prevent="focusCell(i + 1, 2*j + 1)"
+                  @keydown.left.stop.prevent="focusCell(i, 2*j)"
+                  @keydown.right.stop.prevent="focusCell(i, 2*j + 2)"
+                  @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'pay', week.number, !week[parent].pay)"
+                  @mousedown.left="onCellMouseDown($event, parent, 'pay', week.number, !week[parent].pay)">
                 <div v-if="week[parent].leave">
                   <div class="govuk-body govuk-!-font-weight-bold no-margin">
                     {{ week[parent].pay ? '✓' : '✗' }}
@@ -98,7 +113,9 @@
     data: () => ({
       isDragging: false,
       lastDraggedRow: null,
-      onDrag: null
+      lastClickedCell: null,
+      onDrag: null,
+      hideFocus: false
     }),
     props: {
       isBirth: Boolean,
@@ -116,9 +133,19 @@
         return label
       }
     },
+    created: function () {
+      window.addEventListener('keydown', this.onWindowMouseDown)
+    },
     methods: {
-      onCellMouseDown: function (parent, property, week, value) {
+      onWindowKeydown: function (event) {
+        if (event.keyCode === 9 /* TAB */) {
+          this.hideFocus = false
+        }
+      },
+      onCellMouseDown: function (event, parent, property, week, value) {
+        this.hideFocus = true
         this.isDragging = true
+        this.lastClickedCell = event.currentTarget
         this.onDrag = function (week) {
           this.updateLeaveOrPay(parent, property, week, value)
         }
@@ -134,10 +161,38 @@
           this.lastDraggedRow = week
         }
       },
+      onCellTab: function (event) {
+        if (this.hideFocus) {
+          this.hideFocus = false
+          event.preventDefault()
+          event.stopPropagation()
+        }
+      },
+      onKeyboardToggleCell: function (parent, property, week, value) {
+        if (this.hideFocus) {
+          this.hideFocus = false
+        } else {
+          this.updateLeaveOrPay(parent, property, week, value)
+        }
+      },
+      focusCell: function (row, column) {
+        if (this.hideFocus) {
+          this.hideFocus = false
+        } else {
+          const cell = this.$refs.calendar.querySelector('[data-row="' + row + '"][data-column="' + column + '"]')
+          if (cell) {
+            cell.focus()
+          }
+        }
+      },
       endDrag: function () {
         this.isDragging = false
         this.lastDraggedRow = null
         this.onDrag = null
+        if (this.lastClickedCell) {
+          this.lastClickedCell.focus()
+          this.lastClickedCell = null
+        }
       },
       getRowsToUpdate: function (currentRow) {
         if (this.lastDraggedRow === null) {
@@ -161,6 +216,10 @@
   $cell-border: 1px solid govuk-colour('grey-3');
 
   $first-week-colour: govuk-colour('yellow');
+
+  .hide-focus .govuk-table__cell:focus {
+    outline: none;
+  }
 
   .no-margin {
     margin: 0;
