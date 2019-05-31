@@ -1,5 +1,5 @@
 <template>
-  <table ref="calendar" class="govuk-table" :class="{ 'dragging': isDragging, 'hide-focus': hideFocus }"
+  <table ref="calendar" class="govuk-table" :class="{ 'dragging': isDragging, 'hide-focus': hideFocus, 'is-ie': isIexplorer }"
     @mouseleave="endDrag" @mouseup.left="endDrag">
     <colgroup>
       <col class="col-date" />
@@ -101,6 +101,7 @@
 <script>
   const _ = require('lodash')
   const dlv = require('dlv')
+  const isIexplorer = require('is-iexplorer')
 
   const LEAVE_LABELS = Object.freeze({
     'maternity': 'maternity leave',
@@ -111,6 +112,7 @@
 
   module.exports = {
     data: () => ({
+      isIexplorer: isIexplorer,
       isDragging: false,
       lastDraggedRow: null,
       lastClickedCell: null,
@@ -336,8 +338,19 @@
     "unpaid": lighten(govuk-colour('yellow'), 25%)
   );
 
-  $empty-cell-background-colour: govuk-colour('white');
-  @media (hover: hover) {
+  @each $class, $colour in $cell-colours {
+    .leave, .pay {
+      &.#{$class} {
+        background-color: $colour;
+      }
+    }
+    .leave.#{$class} + .pay:not(.unpaid) {
+      background-color: $colour;
+    }
+  }
+
+  @mixin cellHoverRules() {
+    $empty-cell-background-colour: govuk-colour('white');
     .leave, .pay {
       &:hover {
         background-color: hoverify($empty-cell-background-colour);
@@ -346,32 +359,27 @@
     .leave:hover + .pay {
       background-color: hoverify($empty-cell-background-colour);
     }
-  }
-  @each $class, $colour in $cell-colours {
-    .leave, .pay {
-      &.#{$class} {
-        background-color: $colour;
-        @media (hover: hover) {
-          &:hover {
-            background-color: hoverify($colour);
-          }
+    @each $class, $colour in $cell-colours {
+      .leave, .pay {
+        &.#{$class}:hover {
+          background-color: hoverify($colour);
         }
       }
-    }
-    .leave.#{$class} {
-      + .pay:not(.unpaid) {
-        background-color: $colour;
-        @media (hover: hover) {
-          &:hover {
-            background-color: hoverify($colour);
-          }
+      .leave.#{$class} {
+        + .pay:not(.unpaid):hover {
+          background-color: hoverify($colour);
         }
-      }
-      @media (hover: hover) {
         &:hover + .pay:not(.unpaid) {
           background-color: hoverify($colour);
         }
       }
     }
+  }
+
+  .is-ie {
+    @include cellHoverRules()
+  }
+  @media (hover: hover) {
+    @include cellHoverRules()
   }
 </style>
