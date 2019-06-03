@@ -88,9 +88,7 @@ function updatePay (parent, week, value, minimumWeek) {
   // taken as Statutory Shared Parental Pay.
   let weeksToUpdate
   const lastCompulsoryWeek = 1
-  if (parent !== 'primary') {
-    weeksToUpdate = [week]
-  } else if (week > lastCompulsoryWeek) {
+  if (parent !== 'primary' || week > lastCompulsoryWeek) {
     weeksToUpdate = [week]
   } else if (value) {
     // Add pay from earliest week.
