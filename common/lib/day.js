@@ -42,6 +42,10 @@ class Day {
     return this.moment.isBetween(earlierDay.moment, laterDay.moment)
   }
 
+  format (format) {
+    return this.moment.format(format)
+  }
+
   formatForDisplay () {
     return this.moment.format('D MMMM YYYY')
   }

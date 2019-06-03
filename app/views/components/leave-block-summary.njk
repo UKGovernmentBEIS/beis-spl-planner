@@ -1,0 +1,42 @@
+{% from "summary-list/macro.njk" import govukSummaryList %}
+
+{% macro leaveBlockSummary(options) %}
+  {% set numberOfWeeks = options.block.end - options.block.start %}
+  {{ govukSummaryList({
+    rows: [
+      {
+        key: {
+          text: options.name + " starts"
+        },
+        value: {
+          text: options.data | getStartDay | offsetWeeks(options.block.start) | formatForDisplay
+        }
+      },
+      {
+        key: {
+          text: options.name + " ends"
+        },
+        value: {
+          text: options.data | getStartDay | offsetWeeks(options.block.end) | formatForDisplay
+        }
+      },
+      {
+        key: {
+          text: "Length"
+        },
+        value: {
+          text: numberOfWeeks + " week" + ("s" if numberOfWeeks !== 1)
+        }
+      },
+      {
+        key: {
+          text: "Notify employers"
+        },
+        value: {
+          html: "by " + (options.notify.date | formatForDisplay) + ("*" if options.notify.asterisk) + "<br>" +
+            "(" + options.notify.explanation + ")"
+        }
+      }
+    ]
+  }) }}
+{% endmacro %}

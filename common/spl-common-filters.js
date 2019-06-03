@@ -51,6 +51,10 @@ module.exports = function (env) {
     return new Day().add(30, 'days').formatForExample()
   }
 
+  function formatDate (day, format) {
+    return day.format(format)
+  }
+
   function formatForDisplay (day) {
     return day.formatForDisplay()
   }
@@ -72,6 +76,7 @@ module.exports = function (env) {
     startDateName,
     offsetWeeks,
     exampleDate,
+    formatDate,
     formatForDisplay,
     isInPast,
     ...require('./macros/hidden-fields/filters')(env)

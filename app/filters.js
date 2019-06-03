@@ -1,4 +1,5 @@
 const { getWeeksArray } = require('./utils')
+const Day = require('../common/lib/day')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
@@ -46,7 +47,13 @@ module.exports = function (env) {
     return checkboxes
   }
 
+  function getStartDay (data) {
+    console.log(data)
+    return new Day(data['start-date-day'], data['start-date-month'], data['start-date-year']).startOfWeek()
+  }
+
   return {
-    weekCheckboxes
+    weekCheckboxes,
+    getStartDay
   }
 }

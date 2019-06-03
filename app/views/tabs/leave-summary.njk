@@ -1,5 +1,6 @@
 {% from "summary-list/macro.njk" import govukSummaryList %}
 {% from "inset-text/macro.njk" import govukInsetText %}
+{% from "../components/leave-block-summary.njk" import leaveBlockSummary %}
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -27,6 +28,16 @@
     <h3 class="govuk-heading-m">
       Maternity leave
     </h3>
+
+    {{ leaveBlockSummary({
+      name: "Maternity leave",
+      block: leaveBlocks['primary'][0],
+      data: data,
+      notify: {
+        date: data | getStartDay | offsetWeeks(-15),
+        explanation: "15 weeks before due date"
+      }
+    }) }}
 {# TODO add maternity leave component #}
     <h4 class="govuk-heading-s">
       How to apply
