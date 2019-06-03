@@ -130,7 +130,7 @@
         return {
           primary: {
             leave: this.primary.leaveWeeks.includes(i) || isCompulsoryPrimaryWeek,
-            pay: this.primary.payWeeks.includes(i) || isCompulsoryPrimaryWeek
+            pay: this.primary.payWeeks.includes(i)
           },
           secondary: {
             leave: this.secondary.leaveWeeks.includes(i),

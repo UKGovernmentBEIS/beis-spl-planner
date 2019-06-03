@@ -11,14 +11,14 @@ module.exports = function (env) {
     const leaveWeeks = getWeeksArray(data, parent, 'leave')
     const payWeeks = getWeeksArray(data, parent, 'pay')
     for (let i = minWeek; i <= 52; i++) {
-      const compulsory = parent === 'primary' && (i === 0 || i === 1)
-      const disabled = compulsory || (parent === 'secondary' && i < 0)
+      const compulsoryLeave = parent === 'primary' && (i === 0 || i === 1)
+      const outOfRange = parent === 'secondary' && i < 0
       checkboxes.push({
         id: `${parent}-leave_${i}`,
         value: i,
         text: `Week ${i}`,
-        checked: compulsory || leaveWeeks.includes(i),
-        disabled: disabled,
+        checked: leaveWeeks.includes(i),
+        disabled: compulsoryLeave || outOfRange,
         attributes: {
           'data-parent': parent,
           'data-property': 'leave'
@@ -31,8 +31,8 @@ module.exports = function (env) {
                 id: `${parent}-pay_${i}`,
                 value: i,
                 text: 'Paid',
-                checked: compulsory || payWeeks.includes(i),
-                disabled: disabled,
+                checked: payWeeks.includes(i),
+                disabled: outOfRange,
                 attributes: {
                   'data-parent': parent,
                   'data-property': 'pay'
