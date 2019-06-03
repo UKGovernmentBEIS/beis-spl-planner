@@ -29,12 +29,16 @@
             {{ week.day.format('MMMM YYYY') }}
           </th>
         </tr>
-        <tr :key="'first-week-' + week.id" v-if="week.number === 0" class="first-week">
+        <tr :key="'earliest-leave-week-' + week.id" v-if="i === 0" class="row-banner">
           <th></th>
           <th colspan="4">
-            <div class="govuk-heading-s no-margin">
-              {{ isBirth ? 'Birth week' : 'First week the child lives with you' }}
-            </div>
+            {{ primaryLeaveType | capitalise }} leave can start in this week
+          </th>
+        </tr>
+        <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner">
+          <th></th>
+          <th colspan="4">
+            {{ isBirth ? 'Birth week' : 'First week the child lives with you' }}
           </th>
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week.number)">
@@ -118,6 +122,7 @@
     }),
     props: {
       isBirth: Boolean,
+      primaryLeaveType: String,
       names: Object,
       weeks: Array,
       leaveBoundaries: Object,
@@ -209,10 +214,10 @@
   @import "node_modules/govuk-frontend/helpers/media-queries";
   @import "node_modules/govuk-frontend/settings/colours-applied";
 
-  $colour-header: govuk-colour('grey-3');
+  $header-colour: govuk-colour('grey-3');
   $cell-border: 1px solid govuk-colour('grey-3');
 
-  $first-week-colour: govuk-colour('yellow');
+  $row-banner-colour: govuk-colour('yellow');
 
   .hide-focus .govuk-table__cell:focus {
     outline: none;
@@ -278,7 +283,7 @@
 
   .govuk-table__head {
     .govuk-table__header {
-      background-color: $colour-header;
+      background-color: $header-colour;
     }
   }
 
@@ -289,7 +294,7 @@
   .govuk-table__body {
     .govuk-table__header {
       &.month {
-        background-color: $colour-header;
+        background-color: $header-colour;
       }
     }
 
@@ -312,16 +317,24 @@
       border-right: $cell-border;
     }
 
-    .first-week {
-      background-color: $first-week-colour;
-      border-left: $cell-border;
-      border-right: $cell-border;
+    .row-banner {
+      background-color: $row-banner-colour;
       text-align: left;
+      th, td {
+        &:first-child {
+          border-left: $cell-border;
+        }
+        &:last-child {
+          border-right: $cell-border;
+        }
+      }
       + tr {
         .govuk-table__cell {
           border-top: $cell-border;
-          &.date {
-            background-color: $first-week-colour;
+        }
+        th, td {
+          &:first-child {
+            background-color: $row-banner-colour;
             border-top: none;
           }
         }
