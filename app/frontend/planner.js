@@ -15,10 +15,11 @@ Vue.filter('capitalise', function (value) {
 })
 
 function init (data) {
+  const isBirth = data['birth-or-adoption'] === 'birth'
   const planner = new (Vue.extend(Planner))({
     el: '#planner',
     data: {
-      isBirth: data['birth-or-adoption'] === 'birth',
+      isBirth: isBirth,
       // TODO: Get start week from data.
       startWeek: '2019-09-08',
       primary: parseParent(data, 'primary'),
@@ -41,17 +42,18 @@ function init (data) {
       planner.updateWeek(parent, property, week, this.checked)
     })
   }
-}
 
-function updateLeaveOrPay (parent, property, week, value) {
-  if (property === 'leave') {
-    updateLeave(parent, week, value)
-  } else if (property === 'pay') {
-    updatePay(parent, week, value)
+  const minimumWeek = isBirth ? -11 : -2
+  function updateLeaveOrPay (parent, property, week, value) {
+    if (property === 'leave') {
+      updateLeave(parent, week, value, minimumWeek)
+    } else if (property === 'pay') {
+      updatePay(parent, week, value, minimumWeek)
+    }
   }
 }
 
-function updateLeave (parent, week, value) {
+function updateLeave (parent, week, value, minimumWeek) {
   // Maternity / adoption leave taken before the 0th week must be in a continuous block.
   let weeksToUpdate
   if (week >= 0) {
@@ -61,7 +63,7 @@ function updateLeave (parent, week, value) {
     weeksToUpdate = _.range(week, 0)
   } else {
     // Remove leave before selected week.
-    weeksToUpdate = _.range(-11, week + 1)
+    weeksToUpdate = _.range(minimumWeek, week + 1)
   }
 
   for (let weekToUpdate of weeksToUpdate) {
@@ -73,7 +75,7 @@ function updateLeave (parent, week, value) {
   }
 }
 
-function updatePay (parent, week, value) {
+function updatePay (parent, week, value, minimumWeek) {
   if (value && !getCheckbox(parent, 'leave', week).checked) {
     // Pay cannot be added without leave.
     updateLeave(parent, week, true)
@@ -92,7 +94,7 @@ function updatePay (parent, week, value) {
     weeksToUpdate = [week]
   } else if (value) {
     // Add pay from earliest week.
-    weeksToUpdate = _.range(-11, week + 1)
+    weeksToUpdate = _.range(minimumWeek, week + 1)
   } else {
     // Remove pay until end of compulsory leave.
     weeksToUpdate = _.range(week, lastCompulsoryWeek + 1)
@@ -108,6 +110,10 @@ function toggleLeave (parent, week, value) {
 }
 
 function togglePay (parent, week, value) {
+  if (value && !getCheckbox(parent, 'leave', week).checked) {
+    // Cannot have pay without leave.
+    return false
+  }
   return toggleCheckbox(parent, 'pay', week, value)
 }
 
