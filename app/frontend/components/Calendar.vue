@@ -382,8 +382,13 @@
         + .pay:not(.unpaid):hover {
           background-color: hoverify($colour);
         }
-        &:hover + .pay:not(.unpaid) {
-          background-color: hoverify($colour);
+        &:hover + .pay {
+          &.unpaid {
+            background-color: hoverify(map-get($cell-colours, 'unpaid'))
+          }
+          &:not(.unpaid) {
+            background-color: hoverify($colour);
+          }
         }
       }
     }
