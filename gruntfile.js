@@ -59,6 +59,7 @@ module.exports = function (grunt) {
     js: {
       files: [
         'app/frontend/**/*.{js,vue}',
+        'app/lib/**/*.js',
         'common/browsered/**/*.js',
         'common/assets/javascripts/**/*.js'
       ],
