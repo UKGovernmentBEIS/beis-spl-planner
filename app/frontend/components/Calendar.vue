@@ -30,14 +30,12 @@
           </th>
         </tr>
         <tr :key="'earliest-leave-week-' + week.id" v-if="i === 0" class="row-banner">
-          <th></th>
-          <th colspan="4">
+          <th colspan="5">
             {{ primaryLeaveType | capitalise }} leave can start in this week
           </th>
         </tr>
         <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner">
-          <th></th>
-          <th colspan="4">
+          <th colspan="5">
             {{ isBirth ? 'Birth week' : 'First week the child lives with you' }}
           </th>
         </tr>
@@ -241,6 +239,9 @@
     .col-date {
       width: 10%;
     }
+    .row-banner > th:first-child {
+      padding-left: 10%;
+    }
     .col-leave {
       width: 35%;
     }
@@ -251,6 +252,9 @@
     @include govuk-media-query($until: tablet) {
       .col-date {
         width: 12%;
+      }
+      .row-banner > th:first-child {
+        padding-left: 12%;
       }
       .col-leave {
         width: 28%;
