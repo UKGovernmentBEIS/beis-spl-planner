@@ -52,7 +52,7 @@ function updateLeaveOrPay (parent, property, week, value) {
 }
 
 function updateLeave (parent, week, value) {
-  // Leave before the 0th week must be in a continuous block.
+  // Maternity / adoption leave taken before the 0th week must be in a continuous block.
   let weeksToUpdate
   if (week >= 0) {
     weeksToUpdate = [week]
@@ -74,12 +74,32 @@ function updateLeave (parent, week, value) {
 }
 
 function updatePay (parent, week, value) {
-  if (value) {
-    // Leave must always be taken with pay.
+  if (value && !getCheckbox(parent, 'leave', week).checked) {
+    // Pay cannot be added without leave.
     updateLeave(parent, week, true)
-    togglePay(parent, week, true)
+    return
+  }
+
+  // Maternity / adoption pay must be taken in a continuous block from the start
+  // of the maternity / adoption leave until the pay is curtailed.
+  // After the end of compulsory leave, it is valid for non-continuous pay to be
+  // taken as Statutory Shared Parental Pay.
+  let weeksToUpdate
+  const lastCompulsoryWeek = 1
+  if (parent !== 'primary') {
+    weeksToUpdate = [week]
+  } else if (week > lastCompulsoryWeek) {
+    weeksToUpdate = [week]
+  } else if (value) {
+    // Add pay from earliest week.
+    weeksToUpdate = _.range(-11, week + 1)
   } else {
-    togglePay(parent, week, false)
+    // Remove pay until end of compulsory leave.
+    weeksToUpdate = _.range(week, lastCompulsoryWeek + 1)
+  }
+
+  for (let weekToUpdate of weeksToUpdate) {
+    togglePay(parent, weekToUpdate, value)
   }
 }
 

@@ -48,9 +48,9 @@
         const weeks = []
         let primaryLeaveTracker = this.getLeaveTracker()
         let secondaryLeaveTracker = this.getLeaveTracker()
-        let hasStartedPrimaryPay = false
         let hasCurtailedPrimaryPay = false
         let primarySplHasStarted = false
+        let paternityPayWeeksCount = 0
         for (let i = this.minimumWeek; i <= 52; i++) {
           const week = this.getBaseWeek(i)
           const weekLeaveAndPay = this.getWeekLeaveAndPay(i)
@@ -63,14 +63,13 @@
             }
             week.primary.leave = !primarySplHasStarted ? this.primaryLeaveType : 'shared'
             if (weekLeaveAndPay.primary.pay) {
-              hasStartedPrimaryPay = true
               if (primarySplHasStarted) {
                 week.primary.pay = this.payRates.primary.statutory
               } else {
                 const useInitialPayRate = primaryLeaveTracker.initialBlockLength <= 6
                 week.primary.pay = useInitialPayRate ? this.payRates.primary.initial : this.payRates.primary.statutory
               }
-            } else if (hasStartedPrimaryPay) {
+            } else {
               hasCurtailedPrimaryPay = true
             }
           }
