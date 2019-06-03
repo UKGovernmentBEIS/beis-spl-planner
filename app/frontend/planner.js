@@ -4,7 +4,7 @@ const isIexplorer = require('is-iexplorer')
 const stickybits = require('stickybits')
 const Stickyfill = require('stickyfill')
 const Planner = require('./components/Planner.vue')
-const { getWeeksArray } = require('../utils')
+const { parseParentFromPlanner } = require('../utils')
 
 Vue.filter('capitalise', function (value) {
   if (!value) {
@@ -21,8 +21,8 @@ function init (data) {
       isBirth: data['birth-or-adoption'] === 'birth',
       // TODO: Get start week from data.
       startWeek: '2019-09-08',
-      primary: parseParent(data, 'primary'),
-      secondary: parseParent(data, 'secondary'),
+      primary: parseParentFromPlanner(data, 'primary'),
+      secondary: parseParentFromPlanner(data, 'secondary'),
       updateLeaveOrPay: updateLeaveOrPay
     },
     mounted: function () {
@@ -106,15 +106,6 @@ function toggleCheckbox (parent, property, week, value) {
 function getCheckbox (parent, property, week) {
   const query = `input[type="checkbox"][name="${parent}[${property}]"][value="${week}"]`
   return document.querySelector(query)
-}
-
-function parseParent (data, parent) {
-  return {
-    leaveWeeks: getWeeksArray(data, parent, 'leave'),
-    payWeeks: getWeeksArray(data, parent, 'pay'),
-    // TODO: Get weekly pay from data.
-    weeklyPay: parent === 'primary' ? 1000 : null
-  }
 }
 
 // Idea taken from implementation of stickybits.js feature detection.
