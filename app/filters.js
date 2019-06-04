@@ -47,7 +47,7 @@ module.exports = function (env) {
     return checkboxes
   }
 
-  function getStartDay (data) {
+  function startDay (data) {
     return new Day(data['start-date-day'], data['start-date-month'], data['start-date-year']).startOfWeek()
   }
 
@@ -55,9 +55,14 @@ module.exports = function (env) {
     return day.endOfWeek()
   }
 
+  function startDateName (data) {
+    return isBirth(data) ? 'due date' : 'placement date'
+  }
+
   return {
     weekCheckboxes,
-    getStartDay,
-    endOfWeek
+    startDay,
+    endOfWeek,
+    startDateName
   }
 }

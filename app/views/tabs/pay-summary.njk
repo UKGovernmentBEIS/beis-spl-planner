@@ -17,7 +17,7 @@
 
     {% for block in payBlocks %}
       {% set tableCaption %}
-        {{ data | getStartDay | offsetWeeks(block.start) | formatForDisplay }} to {{ data | getStartDay | offsetWeeks(block.end) | endOfWeek | formatForDisplay }}
+        {{ data | startDay | offsetWeeks(block.start) | formatForDisplay }} to {{ data | startDay | offsetWeeks(block.end) | endOfWeek | formatForDisplay }}
       {% endset %}
 
       {% set primaryPay %}

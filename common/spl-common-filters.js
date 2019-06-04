@@ -31,6 +31,10 @@ module.exports = function (env) {
     return data['birth-or-adoption'] === 'birth'
   }
 
+  function primaryLeaveType (data) {
+    return isBirth(data) ? 'maternity' : 'adoption'
+  }
+
   function isAdoption (data) {
     return data['birth-or-adoption'] === 'adoption'
   }
@@ -71,6 +75,7 @@ module.exports = function (env) {
     currentParentName,
     otherParentName,
     isBirth,
+    primaryLeaveType,
     isAdoption,
     capitalize,
     startDateName,

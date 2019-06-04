@@ -16,7 +16,7 @@
             text: "Baby is due" if data | isBirth else "Placement date"
           },
           value: {
-            text: data | getStartDay | formatForDisplay
+            text: data | startDay | formatForDisplay
           }
         }
       ]
@@ -34,8 +34,8 @@
       block: leaveBlocks['primary'][0],
       data: data,
       notify: {
-        date: data | getStartDay | offsetWeeks(-15),
-        explanation: "15 weeks before due date"
+        date: data | startDay | offsetWeeks(-15),
+        explanation: "15 weeks before " + data | startDateName
       }
     }) }}
 
@@ -64,7 +64,7 @@
           block: block,
           data: data,
           notify: {
-            date: data | getStartDay | offsetWeeks(block.start) | offsetWeeks(-8),
+            date: data | startDay | offsetWeeks(block.start) | offsetWeeks(-8),
             explanation: "8 weeks before block starts"
           }
         }) }}
@@ -107,7 +107,7 @@
       block: leaveBlocks['secondary'][0],
       data: data,
       notify: {
-        date: data | getStartDay | offsetWeeks(-15),
+        date: data | startDay | offsetWeeks(-15),
         explanation: "15 weeks before due date"
       }
     }) }}
@@ -137,7 +137,7 @@
           block: block,
           data: data,
           notify: {
-            date: data | getStartDay | offsetWeeks(block.start) | offsetWeeks(-8),
+            date: data | startDay | offsetWeeks(block.start) | offsetWeeks(-8),
             explanation: "8 weeks before block starts",
             asterisk: loop.length > 2
           }
