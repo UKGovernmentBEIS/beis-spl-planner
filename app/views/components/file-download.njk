@@ -1,0 +1,27 @@
+{% from "inset-text/macro.njk" import govukInsetText %}
+
+{% macro fileDownload(options) %}
+  {% set body %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        {{ options.description.html | safe }}
+      </div>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-quarter">
+        <a href="{{ options.href }}">
+          <img class="document" alt="PDF document" src="./images/document-placeholder.png"/>
+        </a>
+      </div>
+      <div class="govuk-grid-column-three-quarters-from-desktop">
+        <a href="{{ options.href }}" class="govuk-body-l">{{ options.name }}</a>
+        <p class="govuk-body-xs">dummy file info</p>
+        {{ options.details.html | safe }}
+      </div>
+    </div>
+  {% endset %}
+
+  {{ govukInsetText({
+    html: body
+  }) }}
+{% endmacro %}

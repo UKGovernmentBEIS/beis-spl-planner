@@ -1,6 +1,7 @@
 {% from "summary-list/macro.njk" import govukSummaryList %}
 {% from "inset-text/macro.njk" import govukInsetText %}
 {% from "../components/leave-block-summary.njk" import leaveBlockSummary %}
+{% from "../components/file-download.njk" import fileDownload %}
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -77,14 +78,26 @@
 {# TODO fix the href of this link#}
       Complete the Mother's SPL and ShPP notice form and submite it to the mother's employer 8 weeks before you want to start shared parental leave.
     </p>
-
-    {% set insetHtml %}
-{# TODO fix the href of this link#}
-      You can also <a href="#">complete these notice forms using an online tool</a>. Your key dates will be filled out for you based on your chosen plan (you'll have the opportunity to change them), but you'll need to provide a name, address and National Insurance number for you and your partner.
+    {# TODO add content to fileDownload macro #}
+    {% set primaryNoticeDescription %}
+      <p>This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#">download a blank version</a>.
     {% endset %}
-    {{ govukInsetText({
-      html: insetHtml
+
+    {% set primaryNoticeDetails %}
+      <p>This file may not be suitable for users of assistive technology. <a href="#">Request an accesible format</a>.
+    {% endset %}
+
+    {{ fileDownload({
+      name: (data | primaryName | capitalize) + "‘s SPL and ShPP notice form",
+      href: "#",
+      description: {
+        html: primaryNoticeDescription
+      },
+      details: {
+        html: primaryNoticeDetails
+      }
     }) }}
+
     <h4 class="govuk-heading-s">
       Changing your plans
     </h4>
@@ -147,7 +160,16 @@
     <p>
       Complete the Partner's SPL and ShPP notice form and submit it to the partner's employer 8 weeks before you want to start shared parental leave.
     </p>
-    {{ fileDownload() }}
+    {{ fileDownload({
+      name: data | secondaryName | capitalize + "‘s SPL and ShPP notice form",
+      href: "#",
+      description: {
+        html: primaryNoticeDescription
+      },
+      details: {
+        html: primaryNoticeDetails
+      }
+    }) }}
     <h4 class="govuk-heading-s">
       Changing your plans
     </h4>
