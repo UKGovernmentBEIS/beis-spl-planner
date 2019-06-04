@@ -23,14 +23,14 @@
     }) }}
 
     <h2 class="govuk-heading-l">
-      Mother‘s leave dates
+      {{ data | primaryName | capitalize }}‘s leave dates
     </h2>
     <h3 class="govuk-heading-m">
-      Maternity leave
+      {{ data | primaryLeaveType | capitalize }} leave
     </h3>
 
     {{ leaveBlockSummary({
-      name: "Maternity leave",
+      name: data | primaryLeaveType | capitalize + " leave",
       block: leaveBlocks['primary'][0],
       data: data,
       notify: {
@@ -40,7 +40,7 @@
     }) }}
 
     <h4 class="govuk-heading-s">
-      How to apply
+      How to give notice
     </h4>
     <p>
       Tell your employer when the baby is due and when you want to start your maternity leave.
@@ -55,7 +55,7 @@
     </p>
 
     <h3 class="govuk-heading-m">
-      Mother's shared parental leave
+      Shared parental leave ({{ data | primaryName }})
     </h3>
     {% for block in leaveBlocks['primary'] %}
       {% if not loop.first %}
@@ -71,14 +71,11 @@
       {% endif %}
     {% endfor %}
     <h4 class="govuk-heading-s">
-      How to apply
+      How to give notice
     </h4>
     <p>
 {# TODO fix the href of this link#}
-      To take SPL you can complete the <a href="#" target="_blank">Mother’s SPL and ShPP notice form</a> and submit it to the mother’s employer by the notice dates above.
-    </p>
-    <p>
-      If the employer has their own forms, they can be used instead as long as the relevant notices and declarations are included.
+      Complete the Mother's SPL and ShPP notice form and submite it to the mother's employer 8 weeks before you want to start shared parental leave.
     </p>
 
     {% set insetHtml %}
@@ -92,7 +89,7 @@
       Changing your plans
     </h4>
     <p>
-      You can change your shared parental leave plan later but you must give your employer at least 8 weeks’ notice before you want to begin a block of leave.
+      After you give notice you have two weeks to agree your shared parental leave dates with your employer.
     </p>
 
     <h2 class="govuk-heading-l">
@@ -113,7 +110,7 @@
     }) }}
 
     <h4 class="govuk-heading-s">
-      How to apply
+      How to give notice
     </h4>
     <p>
 {# TODO check this form link #}
@@ -124,11 +121,11 @@
       Changing your plans
     </h4>
     <p>
-      You must give 28 days notice to your employer if you want to change your maternity leave dates.
+      You must give 28 days notice to your employer if you want to change your paternity leave dates.
     </p>
 
     <h3 class="govuk-heading-m">
-      Partner‘s shared parental leave
+      Shared parental leave ({{ data | secondaryName }})
     </h3>
     {% for block in leaveBlocks['secondary'] %}
       {% if not loop.first %}
@@ -145,26 +142,20 @@
       {% endif %}
     {% endfor %}
     <h4 class="govuk-heading-s">
-      How to apply
+      How to give notice
     </h4>
     <p>
-{# TODO check link href for this link#}
-      To take SPL you’ll need to <a class="govuk-link" href="#">complete the necessary notice and declaration forms</a> and submit them to the partner’s employer by the notice dates above.
+      Complete the Partner's SPL and ShPP notice form and submit it to the partner's employer 8 weeks before you want to start shared parental leave.
     </p>
-    <p>
-      If the employer has their own forms, they can be used instead as long as the relevant notices and declarations are included.
-    </p>
-    {% set insetHtml %}
-      You can also <a href="/notice" class="govuk-link">complete these notice forms using an online tool</a>. Your key dates will be filled out for you based on your chosen plan (you'll have the opportunity to change them), but you'll need to provide a name, address and National Insurance number for you and your partner.
-    {% endset %}
-    {{ govukInsetText({
-      html: insetHtml
-    }) }}
+    {{ fileDownload() }}
     <h4 class="govuk-heading-s">
       Changing your plans
     </h4>
     <p>
-      You can change your shared parental leave plan later but you must give your employer at least 8 weeks’ notice before you want to begin a block of leave.
+      After you give notice you have two weeks to agree your shared parental laeve dates with your employer.
+    </p>
+    <p>
+      To change you dates after this you must give notice again 8 weeks before your first block of shared parental leave starts.
     </p>
 {# TODO where are these buttons going #}
     <button class="govuk-button" onclick="alert('Printing is coming soon.')">Print this plan</button>

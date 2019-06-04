@@ -32,8 +32,7 @@
         <strong> per week</strong>
       {% endset %}
 
-      {# {% set displayTotal = (data['mother-salary-amount'] | length > 0) and (data['partner-salary-amount'] | length > 0) %} #}
-      {% set displayTotal = false %}
+      {% set displayTotal = (data['mother-salary-amount'] | length > 0) and (data['partner-salary-amount'] | length > 0) %}
 
       {{ govukTable({
         classes: "app-table--fixed",
