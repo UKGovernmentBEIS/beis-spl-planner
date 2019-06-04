@@ -24,7 +24,7 @@
     }) }}
 
     <h2 class="govuk-heading-l">
-      {{ data | primaryName | capitalize }}‘s leave dates
+      {{ data | primaryName | capitalize }}'s leave dates
     </h2>
     <h3 class="govuk-heading-m">
       {{ data | primaryLeaveType | capitalize }} leave
@@ -88,7 +88,7 @@
     {% endset %}
 
     {{ fileDownload({
-      name: (data | primaryName | capitalize) + "‘s SPL and ShPP notice form",
+      name: (data | primaryName | capitalize) + "'s SPL and ShPP notice form",
       href: "#",
       description: {
         html: primaryNoticeDescription
@@ -104,9 +104,12 @@
     <p>
       After you give notice you have two weeks to agree your shared parental leave dates with your employer.
     </p>
+    <p>
+      To change your dates after this you must give notice again 8 weeks before your first block of shared parental leave starts.
+    </p>
 
     <h2 class="govuk-heading-l">
-      Partner's leave dates
+      {{ data | secondaryName | capitalize }}'s leave dates
     </h2>
     <h3 class="govuk-heading-m">
       Paternity leave
