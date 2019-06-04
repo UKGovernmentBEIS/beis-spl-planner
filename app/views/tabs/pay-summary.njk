@@ -1,3 +1,5 @@
+{% from "table/macro.njk" import govukTable %}
+
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <p>
@@ -9,7 +11,59 @@
       To see a more accurate summary of what your income will be while on leave, you can ask your employer to fill in <a href="#">a parental leave and pay plan</a>.
     </p>
 
-{# TODO add payblock components #}
+    {% set totalRowHeading %}
+      <strong>Total pay (before tax) </strong>
+    {% endset %}
+
+    {% for block in payBlocks %}
+      {% set tableCaption %}
+        {{ data | getStartDay | offsetWeeks(block.start) | formatForDisplay }} to {{ data | getStartDay | offsetWeeks(block.end) | endOfWeek | formatForDisplay }}
+      {% endset %}
+
+      {% set primaryPay %}
+        {{ block['primary'] or "£0" }} per week
+      {% endset %}
+
+      {% set secondaryPay %}
+        {{ block['secondary'] or "£0" }} per week
+      {% endset %}
+
+      {% set totalPay %}
+        <strong> per week</strong>
+      {% endset %}
+
+      {# {% set displayTotal = (data['mother-salary-amount'] | length > 0) and (data['partner-salary-amount'] | length > 0) %} #}
+      {% set displayTotal = false %}
+
+      {{ govukTable({
+        classes: "app-table--fixed",
+        caption: tableCaption,
+        head: [
+          {
+            text: "Parent"
+          },
+          {
+            text: "What you'll be paid",
+            classes: "govuk-!-width-two-thirds"
+          }
+        ],
+        rows: [
+          [
+            { text: data | primaryName | capitalize },
+            { text: primaryPay }
+          ],
+          [
+            { text: "Partner" },
+            { text: secondaryPay }
+          ],
+          [
+            { html: totalRowHeading },
+            { html: totalPay }
+          ] if displayTotal
+        ]
+      }) }}
+    {% endfor %}
+
     {% set primaryNoticeFormLink %}
       {% if data | isBirth%}
 {# TODO href below #}
