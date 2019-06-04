@@ -48,12 +48,16 @@ module.exports = function (env) {
   }
 
   function getStartDay (data) {
-    console.log(data)
     return new Day(data['start-date-day'], data['start-date-month'], data['start-date-year']).startOfWeek()
+  }
+
+  function endOfWeek (day) {
+    return day.endOfWeek()
   }
 
   return {
     weekCheckboxes,
-    getStartDay
+    getStartDay,
+    endOfWeek
   }
 }

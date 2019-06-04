@@ -1,7 +1,7 @@
 {% from "summary-list/macro.njk" import govukSummaryList %}
 
 {% macro leaveBlockSummary(options) %}
-  {% set numberOfWeeks = options.block.end - options.block.start %}
+  {% set numberOfWeeks = options.block.end - options.block.start + 1 %}
   {{ govukSummaryList({
     rows: [
       {
@@ -17,7 +17,7 @@
           text: options.name + " ends"
         },
         value: {
-          text: options.data | getStartDay | offsetWeeks(options.block.end) | formatForDisplay
+          text: options.data | getStartDay | offsetWeeks(options.block.end) | endOfWeek |formatForDisplay
         }
       },
       {

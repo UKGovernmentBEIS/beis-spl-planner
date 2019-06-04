@@ -16,7 +16,7 @@
             text: "Baby is due" if data | isBirth else "Placement date"
           },
           value: {
-            text: "PLACEHOLDER DUE DATE"
+            text: data | getStartDay | formatForDisplay
           }
         }
       ]
@@ -38,7 +38,7 @@
         explanation: "15 weeks before due date"
       }
     }) }}
-{# TODO add maternity leave component #}
+
     <h4 class="govuk-heading-s">
       How to apply
     </h4>
@@ -57,7 +57,19 @@
     <h3 class="govuk-heading-m">
       Mother's shared parental leave
     </h3>
-{# TODO add maternity leave component #}
+    {% for block in leaveBlocks['primary'] %}
+      {% if not loop.first %}
+        {{ leaveBlockSummary({
+          name: "Block " + loop.index0,
+          block: block,
+          data: data,
+          notify: {
+            date: data | getStartDay | offsetWeeks(block.start) | offsetWeeks(-8),
+            explanation: "8 weeks before block starts"
+          }
+        }) }}
+      {% endif %}
+    {% endfor %}
     <h4 class="govuk-heading-s">
       How to apply
     </h4>
@@ -89,7 +101,17 @@
     <h3 class="govuk-heading-m">
       Paternity leave
     </h3>
-{# TODO add paternity leave componenet #}
+
+    {{ leaveBlockSummary({
+      name: "Paternity leave",
+      block: leaveBlocks['secondary'][0],
+      data: data,
+      notify: {
+        date: data | getStartDay | offsetWeeks(-15),
+        explanation: "15 weeks before due date"
+      }
+    }) }}
+
     <h4 class="govuk-heading-s">
       How to apply
     </h4>
@@ -108,7 +130,20 @@
     <h3 class="govuk-heading-m">
       Partner‘s shared parental leave
     </h3>
-{# TODO add paternity leave componenet #}
+    {% for block in leaveBlocks['secondary'] %}
+      {% if not loop.first %}
+        {{ leaveBlockSummary({
+          name: "Block " + loop.index0,
+          block: block,
+          data: data,
+          notify: {
+            date: data | getStartDay | offsetWeeks(block.start) | offsetWeeks(-8),
+            explanation: "8 weeks before block starts",
+            asterisk: loop.length > 2
+          }
+        }) }}
+      {% endif %}
+    {% endfor %}
     <h4 class="govuk-heading-s">
       How to apply
     </h4>
