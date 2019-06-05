@@ -24,7 +24,7 @@
     }) }}
 
     <h2 class="govuk-heading-l">
-      {{ data | primaryName | capitalize }}'s leave dates
+      {{ data | primaryName | capitalize }}’s leave dates
     </h2>
     <h3 class="govuk-heading-m">
       {{ data | primaryLeaveType | capitalize }} leave
@@ -32,7 +32,7 @@
 
     {{ leaveBlockSummary({
       name: data | primaryLeaveType | capitalize + " leave",
-      block: leaveBlocks['primary'][0],
+      block: leaveBlocks["primary"][0],
       data: data,
       notify: {
         date: data | startDay | offsetWeeks(-15),
@@ -58,7 +58,7 @@
     <h3 class="govuk-heading-m">
       Shared parental leave ({{ data | primaryName }})
     </h3>
-    {% for block in leaveBlocks['primary'] %}
+    {% for block in leaveBlocks["primary"] %}
       {% if not loop.first %}
         {{ leaveBlockSummary({
           name: "Block " + loop.index0,
@@ -76,25 +76,25 @@
     </h4>
     <p>
 {# TODO fix the href of this link#}
-      Complete the Mother's SPL and ShPP notice form and submite it to the mother's employer 8 weeks before you want to start shared parental leave.
+      Complete the Mother’s SPL and ShPP notice form and submite it to the mother’s employer 8 weeks before you want to start shared parental leave.
     </p>
-    {# TODO add content to fileDownload macro #}
-    {% set primaryNoticeDescription %}
+
+    {% set noticeDescription %}
       <p>This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#">download a blank version</a>.
     {% endset %}
 
-    {% set primaryNoticeDetails %}
+    {% set noticeDetails %}
       <p>This file may not be suitable for users of assistive technology. <a href="#">Request an accesible format</a>.
     {% endset %}
 
     {{ fileDownload({
-      name: (data | primaryName | capitalize) + "'s SPL and ShPP notice form",
+      name: (data | primaryName | capitalize) + "’s SPL and ShPP notice form",
       href: "#",
       description: {
-        html: primaryNoticeDescription
+        html: noticeDescription
       },
       details: {
-        html: primaryNoticeDetails
+        html: noticeDetails
       }
     }) }}
 
@@ -109,7 +109,7 @@
     </p>
 
     <h2 class="govuk-heading-l">
-      {{ data | secondaryName | capitalize }}'s leave dates
+      {{ data | secondaryName | capitalize }}’s leave dates
     </h2>
     <h3 class="govuk-heading-m">
       Paternity leave
@@ -117,7 +117,7 @@
 
     {{ leaveBlockSummary({
       name: "Paternity leave",
-      block: leaveBlocks['secondary'][0],
+      block: leaveBlocks["secondary"][0],
       data: data,
       notify: {
         date: data | startDay | offsetWeeks(-15),
@@ -143,7 +143,7 @@
     <h3 class="govuk-heading-m">
       Shared parental leave ({{ data | secondaryName }})
     </h3>
-    {% for block in leaveBlocks['secondary'] %}
+    {% for block in leaveBlocks["secondary"] %}
       {% if not loop.first %}
         {{ leaveBlockSummary({
           name: "Block " + loop.index0,
@@ -161,16 +161,16 @@
       How to give notice
     </h4>
     <p>
-      Complete the Partner's SPL and ShPP notice form and submit it to the partner's employer 8 weeks before you want to start shared parental leave.
+      Complete the Partner’s SPL and ShPP notice form and submit it to the partner’s employer 8 weeks before you want to start shared parental leave.
     </p>
     {{ fileDownload({
       name: data | secondaryName | capitalize + "‘s SPL and ShPP notice form",
       href: "#",
       description: {
-        html: primaryNoticeDescription
+        html: noticeDescription
       },
       details: {
-        html: primaryNoticeDetails
+        html: noticeDetails
       }
     }) }}
     <h4 class="govuk-heading-s">

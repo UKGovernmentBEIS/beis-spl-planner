@@ -1,4 +1,5 @@
 {% from "table/macro.njk" import govukTable %}
+{% from "../components/file-download.njk" import fileDownload %}
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -21,18 +22,20 @@
       {% endset %}
 
       {% set primaryPay %}
-        {{ block['primary'] or "£0" }} per week
+        {{ block["primary"] + " per week" if block["primary"] else "Unpaid" }}
       {% endset %}
 
       {% set secondaryPay %}
-        {{ block['secondary'] or "£0" }} per week
+        {{ block["secondary"] + " per week" if block["secondary"] else "Unpaid" }}
       {% endset %}
 
-      {% set totalPay %}
+{# TODO when salary's have been implemented, add 'Total pay' row to this table if both salaries have been provided #}
+
+      {# {% set totalPay %}
         <strong> per week</strong>
-      {% endset %}
+      {% endset %} #}
 
-      {% set displayTotal = (data['mother-salary-amount'] | length > 0) and (data['partner-salary-amount'] | length > 0) %}
+      {% set displayTotal = (data["mother-salary-amount"] | length > 0) and (data["partner-salary-amount"] | length > 0) %}
 
       {{ govukTable({
         classes: "app-table--fixed",
@@ -42,7 +45,7 @@
             text: "Parent"
           },
           {
-            text: "What you'll be paid",
+            text: "What you’ll be paid",
             classes: "govuk-!-width-two-thirds"
           }
         ],
@@ -82,10 +85,14 @@
       {% endif %}
     {% endset %}
 
+    <h2 class="govuk-heading-m">
+      How to claim
+    </h2>
+
     {% if data | isBirth %}
-      <h4 class="govuk-heading-s">
+      <h3 class="govuk-heading-s">
         Statutory maternity pay (SMP)
-      </h4>
+      </h3>
       <p>
         To apply for <a href="https://www.gov.uk/maternity-pay-leave">statutory maternity pay</a> tell your employer you want to stop work to have a baby and the day you want your SMP to start.
         You must give them at least 28 days’ notice (in writing if they ask for it) and proof that you’re pregnant.
@@ -113,18 +120,51 @@
       </p>
     {% endif %}
 
+    <h4 class="govuk-heading-s">
+      Statutory paternity pay
+    </h4>
+    <p>
+    {#  TODO check the href of this link #}
+      Use <a href="https://public-online.hmrc.gov.uk/lc/content/xfaforms/profiles/forms.html?contentRoot=repository:///Applications/PersonalTax_iForms/1.0/SC3&template=SC3.xdp" target="_blank">form SC3</a> to claim for statuory paternity pay 15 weeks before your baby’s due date.
+    </p>
+
     <h4>
       Statutory shared parental pay (ShPP)
     </h4>
     <p>
-      To apply for shared parental pay, the mother can fill out the {{ primaryNoticeFormLink | safe }} and the mother’s partner can fill out the {{ secondaryNoticeFormLink | safe }}.
+      To claim shared parental pay, the mother can fill out the Mother‘s SPL and ShPP notice form
+      and the {{ data | primaryName }}‘s partner can fill out the Partner SPL and Shpp notice form.
     </p>
-    <p>
-      Your employer must confirm within 28 days how much Statutory Adoption Pay you’ll get and when it will start and stop.
-    </p>
-    <p>
-      If they decide you’re not eligible, they must give you form SAP1 within 7 days of making their decision and explain why.
-    </p>
+
+    {% set noticeDescription %}
+      <p>This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#">download a blank version</a>.
+    {% endset %}
+
+    {% set noticeDetails %}
+      <p>This file may not be suitable for users of assistive technology. <a href="#">Request an accesible format</a>.
+    {% endset %}
+
+    {{ fileDownload({
+      name: (data | primaryName | capitalize) + "’s SPL and ShPP notice form",
+      href: "#",
+      description: {
+        html: noticeDescription
+      },
+      details: {
+        html: noticeDetails
+      }
+    }) }}
+
+    {{ fileDownload({
+      name: data | secondaryName | capitalize + "‘s SPL and ShPP notice form",
+      href: "#",
+      description: {
+        html: noticeDescription
+      },
+      details: {
+        html: noticeDetails
+      }
+    }) }}
 
 
 {# TODO where are these buttons going #}
