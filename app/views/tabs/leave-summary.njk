@@ -75,15 +75,16 @@
       How to give notice
     </h4>
     <p>
-{# TODO fix the href of this link#}
       Complete the Mother’s SPL and ShPP notice form and submite it to the mother’s employer 8 weeks before you want to start shared parental leave.
     </p>
 
     {% set noticeDescription %}
+{# TODO fix the href of this link #}
       <p>This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#">download a blank version</a>.
     {% endset %}
 
     {% set noticeDetails %}
+{# TODO fix the href of this link #}
       <p>This file may not be suitable for users of assistive technology. <a href="#">Request an accesible format</a>.
     {% endset %}
 
@@ -157,12 +158,14 @@
         }) }}
       {% endif %}
     {% endfor %}
+
     <h4 class="govuk-heading-s">
       How to give notice
     </h4>
     <p>
       Complete the Partner’s SPL and ShPP notice form and submit it to the partner’s employer 8 weeks before you want to start shared parental leave.
     </p>
+    {#  TODO fix the href of this form #}
     {{ fileDownload({
       name: data | secondaryName | capitalize + "‘s SPL and ShPP notice form",
       href: "#",
@@ -182,7 +185,7 @@
     <p>
       To change you dates after this you must give notice again 8 weeks before your first block of shared parental leave starts.
     </p>
-{# TODO where are these buttons going #}
+    {# TODO where are these buttons going #}
     <button class="govuk-button" onclick="alert('Printing is coming soon.')">Print this plan</button>
     <button class="govuk-button" onclick="alert('Share links will be available soon.')">Share this page</button>
   </div>

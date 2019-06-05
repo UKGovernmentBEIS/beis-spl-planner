@@ -29,7 +29,7 @@ router.route(paths.getPath('planner'))
 
 router.route(paths.getPath('summary'))
   .get(function (req, res) {
-    // until the rest of the form is implemented
+    // TODO remove this once the rest of the form is implemented
     Object.assign(req.session.data, { 'start-date-day': '01', 'start-date-month': '09', 'start-date-year': '2019' })
     const { leaveBlocks, payBlocks } = getBlocks(req.session.data)
     res.render('summary', { leaveBlocks, payBlocks })
