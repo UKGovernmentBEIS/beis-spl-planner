@@ -88,7 +88,7 @@
       Your employer must confirm within 28 days how much {{ "SMP" if data | isBirth else "SAP" }} you’ll get and when it will start and stop.
     </p>
     <p>
-      If they decide you’re not eligible, they must give you form SMP1 within 7 days of making their decision and explain why.
+      If they decide you’re not eligible, they must give you form {{ "SMP1" if data | isBirth else "SAP1 "}} within 7 days of making their decision and explain why.
     </p>
 
     <h4 class="govuk-heading-s">
