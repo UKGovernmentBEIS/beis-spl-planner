@@ -17,14 +17,14 @@ describe('filters', () => {
       const baseDay = new Day('2019', '10', '01')
 
       const result = filters.offsetWeeks(baseDay, 2)
-      expect(result.formatForDisplay()).to.equal('15 October 2019')
+      expect(result.format('D MMMM YYYY')).to.equal('15 October 2019')
     })
 
     it('when provided a negative number, subtracts weeks from the provided week', () => {
       const baseDay = new Day('2018', '07', '23')
 
       const result = filters.offsetWeeks(baseDay, -3)
-      expect(result.formatForDisplay()).to.equal('2 July 2018')
+      expect(result.format('D MMMM YYYY')).to.equal('2 July 2018')
     })
   })
 

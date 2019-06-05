@@ -52,7 +52,7 @@ module.exports = function (env) {
   }
 
   function exampleDate () {
-    return new Day().add(30, 'days').formatForExample()
+    return new Day().add(30, 'days').format('D M YYYY')
   }
 
   function formatDate (day, format) {
@@ -60,7 +60,7 @@ module.exports = function (env) {
   }
 
   function formatForDisplay (day) {
-    return day.formatForDisplay()
+    return day.format('D MMMM YYYY')
   }
 
   function isInPast (day) {
