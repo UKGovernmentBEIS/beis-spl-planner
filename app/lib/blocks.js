@@ -87,9 +87,6 @@ function getBlocks (data) {
     .leaveAndPay()
     .weeks
 
-  getLeaveBlocks(weeks)
-  getPayBlocks(weeks)
-
   return {
     leaveBlocks: getLeaveBlocks(weeks),
     payBlocks: getPayBlocks(weeks)
