@@ -45,6 +45,11 @@ class Paths {
         workflowParentPath: '/',
         validator: validate.birthOrAdoption
       },
+      startDate: {
+        url: '/start-date',
+        workflowParentPath: '/birth-or-adoption',
+        validator: validate.startDate
+      },
       planner: {
         url: '/planner',
         workflowParentPath: '/birth-or-adoption'

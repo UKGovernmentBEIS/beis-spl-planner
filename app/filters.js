@@ -46,7 +46,12 @@ module.exports = function (env) {
     return checkboxes
   }
 
+  function hasStartDateError (errors, partOfDate) {
+    return errors && errors['start-date'] && errors['start-date'].some(err => err.dateParts.includes(partOfDate))
+  }
+
   return {
-    weekCheckboxes
+    weekCheckboxes,
+    hasStartDateError
   }
 }

@@ -4,7 +4,11 @@
  * If validation is failed they should attach errors to req.session.errors AND return false
 */
 
-const { buildError } = require('./lib/validationUtils')
+const Day = require('../common/lib/day')
+const {
+  buildError,
+  prettyList
+} = require('./lib/validationUtils')
 
 function birthOrAdoption (req) {
   if (!['birth', 'adoption'].includes(req.session.data['birth-or-adoption'])) {
@@ -14,6 +18,50 @@ function birthOrAdoption (req) {
   return true
 }
 
+function startDate (req) {
+  function buildDateError (message, href, dateParts) {
+    return Object.assign(buildError(message, href), { dateParts })
+  }
+
+  const date = {
+    year: req.session.data['start-date-year'],
+    month: req.session.data['start-date-month'],
+    day: req.session.data['start-date-day']
+  }
+
+  if ([date.year, date.month, date.day].every(value => value === '')) {
+    req.session.errors['start-date'] = [buildDateError('Enter a date', '#start-date-day', ['day', 'month', 'year'])]
+    return false
+  }
+
+  if ([date.year, date.month, date.day].some(value => value === '')) {
+    const errorParts = ['day', 'month', 'year'].filter(datePart => date[datePart] === '')
+    req.session.errors['start-date'] = [buildDateError(`Date must include a ${prettyList(errorParts)}`, `#start-date-${errorParts[0]}`, errorParts)]
+    return false
+  }
+
+  const startDate = new Day(date.year, date.month, date.day)
+
+  if (!startDate.isValid()) {
+    const errorParts = []
+    if (startDate.invalidAt() === 2) { errorParts.push('day') }
+    if (startDate.invalidAt() === 1) { errorParts.push('month') }
+    if (startDate.invalidAt() === 0) { errorParts.push('year') }
+    req.session.errors['start-date'] = [buildDateError('Enter a valid date', `#start-date-${errorParts[0]}`, errorParts)]
+    return false
+  }
+
+  const earliestPermitted = new Day().subtract(1, 'year')
+  const latestPermitted = new Day().add(1, 'year')
+  if (!startDate.isBetween(earliestPermitted, latestPermitted)) {
+    const errorMessage = 'Date must be within one year of today'
+    req.session.errors['start-date'] = [buildDateError(errorMessage, '#start-date-day', ['day', 'month', 'year'])]
+    return false
+  }
+  return true
+}
+
 module.exports = {
-  birthOrAdoption
+  birthOrAdoption,
+  startDate
 }

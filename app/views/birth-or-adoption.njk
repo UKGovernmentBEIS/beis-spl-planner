@@ -1,16 +1,15 @@
 {% from "back-link/macro.njk" import govukBackLink %}
 {% from "radios/macro.njk" import govukRadios %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
-
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 
 {% extends "layout.njk" %}
 
 {% block beforeContent %}
-  {{ govukBackLink({
+  {# {{ govukBackLink({
     text: "Back",
     href: withData(paths.index)
-  }) }}
+  }) }} #}
 {% endblock %}
 
 {% block content %}
@@ -49,12 +48,12 @@
               {
                 value: "birth",
                 text: "Birth",
-                checked: data["birth-or-adoption"] === "birth"
+                checked: data | isBirth
               },
               {
                 value: "adoption",
                 text: "Adoption",
-                checked: data["birth-or-adoption"] === "adoption"
+                checked: data | isAdoption
               }
             ]
           }) }}
@@ -63,9 +62,6 @@
           Continue
         </button>
       </form>
-    </div>
-    <div class="govuk-grid-column-one-third">
-      <pre style="background-color: lightgrey; padding: 10px;">{{ data | dump(2)}}</pre>
     </div>
   </div>
 {% endblock %}

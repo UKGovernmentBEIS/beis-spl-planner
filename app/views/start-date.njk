@@ -1,0 +1,85 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "date-input/macro.njk" import govukDateInput %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+
+{% extends "layout.njk" %}
+
+{% block pageTitle %}
+  Plan leave and pay when you have a child
+{% endblock %}
+
+{% block content %}
+  {% set questionText %}
+    {% if data['birth-or-adoption'] == 'birth' %}
+      When is the baby due, or when was the baby born?
+    {% elif data['birth-or-adoption'] == 'adoption' %}
+      When will, or when did the child start to live with you?
+    {% endif %}
+  {% endset %}
+
+  {% if errors["start-date"] %}
+    {{govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errors["start-date"]
+    }) }}
+
+    {% set errorHtml %}
+      <ul>
+        {% for error in errors["start-date"] %}
+          <li>{{ error.text }}</li>
+        {% endfor %}
+      </ul>
+    {% endset %}
+  {% endif %}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: "/shared-parental-leave-planner"
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {{ govukDateInput({
+            id: "start-date",
+            namePrefix: "start-date",
+            fieldset: {
+              legend: {
+                text: questionText,
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            hint: {
+              text: "For example, " + null | exampleDate
+            },
+            errorMessage: { html: errorHtml } if errorHtml,
+            items: [
+              {
+                name: "day",
+                classes: "govuk-input--width-2"  + (" govuk-input--error" if errors | hasStartDateError("day")),
+                value: data["start-date-day"]
+              },
+              {
+                name: "month",
+                classes: "govuk-input--width-2"  + (" govuk-input--error" if errors | hasStartDateError("month")),
+                value: data["start-date-month"]
+              },
+              {
+                name: "year",
+                classes: "govuk-input--width-4"  + (" govuk-input--error" if errors | hasStartDateError("year")),
+                value: data["start-date-year"]
+              }
+            ]
+          }) }}
+        {% endcall %}
+        <button type="submit" class="govuk-button">
+          Continue
+        </button>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

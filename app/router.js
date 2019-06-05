@@ -8,9 +8,6 @@ router.route(paths.getPath('root'))
     res.render('index')
   })
   .post(function (req, res) {
-    if (!validate.birthOrAdoption(req)) {
-      return res.redirect(req.url)
-    }
     res.redirect(paths.getPath('birthOrAdoption'))
   })
 
@@ -19,7 +16,21 @@ router.route(paths.getPath('birthOrAdoption'))
     res.render('birth-or-adoption')
   })
   .post(function (req, res) {
-    res.redirect(paths.getPath('planner'))
+    if (!validate.birthOrAdoption(req)) {
+      return res.redirect('back')
+    }
+    res.redirect(paths.getPath('startDate'))
+  })
+
+router.route(paths.getPath('startDate'))
+  .get(function (req, res) {
+    res.render('start-date')
+  })
+  .post(function (req, res) {
+    if (!validate.startDate(req)) {
+      return res.redirect(req.url)
+    }
+    res.redirect('planner')
   })
 
 router.route(paths.getPath('planner'))
