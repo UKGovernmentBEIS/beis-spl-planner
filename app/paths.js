@@ -1,5 +1,6 @@
 const delve = require('dlv')
 const isString = require('lodash/isString')
+const validate = require('./validate')
 
 /*
  * This class is used to manage all paths in the app.
@@ -41,7 +42,8 @@ class Paths {
       },
       birthOrAdoption: {
         url: '/birth-or-adoption',
-        workflowParentPath: '/'
+        workflowParentPath: '/',
+        validator: validate.birthOrAdoption
       },
       planner: {
         url: '/planner',

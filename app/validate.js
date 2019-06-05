@@ -6,4 +6,14 @@
 
 const { buildError } = require('./lib/validationUtils')
 
-module.exports = {}
+function birthOrAdoption (req) {
+  if (!['birth', 'adoption'].includes(req.session.data['birth-or-adoption'])) {
+    req.session.errors = { 'birth-or-adoption': 'Select either birth or adoption' }
+    return false
+  }
+  return true
+}
+
+module.exports = {
+  birthOrAdoption
+}

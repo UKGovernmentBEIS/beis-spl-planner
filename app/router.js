@@ -1,12 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const paths = require('./paths')
+const validate = require('./validate')
 
 router.route(paths.getPath('root'))
   .get(function (req, res) {
     res.render('index')
   })
   .post(function (req, res) {
+    if (!validate.birthOrAdoption(req)) {
+      return res.redirect(req.url)
+    }
     res.redirect(paths.getPath('birthOrAdoption'))
   })
 
