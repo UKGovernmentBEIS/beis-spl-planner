@@ -32,7 +32,7 @@
 
     {{ leaveBlockSummary({
       name: data | primaryLeaveType | capitalize + " leave",
-      block: leaveBlocks["primary"][0],
+      block: leaveBlocks.primary.initial,
       data: data,
       notify: {
         date: data | startDay | offsetWeeks(-15),
@@ -58,18 +58,16 @@
     <h3 class="govuk-heading-m">
       Shared parental leave ({{ data | primaryName }})
     </h3>
-    {% for block in leaveBlocks["primary"] %}
-      {% if not loop.first %}
-        {{ leaveBlockSummary({
-          name: "Block " + loop.index0,
-          block: block,
-          data: data,
-          notify: {
-            date: data | startDay | offsetWeeks(block.start) | offsetWeeks(-8),
-            explanation: "8 weeks before block starts"
-          }
-        }) }}
-      {% endif %}
+    {% for block in leaveBlocks.primary.spl %}
+      {{ leaveBlockSummary({
+        name: "Block " + loop.index,
+        block: block,
+        data: data,
+        notify: {
+          date: data | startDay | offsetWeeks(block.start) | offsetWeeks(-8),
+          explanation: "8 weeks before block starts"
+        }
+      }) }}
     {% endfor %}
     <h4 class="govuk-heading-s">
       How to give notice
@@ -119,7 +117,7 @@
 
     {{ leaveBlockSummary({
       name: "Paternity leave",
-      block: leaveBlocks["secondary"][0],
+      block: leaveBlocks.secondary.initial,
       data: data,
       notify: {
         date: data | startDay | offsetWeeks(-15),
@@ -144,19 +142,17 @@
     <h3 class="govuk-heading-m">
       Shared parental leave ({{ data | secondaryName }})
     </h3>
-    {% for block in leaveBlocks["secondary"] %}
-      {% if not loop.first %}
-        {{ leaveBlockSummary({
-          name: "Block " + loop.index0,
-          block: block,
-          data: data,
-          notify: {
-            date: data | startDay | offsetWeeks(block.start) | offsetWeeks(-8),
-            explanation: "8 weeks before block starts",
-            asterisk: loop.length > 2
-          }
-        }) }}
-      {% endif %}
+    {% for block in leaveBlocks.secondary.spl %}
+      {{ leaveBlockSummary({
+        name: "Block " + loop.index,
+        block: block,
+        data: data,
+        notify: {
+          date: data | startDay | offsetWeeks(block.start) | offsetWeeks(-8),
+          explanation: "8 weeks before block starts",
+          asterisk: loop.length > 1
+        }
+      }) }}
     {% endfor %}
 
     <h4 class="govuk-heading-s">

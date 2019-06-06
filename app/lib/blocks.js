@@ -9,9 +9,23 @@ function getLeaveBlocks (weeks) {
 }
 
 function getParentLeaveBlocks (weeks, parent) {
-  const newBlock = week => {
+  const blocks = {
+    initial: null,
+    spl: []
+  }
+
+  function store (block) {
+    if (block && ['maternity', 'paternity', 'adoption'].includes(block.leave)) {
+      blocks.initial = block
+    } else {
+      blocks.spl.push(block)
+    }
+  }
+
+  function newBlock (week) {
     return { start: week.number, end: week.number, leave: week.leave }
   }
+
   const parentLeaveWeeks = weeks
     .map(week => {
       return { number: week.number, leave: week[parent].leave }
@@ -19,27 +33,30 @@ function getParentLeaveBlocks (weeks, parent) {
     .sort((week1, week2) => week1.number - week2.number)
     .filter(week => week.leave)
 
-  const blocks = []
-
   let currentBlock = null
   for (let week of parentLeaveWeeks) {
     if (currentBlock === null) {
       currentBlock = newBlock(week)
     }
     if (week.leave !== currentBlock.leave || week.number - currentBlock.end > 1) {
-      blocks.push(currentBlock)
+      store(currentBlock)
       currentBlock = newBlock(week)
     } else {
       currentBlock.end = week.number
     }
   }
-  blocks.push(currentBlock)
+
+  if (currentBlock) {
+    store(currentBlock)
+  }
 
   return blocks
 }
 
 function getPayBlocks (weeks) {
-  const newBlock = week => {
+  const blocks = []
+
+  function newBlock (week) {
     return { start: week.number, end: week.number, primary: week.primary, secondary: week.secondary }
   }
 
@@ -53,7 +70,6 @@ function getPayBlocks (weeks) {
       }
     })
 
-  const blocks = []
   let currentBlock = null
 
   for (let week of payWeeks) {
@@ -70,7 +86,10 @@ function getPayBlocks (weeks) {
       currentBlock.end = week.number
     }
   }
-  blocks.push(currentBlock)
+
+  if (currentBlock) {
+    blocks.push(currentBlock)
+  }
 
   return blocks
 }
