@@ -65,10 +65,17 @@
         data: data,
         notify: {
           date: data | startDay | offsetWeeks(block.start) | offsetWeeks(-8),
-          explanation: "8 weeks before block starts"
+          explanation: "8 weeks before block starts",
+          asterisk: loop.length > 1
         }
       }) }}
     {% endfor %}
+    {% if leaveBlocks.primary.spl.length > 1 %}
+      <p>
+        *You can notify your employer of multiple blocks of shared parental leave at the same time if your employer agrees.
+      </p>
+    {% endif %}
+
     <h4 class="govuk-heading-s">
       How to give notice
     </h4>
@@ -154,6 +161,11 @@
         }
       }) }}
     {% endfor %}
+    {% if leaveBlocks.primary.spl.length > 1 %}
+      <p>
+        *You can notify your employer of multiple blocks of shared parental leave at the same time if your employer agrees.
+      </p>
+    {% endif %}
 
     <h4 class="govuk-heading-s">
       How to give notice
