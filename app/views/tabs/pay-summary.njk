@@ -103,8 +103,8 @@
       Statutory shared parental pay (ShPP)
     </h4>
     <p>
-      To claim shared parental pay, the {{ data | primaryName }} can fill out the {{ data | primaryName }}‘s SPL and ShPP notice form
-      and the {{ data | secondaryName }} can fill out the {{ data | secondaryName }}‘s SPL and Shpp notice form.
+      To claim shared parental pay, the {{ data | primaryName }} can fill out the {{ data | primaryName }}’s SPL and ShPP notice form
+      and the {{ data | secondaryName }} can fill out the {{ data | secondaryName }}’s SPL and Shpp notice form.
     </p>
 
     {% set noticeDescription %}
@@ -127,7 +127,7 @@
     }) }}
 
     {{ fileDownload({
-      name: data | secondaryName | capitalize + "‘s SPL and ShPP notice form",
+      name: data | secondaryName | capitalize + "’s SPL and ShPP notice form",
       href: "#",
       description: {
         html: noticeDescription
