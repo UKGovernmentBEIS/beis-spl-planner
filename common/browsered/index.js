@@ -1,3 +1,4 @@
-'use strict'
+window.GOVUKFrontend = require('govuk-frontend/all')
+window.GOVUKFrontend.initAll()
 
-console.log(`You can write scripts here that will be browserfied`)
+require('../../app/frontend/index')
