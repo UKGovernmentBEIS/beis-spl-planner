@@ -71,7 +71,7 @@
     </h2>
 
     <h3 class="govuk-heading-s">
-      {{ "Statutory maternity pay (SMP)" if data | isBirth else "Statutory adoption pay (SAP)" }}
+      {{ "Statutory maternity pay" if data | isBirth else "Statutory adoption pay" }}
     </h3>
     {% if data | isBirth %}
       <p>
@@ -100,23 +100,26 @@
     </p>
 
     <h4>
-      Statutory shared parental pay (ShPP)
+      Statutory shared parental pay
     </h4>
     <p>
-      To claim shared parental pay, the {{ data | primaryName }} can fill out the {{ data | primaryName }}’s shared parental leave (SPL) and shared parental pay (ShPP) notice form
-      and the {{ data | secondaryName }} can fill out the {{ data | secondaryName }}’s shared parental leave (SPL) and shared preantal pay (ShPP) notice form.
+      To claim shared parental pay complete the relevant notice form below and submit it to your employer 8 weeks before you want to start receiving it.
     </p>
 
     {% set noticeDescription %}
-      <p>This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#">download a blank version</a>.
+      <p>
+        This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#">download a blank version</a>.
+      </p>
     {% endset %}
 
     {% set noticeDetails %}
-      <p>This file may not be suitable for users of assistive technology. <a href="#">Request an accesible format</a>.
+      <p>
+        This file may not be suitable for users of assistive technology. <a href="#">Request an accesible format</a>.
+      </p>
     {% endset %}
 
     {{ fileDownload({
-      name: (data | primaryName | capitalize) + "’s SPL and ShPP notice form",
+      name: (data | primaryName | capitalize) + "’s shared parental leave and pay notice form",
       href: "#",
       description: {
         html: noticeDescription
@@ -127,7 +130,7 @@
     }) }}
 
     {{ fileDownload({
-      name: data | secondaryName | capitalize + "’s SPL and ShPP notice form",
+      name: data | secondaryName | capitalize + "’s shared parental leave and pay notice form",
       href: "#",
       description: {
         html: noticeDescription

@@ -81,7 +81,7 @@
         How to give notice
       </h4>
       <p>
-        Complete the {{ data | primaryName  }}’s shared parental leave (SPL) and shared parental pay (ShPP) notice form and submit it to the {{ data | primaryName }}’s employer 8 weeks before you want to start shared parental leave.
+        Complete the notice form below and submit it to the {{ data | primaryName }}’s employer 8 weeks before they want to start shared parental leave.
       </p>
 
       {% set noticeDescription %}
@@ -96,7 +96,7 @@
 
       {# TODO fix the href of this fileDownload #}
       {{ fileDownload({
-        name: (data | primaryName | capitalize) + "’s SPL and ShPP notice form",
+        name: (data | primaryName | capitalize) + "’s shared parental leave and pay notice form",
         href: "#",
         description: {
           html: noticeDescription
@@ -177,11 +177,11 @@
           How to give notice
         </h4>
         <p>
-          Complete the {{ data | secondaryName }}’s shared parental leave (SPL) and shared parental pay (ShPP) notice form and submit it to the {{ data | secondaryName }}’s employer 8 weeks before you want to start shared parental leave.
+          Complete the notice form below and submit it to the {{ data | secondaryName }}’s employer 8 weeks before they want to start shared parental leave.
         </p>
         {#  TODO fix the href of this file download #}
         {{ fileDownload({
-          name: data | secondaryName | capitalize + "’s SPL and ShPP notice form",
+          name: data | secondaryName | capitalize + "’s shared parental leave and pay notice form",
           href: "#",
           description: {
             html: noticeDescription
