@@ -17,16 +17,29 @@ class Weeks {
     const weeks = []
     let primaryLeaveTracker = new LeaveTracker()
     let secondaryLeaveTracker = new LeaveTracker()
+    let hasCurtailedPrimaryPay = false
+    let primarySplHasStarted = false
     for (let i = this.minimumWeek; i <= 52; i++) {
       const week = this._getBaseWeek(i)
       const weekLeaveAndPay = this._getWeekLeaveAndPay(i)
 
       primaryLeaveTracker.next(weekLeaveAndPay.primary.leave, i)
       if (weekLeaveAndPay.primary.leave) {
-        week.primary.leave = !primaryLeaveTracker.initialBlockEnded ? this.primaryLeaveType : 'shared'
+        if (!primarySplHasStarted) {
+          const startSplBecauseOfBreak = primaryLeaveTracker.initialBlockEnded
+          const startSplBecauseOfPayAfterCurtailment = hasCurtailedPrimaryPay && weekLeaveAndPay.primary.pay
+          primarySplHasStarted = startSplBecauseOfBreak || startSplBecauseOfPayAfterCurtailment
+        }
+        week.primary.leave = !primarySplHasStarted ? this.primaryLeaveType : 'shared'
         if (weekLeaveAndPay.primary.pay) {
-          const useInitialPayRate = !primaryLeaveTracker.initialBlockEnded && primaryLeaveTracker.initialBlockLength <= 6
-          week.primary.pay = useInitialPayRate ? this.payRates.primary.initial : this.payRates.primary.statutory
+          if (primarySplHasStarted) {
+            week.primary.pay = this.payRates.primary.statutory
+          } else {
+            const useInitialPayRate = primaryLeaveTracker.initialBlockLength <= 6
+            week.primary.pay = useInitialPayRate ? this.payRates.primary.initial : this.payRates.primary.statutory
+          }
+        } else {
+          hasCurtailedPrimaryPay = true
         }
       }
 
@@ -82,7 +95,7 @@ class Weeks {
     return {
       primary: {
         leave: this.primary.leaveWeeks.includes(idx) || isCompulsoryPrimaryWeek,
-        pay: this.primary.payWeeks.includes(idx) || isCompulsoryPrimaryWeek
+        pay: this.primary.payWeeks.includes(idx)
       },
       secondary: {
         leave: this.secondary.leaveWeeks.includes(idx),
