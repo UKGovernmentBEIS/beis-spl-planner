@@ -49,7 +49,7 @@ module.exports = function (grunt) {
 
   const watch = {
     css: {
-      files: ['common/assets/sass/**/*.scss'],
+      files: ['common/assets/sass/**/*.scss', 'app/assets/sass/**/*.scss'],
       tasks: ['sass', 'cssmin'],
       options: {
         spawn: false,
