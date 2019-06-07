@@ -1,0 +1,5 @@
+applications:
+- name: common
+  memory: 1G
+  buildpacks:
+    - nodejs_buildpack
