@@ -48,7 +48,10 @@ module.exports = function (grunt) {
 
   const watch = {
     css: {
-      files: ['common/assets/sass/**/*.scss', 'app/assets/sass/**/*.scss'],
+      files: [
+        'app/assets/sass/**/*.scss',
+        'common/assets/sass/**/*.scss'
+      ],
       tasks: ['sass', 'cssmin'],
       options: {
         spawn: false,
@@ -57,6 +60,7 @@ module.exports = function (grunt) {
     },
     js: {
       files: [
+        'app/assets/javascrips/**/*.js',
         'common/browsered/index.js',
         'common/assets/javascripts/**/*.js'
       ],
