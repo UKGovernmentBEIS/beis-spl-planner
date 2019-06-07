@@ -1,5 +1,5 @@
 .vscode/
-app/frontend/
+app/assets/
 common/assets/
 common/browsered/
 test/
