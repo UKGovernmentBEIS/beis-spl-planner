@@ -59,7 +59,10 @@ module.exports = function (grunt) {
 
   const watch = {
     css: {
-      files: ['common/assets/sass/**/*.scss', 'app/assets/sass/**/*.scss'],
+      files: [
+        'app/assets/sass/**/*.scss',
+        'common/assets/sass/**/*.scss'
+      ],
       tasks: ['sass', 'cssmin'],
       options: {
         spawn: false,
@@ -68,9 +71,9 @@ module.exports = function (grunt) {
     },
     js: {
       files: [
-        'app/frontend/**/*.{js,vue}',
+        'app/assets/javascrips/**/*.{js, vue}',
         'app/lib/**/*.js',
-        'common/browsered/**/*.js',
+        'common/browsered/index.js',
         'common/assets/javascripts/**/*.js'
       ],
       tasks: ['browserify', 'babel', 'concat', 'compress'],

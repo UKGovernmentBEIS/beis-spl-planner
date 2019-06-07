@@ -13,7 +13,7 @@
   const moment = require('moment')
   const Calendar = require('./Calendar.vue')
   const Sidebar = require('./Sidebar.vue')
-  const Weeks = require('../../lib/weeks')
+  const Weeks = require('../../../lib/weeks')
 
   module.exports = {
     components: {

@@ -4,7 +4,7 @@ const isIexplorer = require('is-iexplorer')
 const stickybits = require('stickybits')
 const Stickyfill = require('stickyfill')
 const Planner = require('./components/Planner.vue')
-const { parseParentFromPlanner } = require('../utils')
+const { parseParentFromPlanner } = require('../../utils')
 
 Vue.filter('capitalise', function (value) {
   if (!value) {
