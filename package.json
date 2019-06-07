@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "@hmcts/frontend": "0.0.34-alpha",
     "body-parser": "1.18.x",
     "compression": "^1.7.4",
     "dlv": "^1.1.2",

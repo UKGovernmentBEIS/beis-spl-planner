@@ -34,6 +34,7 @@ const JAVASCRIPT_PATH = staticify.getVersionedPath('/javascripts/application.js'
 const APP_VIEWS = [
   path.join(__dirname, 'node_modules/govuk-frontend/'),
   path.join(__dirname, 'node_modules/govuk-frontend/components/'),
+  path.join(__dirname, 'node_modules/@hmcts/frontend/components/'),
   path.join(__dirname, 'app/views/'),
   path.join(__dirname, 'common/macros/')
 ]

@@ -1,0 +1,92 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "fieldset/macro.njk" import govukFieldset %}
+{% from "input/macro.njk" import govukInput %}
+{% from "select/macro.njk" import govukSelect %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+
+{% extends "layout.njk" %}
+
+{% block pageTitle %}
+  Plan leave and pay when you have a child
+{% endblock %}
+
+{% macro salaryInput(options) %}
+  {% set salaryAmountId = options.idPrefix + "-salary-amount" %}
+  {% set salaryPeriodId = options.idPrefix + "-salary-period" %}
+  {{ govukInput({
+    label: {
+      text: options.labelText
+    },
+    classes: "govuk-input--width-20 app-salary-input",
+    id: salaryAmountId,
+    name: salaryAmountId,
+    value: data[salaryAmountId]
+  }) }}
+  {{ govukSelect({
+    id: salaryPeriodId,
+    name: salaryPeriodId,
+    label: {
+      text: "Per"
+    },
+    items: [
+      {
+        value: "year",
+        text: "Year",
+        selected: data[salaryPeriodId] === "year"
+      },
+      {
+        value: "month",
+        text: "Month",
+        selected: data[salaryPeriodId] === "month"
+      },
+      {
+        value: "week",
+        text: "Week",
+        selected: data[salaryPeriodId] === "week"
+      }
+    ]
+  }) }}
+{% endmacro %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        What is your salary before tax?
+      </h1>
+      <p>
+        Enter your salary to see statutory pay amounts. Your might get more or less if your salary changes, has changed, or if your employer enhances pay.
+      </p>
+      <form action="parent-salaries" method="POST">
+        {% call appendHiddenFields(data) %}
+          {% call govukFieldset({
+            legend: {
+              text: "Salary before tax",
+              classes: "govuk-fieldset__legend--m"
+            }
+          }) %}
+            <div class="salary-group">
+              {{ salaryInput({
+                idPrefix: "primary",
+                labelText: data | primaryName | capitalize + "’s salary (£)"
+              }) }}
+            </div>
+            <div class="salary-group">
+              {{ salaryInput({
+                idPrefix: "secondary",
+                labelText: data | secondaryName + "’s salary (£)"
+              }) }}
+            </div>
+          {% endcall %}
+        {% endcall %}
+        <button type="submit" class="govuk-button">
+          Continue
+        </button>
+      </form>
+      {# <a href="planner-{{data['birth-or-adoption']}}" class="govuk-link--no-visited-state govuk-body">
+        Skip this step
+      </a> #}
+    </div>
+  </div>
+
+{% endblock %}
