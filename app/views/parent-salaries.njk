@@ -1,10 +1,8 @@
 {% from "back-link/macro.njk" import govukBackLink %}
 {% from "fieldset/macro.njk" import govukFieldset %}
-{% from "input/macro.njk" import govukInput %}
-{% from "select/macro.njk" import govukSelect %}
-{% from "hmcts-currency-input/macro.njk" import hmctsCurrencyInput %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "./components/salary-input.njk" import salaryInput %}
 
 {% extends "layout.njk" %}
 
@@ -12,58 +10,12 @@
   Plan leave and pay when you have a child
 {% endblock %}
 
-{% macro salaryInput(options) %}
-  {% set salaryAmountId = options.idPrefix + "-salary-amount" %}
-  {% set salaryPeriodId = options.idPrefix + "-salary-period" %}
-  {% set salaryAmountError = errors["parent-salaries"] | getErrorTextByHref("#" + salaryAmountId) %}
-  {% set salaryPeriodError = errors["parent-salaries"] | getErrorTextByHref("#" + salaryPeriodId) %}
-
-  {{ hmctsCurrencyInput({
-    id: salaryAmountId,
-    name: salaryAmountId,
-    classes: "govuk-input--width-20",
-    label: {
-      text: options.labelText
-    },
-    pattern: "[0-9]+(\.[0-9]{1,2})?",
-    errorMessage: {
-      text: salaryAmountError
-    } if salaryAmountError,
-    attributes: {
-      autocomplete: "off",
-      title: "Salary should be a number with no decimal point, e.g. 28750"
-    },
-    value: data[salaryAmountId]
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: backPath()
   }) }}
-
-  {{ govukSelect({
-    id: salaryPeriodId,
-    name: salaryPeriodId,
-    label: {
-      text: "Per"
-    },
-    errorMessage: {
-      text: salaryPeriodError
-    } if salaryPeriodError,
-    items: [
-      {
-        value: "year",
-        text: "Year",
-        selected: data[salaryPeriodId] === "year"
-      },
-      {
-        value: "month",
-        text: "Month",
-        selected: data[salaryPeriodId] === "month"
-      },
-      {
-        value: "week",
-        text: "Week",
-        selected: data[salaryPeriodId] === "week"
-      }
-    ]
-  }) }}
-{% endmacro %}
+{% endblock %}
 
 {% block content %}
   {% if errors["parent-salaries"] | length %}
