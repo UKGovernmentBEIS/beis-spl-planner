@@ -34,8 +34,7 @@ function parseParentFromPlanner (data, parent) {
   return {
     leaveWeeks: getWeeksArray(data, parent, 'leave'),
     payWeeks: getWeeksArray(data, parent, 'pay'),
-    // TODO: Get weekly pay from data.
-    weeklyPay: parent === 'primary' ? 1000 : null
+    weeklyPay: weeklyPay(data, parent)
   }
 }
 
@@ -43,4 +42,22 @@ module.exports = {
   getWeeksArray,
   nameAndNonSharedLeaveType,
   parseParentFromPlanner
+}
+
+function weeklyPay (data, parent) {
+  const providedSalary = parseFloat(data[`${parent}-salary-amount`])
+  if (!providedSalary && providedSalary !== 0) {
+    return
+  }
+  const period = data[`${parent}-salary-period`]
+  switch (period) {
+    case 'week':
+      return providedSalary
+    case 'month':
+      return (providedSalary * 12) / 52
+    case 'year':
+      return providedSalary / 52
+    default:
+      return null
+  }
 }

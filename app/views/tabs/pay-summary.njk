@@ -12,10 +12,6 @@
       To see a more accurate summary of what your income will be while on leave, you can ask your employer to fill in <a href="#">a parental leave and pay plan</a>.
     </p>
 
-    {% set totalRowHeading %}
-      <strong>Total pay (before tax) </strong>
-    {% endset %}
-
     {% for block in payBlocks %}
       {% set tableCaption %}
         {{ data | startDay | offsetWeeks(block.start) | formatForDisplay }} to {{ data | startDay | offsetWeeks(block.end) | endOfWeek | formatForDisplay }}
@@ -28,12 +24,6 @@
       {% set secondaryPay %}
         {{ block["secondary"] + " per week" if block["secondary"] else "Unpaid" }}
       {% endset %}
-
-      {# TODO when salaries have been implemented, if both salaries have been provided add 'Total pay' row to this table  #}
-
-      {# {% set totalPay %}
-        <strong> per week</strong>
-      {% endset %} #}
 
       {% set displayTotal = (data["primary-salary-amount"] | length > 0) and (data["secondary-salary-amount"] | length > 0) %}
 
@@ -59,8 +49,8 @@
             { text: secondaryPay }
           ],
           [
-            { html: totalRowHeading },
-            { html: totalPay }
+            { html: "<strong>Total pay</br>(before tax) </strong>" },
+            { html: "<strong>" + block | totalBlockPay + " per week</strong>" }
           ] if displayTotal
         ]
       }) }}

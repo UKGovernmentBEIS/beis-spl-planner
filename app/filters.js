@@ -75,6 +75,12 @@ module.exports = function (env) {
     return isBirth(data) ? 'due date' : 'placement date'
   }
 
+  function totalBlockPay (block) {
+    const primaryPay = block.primary && parseFloat(block.primary.substring(1))
+    const secondaryPay = block.secondary && parseFloat(block.secondary.substring(1))
+    return '£' + ((primaryPay || 0) + (secondaryPay || 0)).toFixed(2)
+  }
+
   return {
     weekCheckboxes,
     hasStartDateError,
@@ -82,6 +88,7 @@ module.exports = function (env) {
     startDay,
     startOfWeek,
     endOfWeek,
-    startDateName
+    startDateName,
+    totalBlockPay
   }
 }
