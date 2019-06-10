@@ -15,8 +15,8 @@ module.exports = function (env) {
 
   function fieldNames (formInnerHtml) {
     const dom = new JSDOM(formInnerHtml)
-    const inputs = dom.window.document.getElementsByTagName('input')
-    const names = new Set([...inputs].map(input => normalisedFieldName(input.name)))
+    const formControls = dom.window.document.querySelectorAll('input, select, textarea')
+    const names = new Set([...formControls].map(input => normalisedFieldName(input.name)))
     return [...names]
   }
 
