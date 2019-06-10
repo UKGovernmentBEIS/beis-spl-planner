@@ -158,7 +158,12 @@
   @import "node_modules/govuk-frontend/settings/colours-applied";
   .govuk-summary-list {
     .govuk-summary-list__key {
-      width: 50%;
+      width: 55%;
+      padding-right: 10px;
+    }
+    .govuk-summary-list__value {
+      width: 45%;
+      padding-right: 0;
     }
     .remaining {
       color: $govuk-secondary-text-colour;

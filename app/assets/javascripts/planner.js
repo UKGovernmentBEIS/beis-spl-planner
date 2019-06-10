@@ -4,7 +4,7 @@ const isIexplorer = require('is-iexplorer')
 const stickybits = require('stickybits')
 const Stickyfill = require('stickyfill')
 const Planner = require('./components/Planner.vue')
-const { getWeeksArray } = require('../../utils')
+const { parseParentFromPlanner } = require('../../utils')
 
 Vue.filter('capitalise', function (value) {
   if (!value) {
@@ -15,14 +15,15 @@ Vue.filter('capitalise', function (value) {
 })
 
 function init (data) {
+  const isBirth = data['birth-or-adoption'] === 'birth'
   const planner = new (Vue.extend(Planner))({
     el: '#planner',
     data: {
-      isBirth: data['birth-or-adoption'] === 'birth',
+      isBirth: isBirth,
       // TODO: Get start week from data.
       startWeek: '2019-09-08',
-      primary: parseParent(data, 'primary'),
-      secondary: parseParent(data, 'secondary'),
+      primary: parseParentFromPlanner(data, 'primary'),
+      secondary: parseParentFromPlanner(data, 'secondary'),
       updateLeaveOrPay: updateLeaveOrPay
     },
     mounted: function () {
@@ -41,18 +42,19 @@ function init (data) {
       planner.updateWeek(parent, property, week, this.checked)
     })
   }
-}
 
-function updateLeaveOrPay (parent, property, week, value) {
-  if (property === 'leave') {
-    updateLeave(parent, week, value)
-  } else if (property === 'pay') {
-    updatePay(parent, week, value)
+  const minimumWeek = isBirth ? -11 : -2
+  function updateLeaveOrPay (parent, property, week, value) {
+    if (property === 'leave') {
+      updateLeave(parent, week, value, minimumWeek)
+    } else if (property === 'pay') {
+      updatePay(parent, week, value, minimumWeek)
+    }
   }
 }
 
-function updateLeave (parent, week, value) {
-  // Leave before the 0th week must be in a continuous block.
+function updateLeave (parent, week, value, minimumWeek) {
+  // Maternity / adoption leave taken before the 0th week must be in a continuous block.
   let weeksToUpdate
   if (week >= 0) {
     weeksToUpdate = [week]
@@ -61,7 +63,7 @@ function updateLeave (parent, week, value) {
     weeksToUpdate = _.range(week, 0)
   } else {
     // Remove leave before selected week.
-    weeksToUpdate = _.range(-11, week + 1)
+    weeksToUpdate = _.range(minimumWeek, week + 1)
   }
 
   for (let weekToUpdate of weeksToUpdate) {
@@ -73,13 +75,31 @@ function updateLeave (parent, week, value) {
   }
 }
 
-function updatePay (parent, week, value) {
-  if (value) {
-    // Leave must always be taken with pay.
+function updatePay (parent, week, value, minimumWeek) {
+  if (value && !getCheckbox(parent, 'leave', week).checked) {
+    // Pay cannot be added without leave.
     updateLeave(parent, week, true)
-    togglePay(parent, week, true)
+    return
+  }
+
+  // Maternity / adoption pay must be taken in a continuous block from the start
+  // of the maternity / adoption leave until the pay is curtailed.
+  // After the end of compulsory leave, it is valid for non-continuous pay to be
+  // taken as Statutory Shared Parental Pay.
+  let weeksToUpdate
+  const lastCompulsoryWeek = 1
+  if (parent !== 'primary' || week > lastCompulsoryWeek) {
+    weeksToUpdate = [week]
+  } else if (value) {
+    // Add pay from earliest week.
+    weeksToUpdate = _.range(minimumWeek, week + 1)
   } else {
-    togglePay(parent, week, false)
+    // Remove pay until end of compulsory leave.
+    weeksToUpdate = _.range(week, lastCompulsoryWeek + 1)
+  }
+
+  for (let weekToUpdate of weeksToUpdate) {
+    togglePay(parent, weekToUpdate, value)
   }
 }
 
@@ -88,6 +108,10 @@ function toggleLeave (parent, week, value) {
 }
 
 function togglePay (parent, week, value) {
+  if (value && !getCheckbox(parent, 'leave', week).checked) {
+    // Cannot have pay without leave.
+    return false
+  }
   return toggleCheckbox(parent, 'pay', week, value)
 }
 
@@ -106,15 +130,6 @@ function toggleCheckbox (parent, property, week, value) {
 function getCheckbox (parent, property, week) {
   const query = `input[type="checkbox"][name="${parent}[${property}]"][value="${week}"]`
   return document.querySelector(query)
-}
-
-function parseParent (data, parent) {
-  return {
-    leaveWeeks: getWeeksArray(data, parent, 'leave'),
-    payWeeks: getWeeksArray(data, parent, 'pay'),
-    // TODO: Get weekly pay from data.
-    weeklyPay: parent === 'primary' ? 1000 : null
-  }
 }
 
 // Idea taken from implementation of stickybits.js feature detection.

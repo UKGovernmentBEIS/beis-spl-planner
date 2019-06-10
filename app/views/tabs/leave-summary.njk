@@ -1,0 +1,206 @@
+{% from "summary-list/macro.njk" import govukSummaryList %}
+{% from "inset-text/macro.njk" import govukInsetText %}
+{% from "../components/leave-block-summary.njk" import leaveBlockSummary %}
+{% from "../components/file-download.njk" import fileDownload %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <p>
+      This is a summary of your leave plan.
+      It shows your leave dates, when you need to notify your employer and how you can apply.
+    </p>
+
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: {
+            text: "Baby is due" if data | isBirth else "Placement date"
+          },
+          value: {
+            text: data | startDay | formatForDisplay
+          }
+        }
+      ]
+    }) }}
+
+    <h2 class="govuk-heading-l">
+      {{ data | primaryName | capitalize }}’s leave dates
+    </h2>
+    <h3 class="govuk-heading-m">
+      {{ data | primaryLeaveType | capitalize }} leave
+    </h3>
+
+    {{ leaveBlockSummary({
+      name: data | primaryLeaveType | capitalize + " leave",
+      block: leaveBlocks.primary.initial,
+      data: data,
+      notify: {
+        date: data | startDay | offsetWeeks(-15),
+        explanation: "15 weeks before " + data | startDateName
+      }
+    }) }}
+
+    <h4 class="govuk-heading-s">
+      How to give notice
+    </h4>
+    <p>
+      Tell your employer when the {{"baby is due" if data | isBirth else "child will be placed with you"}} and when you want to start your {{ data | primaryLeaveType }} leave.
+      Your employer can ask for this in writing.
+      Your employer must write to you within 28 days confirming your start and end dates.
+    </p>
+    <h4 class="govuk-heading-s">
+      Changing your plans
+    </h4>
+    <p>
+      You must give 28 days’ notice to your employer if you want to change your {{ data | primaryLeaveType }} leave dates.
+    </p>
+
+    {% if leaveBlocks.primary.spl.length > 0 %}
+      <h3 class="govuk-heading-m">
+        Shared parental leave ({{ data | primaryName }})
+      </h3>
+      {% for block in leaveBlocks.primary.spl %}
+        {{ leaveBlockSummary({
+          name: "Block " + loop.index,
+          block: block,
+          data: data,
+          notify: {
+            date: data | startDay | offsetWeeks(block.start) | offsetWeeks(-8),
+            explanation: "8 weeks before block starts",
+            asterisk: loop.length > 1
+          }
+        }) }}
+      {% endfor %}
+      {% if leaveBlocks.primary.spl.length > 1 %}
+        <p>
+          *You can notify your employer of multiple blocks of shared parental leave at the same time if your employer agrees.
+        </p>
+      {% endif %}
+
+      <h4 class="govuk-heading-s">
+        How to give notice
+      </h4>
+      <p>
+        Complete the {{ data | primaryName }}’s shared parental leave and pay notice form and submit it to the {{ data | primaryName }}'s employer 8 weeks before the they want to start shared parental leave.
+      </p>
+
+      {% set noticeDescription %}
+      {# TODO fix the href of this link #}
+        <p>This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#">download a blank version</a>.
+      {% endset %}
+
+      {% set noticeDetails %}
+      {# TODO fix the href of this link #}
+        <p>This file may not be suitable for users of assistive technology. <a href="#">Request an accesible format</a>.
+      {% endset %}
+
+      {# TODO fix the href of this fileDownload #}
+      {{ fileDownload({
+        name: (data | primaryName | capitalize) + "’s shared parental leave and pay notice form",
+        href: "#",
+        description: {
+          html: noticeDescription
+        },
+        details: {
+          html: noticeDetails
+        }
+      }) }}
+
+      <h4 class="govuk-heading-s">
+        Changing your plans
+      </h4>
+      <p>
+        After you give notice you have two weeks to agree your shared parental leave dates with your employer.
+      </p>
+      <p>
+        To change your dates after this you must give notice again 8 weeks before your first block of shared parental leave starts.
+      </p>
+    {% endif %}
+
+    {% if leaveBlocks.secondary.initial or leaveBlocks.secondary.spl.length %}
+      <h2 class="govuk-heading-l">
+        {{ data | secondaryName | capitalize }}’s leave dates
+      </h2>
+      {% if leaveBlocks.secondary.initial %}
+        <h3 class="govuk-heading-m">
+          Paternity leave
+        </h3>
+
+        {{ leaveBlockSummary({
+          name: "Paternity leave",
+          block: leaveBlocks.secondary.initial,
+          data: data,
+          notify: {
+            date: data | startDay | offsetWeeks(-15),
+            explanation: "15 weeks before due date"
+          }
+        }) }}
+
+        <h4 class="govuk-heading-s">
+          How to give notice
+        </h4>
+        <p>
+          Use <a href="https://public-online.hmrc.gov.uk/lc/content/xfaforms/profiles/forms.html?contentRoot=repository:///Applications/PersonalTax_iForms/1.0/SC3&template=SC3.xdp" target="_blank">form SC3</a> to apply to your employer for statutory paternity pay (SPP) and leave.
+        </p>
+
+        <h4 class="govuk-heading-s">
+          Changing your plans
+        </h4>
+        <p>
+          You must give 28 days’ notice to your employer if you want to change your paternity leave dates.
+        </p>
+      {% endif %}
+
+      {% if leaveBlocks.secondary.spl.length %}
+        <h3 class="govuk-heading-m">
+          Shared parental leave ({{ data | secondaryName }})
+        </h3>
+        {% for block in leaveBlocks.secondary.spl %}
+          {{ leaveBlockSummary({
+            name: "Block " + loop.index,
+            block: block,
+            data: data,
+            notify: {
+              date: data | startDay | offsetWeeks(block.start) | offsetWeeks(-8),
+              explanation: "8 weeks before block starts",
+              asterisk: loop.length > 1
+            }
+          }) }}
+        {% endfor %}
+        {% if leaveBlocks.primary.spl.length > 1 %}
+          <p>
+            *You can notify your employer of multiple blocks of shared parental leave at the same time if your employer agrees.
+          </p>
+        {% endif %}
+
+        <h4 class="govuk-heading-s">
+          How to give notice
+        </h4>
+        <p>
+          Complete the {{ data | secondaryName }}'s shared parental leave and pay notice form and submit it to the {{ data | secondaryName }}'s employer 8 weeks before they want to start shared parental leave.
+        </p>
+        {#  TODO fix the href of this file download #}
+        {{ fileDownload({
+          name: data | secondaryName | capitalize + "’s shared parental leave and pay notice form",
+          href: "#",
+          description: {
+            html: noticeDescription
+          },
+          details: {
+            html: noticeDetails
+          }
+        }) }}
+        <h4 class="govuk-heading-s">
+          Changing your plans
+        </h4>
+        <p>
+          After you give notice you have two weeks to agree your shared parental leave dates with your employer.
+        </p>
+        <p>
+          To change you dates after this you must give notice again 8 weeks before your first block of shared parental leave starts.
+        </p>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+

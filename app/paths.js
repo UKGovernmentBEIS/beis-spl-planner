@@ -58,6 +58,10 @@ class Paths {
       planner: {
         url: '/planner',
         workflowParentPath: '/parent-salaries'
+      },
+      summary: {
+        url: '/summary',
+        workflowParentPath: '/planner'
       }
     }
   }
