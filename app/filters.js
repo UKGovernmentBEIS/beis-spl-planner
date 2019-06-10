@@ -1,4 +1,5 @@
 const { getWeeksArray } = require('./utils')
+const Day = require('../common/lib/day')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
@@ -11,14 +12,14 @@ module.exports = function (env) {
     const leaveWeeks = getWeeksArray(data, parent, 'leave')
     const payWeeks = getWeeksArray(data, parent, 'pay')
     for (let i = minWeek; i <= 52; i++) {
-      const compulsory = parent === 'primary' && (i === 0 || i === 1)
-      const disabled = compulsory || (parent === 'secondary' && i < 0)
+      const compulsoryLeave = parent === 'primary' && (i === 0 || i === 1)
+      const outOfRange = parent === 'secondary' && i < 0
       checkboxes.push({
         id: `${parent}-leave_${i}`,
         value: i,
         text: `Week ${i}`,
-        checked: compulsory || leaveWeeks.includes(i),
-        disabled: disabled,
+        checked: leaveWeeks.includes(i),
+        disabled: compulsoryLeave || outOfRange,
         attributes: {
           'data-parent': parent,
           'data-property': 'leave'
@@ -31,8 +32,8 @@ module.exports = function (env) {
                 id: `${parent}-pay_${i}`,
                 value: i,
                 text: 'Paid',
-                checked: compulsory || payWeeks.includes(i),
-                disabled: disabled,
+                checked: payWeeks.includes(i),
+                disabled: outOfRange,
                 attributes: {
                   'data-parent': parent,
                   'data-property': 'pay'
@@ -46,7 +47,27 @@ module.exports = function (env) {
     return checkboxes
   }
 
+  function startDay (data) {
+    return new Day(data['start-date-year'], data['start-date-month'], data['start-date-day']).startOfWeek()
+  }
+
+  function startOfWeek (day) {
+    return day.startOfWeek()
+  }
+
+  function endOfWeek (day) {
+    return day.endOfWeek()
+  }
+
+  function startDateName (data) {
+    return isBirth(data) ? 'due date' : 'placement date'
+  }
+
   return {
-    weekCheckboxes
+    weekCheckboxes,
+    startDay,
+    startOfWeek,
+    endOfWeek,
+    startDateName
   }
 }

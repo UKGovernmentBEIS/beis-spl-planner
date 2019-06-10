@@ -30,7 +30,17 @@ function nameAndNonSharedLeaveType (data, parent) {
   }
 }
 
+function parseParentFromPlanner (data, parent) {
+  return {
+    leaveWeeks: getWeeksArray(data, parent, 'leave'),
+    payWeeks: getWeeksArray(data, parent, 'pay'),
+    // TODO: Get weekly pay from data.
+    weeklyPay: parent === 'primary' ? 1000 : null
+  }
+}
+
 module.exports = {
   getWeeksArray,
-  nameAndNonSharedLeaveType
+  nameAndNonSharedLeaveType,
+  parseParentFromPlanner
 }

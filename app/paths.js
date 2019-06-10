@@ -46,6 +46,10 @@ class Paths {
       planner: {
         url: '/planner',
         workflowParentPath: '/birth-or-adoption'
+      },
+      summary: {
+        url: '/summary',
+        workflowParentPath: '/planner'
       }
     }
   }

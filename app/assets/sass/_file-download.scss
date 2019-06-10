@@ -1,0 +1,20 @@
+.document-card-container {
+  display: flex;
+  padding-left: 5px;
+
+  .document {
+    max-width: 99px;
+    width: 25%;
+
+    img {
+      outline: 5px solid govuk-colour("grey-3");
+      height: auto;
+      width: 100%;
+    }
+  }
+
+  .document-card-details {
+    width: 75%;
+    margin-left: 15px;
+  }
+}

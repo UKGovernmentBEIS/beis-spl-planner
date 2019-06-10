@@ -17,7 +17,7 @@ module.exports = function (grunt) {
       files: [{
         expand: true,
         cwd: 'common/assets/sass',
-        src: ['*.scss', 'custom/*.scss'],
+        src: ['*.scss', 'custom/*.scss', 'components/*.scss'],
         dest: 'public/stylesheets/',
         ext: '.css'
       }]
@@ -25,11 +25,21 @@ module.exports = function (grunt) {
   }
 
   const copy = {
-    assets: {
+    commonAssets: {
       files: [
         {
           expand: true,
           cwd: 'common/assets/',
+          src: ['**/*', '!sass/**', '!javascripts/**'],
+          dest: 'public/'
+        }
+      ]
+    },
+    appAssets: {
+      files: [
+        {
+          expand: true,
+          cwd: 'app/assets/',
           src: ['**/*', '!sass/**', '!javascripts/**'],
           dest: 'public/'
         }
@@ -62,6 +72,7 @@ module.exports = function (grunt) {
     js: {
       files: [
         'app/assets/javascrips/**/*.{js, vue}',
+        'app/lib/**/*.js',
         'common/browsered/index.js',
         'common/assets/javascripts/**/*.js'
       ],
