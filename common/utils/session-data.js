@@ -17,8 +17,10 @@ module.exports = function (req, res, next) {
   res.locals.data = req.session.data
   res.locals.withData = function (path) {
     const queryData = { 'data-in-query': true, ...req.session.data }
-    const backPath = paths.getPreviousWorkFlowPath(req.path)
-    return `${backPath}?${qs.stringify(queryData)}`
+    return `${path}?${qs.stringify(queryData)}`
+  }
+  res.locals.backPath = function () {
+    return res.locals.withData(paths.getPreviousWorkFlowPath(req.path))
   }
   next()
 }
