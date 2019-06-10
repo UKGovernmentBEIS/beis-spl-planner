@@ -19,7 +19,7 @@
   {% endset %}
 
   {% if errors["start-date"] %}
-    {{govukErrorSummary({
+    {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: errors["start-date"]
     }) }}

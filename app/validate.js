@@ -61,7 +61,36 @@ function startDate (req) {
   return true
 }
 
+function parentSalaries (req) {
+  req.session.errors['parent-salaries'] = []
+  const {
+    'primary-salary-amount': primarySalary,
+    'secondary-salary-amount': secondarySalary,
+    'primary-salary-period': primaryPeriod,
+    'secondary-salary-period': secondaryPeriod
+  } = req.session.data
+
+  if (primarySalary && !primarySalary.match(/[0-9]+(\.[0-9]{1,2})?/)) {
+    req.session.errors['parent-salaries'].push(buildError('Enter a valid salary', '#primary-salary-amount'))
+  }
+
+  if (secondarySalary && !secondarySalary.match(/[0-9]+(\.[0-9]{1,2})?/)) {
+    req.session.errors['parent-salaries'].push(buildError('Enter a valid salary', '#secondary-salary-amount'))
+  }
+
+  if (primaryPeriod && !['year', 'month', 'week'].includes(primaryPeriod)) {
+    req.session.errors['parent-salaries'].push(buildError('Provide a valid salary period', '#primary-salary-period'))
+  }
+
+  if (primaryPeriod && !['year', 'month', 'week'].includes(secondaryPeriod)) {
+    req.session.errors['parent-salaries'].push(buildError('Provide a valid salary period', '#secondary-salary-period'))
+  }
+
+  return !req.session.errors['parent-salaries'].length
+}
+
 module.exports = {
   birthOrAdoption,
-  startDate
+  startDate,
+  parentSalaries
 }

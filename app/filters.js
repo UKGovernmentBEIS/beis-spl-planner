@@ -50,8 +50,17 @@ module.exports = function (env) {
     return errors && errors['start-date'] && errors['start-date'].some(err => err.dateParts.includes(partOfDate))
   }
 
+  function getErrorTextByHref (errors, href) {
+    if (!errors) {
+      return
+    }
+    const errorObject = errors.find(error => error.href === href)
+    return errorObject ? errorObject.text : errorObject
+  }
+
   return {
     weekCheckboxes,
-    hasStartDateError
+    hasStartDateError,
+    getErrorTextByHref
   }
 }

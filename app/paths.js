@@ -50,9 +50,14 @@ class Paths {
         workflowParentPath: '/birth-or-adoption',
         validator: validate.startDate
       },
+      parentSalaries: {
+        url: '/parent-salaries',
+        workflowParentPath: '/start-date',
+        validator: validate.parentSalaries
+      },
       planner: {
         url: '/planner',
-        workflowParentPath: '/birth-or-adoption'
+        workflowParentPath: '/parent-salaries'
       }
     }
   }

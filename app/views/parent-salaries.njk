@@ -2,7 +2,9 @@
 {% from "fieldset/macro.njk" import govukFieldset %}
 {% from "input/macro.njk" import govukInput %}
 {% from "select/macro.njk" import govukSelect %}
+{% from "hmcts-currency-input/macro.njk" import hmctsCurrencyInput %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
 
 {% extends "layout.njk" %}
 
@@ -13,21 +15,36 @@
 {% macro salaryInput(options) %}
   {% set salaryAmountId = options.idPrefix + "-salary-amount" %}
   {% set salaryPeriodId = options.idPrefix + "-salary-period" %}
-  {{ govukInput({
+  {% set salaryAmountError = errors["parent-salaries"] | getErrorTextByHref("#" + salaryAmountId) %}
+  {% set salaryPeriodError = errors["parent-salaries"] | getErrorTextByHref("#" + salaryPeriodId) %}
+
+  {{ hmctsCurrencyInput({
+    id: salaryAmountId,
+    name: salaryAmountId,
+    classes: "govuk-input--width-20",
     label: {
       text: options.labelText
     },
-    classes: "govuk-input--width-20 app-salary-input",
-    id: salaryAmountId,
-    name: salaryAmountId,
+    pattern: "[0-9]+(\.[0-9]{1,2})?",
+    errorMessage: {
+      text: salaryAmountError
+    } if salaryAmountError,
+    attributes: {
+      autocomplete: "off",
+      title: "Salary should be a number with no decimal point, e.g. 28750"
+    },
     value: data[salaryAmountId]
   }) }}
+
   {{ govukSelect({
     id: salaryPeriodId,
     name: salaryPeriodId,
     label: {
       text: "Per"
     },
+    errorMessage: {
+      text: salaryPeriodError
+    } if salaryPeriodError,
     items: [
       {
         value: "year",
@@ -49,13 +66,20 @@
 {% endmacro %}
 
 {% block content %}
+  {% if errors["parent-salaries"] | length %}
+    {{govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errors["parent-salaries"]
+    }) }}
+  {% endif %}
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
         What is your salary before tax?
       </h1>
       <p>
-        Enter your salary to see statutory pay amounts. Your might get more or less if your salary changes, has changed, or if your employer enhances pay.
+        Enter your salary to see statutory pay amounts. You might get more or less if your salary changes, has changed, or if your employer enhances pay.
       </p>
       <form action="parent-salaries" method="POST">
         {% call appendHiddenFields(data) %}
@@ -74,8 +98,9 @@
             <div class="salary-group">
               {{ salaryInput({
                 idPrefix: "secondary",
-                labelText: data | secondaryName + "’s salary (£)"
+                labelText: data | secondaryName | capitalize + "’s salary (£)"
               }) }}
+
             </div>
           {% endcall %}
         {% endcall %}

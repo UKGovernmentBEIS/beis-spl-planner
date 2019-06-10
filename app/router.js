@@ -28,9 +28,20 @@ router.route(paths.getPath('startDate'))
   })
   .post(function (req, res) {
     if (!validate.startDate(req)) {
-      return res.redirect(req.url)
+      return res.redirect('back')
     }
-    res.redirect('planner')
+    res.redirect(paths.getPath('parentSalaries'))
+  })
+
+router.route(paths.getPath('parentSalaries'))
+  .get(function (req, res) {
+    res.render('parent-salaries')
+  })
+  .post(function (req, res) {
+    if (!validate.parentSalaries(req)) {
+      return res.redirect('back')
+    }
+    res.redirect(paths.getPath('planner'))
   })
 
 router.route(paths.getPath('planner'))
