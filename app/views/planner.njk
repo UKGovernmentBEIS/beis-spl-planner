@@ -6,10 +6,9 @@
 {% extends "layout.njk" %}
 
 {% block beforeContent %}
-  {# TODO: Fill in back link. #}
   {{ govukBackLink({
     text: "Back",
-    href: withData("/birth-or-adoption")
+    href: backPath()
   }) }}
 {% endblock %}
 

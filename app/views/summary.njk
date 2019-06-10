@@ -4,10 +4,9 @@
 {% extends "layout.njk" %}
 
 {% block beforeContent %}
-  {# TODO: Fill in back link. #}
   {{ govukBackLink({
     text: "Back",
-    href: withData("/planner")
+    href: backPath()
   }) }}
 {% endblock %}
 
