@@ -7,24 +7,20 @@ module.exports = function (env) {
     return data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary adopter'
   }
 
-  function primaryNameForUrl (data) {
-    return primaryName(data).split(' ').join('-')
-  }
-
   function secondaryName (data) {
     return 'partner'
   }
 
-  function secondaryNameForUrl (data) {
-    return secondaryName(data).split(' ').join('-')
-  }
-
-  function currentParentName (data, currentParent) {
+  function parentName (data, currentParent) {
     return currentParent === 'primary' ? primaryName(data) : secondaryName(data)
   }
 
   function otherParentName (data, currentParent) {
     return currentParent === 'primary' ? secondaryName(data) : primaryName(data)
+  }
+
+  function parentNameForUrl (data, parent) {
+    return parentName(data, parent).split(' ').join('-')
   }
 
   function isBirth (data) {
@@ -71,13 +67,17 @@ module.exports = function (env) {
     return day.isInPast()
   }
 
+  function removeEmpty (array) {
+    return array.filter(element => !!element)
+  }
+
   return {
     primaryName,
-    primaryNameForUrl,
     secondaryName,
-    secondaryNameForUrl,
-    currentParentName,
+    parentName,
+    currentParentName: parentName, // Alias.
     otherParentName,
+    parentNameForUrl,
     isBirth,
     primaryLeaveType,
     isAdoption,
@@ -89,6 +89,7 @@ module.exports = function (env) {
     formatForDisplay,
     formatForExample,
     isInPast,
+    removeEmpty,
     ...require('./macros/hidden-fields/filters')(env)
   }
 }
