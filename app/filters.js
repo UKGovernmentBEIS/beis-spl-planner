@@ -60,7 +60,7 @@ module.exports = function (env) {
   }
 
   function startDay (data) {
-    return new Day(data['start-date-year'], data['start-date-month'], data['start-date-day']).startOfWeek()
+    return new Day(data['start-date-year'], data['start-date-month'], data['start-date-day'])
   }
 
   function startOfWeek (day) {

@@ -1,5 +1,6 @@
 const dlv = require('dlv')
 const _ = require('lodash')
+const Day = require('../common/lib/day')
 
 const MOTHER = Object.freeze({
   name: 'mother',
@@ -38,20 +39,20 @@ function parseParentFromPlanner (data, parent) {
   }
 }
 
-function parseStartWeek (data) {
+function parseStartDay (data) {
   const {
     'start-date-year': year,
     'start-date-month': month,
     'start-date-day': day
   } = data
-  return `${year}-${month}-${day}`
+  return new Day(year, month, day)
 }
 
 module.exports = {
   getWeeksArray,
   nameAndNonSharedLeaveType,
   parseParentFromPlanner,
-  parseStartWeek
+  parseStartDay
 }
 
 function weeklyPay (data, parent) {
