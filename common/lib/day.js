@@ -16,6 +16,11 @@ class Day {
     return new Day(newMoment)
   }
 
+  endOfWeek () {
+    const newMoment = this.moment.clone().endOf('week')
+    return new Day(newMoment)
+  }
+
   subtract (amount, unit) {
     const newMoment = this.moment.clone().subtract(amount, unit)
     return new Day(newMoment)
@@ -42,12 +47,12 @@ class Day {
     return this.moment.isBetween(earlierDay.moment, laterDay.moment)
   }
 
-  formatForDisplay () {
-    return this.moment.format('D MMMM YYYY')
+  format (format) {
+    return this.moment.format(format)
   }
 
-  formatForExample () {
-    return this.moment.format('D M YYYY')
+  date () {
+    return this.moment.date()
   }
 }
 

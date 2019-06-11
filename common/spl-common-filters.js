@@ -52,7 +52,11 @@ module.exports = function (env) {
   }
 
   function formatForDisplay (day) {
-    return day.formatForDisplay()
+    return day.format('D MMMM YYYY')
+  }
+
+  function formatForExample (day) {
+    return day.format('D M YYYY')
   }
 
   function isInPast (day) {
@@ -73,6 +77,7 @@ module.exports = function (env) {
     offsetWeeks,
     exampleDate,
     formatForDisplay,
+    formatForExample,
     isInPast,
     ...require('./macros/hidden-fields/filters')(env)
   }
