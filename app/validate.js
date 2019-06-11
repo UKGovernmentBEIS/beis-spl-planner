@@ -94,3 +94,5 @@ module.exports = {
   startDate,
   parentSalaries
 }
+
+module.exports = {}
