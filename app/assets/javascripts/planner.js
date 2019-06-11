@@ -4,7 +4,7 @@ const isIexplorer = require('is-iexplorer')
 const stickybits = require('stickybits')
 const Stickyfill = require('stickyfill')
 const Planner = require('./components/Planner.vue')
-const { parseParentFromPlanner } = require('../../utils')
+const { parseParentFromPlanner, parseStartWeek } = require('../../utils')
 
 Vue.filter('capitalise', function (value) {
   if (!value) {
@@ -21,7 +21,7 @@ function init (data) {
     data: {
       isBirth: isBirth,
       // TODO: Get start week from data.
-      startWeek: '2019-09-08',
+      startWeek: parseStartWeek(data),
       primary: parseParentFromPlanner(data, 'primary'),
       secondary: parseParentFromPlanner(data, 'secondary'),
       updateLeaveOrPay: updateLeaveOrPay

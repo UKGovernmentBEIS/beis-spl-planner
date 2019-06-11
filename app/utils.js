@@ -38,10 +38,20 @@ function parseParentFromPlanner (data, parent) {
   }
 }
 
+function parseStartWeek (data) {
+  const {
+    'start-date-year': year,
+    'start-date-month': month,
+    'start-date-day': day
+  } = data
+  return `${year}-${month}-${day}`
+}
+
 module.exports = {
   getWeeksArray,
   nameAndNonSharedLeaveType,
-  parseParentFromPlanner
+  parseParentFromPlanner,
+  parseStartWeek
 }
 
 function weeklyPay (data, parent) {
