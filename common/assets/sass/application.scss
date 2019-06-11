@@ -3,4 +3,8 @@ $govuk-global-styles: true;
 
 @import "components/cookie-message";
 @import "components/button-link";
-@import "../../../app/assets/sass/application.scss"
+@import "../../../app/assets/sass/application.scss";
+
+.js-enabled .js-hide {
+  display: none;
+}
