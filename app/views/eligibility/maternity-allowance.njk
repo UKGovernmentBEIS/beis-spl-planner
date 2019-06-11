@@ -1,0 +1,64 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "radios/macro.njk" import govukRadios %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+
+{% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: backPath()
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {% if errors["maternity-allowance-eligible"] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [errors['maternity-allowance-eligible']]
+    }) }}
+  {% endif %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        {{ data | primaryName | capitalize }}’s leave and pay entitlements
+      </h1>
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {{ govukRadios({
+            classes: "govuk-radios--inline",
+            idPrefix: "maternity-allowance-eligible",
+            name: "maternity-allowance-eligible",
+            fieldset: {
+              legend: {
+                text: "Is the mother eligible for maternity allowance?",
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            errorMessage: {
+              text: errors["maternity-allowance-eligible"].text
+            } if errors["maternity-allowance-eligible"],
+            items: [
+              {
+                value: "yes",
+                text: "Yes",
+                checked: data["maternity-allowance-eligible"] === "yes"
+              },
+              {
+                value: "no",
+                text: "No",
+                checked: data["maternity-allowance-eligible"] === "no"
+              }
+            ]
+          }) }}
+        {% endcall %}
+
+        <button type="submit" class="govuk-button">
+          Continue
+        </button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

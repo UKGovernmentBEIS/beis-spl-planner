@@ -45,9 +45,52 @@ class Paths {
         workflowParentPath: '/',
         validator: validate.birthOrAdoption
       },
+      eligibility: {
+        mother: {
+          sharedParentalLeaveAndPay: {
+            url: '/eligibility/mother/shared-parental-leave-and-pay',
+            workflowParentPath: '/birth-or-adoption',
+            validator: validate.primarySharedParentalLeaveAndPay
+          },
+          initialLeaveAndPay: {
+            url: '/eligibility/mother/initial-leave-and-pay',
+            workflowParentPath: '/eligibility/mother/shared-parental-leave-and-pay',
+            validator: validate.primaryInitialLeaveAndPay
+          },
+          maternityAllowance: {
+            url: '/eligibility/mother/maternity-allowance',
+            workflowParentPath: '/eligibility/mother/initial-leave-and-pay',
+            validator: validate.maternityAllowance
+          }
+        },
+        'primary-adopter': {
+          sharedParentalLeaveAndPay: {
+            url: '/eligibility/primary-adopter/shared-parental-leave-and-pay',
+            workflowParentPath: '/birth-or-adoption',
+            validator: validate.primarySharedParentalLeaveAndPay
+          },
+          initialLeaveAndPay: {
+            url: '/eligibility/primary-adopter/initial-leave-and-pay',
+            workflowParentPath: '/eligibility/primary-adopter/shared-parental-leave-and-pay',
+            validator: validate.primaryInitialLeaveAndPay
+          }
+        },
+        partner: {
+          sharedParentalLeaveAndPay: {
+            url: '/eligibility/partner/shared-parental-leave-and-pay',
+            workflowParentPath: '/eligibility/mother/maternity-allowance',
+            validator: validate.secondarySharedParentalLeaveAndPay
+          },
+          paternityLeaveAndPay: {
+            url: '/eligibility/partner/paternity-leave-and-pay',
+            workflowParentPath: '/eligibility/partner/shared-parental-leave-and-pay',
+            validator: validate.paternityLeaveAndPay
+          }
+        }
+      },
       startDate: {
         url: '/start-date',
-        workflowParentPath: '/birth-or-adoption',
+        workflowParentPath: '/eligibility/partner/paternity-leave-and-pay',
         validator: validate.startDate
       },
       parentSalaries: {

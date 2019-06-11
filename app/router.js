@@ -22,6 +22,61 @@ router.route(paths.getPath('birthOrAdoption'))
     if (!validate.birthOrAdoption(req)) {
       return res.redirect('back')
     }
+    res.redirect(paths.getPath('eligibility.mother.sharedParentalLeaveAndPay'))
+  })
+
+router.route(paths.getPath('eligibility.mother.sharedParentalLeaveAndPay'))
+  .get(function (req, res) {
+    res.render('eligibility/primary-shared-parental-leave-and-pay')
+  })
+  .post(function (req, res) {
+    if (!validate.primarySharedParentalLeaveAndPay(req)) {
+      return res.redirect('back')
+    }
+    res.redirect(paths.getPath('eligibility.mother.initialLeaveAndPay'))
+  })
+
+router.route(paths.getPath('eligibility.mother.initialLeaveAndPay'))
+  .get(function (req, res) {
+    res.render('eligibility/primary-initial-leave-and-pay')
+  })
+  .post(function (req, res) {
+    if (!validate.primaryInitialLeaveAndPay(req)) {
+      return res.redirect('back')
+    }
+    res.redirect(paths.getPath('eligibility.mother.maternityAllowance'))
+  })
+
+router.route(paths.getPath('eligibility.mother.maternityAllowance'))
+  .get(function (req, res) {
+    res.render('eligibility/maternity-allowance')
+  })
+  .post(function (req, res) {
+    if (!validate.maternityAllowance(req)) {
+      return res.redirect('back')
+    }
+    res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
+  })
+
+router.route(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
+  .get(function (req, res) {
+    res.render('eligibility/secondary-shared-parental-leave-and-pay')
+  })
+  .post(function (req, res) {
+    if (!validate.secondarySharedParentalLeaveAndPay(req)) {
+      return res.redirect('back')
+    }
+    res.redirect(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
+  })
+
+router.route(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
+  .get(function (req, res) {
+    res.render('eligibility/paternity-leave-and-pay')
+  })
+  .post(function (req, res) {
+    if (!validate.paternityLeaveAndPay(req)) {
+      return res.redirect('back')
+    }
     res.redirect(paths.getPath('startDate'))
   })
 

@@ -28,16 +28,10 @@
   {% if errors["start-date"] %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
-      errorList: errors["start-date"]
+      errorList: [
+        errors["start-date"]
+      ]
     }) }}
-
-    {% set errorHtml %}
-      <ul>
-        {% for error in errors["start-date"] %}
-          <li>{{ error.text }}</li>
-        {% endfor %}
-      </ul>
-    {% endset %}
   {% endif %}
 
   <div class="govuk-grid-row">
@@ -57,7 +51,7 @@
             hint: {
               text: "For example, " + null | exampleDate
             },
-            errorMessage: { html: errorHtml } if errorHtml,
+            errorMessage: errors["start-date"],
             items: [
               {
                 name: "day",

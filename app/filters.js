@@ -48,7 +48,7 @@ module.exports = function (env) {
   }
 
   function hasStartDateError (errors, partOfDate) {
-    return errors && errors['start-date'] && errors['start-date'].some(err => err.dateParts.includes(partOfDate))
+    return errors && errors['start-date'] && errors['start-date'].dateParts.includes(partOfDate)
   }
 
   function getErrorTextByHref (errors, href) {
