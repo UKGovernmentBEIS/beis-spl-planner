@@ -36,20 +36,26 @@ registerEligibilityRouteForPrimaryParents(router, 'sharedParentalLeaveAndPay', {
     if (!validate.primarySharedParentalLeaveAndPay(req)) {
       return res.redirect('back')
     }
+    if (skip.initialLeaveAndPay(req)) {
+      if (skip.maternityAllowance(req)) {
+        return res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
+      }
+      return res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
+    }
     res.redirect(paths.getPath(`eligibility.${parentUrlPart}.initialLeaveAndPay`))
   }
 })
 
 registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
   get: function (parentUrlPart, req, res) {
-    if (skip.initialLeaveAndPay(req)) {
-      return res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
-    }
     res.render('eligibility/primary-initial-leave-and-pay')
   },
   post: function (parentUrlPart, req, res) {
     if (!validate.initialLeaveAndPay(req)) {
       return res.redirect('back')
+    }
+    if (skip.maternityAllowance(req)) {
+      return res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
     }
     res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
   }
@@ -77,6 +83,9 @@ router.route(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
   .post(function (req, res) {
     if (!validate.secondarySharedParentalLeaveAndPay(req)) {
       return res.redirect('back')
+    }
+    if (skip.paternityLeaveAndPay(req)) {
+      return res.redirect(paths.getPath('startDate'))
     }
     res.redirect(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
   })

@@ -61,6 +61,9 @@ function secondarySharedParentalLeaveAndPay (req) {
 }
 
 function paternityLeaveAndPay (req) {
+  if (skip.paternityLeaveAndPay(req)) {
+    return true
+  }
   return validateParentYesNoFields(req, 'secondary', {
     'initial-leave-eligible': 'Select whether you are eligible for leave',
     'initial-pay-eligible': 'Select whether you are eligible for pay'

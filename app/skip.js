@@ -16,7 +16,14 @@ function maternityAllowance (req) {
   return delve(req.session.data, ['primary', 'initial-pay-eligible']) === 'yes'
 }
 
+function paternityLeaveAndPay (req) {
+  const splEligible = delve(req.session.data, ['secondary', 'spl-eligible'])
+  const shppEligible = delve(req.session.data, ['secondary', 'shpp-eligible'])
+  return splEligible === 'yes' && shppEligible === 'yes'
+}
+
 module.exports = {
   initialLeaveAndPay,
-  maternityAllowance
+  maternityAllowance,
+  paternityLeaveAndPay
 }

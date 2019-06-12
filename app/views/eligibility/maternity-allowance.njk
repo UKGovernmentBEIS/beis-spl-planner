@@ -16,7 +16,7 @@
   {% if errors["maternity-allowance-eligible"] %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
-      errorList: [errors['maternity-allowance-eligible']]
+      errorList: [errors["maternity-allowance-eligible"]]
     }) }}
   {% endif %}
 
@@ -44,12 +44,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data["maternity-allowance-eligible"] === "yes"
+                checked: data["primary"]["maternity-allowance-eligible"] === "yes"
               },
               {
                 value: "no",
                 text: "No",
-                checked: data["maternity-allowance-eligible"] === "no"
+                checked: data["primary"]["maternity-allowance-eligible"] === "no"
               }
             ]
           }) }}
