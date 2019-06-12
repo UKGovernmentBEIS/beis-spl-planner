@@ -4,7 +4,7 @@ function registerEligibilityRouteForPrimaryParents (router, path, handlers) {
   for (const parent of ['mother', 'primary-adopter']) {
     const route = router.route(paths.getPath(`eligibility.${parent}.${path}`))
     if (handlers.get) {
-      route.get(handlers.get.bind(this))
+      route.get(handlers.get.bind(this, parent))
     }
     if (handlers.post) {
       route.post(handlers.post.bind(this, parent))

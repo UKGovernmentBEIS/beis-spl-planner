@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
+const skip = require('./skip')
 const { getBlocks } = require('./lib/blocks')
 const { getWeeksArray } = require('./utils')
 const { registerEligibilityRouteForPrimaryParents } = require('./lib/routerUtils')
@@ -28,7 +29,7 @@ router.route(paths.getPath('birthOrAdoption'))
   })
 
 registerEligibilityRouteForPrimaryParents(router, 'sharedParentalLeaveAndPay', {
-  get: function (req, res) {
+  get: function (_, req, res) {
     res.render('eligibility/primary-shared-parental-leave-and-pay')
   },
   post: function (parentUrlPart, req, res) {
@@ -40,7 +41,10 @@ registerEligibilityRouteForPrimaryParents(router, 'sharedParentalLeaveAndPay', {
 })
 
 registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
-  get: function (req, res) {
+  get: function (parentUrlPart, req, res) {
+    if (skip.initialLeaveAndPay(req)) {
+      return res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
+    }
     res.render('eligibility/primary-initial-leave-and-pay')
   },
   post: function (parentUrlPart, req, res) {
@@ -52,14 +56,14 @@ registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
 })
 
 registerEligibilityRouteForPrimaryParents(router, 'maternityAllowance', {
-  get: function (req, res) {
-    if (req.session.data['birth-or-adoption'] === 'adoption') {
+  get: function (_, req, res) {
+    if (skip.maternityAllowance(req)) {
       return res.redirect(paths.getPath(`eligibility.partner.sharedParentalLeaveAndPay`))
     }
     res.render('eligibility/maternity-allowance')
   },
   post: function (_, req, res) {
-    if (!validate.initialLeaveAndPay(req)) {
+    if (!validate.maternityAllowance(req)) {
       return res.redirect('back')
     }
     res.redirect(paths.getPath(`eligibility.partner.sharedParentalLeaveAndPay`))

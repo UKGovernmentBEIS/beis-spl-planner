@@ -4,7 +4,9 @@
  * If validation is failed they should attach errors to req.session.errors AND return false
 */
 
+const delve = require('dlv')
 const Day = require('../common/lib/day')
+const skip = require('./skip')
 const {
   prettyList,
   addError,
@@ -28,6 +30,9 @@ function primarySharedParentalLeaveAndPay (req) {
 }
 
 function initialLeaveAndPay (req) {
+  if (skip.initialLeaveAndPay(req)) {
+    return true
+  }
   return validateParentYesNoFields(req, 'primary', {
     'initial-leave-eligible': 'Select whether you are eligible for leave',
     'initial-pay-eligible': 'Select whether you are eligible for pay'
@@ -35,10 +40,13 @@ function initialLeaveAndPay (req) {
 }
 
 function maternityAllowance (req) {
+  if (skip.maternityAllowance(req)) {
+    return true
+  }
   if (req.session.data['birth-or-adoption'] === 'adoption') {
     return true
   }
-  if (!isYesOrNo(req.session.data.primary['maternity-allowance-eligible'])) {
+  if (!isYesOrNo(delve(req.session.data, ['primary', 'maternity-allowance-eligible']))) {
     addError(req, 'maternity-allowance-eligible', 'Select whether you are eligible for maternity allowance', '#maternity-allowance-eligible-1')
     return false
   }

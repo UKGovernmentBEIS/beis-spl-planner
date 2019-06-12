@@ -1,8 +1,8 @@
+const delve = require('dlv')
+
 function initialLeaveAndPay (req) {
-  const {
-    'spl-eligible': splEligible,
-    'shpp-eligible': shppEligible
-  } = req.session.data.primary
+  const splEligible = delve(req.session.data, ['primary', 'spl-eligible'])
+  const shppEligible = delve(req.session.data, ['primary', 'shpp-eligible'])
   return splEligible === 'yes' && shppEligible === 'yes'
 }
 
@@ -13,8 +13,7 @@ function maternityAllowance (req) {
   if (initialLeaveAndPay(req)) {
     return true
   }
-  console.log(req.session.data.primary['initial-pay-eligible'])
-  return req.session.data.primary['initial-pay-eligible'] === 'yes'
+  return delve(req.session.data, ['primary', 'initial-pay-eligible']) === 'yes'
 }
 
 module.exports = {
