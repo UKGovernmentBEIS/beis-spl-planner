@@ -41,7 +41,7 @@
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week.number)">
           <th class="govuk-table__cell date">
-            {{ week.day.format('DD') }}<br>
+            {{ week.day.format('D') }}<br>
             {{ week.day.format('MMM') }}
           </th>
           <template v-for="(parent, j) in ['primary', 'secondary']">
