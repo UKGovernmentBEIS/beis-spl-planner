@@ -52,20 +52,21 @@
           }) %}
             <div class="salary-group">
               {{ salaryInput({
-                idPrefix: "primary",
+                data: data,
+                parent: "primary",
                 labelText: data | primaryName | capitalize + "’s salary (£)",
-                amountError: errors['primary-salary-amount'].text if errors['primary-salary-amount'],
-                periodError: errors['primary-salary-period'].text if errors['primary-salary-period']
+                amountError: errors['primary-salary-amount'] if errors['primary-salary-amount'],
+                periodError: errors['primary-salary-period'] if errors['primary-salary-period']
               }) }}
             </div>
             <div class="salary-group">
               {{ salaryInput({
-                idPrefix: "secondary",
+                data: data,
+                parent: "secondary",
                 labelText: data | secondaryName | capitalize + "’s salary (£)",
-                amountError: errors['secondary-salary-amount'].text if errors['secondary-salary-amount'],
-                periodError: errors['secondary-salary-period'].text if errors['secondary-salary-period']
+                amountError: errors['secondary-salary-amount'] if errors['secondary-salary-amount'],
+                periodError: errors['secondary-salary-period'] if errors['secondary-salary-period']
               }) }}
-
             </div>
           {% endcall %}
         {% endcall %}

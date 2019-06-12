@@ -56,11 +56,11 @@ module.exports = {
 }
 
 function weeklyPay (data, parent) {
-  const providedSalary = parseFloat(data[`${parent}-salary-amount`])
-  if (!providedSalary && providedSalary !== 0) {
-    return
+  const providedSalary = parseFloat(dlv(data, [parent, 'salary-amount']))
+  if (isNaN(providedSalary)) {
+    return null
   }
-  const period = data[`${parent}-salary-period`]
+  const period = dlv(data, [parent, 'salary-period'])
   switch (period) {
     case 'week':
       return providedSalary

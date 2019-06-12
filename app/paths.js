@@ -55,7 +55,7 @@ class Paths {
           initialLeaveAndPay: {
             url: '/eligibility/mother/initial-leave-and-pay',
             workflowParentPath: '/eligibility/mother/shared-parental-leave-and-pay',
-            validator: validate.primaryInitialLeaveAndPay
+            validator: validate.initialLeaveAndPay
           },
           maternityAllowance: {
             url: '/eligibility/mother/maternity-allowance',
@@ -72,7 +72,7 @@ class Paths {
           initialLeaveAndPay: {
             url: '/eligibility/primary-adopter/initial-leave-and-pay',
             workflowParentPath: '/eligibility/primary-adopter/shared-parental-leave-and-pay',
-            validator: validate.primaryInitialLeaveAndPay
+            validator: validate.initialLeaveAndPay
           },
           maternityAllowance: {
             url: '/eligibility/primary-adopter/maternity-allowance',

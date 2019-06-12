@@ -51,14 +51,6 @@ module.exports = function (env) {
     return errors && errors['start-date'] && errors['start-date'].dateParts.includes(partOfDate)
   }
 
-  function getErrorTextByHref (errors, href) {
-    if (!errors) {
-      return
-    }
-    const errorObject = errors.find(error => error.href === href)
-    return errorObject ? errorObject.text : errorObject
-  }
-
   function startDay (data) {
     return new Day(data['start-date-year'], data['start-date-month'], data['start-date-day'])
   }
@@ -84,7 +76,6 @@ module.exports = function (env) {
   return {
     weekCheckboxes,
     hasStartDateError,
-    getErrorTextByHref,
     startDay,
     startOfWeek,
     endOfWeek,

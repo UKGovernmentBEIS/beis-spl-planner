@@ -27,7 +27,7 @@ function primarySharedParentalLeaveAndPay (req) {
   })
 }
 
-function primaryInitialLeaveAndPay (req) {
+function initialLeaveAndPay (req) {
   return validateParentYesNoFields(req, 'primary', {
     'initial-leave-eligible': 'Select whether you are eligible for leave',
     'initial-pay-eligible': 'Select whether you are eligible for pay'
@@ -38,7 +38,7 @@ function maternityAllowance (req) {
   if (req.session.data['birth-or-adoption'] === 'adoption') {
     return true
   }
-  if (!isYesOrNo(req.session.data['maternity-allowance-eligible'])) {
+  if (!isYesOrNo(req.session.data.primary['maternity-allowance-eligible'])) {
     addError(req, 'maternity-allowance-eligible', 'Select whether you are eligible for maternity allowance', '#maternity-allowance-eligible-1')
     return false
   }
@@ -104,18 +104,21 @@ function addStartDateError (req, message, dateParts) {
 function parentSalaries (req) {
   let isValid = true
   const {
-    'primary-salary-amount': primarySalary,
-    'secondary-salary-amount': secondarySalary,
-    'primary-salary-period': primaryPeriod,
-    'secondary-salary-period': secondaryPeriod
-  } = req.session.data
+    'salary-amount': primarySalary,
+    'salary-period': primaryPeriod
+  } = req.session.data.primary
+  const {
+    'salary-amount': secondarySalary,
+    'salary-period': secondaryPeriod
+  } = req.session.data.secondary
+
   if (primarySalary && !primarySalary.match(/[0-9]+(\.[0-9]{1,2})?/)) {
-    addError(req, 'primary-salary-amount', 'Enter a valid salary', '#primary-salary-amount')
+    addError(req, 'primary-salary-amount', 'Salary must be an amount of money like 23000 or 139.45', '#primary-salary-amount')
     isValid = false
   }
 
   if (secondarySalary && !secondarySalary.match(/[0-9]+(\.[0-9]{1,2})?/)) {
-    addError(req, 'secondary-salary-amount', 'Enter a valid salary', '#secondary-salary-amount')
+    addError(req, 'secondary-salary-amount', 'Salary must be an amount of money like 23000 or 139.45', '#secondary-salary-amount')
     isValid = false
   }
 
@@ -135,7 +138,7 @@ function parentSalaries (req) {
 module.exports = {
   birthOrAdoption,
   primarySharedParentalLeaveAndPay,
-  primaryInitialLeaveAndPay,
+  initialLeaveAndPay,
   maternityAllowance,
   secondarySharedParentalLeaveAndPay,
   paternityLeaveAndPay,

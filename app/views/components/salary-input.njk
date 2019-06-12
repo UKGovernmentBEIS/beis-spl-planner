@@ -2,35 +2,30 @@
 {% from "hmcts-currency-input/macro.njk" import hmctsCurrencyInput %}
 
 {% macro salaryInput(options) %}
-  {% set salaryAmountId = options.idPrefix + "-salary-amount" %}
-  {% set salaryPeriodId = options.idPrefix + "-salary-period" %}
-  {% set salaryAmountError = errors["parent-salaries"] | getErrorTextByHref("#" + salaryAmountId) %}
-  {% set salaryPeriodError = errors["parent-salaries"] | getErrorTextByHref("#" + salaryPeriodId) %}
+  {% set salaryPeriodId = options.parent + "[salary-period]" %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
       {{ hmctsCurrencyInput({
-        id: salaryAmountId,
-        name: salaryAmountId,
+        id: options.parent + "-salary-amount",
+        name: options.parent + "[salary-amount]",
         classes: "govuk-input--width-20",
         label: {
           text: options.labelText
         },
         pattern: "[0-9]+(\.[0-9]{1,2})?",
-        errorMessage: {
-          text: options.amountError
-        } if options.amountError,
+        errorMessage: options.amountError if options.amountError,
         attributes: {
           autocomplete: "off",
-          title: "Salary should be a number with no decimal point, e.g. 28750"
+          title: "Salary must be an amount of money like 23000 or 139.45"
         },
-        value: data[salaryAmountId]
+        value: options.data[options.parent]['salary-amount']
       }) }}
     </div>
 
     <div class="govuk-grid-column-one-half">
       {{ govukSelect({
-        id: salaryPeriodId,
-        name: salaryPeriodId,
+        id: options.parent + "-salary-period",
+        name: options.parent + "[salary-period]",
         label: {
           text: "Per"
         },
@@ -41,17 +36,17 @@
           {
             value: "year",
             text: "Year",
-            selected: data[salaryPeriodId] === "year"
+            selected: options.data[options.parent]['salary-period'] === "year"
           },
           {
             value: "month",
             text: "Month",
-            selected: data[salaryPeriodId] === "month"
+            selected: options.data[options.parent]['salary-period'] === "month"
           },
           {
             value: "week",
             text: "Week",
-            selected: data[salaryPeriodId] === "week"
+            selected: options.data[options.parent]['salary-period'] === "week"
           }
         ]
       }) }}

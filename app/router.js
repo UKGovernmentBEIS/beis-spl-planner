@@ -44,7 +44,7 @@ registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
     res.render('eligibility/primary-initial-leave-and-pay')
   },
   post: function (parentUrlPart, req, res) {
-    if (!validate.primaryInitialLeaveAndPay(req)) {
+    if (!validate.initialLeaveAndPay(req)) {
       return res.redirect('back')
     }
     res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
@@ -59,7 +59,7 @@ registerEligibilityRouteForPrimaryParents(router, 'maternityAllowance', {
     res.render('eligibility/maternity-allowance')
   },
   post: function (_, req, res) {
-    if (!validate.primaryInitialLeaveAndPay(req)) {
+    if (!validate.initialLeaveAndPay(req)) {
       return res.redirect('back')
     }
     res.redirect(paths.getPath(`eligibility.partner.sharedParentalLeaveAndPay`))
