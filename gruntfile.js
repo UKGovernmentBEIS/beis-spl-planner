@@ -71,7 +71,7 @@ module.exports = function (grunt) {
     },
     js: {
       files: [
-        'app/assets/javascrips/**/*.{js, vue}',
+        'app/assets/javascripts/**/*.{js,vue}',
         'app/lib/**/*.js',
         'common/browsered/index.js',
         'common/assets/javascripts/**/*.js'
