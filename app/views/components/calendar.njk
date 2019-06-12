@@ -1,19 +1,49 @@
 {% from "checkboxes/macro.njk" import govukCheckboxes %}
 
 {% macro leaveAndPayCheckboxes(data, parent) %}
-  {{ govukCheckboxes({
-    name: parent + "[leave]",
-    fieldset: {
-      legend: {
-        text: (data | currentParentName(parent) | capitalise) + "’s leave",
-        classes: "govuk-fieldset__legend--m"
-      }
-    },
-    hint: {
-      text: "Select all that apply."
-    },
-    items: data | weekCheckboxes(parent, govukCheckboxes)
-  }) }}
+  {% set startDay = (data | startDay) %}
+  {% set minWeek = -11 if (data | isBirth) else -2 %}
+  {% set maxWeek = 52 %}
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        {{ data | parentName(parent) | capitalize }}’s leave
+      </legend>
+      <div class="govuk-checkboxes" data-module="checkboxes">
+        <div class="govuk-checkboxes" data-module="checkboxes">
+          {% for i in range(minWeek, maxWeek + 1) %}
+            {% set cumplsoryLeave = (parent === 'primary' and (i === 0 or i === 1)) %}
+            {% set outOfRange = (parent === 'secondary' and i < 0) %}
+            {% set leaveId = parent + '-leave_' + i %}
+            {% set leaveName = parent + '[leave]' %}
+            {% set payId = parent + '-pay_' + i %}
+            {% set payName = parent + '[pay]' %}
+            <div class="govuk-checkboxes__item">
+              <input class="govuk-checkboxes__input" id="{{ leaveId }}" name="{{ leaveName }}" type="checkbox" value="{{ i }}"
+                data-aria-controls="conditional-{{ leaveId }}"
+                data-parent="{{ parent }}" data-property="leave"
+                {{ 'checked' if (data | isWeekChecked(parent, 'leave', i)) }}
+                {{ 'disabled' if (cumplsoryLeave or outOfRange) }}>
+              <label class="govuk-label govuk-checkboxes__label" for="{{ leaveId }}">
+                Taking leave
+              </label>
+            </div>
+            <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-{{ leaveId }}">
+              <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="{{ payId }}" name="{{ payName }}" type="checkbox" value="{{ i }}"
+                  data-parent="{{ parent }}" data-property="pay"
+                  {{ 'checked' if (data | isWeekChecked(parent, 'pay', i)) }}
+                  {{ 'disabled' if outOfRange }}>
+                <label class="govuk-label govuk-checkboxes__label" for="{{ payId }}">
+                  Paid
+                </label>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </fieldset>
+  </div>
 {% endmacro %}
 
 {% macro calendar(data) %}
