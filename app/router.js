@@ -24,8 +24,7 @@ router.route(paths.getPath('birthOrAdoption'))
     if (!validate.birthOrAdoption(req)) {
       return res.redirect('back')
     }
-    const primaryParent = req.session.data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary-adopter'
-    res.redirect(paths.getPath(`eligibility.${primaryParent}.sharedParentalLeaveAndPay`))
+    res.redirect(paths.getPath('startDate'))
   })
 
 registerEligibilityRouteForPrimaryParents(router, 'sharedParentalLeaveAndPay', {

@@ -94,7 +94,7 @@ class Paths {
       },
       startDate: {
         url: '/start-date',
-        workflowParentPath: '/eligibility/partner/paternity-leave-and-pay',
+        workflowParentPath: '/birth-or-adoption',
         validator: validate.startDate
       },
       parentSalaries: {
