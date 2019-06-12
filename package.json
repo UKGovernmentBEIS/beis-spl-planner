@@ -27,6 +27,7 @@
     "dset": "^2.0.1",
     "express": "4.16.x",
     "express-session": "^1.16.1",
+    "file-url": "^3.0.0",
     "govuk-frontend": "^2.10.0",
     "html-pdf": "^2.2.0",
     "is-iexplorer": "^1.0.0",

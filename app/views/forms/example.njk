@@ -1,4 +1,10 @@
-<h1>
-  Example PDF
-</h1>
-<pre>{{ data | dump(2) }}</pre>
+{% extends "./pdf-base.njk" %}
+
+{% block parent -%}
+  primary
+{%- endblock %}
+
+{% block pages %}
+  {% include "./example.1.njk" %}
+  {% include "./example.2.njk" %}
+{% endblock %}

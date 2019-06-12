@@ -1,0 +1,47 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+.page {
+  zoom: calc(16 / 12);
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: block;
+  page-break-after: auto;
+  overflow: hidden;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+p {
+  margin: 0.5rem 0;
+}
+
+.primary h1,
+.primary h2,
+.primary h3,
+.primary h4,
+.primary h5,
+.primary h6 {
+  color: #005192;
+}
+
+.secondary h1,
+.secondary h2,
+.secondary h3,
+.secondary h4,
+.secondary h5,
+.secondary h6 {
+  color: #005192;
+}
