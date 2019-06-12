@@ -29,7 +29,7 @@ router.route(paths.getPath('birthOrAdoption'))
   })
 
 registerEligibilityRouteForPrimaryParents(router, 'sharedParentalLeaveAndPay', {
-  get: function (_, req, res) {
+  get: function (req, res) {
     res.render('eligibility/primary-shared-parental-leave-and-pay')
   },
   post: function (parentUrlPart, req, res) {
@@ -47,7 +47,10 @@ registerEligibilityRouteForPrimaryParents(router, 'sharedParentalLeaveAndPay', {
 })
 
 registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
-  get: function (parentUrlPart, req, res) {
+  get: function (req, res) {
+    if (skip.initialLeaveAndPay(req)) {
+      return res.redirect(paths.getPreviousWorkFlowPath(req.url))
+    }
     res.render('eligibility/primary-initial-leave-and-pay')
   },
   post: function (parentUrlPart, req, res) {
@@ -62,9 +65,9 @@ registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
 })
 
 registerEligibilityRouteForPrimaryParents(router, 'maternityAllowance', {
-  get: function (_, req, res) {
+  get: function (req, res) {
     if (skip.maternityAllowance(req)) {
-      return res.redirect(paths.getPath(`eligibility.partner.sharedParentalLeaveAndPay`))
+      return res.redirect(paths.getPreviousWorkFlowPath(req.url))
     }
     res.render('eligibility/maternity-allowance')
   },
@@ -92,6 +95,9 @@ router.route(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
 
 router.route(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
   .get(function (req, res) {
+    if (skip.paternityLeaveAndPay(req)) {
+      return res.redirect(paths.getPreviousWorkFlowPath(req.url))
+    }
     res.render('eligibility/paternity-leave-and-pay')
   })
   .post(function (req, res) {
