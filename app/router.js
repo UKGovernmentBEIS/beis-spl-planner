@@ -5,6 +5,8 @@ const paths = require('./paths')
 const { getBlocks } = require('./lib/blocks')
 const { getWeeksArray } = require('./utils')
 
+router.use('/forms', require('./router.forms'))
+
 router.route(paths.getPath('root'))
   .get(function (req, res) {
     res.render('index')
