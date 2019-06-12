@@ -1,11 +1,10 @@
 const paths = require('../paths')
 
-function registerRouteForEachParent (router, path, handlers) {
-  const parents = ['mother', 'primary-adopter', 'partner']
-  for (const parent of parents) {
-    const route = router.route(paths.getPath(`${path}.${parent}`))
+function registerEligibilityRouteForPrimaryParents (router, path, handlers) {
+  for (const parent of ['mother', 'primary-adopter']) {
+    const route = router.route(paths.getPath(`eligibility.${parent}.${path}`))
     if (handlers.get) {
-      route.get(handlers.get.bind(this, parent))
+      route.get(handlers.get.bind(this))
     }
     if (handlers.post) {
       route.post(handlers.post.bind(this, parent))
@@ -18,6 +17,6 @@ function getParent (parentUrlPart) {
 }
 
 module.exports = {
-  registerRouteForEachParent,
+  registerEligibilityRouteForPrimaryParents,
   getParent
 }

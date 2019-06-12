@@ -35,6 +35,9 @@ function primaryInitialLeaveAndPay (req) {
 }
 
 function maternityAllowance (req) {
+  if (req.session.data['birth-or-adoption'] === 'adoption') {
+    return true
+  }
   if (!isYesOrNo(req.session.data['maternity-allowance-eligible'])) {
     addError(req, 'maternity-allowance-eligible', 'Select whether you are eligible for maternity allowance', '#maternity-allowance-eligible-1')
     return false

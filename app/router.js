@@ -5,6 +5,7 @@ const paths = require('./paths')
 const validate = require('./validate')
 const { getBlocks } = require('./lib/blocks')
 const { getWeeksArray } = require('./utils')
+const { registerEligibilityRouteForPrimaryParents } = require('./lib/routerUtils')
 
 router.route(paths.getPath('root'))
   .get(function (req, res) {
@@ -22,41 +23,48 @@ router.route(paths.getPath('birthOrAdoption'))
     if (!validate.birthOrAdoption(req)) {
       return res.redirect('back')
     }
-    res.redirect(paths.getPath('eligibility.mother.sharedParentalLeaveAndPay'))
+    const primaryParent = req.session.data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary-adopter'
+    res.redirect(paths.getPath(`eligibility.${primaryParent}.sharedParentalLeaveAndPay`))
   })
 
-router.route(paths.getPath('eligibility.mother.sharedParentalLeaveAndPay'))
-  .get(function (req, res) {
+registerEligibilityRouteForPrimaryParents(router, 'sharedParentalLeaveAndPay', {
+  get: function (req, res) {
     res.render('eligibility/primary-shared-parental-leave-and-pay')
-  })
-  .post(function (req, res) {
+  },
+  post: function (parentUrlPart, req, res) {
     if (!validate.primarySharedParentalLeaveAndPay(req)) {
       return res.redirect('back')
     }
-    res.redirect(paths.getPath('eligibility.mother.initialLeaveAndPay'))
-  })
+    res.redirect(paths.getPath(`eligibility.${parentUrlPart}.initialLeaveAndPay`))
+  }
+})
 
-router.route(paths.getPath('eligibility.mother.initialLeaveAndPay'))
-  .get(function (req, res) {
+registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
+  get: function (req, res) {
     res.render('eligibility/primary-initial-leave-and-pay')
-  })
-  .post(function (req, res) {
+  },
+  post: function (parentUrlPart, req, res) {
     if (!validate.primaryInitialLeaveAndPay(req)) {
       return res.redirect('back')
     }
-    res.redirect(paths.getPath('eligibility.mother.maternityAllowance'))
-  })
+    res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
+  }
+})
 
-router.route(paths.getPath('eligibility.mother.maternityAllowance'))
-  .get(function (req, res) {
+registerEligibilityRouteForPrimaryParents(router, 'maternityAllowance', {
+  get: function (req, res) {
+    if (req.session.data['birth-or-adoption'] === 'adoption') {
+      return res.redirect(paths.getPath(`eligibility.partner.sharedParentalLeaveAndPay`))
+    }
     res.render('eligibility/maternity-allowance')
-  })
-  .post(function (req, res) {
-    if (!validate.maternityAllowance(req)) {
+  },
+  post: function (_, req, res) {
+    if (!validate.primaryInitialLeaveAndPay(req)) {
       return res.redirect('back')
     }
-    res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
-  })
+    res.redirect(paths.getPath(`eligibility.partner.sharedParentalLeaveAndPay`))
+  }
+})
 
 router.route(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
   .get(function (req, res) {
