@@ -99,31 +99,34 @@ function addStartDateError (req, message, dateParts) {
 }
 
 function parentSalaries (req) {
-  req.session.errors['parent-salaries'] = []
+  let isValid = true
   const {
     'primary-salary-amount': primarySalary,
     'secondary-salary-amount': secondarySalary,
     'primary-salary-period': primaryPeriod,
     'secondary-salary-period': secondaryPeriod
   } = req.session.data
-
   if (primarySalary && !primarySalary.match(/[0-9]+(\.[0-9]{1,2})?/)) {
-    // req.session.errors['parent-salaries'].push(buildError('Enter a valid salary', '#primary-salary-amount'))
+    addError(req, 'primary-salary-amount', 'Enter a valid salary', '#primary-salary-amount')
+    isValid = false
   }
 
   if (secondarySalary && !secondarySalary.match(/[0-9]+(\.[0-9]{1,2})?/)) {
-    // req.session.errors['parent-salaries'].push(buildError('Enter a valid salary', '#secondary-salary-amount'))
+    addError(req, 'secondary-salary-amount', 'Enter a valid salary', '#secondary-salary-amount')
+    isValid = false
   }
 
   if (primaryPeriod && !['year', 'month', 'week'].includes(primaryPeriod)) {
-    // req.session.errors['parent-salaries'].push(buildError('Provide a valid salary period', '#primary-salary-period'))
+    addError(req, 'primary-salary-period', 'Salary period must be week, month or year', '#primary-salary-period')
+    isValid = false
   }
 
-  if (primaryPeriod && !['year', 'month', 'week'].includes(secondaryPeriod)) {
-    // req.session.errors['parent-salaries'].push(buildError('Provide a valid salary period', '#secondary-salary-period'))
+  if (secondaryPeriod && !['year', 'month', 'week'].includes(secondaryPeriod)) {
+    addError(req, 'secondary-salary-period', 'Salary period must be week, month or year', '#secondary-salary-period')
+    isValid = false
   }
 
-  return !req.session.errors['parent-salaries'].length
+  return isValid
 }
 
 module.exports = {

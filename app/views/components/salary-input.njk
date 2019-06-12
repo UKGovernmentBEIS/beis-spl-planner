@@ -6,50 +6,55 @@
   {% set salaryPeriodId = options.idPrefix + "-salary-period" %}
   {% set salaryAmountError = errors["parent-salaries"] | getErrorTextByHref("#" + salaryAmountId) %}
   {% set salaryPeriodError = errors["parent-salaries"] | getErrorTextByHref("#" + salaryPeriodId) %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      {{ hmctsCurrencyInput({
+        id: salaryAmountId,
+        name: salaryAmountId,
+        classes: "govuk-input--width-20",
+        label: {
+          text: options.labelText
+        },
+        pattern: "[0-9]+(\.[0-9]{1,2})?",
+        errorMessage: {
+          text: options.amountError
+        } if options.amountError,
+        attributes: {
+          autocomplete: "off",
+          title: "Salary should be a number with no decimal point, e.g. 28750"
+        },
+        value: data[salaryAmountId]
+      }) }}
+    </div>
 
-  {{ hmctsCurrencyInput({
-    id: salaryAmountId,
-    name: salaryAmountId,
-    classes: "govuk-input--width-20",
-    label: {
-      text: options.labelText
-    },
-    pattern: "[0-9]+(\.[0-9]{1,2})?",
-    errorMessage: {
-      text: salaryAmountError
-    } if salaryAmountError,
-    attributes: {
-      autocomplete: "off",
-      title: "Salary should be a number with no decimal point, e.g. 28750"
-    },
-    value: data[salaryAmountId]
-  }) }}
-
-  {{ govukSelect({
-    id: salaryPeriodId,
-    name: salaryPeriodId,
-    label: {
-      text: "Per"
-    },
-    errorMessage: {
-      text: salaryPeriodError
-    } if salaryPeriodError,
-    items: [
-      {
-        value: "year",
-        text: "Year",
-        selected: data[salaryPeriodId] === "year"
-      },
-      {
-        value: "month",
-        text: "Month",
-        selected: data[salaryPeriodId] === "month"
-      },
-      {
-        value: "week",
-        text: "Week",
-        selected: data[salaryPeriodId] === "week"
-      }
-    ]
-  }) }}
+    <div class="govuk-grid-column-one-half">
+      {{ govukSelect({
+        id: salaryPeriodId,
+        name: salaryPeriodId,
+        label: {
+          text: "Per"
+        },
+        errorMessage: {
+          text: options.periodError
+        } if options.periodError,
+        items: [
+          {
+            value: "year",
+            text: "Year",
+            selected: data[salaryPeriodId] === "year"
+          },
+          {
+            value: "month",
+            text: "Month",
+            selected: data[salaryPeriodId] === "month"
+          },
+          {
+            value: "week",
+            text: "Week",
+            selected: data[salaryPeriodId] === "week"
+          }
+        ]
+      }) }}
+    </div>
+  </div>
 {% endmacro %}
