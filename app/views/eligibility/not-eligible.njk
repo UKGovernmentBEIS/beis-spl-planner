@@ -1,0 +1,35 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+
+{% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: backPath()
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        Neither parent is eligible for shared parental leave or pay
+      </h1>
+
+      <p>
+        To use the shared parental leave and pay planner at least one parent must be eligible for shared parental leave or statutory shared parental pay.
+      </p>
+      <p>
+        You’ve indicated that neither parent is eligible for shared parental leave or statutory shared parental pay.
+      </p>
+
+      <h2 class="govuk-heading-m">
+        What happens next
+      </h2>
+      {% set readMoreHref "https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-birth-parents" if data | isBirth else "https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-adopters" %}
+      <p>
+        You can read more about the <a href="{{ readMoreHref }}">eligibility rules for shared parental leave and pay</a>.
+      </p>
+    </div>
+  </div>
+{% endblock %}

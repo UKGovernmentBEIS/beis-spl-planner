@@ -6,7 +6,7 @@ const validate = require('./validate')
 const skip = require('./skip')
 const { getBlocks } = require('./lib/blocks')
 const { getWeeksArray } = require('./utils')
-const { registerEligibilityRouteForPrimaryParents } = require('./lib/routerUtils')
+const { registerEligibilityRouteForPrimaryParents, bothParentsAreIneligible } = require('./lib/routerUtils')
 
 router.route(paths.getPath('root'))
   .get(function (req, res) {
@@ -87,6 +87,9 @@ router.route(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
     if (!validate.secondarySharedParentalLeaveAndPay(req)) {
       return res.redirect('back')
     }
+    if (bothParentsAreIneligible(req.session.data)) {
+      return res.redirect(paths.getPath('notEligible'))
+    }
     if (skip.paternityLeaveAndPay(req)) {
       return res.redirect(paths.getPath('startDate'))
     }
@@ -105,6 +108,11 @@ router.route(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
       return res.redirect('back')
     }
     res.redirect(paths.getPath('startDate'))
+  })
+
+router.route(paths.getPath('notEligible'))
+  .get(function (req, res) {
+    res.render('eligibility/not-eligible')
   })
 
 router.route(paths.getPath('startDate'))

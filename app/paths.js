@@ -92,6 +92,10 @@ class Paths {
           }
         }
       },
+      notEligible: {
+        url: '/not-eligible',
+        workflowParentPath: '/eligibility/partner/shared-parental-leave-and-pay'
+      },
       startDate: {
         url: '/start-date',
         workflowParentPath: '/eligibility/partner/paternity-leave-and-pay',

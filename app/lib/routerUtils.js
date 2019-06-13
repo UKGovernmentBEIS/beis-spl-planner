@@ -1,3 +1,4 @@
+const delve = require('dlv')
 const paths = require('../paths')
 
 function registerEligibilityRouteForPrimaryParents (router, path, handlers) {
@@ -16,7 +17,20 @@ function getParent (parentUrlPart) {
   return parentUrlPart === 'partner' ? 'secondary' : 'primary'
 }
 
+function bothParentsAreIneligible (data) {
+  const isNo = value => value === 'no'
+  const primarySplEligible = delve(data, ['primary', 'spl-eligible'])
+  const primaryShppEligible = delve(data, ['primary', 'shpp-eligible'])
+  const secondarySplEligible = delve(data, ['secondary', 'spl-eligible'])
+  const secondaryShppEligible = delve(data, ['secondary', 'shpp-eligible'])
+  return isNo(primarySplEligible) &&
+         isNo(primaryShppEligible) &&
+         isNo(secondarySplEligible) &&
+         isNo(secondaryShppEligible)
+}
+
 module.exports = {
   registerEligibilityRouteForPrimaryParents,
-  getParent
+  getParent,
+  bothParentsAreIneligible
 }
