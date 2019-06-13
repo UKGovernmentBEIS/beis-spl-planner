@@ -23,12 +23,17 @@
       <p>
         Click in the calendar to select the weeks you and your partner would like to
         take off work when you have a child. The calendar is based on your child's
-        expected or actual week of birth.
+        expected or actual week of {{ "birth" if isBirth else "placement" }}.
       </p>
       <p>
         The calendar will display
-        <a href="https://www.gov.uk/maternity-pay-leave">maternity</a>,
+        {% if isBirth %}
+          <a href="https://www.gov.uk/maternity-pay-leave">maternity</a>,
+        {% else %}
+          <a href="https://www.gov.uk/adoption-pay-leave">adoption</a>,
+        {% endif %}
         <a href="https://www.gov.uk/paternity-pay-leave">paternity</a> or
+        {# TODO: Update link per environment. #}
         <a href="https://spl-planner-alpha.herokuapp.com/shared-parental-leave-and-pay">shared parental leave</a> and an
         indicative pay amount based on which parent is taking leave and pay, when
         and for how long.
