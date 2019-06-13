@@ -47,12 +47,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data["secondary"]["initial-leave-eligible"] === "yes"
+                checked: data["secondary"]["initial-leave-eligible"] | isYes
               },
               {
                 value: "no",
                 text: "No",
-                checked: data["secondary"]["initial-leave-eligible"] === "no"
+                checked: data["secondary"]["initial-leave-eligible"] | isNo
               }
             ]
           }) }}
@@ -74,12 +74,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data["secondary"]["initial-pay-eligible"] === "yes"
+                checked: data["secondary"]["initial-pay-eligible"] | isYes
               },
               {
                 value: "no",
                 text: "No",
-                checked: data["secondary"]["initial-pay-eligible"] === "no"
+                checked: data["secondary"]["initial-pay-eligible"] | isNo
               }
             ]
           }) }}

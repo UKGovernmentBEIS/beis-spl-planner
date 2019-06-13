@@ -6,6 +6,7 @@
 
 const delve = require('dlv')
 const Day = require('../common/lib/day')
+const { isAdoption } = require('../common/lib/dataUtils')
 const skip = require('./skip')
 const {
   prettyList,
@@ -43,7 +44,7 @@ function maternityAllowance (req) {
   if (skip.maternityAllowance(req)) {
     return true
   }
-  if (req.session.data['birth-or-adoption'] === 'adoption') {
+  if (isAdoption(req.session.data)) {
     return true
   }
   if (!isYesOrNo(delve(req.session.data, ['primary', 'maternity-allowance-eligible']))) {

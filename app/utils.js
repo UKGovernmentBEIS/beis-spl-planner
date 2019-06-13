@@ -1,6 +1,7 @@
 const dlv = require('dlv')
 const _ = require('lodash')
 const Day = require('../common/lib/day')
+const isBirth = require('../common/lib/dataUtils')
 
 const MOTHER = Object.freeze({
   name: 'mother',
@@ -24,7 +25,7 @@ function getWeeksArray (data, parent, property) {
 function nameAndNonSharedLeaveType (data, parent) {
   if (parent === 'secondary') {
     return PARTNER
-  } else if (data['birth-or-adoption'] === 'birth') {
+  } else if (isBirth(data)) {
     return MOTHER
   } else {
     return PRIMARY_ADOPTER

@@ -44,12 +44,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data["maternity-allowance-eligible"] === "yes"
+                checked: data["maternity-allowance-eligible"] | isYes
               },
               {
                 value: "no",
                 text: "No",
-                checked: data["maternity-allowance-eligible"] === "no"
+                checked: data["maternity-allowance-eligible"] | isNo
               }
             ]
           }) }}
