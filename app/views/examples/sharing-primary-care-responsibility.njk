@@ -1,0 +1,25 @@
+{% extends "./example.njk" %}
+
+{% block exampleTitle %}
+  Sharing primary care responsibility
+{% endblock %}
+
+{% block background %}
+  <p>
+    A {{ "mother and her partner" if isBirth else "couple who are adopting" }} want to have equal time as primary carer for their child.
+    The {{ primaryName }} ends their {{ primaryLeaveType }} leave after 3 months to create 9 months of shared parental leave.
+  </p>
+  <p>
+    The couple spend the first 3 months at home together, leaving 6 months of shared parental leave for them to split between them.
+    They alternate being at home with the child every 6 weeks for the remaining 6 months of shared parental leave.
+  </p>
+{% endblock %}
+
+{% block primaryLeavePlan %}
+  13 weeks {{ primaryLeaveType }} leave and statutory {{ primaryLeaveType }} pay, two 6-week blocks of shared parental leave and pay.
+{% endblock %}
+
+{% block secondaryLeavePlan %}
+  2 weeks paternity leave and statutory shared paternity pay. An initial 15-week block of shared parental leave and 14 weeks of statutory
+  shared parental pay, followed by two 6-week blocks of unpaid shared parental leave.
+{% endblock %}

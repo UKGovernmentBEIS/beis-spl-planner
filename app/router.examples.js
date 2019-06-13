@@ -31,6 +31,48 @@ const examples = {
         ..._.range(0, 2)
       ]
     }
+  },
+  'extending-time-as-a-family': {
+    primary: {
+      leave: [
+        ..._.range(-2, 46)
+      ],
+      pay: [
+        ..._.range(-2, 37)
+      ]
+    },
+    secondary: {
+      leave: [
+        ..._.range(0, 6)
+      ],
+      pay: [
+        ..._.range(0, 2)
+      ]
+    }
+  },
+  'sharing-primary-care-responsibility': {
+    primary: {
+      leave: [
+        ..._.range(-2, 11),
+        ..._.range(17, 23),
+        ..._.range(29, 35)
+      ],
+      pay: [
+        ..._.range(-2, 11),
+        ..._.range(17, 23),
+        ..._.range(29, 35)
+      ]
+    },
+    secondary: {
+      leave: [
+        ..._.range(0, 17),
+        ..._.range(23, 29),
+        ..._.range(35, 41)
+      ],
+      pay: [
+        ..._.range(0, 16)
+      ]
+    }
   }
 }
 

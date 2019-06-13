@@ -12,6 +12,8 @@
   }) }}
 {% endblock %}
 
+{% set isBirth = (data | isBirth) %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
@@ -42,7 +44,7 @@
       <p class="govuk-hint">
         Examples will open in a new page.
       </p>
-      {% set examplePath = '/planner/examples/birth' if (data | isBirth) else '/planner/examples/adoption' %}
+      {% set examplePath = '/planner/examples/birth' if isBirth else '/planner/examples/adoption' %}
       <ul class="govuk-list govuk-list--bullet">
         <li>
           <a class="govuk-link" target="_blank" href="{{ examplePath }}/managing-parenting-and-work">
@@ -50,8 +52,8 @@
           </a>
         </li>
         <li>
-          <a class="govuk-link" target="_blank" href="{{ examplePath }}/supporting-the-mother-after-birth">
-            Supporting the mother after birth
+          <a class="govuk-link" target="_blank" href="{{ examplePath }}/extending-time-as-a-family">
+            Extending time as a family after {{ "birth" if isBirth else "the child is placed" }}
           </a>
         </li>
         <li>
