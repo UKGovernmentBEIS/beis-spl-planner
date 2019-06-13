@@ -1,0 +1,26 @@
+{% extends "./example.njk" %}
+
+{% block exampleTitle %}
+  Managing parenting and work
+{% endblock %}
+
+{% block background %}
+  <p>
+    {{ "A mother" if isBirth else "An adopter" }} wants to return to work for a project in the middle of {{ primaryLeaveType }} leave.
+    The {{ primaryName }} gives notice to end their {{ primaryLeaveType }} leave early to create shared parental leave.
+    The {{ primaryName }}’s partner takes 3 months shared parental leave while the {{ primaryName }} goes to work.
+    The {{ primaryName }} resumes their time at home with the child after the project is over and the partner has returned to work.
+  </p>
+  <p>
+    They would like to take some leave together. The partner’s first month of shared parental leave will overlap with the
+    {{ primaryName }}’s last month of {{ primaryLeaveType }} leave.
+  </p>
+{% endblock %}
+
+{% block primaryLeavePlan %}
+  35 weeks {{ primaryLeaveType }} leave and statutory {{ primaryLeaveType }} pay, 4 weeks shared parental leave and statutory shared parental pay.
+{% endblock %}
+
+{% block secondaryLeavePlan %}
+  2 weeks paternity leave and statutory paternity pay and 13 weeks unpaid shared parental leave.
+{% endblock %}

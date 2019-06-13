@@ -1,7 +1,7 @@
 {% from "back-link/macro.njk" import govukBackLink %}
-{% from "checkboxes/macro.njk" import govukCheckboxes %}
 
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "components/calendar.njk" import calendar %}
 
 {% extends "layout.njk" %}
 
@@ -11,22 +11,6 @@
     href: backPath()
   }) }}
 {% endblock %}
-
-{% macro leaveAndPayCheckboxes(parent) %}
-  {{ govukCheckboxes({
-    name: parent + "[leave]",
-    fieldset: {
-      legend: {
-        text: (data | currentParentName(parent) | capitalize) + "’s leave",
-        classes: "govuk-fieldset__legend--m"
-      }
-    },
-    hint: {
-      text: "Select all that apply."
-    },
-    items: data | weekCheckboxes(parent, govukCheckboxes)
-  }) }}
-{% endmacro %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -58,19 +42,20 @@
       <p class="govuk-hint">
         Examples will open in a new page.
       </p>
+      {% set examplePath = '/planner/examples/birth' if (data | isBirth) else '/planner/examples/adoption' %}
       <ul class="govuk-list govuk-list--bullet">
         <li>
-          <a class="govuk-link" target="_blank" href="/planner/examples/managing-parenting-and-work">
+          <a class="govuk-link" target="_blank" href="{{ examplePath }}/managing-parenting-and-work">
             Managing parenting and work
           </a>
         </li>
         <li>
-          <a class="govuk-link" target="_blank" href="/planner/examples/supporting-the-mother-after-birth">
+          <a class="govuk-link" target="_blank" href="{{ examplePath }}/supporting-the-mother-after-birth">
             Supporting the mother after birth
           </a>
         </li>
         <li>
-          <a class="govuk-link" target="_blank" href="/planner/examples/sharing-primary-care-responsibility">
+          <a class="govuk-link" target="_blank" href="{{ examplePath }}/sharing-primary-care-responsibility">
             Sharing primary care responsibility
           </a>
         </li>
@@ -79,20 +64,7 @@
   </div>
   <form id="leave-and-pay" method="POST">
     {% call appendHiddenFields(data) %}
-      <div class="govuk-grid-row js-hide">
-        <div class="govuk-grid-column-one-half-from-desktop">
-          {{ leaveAndPayCheckboxes("primary") }}
-          {# Compulsory leave weeks are disabled checkboxes, so we need to include the values manually. #}
-          <input type="hidden" name="primary[leave]" value="0" />
-          <input type="hidden" name="primary[leave]" value="1" />
-        </div>
-        <div class="govuk-grid-column-one-half-from-desktop">
-          {{ leaveAndPayCheckboxes("secondary") }}
-        </div>
-      </div>
-      <div id="planner">
-        {# JavaScript enhanced calendar component. See /app/frontend/planner.js and associated Vue components. #}
-      </div>
+      {{ calendar(data) }}
     {% endcall %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds-from-desktop">
@@ -111,6 +83,6 @@
 {% block bodyEnd %}
   {{ super() }}
   <script>
-    window.planner.init({{ data | dump | safe }})
+    window.planner.init({{ data | dump | safe }}, true)
   </script>
 {% endblock %}

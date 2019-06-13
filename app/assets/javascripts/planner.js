@@ -14,7 +14,7 @@ Vue.filter('capitalise', function (value) {
   return value.charAt(0).toUpperCase() + value.slice(1)
 })
 
-function init (data) {
+function init (data, interactive) {
   const isBirth = data['birth-or-adoption'] === 'birth'
   const planner = new (Vue.extend(Planner))({
     el: '#planner',
@@ -23,7 +23,8 @@ function init (data) {
       startWeek: parseStartDay(data).startOfWeek(),
       primary: parseParentFromPlanner(data, 'primary'),
       secondary: parseParentFromPlanner(data, 'secondary'),
-      updateLeaveOrPay: updateLeaveOrPay
+      interactive: interactive,
+      updateLeaveOrPay: interactive ? updateLeaveOrPay : () => null
     },
     mounted: function () {
       if (!stickyIsSupported()) {
@@ -32,22 +33,24 @@ function init (data) {
     }
   })
 
-  const checkboxes = document.querySelectorAll('form#leave-and-pay input[type="checkbox"]')
-  for (let checkbox of checkboxes) {
-    checkbox.addEventListener('change', function () {
-      const parent = this.getAttribute('data-parent')
-      const property = this.getAttribute('data-property')
-      const week = parseInt(this.value)
-      planner.updateWeek(parent, property, week, this.checked)
-    })
-  }
-
   const minimumWeek = isBirth ? -11 : -2
   function updateLeaveOrPay (parent, property, week, value) {
     if (property === 'leave') {
       updateLeave(parent, week, value, minimumWeek)
     } else if (property === 'pay') {
       updatePay(parent, week, value, minimumWeek)
+    }
+  }
+
+  if (interactive) {
+    const checkboxes = document.querySelectorAll('form#leave-and-pay input[type="checkbox"]')
+    for (let checkbox of checkboxes) {
+      checkbox.addEventListener('change', function () {
+        const parent = this.getAttribute('data-parent')
+        const property = this.getAttribute('data-property')
+        const week = parseInt(this.value)
+        planner.updateWeek(parent, property, week, this.checked)
+      })
     }
   }
 }
