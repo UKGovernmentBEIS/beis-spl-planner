@@ -11,7 +11,8 @@ const {
   prettyList,
   addError,
   validateParentYesNoFields,
-  isYesOrNo
+  isYesOrNo,
+  isNo
 } = require('./lib/validationUtils')
 
 function birthOrAdoption (req) {
@@ -30,13 +31,17 @@ function primarySharedParentalLeaveAndPay (req) {
 }
 
 function initialLeaveAndPay (req) {
-  if (skip.initialLeaveAndPay(req)) {
-    return true
+  let isValid = true
+  const { primary } = req.session.data
+  if (isNo(primary['spl-eligible']) && !isYesOrNo(primary['initial-leave-eligible'])) {
+    addError(req, 'initial-leave-eligible', 'Select whether you are eligible for leave', '#initial-leave-eligible-1')
+    isValid = false
   }
-  return validateParentYesNoFields(req, 'primary', {
-    'initial-leave-eligible': 'Select whether you are eligible for leave',
-    'initial-pay-eligible': 'Select whether you are eligible for pay'
-  })
+  if (isNo(primary['shpp-eligible']) && !isYesOrNo(primary['initial-pay-eligible'])) {
+    addError(req, 'initial-pay-eligible', 'Select whether you are eligible for pay', '#initial-pay-eligible-1')
+    isValid = false
+  }
+  return isValid
 }
 
 function maternityAllowance (req) {
@@ -61,13 +66,17 @@ function secondarySharedParentalLeaveAndPay (req) {
 }
 
 function paternityLeaveAndPay (req) {
-  if (skip.paternityLeaveAndPay(req)) {
-    return true
+  let isValid = true
+  const { secondary } = req.session.data
+  if (isNo(secondary['spl-eligible']) && !isYesOrNo(secondary['initial-leave-eligible'])) {
+    addError(req, 'initial-leave-eligible', 'Select whether you are eligible for leave', '#initial-leave-eligible-1')
+    isValid = false
   }
-  return validateParentYesNoFields(req, 'secondary', {
-    'initial-leave-eligible': 'Select whether you are eligible for leave',
-    'initial-pay-eligible': 'Select whether you are eligible for pay'
-  })
+  if (isNo(secondary['shpp-eligible']) && !isYesOrNo(secondary['initial-pay-eligible'])) {
+    addError(req, 'initial-pay-eligible', 'Select whether you are eligible for pay', '#initial-pay-eligible-1')
+    isValid = false
+  }
+  return isValid
 }
 
 function startDate (req) {

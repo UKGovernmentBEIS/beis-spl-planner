@@ -30,59 +30,63 @@
       </h1>
       <form method="POST">
         {% call appendHiddenFields(data) %}
-          {{ govukRadios({
-            classes: "govuk-radios--inline",
-            idPrefix: "primary-initial-leave-eligible",
-            name: "primary[initial-leave-eligible]",
-            fieldset: {
-              legend: {
-                text: "Is the " + data | primaryName + " eligible for " + data | primaryLeaveType + " leave?",
-                classes: "govuk-fieldset__legend--m"
-              }
-            },
-            errorMessage: {
-              text: errors["initial-leave-eligible"].text
-            } if errors["initial-leave-eligible"],
-            items: [
-              {
-                value: "yes",
-                text: "Yes",
-                checked: data["primary"]["initial-leave-eligible"] === "yes"
+          {% if data["primary"]["spl-eligible"] === "no" %}
+            {{ govukRadios({
+              classes: "govuk-radios--inline",
+              idPrefix: "primary-initial-leave-eligible",
+              name: "primary[initial-leave-eligible]",
+              fieldset: {
+                legend: {
+                  text: "Is the " + data | primaryName + " eligible for " + data | primaryLeaveType + " leave?",
+                  classes: "govuk-fieldset__legend--m"
+                }
               },
-              {
-                value: "no",
-                text: "No",
-                checked: data["primary"]["initial-leave-eligible"] === "no"
-              }
-            ]
-          }) }}
+              errorMessage: {
+                text: errors["initial-leave-eligible"].text
+              } if errors["initial-leave-eligible"],
+              items: [
+                {
+                  value: "yes",
+                  text: "Yes",
+                  checked: data["primary"]["initial-leave-eligible"] === "yes"
+                },
+                {
+                  value: "no",
+                  text: "No",
+                  checked: data["primary"]["initial-leave-eligible"] === "no"
+                }
+              ]
+            }) }}
+          {% endif %}
 
-          {{ govukRadios({
-            classes: "govuk-radios--inline",
-            idPrefix: "primary-initial-pay-eligible",
-            name: "primary[initial-pay-eligible]",
-            fieldset: {
-              legend: {
-                text: "Is the " + data | primaryName + " eligible for statutory " + data | primaryLeaveType + "  pay?",
-                classes: "govuk-fieldset__legend--m"
-              }
-            },
-            errorMessage: {
-              text: errors["initial-pay-eligible"].text
-            } if errors["initial-pay-eligible"].text,
-            items: [
-              {
-                value: "yes",
-                text: "Yes",
-                checked: data["primary"]["initial-pay-eligible"] === "yes"
+          {% if data["primary"]["shpp-eligible"] === "no" %}
+            {{ govukRadios({
+              classes: "govuk-radios--inline",
+              idPrefix: "primary-initial-pay-eligible",
+              name: "primary[initial-pay-eligible]",
+              fieldset: {
+                legend: {
+                  text: "Is the " + data | primaryName + " eligible for statutory " + data | primaryLeaveType + "  pay?",
+                  classes: "govuk-fieldset__legend--m"
+                }
               },
-              {
-                value: "no",
-                text: "No",
-                checked: data["primary"]["initial-pay-eligible"] === "no"
-              }
-            ]
-          }) }}
+              errorMessage: {
+                text: errors["initial-pay-eligible"].text
+              } if errors["initial-pay-eligible"].text,
+              items: [
+                {
+                  value: "yes",
+                  text: "Yes",
+                  checked: data["primary"]["initial-pay-eligible"] === "yes"
+                },
+                {
+                  value: "no",
+                  text: "No",
+                  checked: data["primary"]["initial-pay-eligible"] === "no"
+                }
+              ]
+            }) }}
+          {% endif %}
         {% endcall %}
 
         <p class="govuk-hint">

@@ -4,6 +4,10 @@ function isYesOrNo (value) {
   return ['yes', 'no'].includes(value)
 }
 
+function isNo (value) {
+  return value === 'no'
+}
+
 function prettyList (array) {
   switch (array.length) {
     case 0:
@@ -38,6 +42,7 @@ function addError (req, field, message, href, errorProps) {
 module.exports = {
   prettyList,
   isYesOrNo,
+  isNo,
   validateParentYesNoFields,
   addError
 }

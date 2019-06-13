@@ -30,59 +30,63 @@
       </h1>
       <form method="POST">
         {% call appendHiddenFields(data) %}
-          {{ govukRadios({
-            classes: "govuk-radios--inline",
-            idPrefix: "secondary-initial-leave-eligible",
-            name: "secondary[initial-leave-eligible]",
-            fieldset: {
-              legend: {
-                text: "Is the " + data | secondaryName + " eligible for paternity leave?",
-                classes: "govuk-fieldset__legend--m"
-              }
-            },
-            errorMessage: {
-              text: errors["initial-leave-eligible"].text
-            } if errors["initial-leave-eligible"],
-            items: [
-              {
-                value: "yes",
-                text: "Yes",
-                checked: data["secondary"]["initial-leave-eligible"] === "yes"
+          {% if data["secondary"]["spl-eligible"] === "no" %}
+            {{ govukRadios({
+              classes: "govuk-radios--inline",
+              idPrefix: "secondary-initial-leave-eligible",
+              name: "secondary[initial-leave-eligible]",
+              fieldset: {
+                legend: {
+                  text: "Is the " + data | secondaryName + " eligible for paternity leave?",
+                  classes: "govuk-fieldset__legend--m"
+                }
               },
-              {
-                value: "no",
-                text: "No",
-                checked: data["secondary"]["initial-leave-eligible"] === "no"
-              }
-            ]
-          }) }}
+              errorMessage: {
+                text: errors["initial-leave-eligible"].text
+              } if errors["initial-leave-eligible"],
+              items: [
+                {
+                  value: "yes",
+                  text: "Yes",
+                  checked: data["secondary"]["initial-leave-eligible"] === "yes"
+                },
+                {
+                  value: "no",
+                  text: "No",
+                  checked: data["secondary"]["initial-leave-eligible"] === "no"
+                }
+              ]
+            }) }}
+          {% endif %}
 
-          {{ govukRadios({
-            classes: "govuk-radios--inline",
-            idPrefix: "secondary-initial-pay-eligible",
-            name: "secondary[initial-pay-eligible]",
-            fieldset: {
-              legend: {
-                text: "Is the " + data | secondaryName + " eligible for statutory paternity pay?",
-                classes: "govuk-fieldset__legend--m"
-              }
-            },
-            errorMessage: {
-              text: errors["initial-pay-eligible"].text
-            } if errors["initial-pay-eligible"],
-            items: [
-              {
-                value: "yes",
-                text: "Yes",
-                checked: data["secondary"]["initial-pay-eligible"] === "yes"
+          {% if data["secondary"]["shpp-eligible"] === "no" %}
+            {{ govukRadios({
+              classes: "govuk-radios--inline",
+              idPrefix: "secondary-initial-pay-eligible",
+              name: "secondary[initial-pay-eligible]",
+              fieldset: {
+                legend: {
+                  text: "Is the " + data | secondaryName + " eligible for statutory paternity pay?",
+                  classes: "govuk-fieldset__legend--m"
+                }
               },
-              {
-                value: "no",
-                text: "No",
-                checked: data["secondary"]["initial-pay-eligible"] === "no"
-              }
-            ]
-          }) }}
+              errorMessage: {
+                text: errors["initial-pay-eligible"].text
+              } if errors["initial-pay-eligible"],
+              items: [
+                {
+                  value: "yes",
+                  text: "Yes",
+                  checked: data["secondary"]["initial-pay-eligible"] === "yes"
+                },
+                {
+                  value: "no",
+                  text: "No",
+                  checked: data["secondary"]["initial-pay-eligible"] === "no"
+                }
+              ]
+            }) }}
+          {% endif %}
         {% endcall %}
 
         <p class="govuk-hint">
