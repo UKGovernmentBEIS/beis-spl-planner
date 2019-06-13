@@ -1,0 +1,83 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "fieldset/macro.njk" import govukFieldset %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "./components/salary-input.njk" import salaryInput %}
+
+{% extends "layout.njk" %}
+
+{% block pageTitle %}
+  Plan leave and pay when you have a child
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: backPath()
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {% if errors['primary-salary-amount'] or
+        errors['secondary-salary-amount'] or
+        errors['primary-salary-period'] or
+        errors['secondary-salary-period']
+  %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        errors['primary-salary-amount'],
+        errors['secondary-salary-amount'],
+        errors['primary-salary-period'],
+        errors['secondary-salary-period']
+      ] | removeEmpty
+    }) }}
+  {% endif %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        What is your salary before tax?
+      </h1>
+      <p>
+        Enter your salary to see statutory pay amounts. You might get more or less if your salary changes, has changed, or if your employer enhances pay.
+      </p>
+      <form action="parent-salaries" method="POST">
+        {% call appendHiddenFields(data) %}
+          {% call govukFieldset({
+            legend: {
+              text: "Salary before tax",
+              classes: "govuk-fieldset__legend--m"
+            }
+          }) %}
+            <div class="salary-group">
+              {{ salaryInput({
+                data: data,
+                parent: "primary",
+                labelText: data | primaryName | capitalize + "’s salary (£)",
+                amountError: errors['primary-salary-amount'] if errors['primary-salary-amount'],
+                periodError: errors['primary-salary-period'] if errors['primary-salary-period']
+              }) }}
+            </div>
+            <div class="salary-group">
+              {{ salaryInput({
+                data: data,
+                parent: "secondary",
+                labelText: data | secondaryName | capitalize + "’s salary (£)",
+                amountError: errors['secondary-salary-amount'] if errors['secondary-salary-amount'],
+                periodError: errors['secondary-salary-period'] if errors['secondary-salary-period']
+              }) }}
+            </div>
+          {% endcall %}
+        {% endcall %}
+        <button type="submit" class="govuk-button">
+          Continue
+        </button>
+      </form>
+      <a href="{{ withData('/planner') }}" class="govuk-link--no-visited-state govuk-body">
+        Skip this step
+      </a>
+    </div>
+  </div>
+
+{% endblock %}

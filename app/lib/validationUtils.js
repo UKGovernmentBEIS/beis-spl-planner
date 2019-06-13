@@ -36,8 +36,8 @@ function addError (req, field, message, href, errorProps) {
 }
 
 module.exports = {
-  isYesOrNo,
   prettyList,
+  isYesOrNo,
   validateParentYesNoFields,
   addError
 }

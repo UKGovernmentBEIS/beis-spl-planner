@@ -1,10 +1,8 @@
-const moment = require('moment')
 const LeaveTracker = require('./leaveTracker')
 
 class Weeks {
   constructor ({ isBirth, startWeek, primary, secondary }) {
     this.isBirth = isBirth
-    // TODO what format should this date be in?
     this.startWeek = startWeek
     this.primary = primary
     this.secondary = secondary
@@ -73,8 +71,7 @@ class Weeks {
     return {
       id: 'week_' + idx,
       number: idx,
-      // TODO use Day here
-      day: moment.utc(this.startWeek).add(idx, 'weeks'),
+      day: this.startWeek.add(idx, 'weeks'),
       primary: {
         disabled: false,
         compulsory: idx === 0 || idx === 1,

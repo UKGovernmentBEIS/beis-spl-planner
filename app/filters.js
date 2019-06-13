@@ -47,8 +47,12 @@ module.exports = function (env) {
     return checkboxes
   }
 
+  function hasStartDateError (errors, partOfDate) {
+    return errors && errors['start-date'] && errors['start-date'].dateParts.includes(partOfDate)
+  }
+
   function startDay (data) {
-    return new Day(data['start-date-year'], data['start-date-month'], data['start-date-day']).startOfWeek()
+    return new Day(data['start-date-year'], data['start-date-month'], data['start-date-day'])
   }
 
   function startOfWeek (day) {
@@ -63,11 +67,19 @@ module.exports = function (env) {
     return isBirth(data) ? 'due date' : 'placement date'
   }
 
+  function totalBlockPay (block) {
+    const primaryPay = block.primary && parseFloat(block.primary.substring(1))
+    const secondaryPay = block.secondary && parseFloat(block.secondary.substring(1))
+    return '£' + ((primaryPay || 0) + (secondaryPay || 0)).toFixed(2)
+  }
+
   return {
     weekCheckboxes,
+    hasStartDateError,
     startDay,
     startOfWeek,
     endOfWeek,
-    startDateName
+    startDateName,
+    totalBlockPay
   }
 }

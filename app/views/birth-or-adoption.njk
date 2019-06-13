@@ -1,6 +1,6 @@
 {% from "back-link/macro.njk" import govukBackLink %}
 {% from "radios/macro.njk" import govukRadios %}
-
+{% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 
 {% extends "layout.njk" %}
@@ -13,6 +13,15 @@
 {% endblock %}
 
 {% block content %}
+  {% if errors["birth-or-adoption"] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        errors["birth-or-adoption"]
+      ]
+    }) }}
+  {% endif %}
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form method="POST">
@@ -31,16 +40,19 @@
             hint: {
               text: "Shared parental leave and pay is available for birth and adoptive parents."
             },
+            errorMessage: {
+              text: errors["birth-or-adoption"].text
+            } if errors["birth-or-adoption"],
             items: [
               {
                 value: "birth",
                 text: "Birth",
-                checked: data["birth-or-adoption"] === "birth"
+                checked: data | isBirth
               },
               {
                 value: "adoption",
                 text: "Adoption",
-                checked: data["birth-or-adoption"] === "adoption"
+                checked: data | isAdoption
               }
             ]
           }) }}
@@ -49,9 +61,6 @@
           Continue
         </button>
       </form>
-    </div>
-    <div class="govuk-grid-column-one-third">
-      <pre style="background-color: lightgrey; padding: 10px;">{{ data | dump(2)}}</pre>
     </div>
   </div>
 {% endblock %}

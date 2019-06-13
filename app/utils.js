@@ -1,5 +1,6 @@
 const dlv = require('dlv')
 const _ = require('lodash')
+const Day = require('../common/lib/day')
 
 const MOTHER = Object.freeze({
   name: 'mother',
@@ -34,13 +35,40 @@ function parseParentFromPlanner (data, parent) {
   return {
     leaveWeeks: getWeeksArray(data, parent, 'leave'),
     payWeeks: getWeeksArray(data, parent, 'pay'),
-    // TODO: Get weekly pay from data.
-    weeklyPay: parent === 'primary' ? 1000 : null
+    weeklyPay: weeklyPay(data, parent)
   }
+}
+
+function parseStartDay (data) {
+  const {
+    'start-date-year': year,
+    'start-date-month': month,
+    'start-date-day': day
+  } = data
+  return new Day(year, month, day)
 }
 
 module.exports = {
   getWeeksArray,
   nameAndNonSharedLeaveType,
-  parseParentFromPlanner
+  parseParentFromPlanner,
+  parseStartDay
+}
+
+function weeklyPay (data, parent) {
+  const providedSalary = parseFloat(dlv(data, [parent, 'salary-amount']))
+  if (isNaN(providedSalary)) {
+    return null
+  }
+  const period = dlv(data, [parent, 'salary-period'])
+  switch (period) {
+    case 'week':
+      return providedSalary
+    case 'month':
+      return (providedSalary * 12) / 52
+    case 'year':
+      return providedSalary / 52
+    default:
+      return null
+  }
 }

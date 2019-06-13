@@ -1,5 +1,5 @@
 const Weeks = require('./weeks')
-const { parseParentFromPlanner } = require('../utils')
+const { parseParentFromPlanner, parseStartDay } = require('../utils')
 
 function getLeaveBlocks (weeks) {
   return {
@@ -98,8 +98,7 @@ function getBlocks (data) {
   const weeks = new Weeks({
     // TODO commonise with filters
     isBirth: data['birth-or-adoption'] === 'birth',
-    // TODO get from data
-    startWeek: '2019-09-08',
+    startWeek: parseStartDay(data),
     primary: parseParentFromPlanner(data, 'primary'),
     secondary: parseParentFromPlanner(data, 'secondary')
   })
