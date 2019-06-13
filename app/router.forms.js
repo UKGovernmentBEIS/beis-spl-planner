@@ -9,6 +9,24 @@ const config = {
   format: 'A4'
 }
 
+// TODO REMOVE
+router.get('/example.html', function (req, res) {
+  try {
+    nunjucks.render('forms/example.njk', { data: req.session.data }, function (e, html) {
+      if (e) {
+        console.log(e)
+        res.send('error')
+      } else {
+        res.set("ContentType", "text/html")
+        res.send(html)
+      }
+    })
+  } catch (e) {
+    console.log(e)
+    res.send('error')
+  }
+})
+
 router.get('/example.pdf', function (req, res) {
   // TODO: Better error handling.
   try {

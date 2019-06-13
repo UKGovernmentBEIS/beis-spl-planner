@@ -10,3 +10,24 @@
   There are 5 sections in this form. You must submit these forms to your employer at least 8 weeks before
   your Shared Parental Leave or Statutory Shared Parental Pay starts.
 </p>
+
+
+{% from "./layout/two-column-layout.njk" import twoColumnLayout %}
+{% from "./form-elements/input.njk" import input %}
+
+<h4>You (the mother)</h4>
+
+{% set left %}
+  {{ input({ number: 1, type: "TEXT", text: "Surname" }) }}
+  {{ input({ number: 2, type: "NINR", text: "National insurance number" }) }}
+  {{ input({ number: 3, type: "ADDR", text: "Home address" }) }}
+{% endset %}
+
+{% set right %}
+  {{ input({number: 7, type: "DATE", text: "What is the child's expected date of birth / actual date of birth?"}) }}
+{% endset %}
+
+{{ twoColumnLayout({
+  leftcolumn: left,
+  rightcolumn: right
+}) }}

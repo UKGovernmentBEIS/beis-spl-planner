@@ -65,3 +65,68 @@ p {
 .secondary h6 {
   color: #005192;
 }
+
+.input-field {
+  border: 1px solid darkgray;
+}
+
+.two-column-layout .input-field {
+  width: 100%;
+}
+
+.digit-field {
+  width: 14px !important;
+}
+
+.number-array table {
+  border-collapse: collapse;
+}
+
+.number-array td {
+  width: 14px;
+  height: 18px;
+  padding: 0;
+}
+
+.number-array td {
+  border: 1px solid darkgray;
+}
+
+.number-array .number-break {
+  width: 10px;
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+  float: left;
+}
+
+.number-box {
+  border: 1px solid darkgray;
+  border-left: none;
+  width: 16px;
+  height: 17px;
+  text-align: right;
+  padding-right: 3px;
+}
+
+.field-address .input-field {
+  margin: 0;
+}
+
+.input {
+  border-left: 1px solid darkgray;
+  padding-bottom: 10px;
+  padding-right: 19px;
+}
+
+.input p {
+  margin-top: 0;
+}
