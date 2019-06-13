@@ -30,34 +30,76 @@
 
 {% block content %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
         Plan leave and pay when you have a child
       </h1>
-    </div>
-    <div class="govuk-grid-column-one-third">
-      <pre style="background-color: lightgrey; padding: 10px;">{{ data | dump(2)}}</pre>
+      <p>
+        Click in the calendar to select the weeks you and your partner would like to
+        take off work when you have a child. The calendar is based on your child's
+        expected or actual week of birth.
+      </p>
+      <p>
+        The calendar will display
+        <a href="https://www.gov.uk/maternity-pay-leave">maternity</a>,
+        <a href="https://www.gov.uk/paternity-pay-leave">paternity</a> or
+        <a href="https://spl-planner-alpha.herokuapp.com/shared-parental-leave-and-pay">shared parental leave</a> and an
+        indicative pay amount based on which parent is taking leave and pay, when
+        and for how long.
+      </p>
+      <p>
+        You can try out different plans such taking leave in blocks with work in
+        between or taking leave at the same time as your partner. You can also plan
+        how you receive statutory pay.
+      </p>
+      <h2 class="govuk-heading-m">
+        Example leave and pay plans
+      </h2>
+      <p class="govuk-hint">
+        Examples will open in a new page.
+      </p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>
+          <a class="govuk-link" target="_blank" href="/planner/examples/managing-parenting-and-work">
+            Managing parenting and work
+          </a>
+        </li>
+        <li>
+          <a class="govuk-link" target="_blank" href="/planner/examples/supporting-the-mother-after-birth">
+            Supporting the mother after birth
+          </a>
+        </li>
+        <li>
+          <a class="govuk-link" target="_blank" href="/planner/examples/sharing-primary-care-responsibility">
+            Sharing primary care responsibility
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
   <form id="leave-and-pay" method="POST">
     {% call appendHiddenFields(data) %}
       <div class="govuk-grid-row js-hide">
-        <div class="govuk-grid-column-one-half">
+        <div class="govuk-grid-column-one-half-from-desktop">
           {{ leaveAndPayCheckboxes("primary") }}
-          <!-- Compulsory leave weeks are disabled checkboxes, so we need to include the values manually. -->
+          {# Compulsory leave weeks are disabled checkboxes, so we need to include the values manually. #}
           <input type="hidden" name="primary[leave]" value="0" />
           <input type="hidden" name="primary[leave]" value="1" />
         </div>
-        <div class="govuk-grid-column-one-half">
+        <div class="govuk-grid-column-one-half-from-desktop">
           {{ leaveAndPayCheckboxes("secondary") }}
         </div>
       </div>
+      <div id="planner">
+        {# JavaScript enhanced calendar component. See /app/frontend/planner.js and associated Vue components. #}
+      </div>
     {% endcall %}
-    <div id="planner">
-      {# JavaScript enhanced calendar component. See /app/frontend/planner.js and associated Vue components. #}
-    </div>
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-one-half">
+      <div class="govuk-grid-column-two-thirds-from-desktop">
+        <p>
+          If your plan is complete, continue for a summary of key dates and guidance on
+          how to notify your employer.
+        </p>
         <button type="submit" class="govuk-button">
           Continue
         </button>
