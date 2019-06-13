@@ -1,10 +1,27 @@
 const Day = require('./lib/day')
+const dataUtils = require('./lib/dataUtils')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
 module.exports = function (env) {
+  function isYes (dataField) {
+    return dataUtils.isYes(dataField)
+  }
+
+  function isNo (dataField) {
+    return dataUtils.isNo(dataField)
+  }
+
+  function isBirth (data) {
+    return dataUtils.isBirth(data)
+  }
+
+  function isAdoption (data) {
+    return dataUtils.isAdoption(data)
+  }
+
   function primaryName (data) {
-    return data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary adopter'
+    return dataUtils.isBirth(data) ? 'mother' : 'primary adopter'
   }
 
   function secondaryName (data) {
@@ -23,16 +40,8 @@ module.exports = function (env) {
     return parentName(data, parent).split(' ').join('-')
   }
 
-  function isBirth (data) {
-    return data['birth-or-adoption'] === 'birth'
-  }
-
   function primaryLeaveType (data) {
     return isBirth(data) ? 'maternity' : 'adoption'
-  }
-
-  function isAdoption (data) {
-    return data['birth-or-adoption'] === 'adoption'
   }
 
   function capitalize (string) {
@@ -68,15 +77,17 @@ module.exports = function (env) {
   }
 
   return {
+    isYes,
+    isNo,
+    isBirth,
+    isAdoption,
     primaryName,
     secondaryName,
     parentName,
     currentParentName: parentName, // Alias.
     otherParentName,
     parentNameForUrl,
-    isBirth,
     primaryLeaveType,
-    isAdoption,
     capitalize,
     startDateName,
     offsetWeeks,
