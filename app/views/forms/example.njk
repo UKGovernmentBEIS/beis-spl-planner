@@ -1,10 +1,16 @@
-{% extends "./pdf-base.njk" %}
+{% from "./pdf.njk" import pdf %}
 
-{% block parent -%}
-  primary
-{%- endblock %}
+{% set title %}
+  <strong>{{ "Mother" if (data | isBirth) else "Adopter" }}’s</strong> notice and declaration of SPL
+{% endset %}
 
-{% block pages %}
-  {% include "./example.1.njk" %}
-  {% include "./example.2.njk" %}
-{% endblock %}
+{{ pdf({
+  parent: "primary",
+  title: {
+    html: title
+  },
+  pages: [
+    "./example.1.njk",
+    "./example.2.njk"
+  ]
+}) }}

@@ -10,9 +10,20 @@ const config = {
 }
 
 router.get('/example.pdf', function (req, res) {
-  nunjucks.render('forms/example.njk', { data: req.session.data }, function (e, html) {
-    pdf.create(html, config).toStream((e, stream) => stream.pipe(res))
-  })
+  // TODO: Better error handling.
+  try {
+    nunjucks.render('forms/example.njk', { data: req.session.data }, function (e, html) {
+      if (e) {
+        console.log(e)
+        res.send('error')
+      } else {
+        pdf.create(html, config).toStream((e, stream) => stream.pipe(res))
+      }
+    })
+  } catch (e) {
+    console.log(e)
+    res.send('error')
+  }
 })
 
 module.exports = router

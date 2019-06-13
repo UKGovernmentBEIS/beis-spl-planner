@@ -8,7 +8,7 @@ html, body {
 }
 
 .page {
-  zoom: calc(16 / 12);
+  zoom: calc(16/12);
   position: relative;
   height: 100%;
   width: 100%;
@@ -17,6 +17,26 @@ html, body {
   overflow: hidden;
   padding: 30px;
   box-sizing: border-box;
+}
+
+.footer {
+  background-color: lightgreen;
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  right: 30px;
+}
+
+.footer .footer-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.footer .footer-page-number {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 h1 {
