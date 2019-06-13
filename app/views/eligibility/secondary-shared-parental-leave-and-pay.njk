@@ -13,12 +13,12 @@
 {% endblock %}
 
 {% block content %}
-    {% if errors["spl-eligible"] or errors['shpp-eligible'] %}
+    {% if errors["spl-eligible"] or errors["shpp-eligible"] %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
         errors["spl-eligible"],
-        errors['shpp-eligible']
+        errors["shpp-eligible"]
       ]
     }) }}
   {% endif %}
@@ -87,7 +87,7 @@
 
         <p class="govuk-hint">
         {# TODO check the href of this link #}
-          If you're not sure, <a href="#">check if you can get shared parental leave or pay</a>
+          If you’re not sure, <a href="#">check if you can get shared parental leave or pay</a>
         </p>
 
         <button type="submit" class="govuk-button">

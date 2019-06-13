@@ -13,12 +13,12 @@
 {% endblock %}
 
 {% block content %}
-  {% if errors['initial-leave-eligible'] or errors['initial-pay-eligible'] %}
+  {% if errors["initial-leave-eligible"] or errors["initial-pay-eligible"] %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
-        errors['initial-leave-eligible'],
-        errors['initial-pay-eligible']
+        errors["initial-leave-eligible"],
+        errors["initial-pay-eligible"]
       ]
     }) }}
   {% endif %}
@@ -90,7 +90,7 @@
         {% endcall %}
 
         <p class="govuk-hint">
-          If you're not sure, <a href="https://www.gov.uk/pay-leave-for-parents">check if you can get leave and pay when you have a child</a>
+          If you’re not sure, <a href="https://www.gov.uk/pay-leave-for-parents">check if you can get leave and pay when you have a child</a>
         </p>
 
         <button type="submit" class="govuk-button">

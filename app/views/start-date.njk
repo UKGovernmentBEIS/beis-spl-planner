@@ -18,9 +18,9 @@
 
 {% block content %}
   {% set questionText %}
-    {% if data['birth-or-adoption'] == 'birth' %}
+    {% if data | isBirth %}
       When is the baby due, or when was the baby born?
-    {% elif data['birth-or-adoption'] == 'adoption' %}
+    {% elif data | isAdoption %}
       When will, or when did the child start to live with you?
     {% endif %}
   {% endset %}

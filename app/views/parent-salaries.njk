@@ -18,18 +18,18 @@
 {% endblock %}
 
 {% block content %}
-  {% if errors['primary-salary-amount'] or
-        errors['secondary-salary-amount'] or
-        errors['primary-salary-period'] or
-        errors['secondary-salary-period']
+  {% if errors["primary-salary-amount"] or
+        errors["secondary-salary-amount"] or
+        errors["primary-salary-period"] or
+        errors["secondary-salary-period"]
   %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
-        errors['primary-salary-amount'],
-        errors['secondary-salary-amount'],
-        errors['primary-salary-period'],
-        errors['secondary-salary-period']
+        errors["primary-salary-amount"],
+        errors["secondary-salary-amount"],
+        errors["primary-salary-period"],
+        errors["secondary-salary-period"]
       ]
     }) }}
   {% endif %}
@@ -55,8 +55,8 @@
                 data: data,
                 parent: "primary",
                 labelText: data | primaryName | capitalize + "’s salary (£)",
-                amountError: errors['primary-salary-amount'] if errors['primary-salary-amount'],
-                periodError: errors['primary-salary-period'] if errors['primary-salary-period']
+                amountError: errors["primary-salary-amount"] if errors["primary-salary-amount"],
+                periodError: errors["primary-salary-period"] if errors["primary-salary-period"]
               }) }}
             </div>
             <div class="salary-group">
@@ -64,8 +64,8 @@
                 data: data,
                 parent: "secondary",
                 labelText: data | secondaryName | capitalize + "’s salary (£)",
-                amountError: errors['secondary-salary-amount'] if errors['secondary-salary-amount'],
-                periodError: errors['secondary-salary-period'] if errors['secondary-salary-period']
+                amountError: errors["secondary-salary-amount"] if errors["secondary-salary-amount"],
+                periodError: errors["secondary-salary-period"] if errors["secondary-salary-period"]
               }) }}
             </div>
           {% endcall %}
