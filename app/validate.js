@@ -114,11 +114,11 @@ function parentSalaries (req) {
   const {
     'salary-amount': primarySalary,
     'salary-period': primaryPeriod
-  } = req.session.data.primary
+  } = req.session.data.primary || {}
   const {
     'salary-amount': secondarySalary,
     'salary-period': secondaryPeriod
-  } = req.session.data.secondary
+  } = req.session.data.secondary || {}
 
   if (primarySalary && !primarySalary.match(/[0-9]+(\.[0-9]{1,2})?/)) {
     addError(req, 'primary-salary-amount', 'Salary must be an amount of money like 23000 or 139.45', '#primary-salary-amount')

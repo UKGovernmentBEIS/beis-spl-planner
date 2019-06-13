@@ -1,5 +1,6 @@
 <template>
-  <table ref="calendar" class="govuk-table" :class="{ 'dragging': isDragging, 'hide-focus': hideFocus, 'is-ie': isIexplorer }"
+  <table ref="calendar" class="govuk-table"
+    :class="{ 'dragging': isDragging, 'hide-focus': hideFocus, 'is-ie': isIexplorer, 'interactive': interactive }"
     @mouseleave="endDrag" @mouseup.left="endDrag">
     <colgroup>
       <col class="col-date" />
@@ -124,7 +125,8 @@
       names: Object,
       weeks: Array,
       leaveBoundaries: Object,
-      updateLeaveOrPay: Function
+      updateLeaveOrPay: Function,
+      interactive: Boolean
     },
     filters: {
       leaveLabel: function (type, compulsory) {
@@ -270,16 +272,18 @@
       }
     }
 
-    &.dragging {
-      cursor: ns-resize;
-    }
-    &:not(.dragging) {
-      .govuk-table__cell {
-        &.leave, &.pay {
-          cursor: cell;
-        }
-        &.disabled, &.compulsory {
-          cursor: not-allowed;
+    &.interactive {
+      &.dragging {
+        cursor: ns-resize;
+      }
+      &:not(.dragging) {
+        .govuk-table__cell {
+          &.leave, &.pay {
+            cursor: cell;
+          }
+          &.disabled, &.compulsory {
+            cursor: not-allowed;
+          }
         }
       }
     }
@@ -411,10 +415,12 @@
     }
   }
 
-  .is-ie {
-    @include cellHoverRules()
-  }
-  @media (hover: hover) {
-    @include cellHoverRules()
+  .interactive {
+    &.is-ie {
+      @include cellHoverRules()
+    }
+    @media (hover: hover) {
+      @include cellHoverRules()
+    }
   }
 </style>
