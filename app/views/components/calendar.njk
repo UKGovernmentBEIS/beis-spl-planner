@@ -1,0 +1,34 @@
+{% from "checkboxes/macro.njk" import govukCheckboxes %}
+
+{% macro leaveAndPayCheckboxes(data, parent) %}
+  {{ govukCheckboxes({
+    name: parent + "[leave]",
+    fieldset: {
+      legend: {
+        text: (data | currentParentName(parent) | capitalize) + "’s leave",
+        classes: "govuk-fieldset__legend--m"
+      }
+    },
+    hint: {
+      text: "Select all that apply."
+    },
+    items: data | weekCheckboxes(parent, govukCheckboxes)
+  }) }}
+{% endmacro %}
+
+{% macro calendar(data) %}
+  <div class="govuk-grid-row js-hide">
+    <div class="govuk-grid-column-one-half-from-desktop">
+      {{ leaveAndPayCheckboxes(data, "primary") }}
+      {# Compulsory leave weeks are disabled checkboxes, so we need to include the values manually. #}
+      <input type="hidden" name="primary[leave]" value="0" />
+      <input type="hidden" name="primary[leave]" value="1" />
+    </div>
+    <div class="govuk-grid-column-one-half-from-desktop">
+      {{ leaveAndPayCheckboxes(data, "secondary") }}
+    </div>
+  </div>
+  <div id="planner">
+    {# JavaScript enhanced calendar component. See /app/frontend/planner.js and associated Vue components. #}
+  </div>
+{% endmacro %}

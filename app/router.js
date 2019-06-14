@@ -8,6 +8,8 @@ const { getBlocks } = require('./lib/blocks')
 const { getWeeksArray } = require('./utils')
 const { registerEligibilityRouteForPrimaryParents } = require('./lib/routerUtils')
 
+router.use('/planner/examples', require('./router.examples'))
+
 router.route(paths.getPath('root'))
   .get(function (req, res) {
     res.render('index')
