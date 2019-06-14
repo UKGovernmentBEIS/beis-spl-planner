@@ -30,7 +30,7 @@
       </h1>
       <form method="POST">
         {% call appendHiddenFields(data) %}
-          {% if data["secondary"]["spl-eligible"] === "no" %}
+          {% if data["secondary"]["spl-eligible"] | isNo %}
             {{ govukRadios({
               classes: "govuk-radios--inline",
               idPrefix: "secondary-initial-leave-eligible",
@@ -48,18 +48,18 @@
                 {
                   value: "yes",
                   text: "Yes",
-                  checked: data["secondary"]["initial-leave-eligible"] === "yes"
+                  checked: data["secondary"]["initial-leave-eligible"] | isYes
                 },
                 {
                   value: "no",
                   text: "No",
-                  checked: data["secondary"]["initial-leave-eligible"] === "no"
+                  checked: data["secondary"]["initial-leave-eligible"] | isNo
                 }
               ]
             }) }}
           {% endif %}
 
-          {% if data["secondary"]["shpp-eligible"] === "no" %}
+          {% if data["secondary"]["shpp-eligible"] | isNo %}
             {{ govukRadios({
               classes: "govuk-radios--inline",
               idPrefix: "secondary-initial-pay-eligible",
@@ -77,12 +77,12 @@
                 {
                   value: "yes",
                   text: "Yes",
-                  checked: data["secondary"]["initial-pay-eligible"] === "yes"
+                  checked: data["secondary"]["initial-pay-eligible"] | isYes
                 },
                 {
                   value: "no",
                   text: "No",
-                  checked: data["secondary"]["initial-pay-eligible"] === "no"
+                  checked: data["secondary"]["initial-pay-eligible"] | isNo
                 }
               ]
             }) }}

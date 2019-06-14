@@ -1,7 +1,7 @@
 {% from "back-link/macro.njk" import govukBackLink %}
-{% from "checkboxes/macro.njk" import govukCheckboxes %}
 
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "components/calendar.njk" import calendar %}
 
 {% extends "layout.njk" %}
 
@@ -12,52 +12,73 @@
   }) }}
 {% endblock %}
 
-{% macro leaveAndPayCheckboxes(parent) %}
-  {{ govukCheckboxes({
-    name: parent + "[leave]",
-    fieldset: {
-      legend: {
-        text: (data | currentParentName(parent) | capitalize) + "’s leave",
-        classes: "govuk-fieldset__legend--m"
-      }
-    },
-    hint: {
-      text: "Select all that apply."
-    },
-    items: data | weekCheckboxes(parent, govukCheckboxes)
-  }) }}
-{% endmacro %}
+{% set isBirth = (data | isBirth) %}
 
 {% block content %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
         Plan leave and pay when you have a child
       </h1>
-    </div>
-    <div class="govuk-grid-column-one-third">
-      <pre style="background-color: lightgrey; padding: 10px;">{{ data | dump(2)}}</pre>
+      <p>
+        Click in the calendar to select the weeks you and your partner would like to
+        take off work when you have a child. The calendar is based on your child's
+        expected or actual week of {{ "birth" if isBirth else "placement" }}.
+      </p>
+      <p>
+        The calendar will display
+        {% if isBirth %}
+          <a href="https://www.gov.uk/maternity-pay-leave">maternity</a>,
+        {% else %}
+          <a href="https://www.gov.uk/adoption-pay-leave">adoption</a>,
+        {% endif %}
+        <a href="https://www.gov.uk/paternity-pay-leave">paternity</a> or
+        {# TODO: Update link per environment. #}
+        <a href="https://spl-planner-alpha.herokuapp.com/shared-parental-leave-and-pay">shared parental leave</a> and an
+        indicative pay amount based on which parent is taking leave and pay, when
+        and for how long.
+      </p>
+      <p>
+        You can try out different plans such taking leave in blocks with work in
+        between or taking leave at the same time as your partner. You can also plan
+        how you receive statutory pay.
+      </p>
+      <h2 class="govuk-heading-m">
+        Example leave and pay plans
+      </h2>
+      <p class="govuk-hint">
+        Examples will open in a new page.
+      </p>
+      {% set examplePath = '/planner/examples/birth' if isBirth else '/planner/examples/adoption' %}
+      <ul class="govuk-list govuk-list--bullet">
+        <li>
+          <a class="govuk-link" target="_blank" href="{{ examplePath }}/managing-parenting-and-work">
+            Managing parenting and work
+          </a>
+        </li>
+        <li>
+          <a class="govuk-link" target="_blank" href="{{ examplePath }}/extending-time-as-a-family">
+            Extending time as a family after {{ "birth" if isBirth else "the child is placed" }}
+          </a>
+        </li>
+        <li>
+          <a class="govuk-link" target="_blank" href="{{ examplePath }}/sharing-primary-care-responsibility">
+            Sharing primary care responsibility
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
   <form id="leave-and-pay" method="POST">
     {% call appendHiddenFields(data) %}
-      <div class="govuk-grid-row js-hide">
-        <div class="govuk-grid-column-one-half">
-          {{ leaveAndPayCheckboxes("primary") }}
-          <!-- Compulsory leave weeks are disabled checkboxes, so we need to include the values manually. -->
-          <input type="hidden" name="primary[leave]" value="0" />
-          <input type="hidden" name="primary[leave]" value="1" />
-        </div>
-        <div class="govuk-grid-column-one-half">
-          {{ leaveAndPayCheckboxes("secondary") }}
-        </div>
-      </div>
+      {{ calendar(data) }}
     {% endcall %}
-    <div id="planner">
-      {# JavaScript enhanced calendar component. See /app/frontend/planner.js and associated Vue components. #}
-    </div>
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-one-half">
+      <div class="govuk-grid-column-two-thirds-from-desktop">
+        <p>
+          If your plan is complete, continue for a summary of key dates and guidance on
+          how to notify your employer.
+        </p>
         <button type="submit" class="govuk-button">
           Continue
         </button>
@@ -69,6 +90,6 @@
 {% block bodyEnd %}
   {{ super() }}
   <script>
-    window.planner.init({{ data | dump | safe }})
+    window.planner.init({{ data | dump | safe }}, true)
   </script>
 {% endblock %}

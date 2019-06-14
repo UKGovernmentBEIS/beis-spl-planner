@@ -26,11 +26,11 @@
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
-        errors["primary-salary-amount"],
-        errors["secondary-salary-amount"],
-        errors["primary-salary-period"],
-        errors["secondary-salary-period"]
-      ]
+        errors['primary-salary-amount'],
+        errors['secondary-salary-amount'],
+        errors['primary-salary-period'],
+        errors['secondary-salary-period']
+      ] | removeEmpty
     }) }}
   {% endif %}
 

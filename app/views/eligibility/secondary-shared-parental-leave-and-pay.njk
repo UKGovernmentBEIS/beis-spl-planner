@@ -47,12 +47,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data["secondary"]["spl-eligible"] === "yes"
+                checked: data["secondary"]["spl-eligible"] | isYes
               },
               {
                 value: "no",
                 text: "No",
-                checked: data["secondary"]["spl-eligible"] === "no"
+                checked: data["secondary"]["spl-eligible"] | isNo
               }
             ]
           }) }}
@@ -74,12 +74,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data["secondary"]["shpp-eligible"] === "yes"
+                checked: data["secondary"]["shpp-eligible"] | isYes
               },
               {
                 value: "no",
                 text: "No",
-                checked: data["secondary"]["shpp-eligible"] === "no"
+                checked: data["secondary"]["shpp-eligible"] | isNo
               }
             ]
           }) }}

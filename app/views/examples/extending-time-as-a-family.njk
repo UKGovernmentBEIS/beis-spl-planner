@@ -1,0 +1,25 @@
+{% extends "./example.njk" %}
+
+{% block exampleTitle %}
+  Extending time as a family after {{ "birth" if isBirth else "the child is placed" }}
+{% endblock %}
+
+{% block background %}
+  <p>
+    A couple is {{ "having" if isBirth else "adopting" }} their first child.
+    The partner plans to take 2 weeks of paternity leave but wants to extend this.
+  </p>
+  <p>
+    The {{ primaryName }} planned to take a full 52 weeks of {{ primaryLeaveType }} leave but decides to reduce it by 4 weeks to
+    create 4 weeks of shared parental leave for her partner to take. The partner can now stay at home with the {{ primaryName }}
+    and the child for a total of 6 weeks as soon as the child is {{ "born" if isBirth else "placed" }}.
+  </p>
+{% endblock %}
+
+{% block primaryLeavePlan %}
+  48 weeks of {{ primaryLeaveType }} leave and 39 weeks of statutory {{ primaryLeaveType }} pay.
+{% endblock %}
+
+{% block secondaryLeavePlan %}
+  2 weeks of paternity leave and statutory paternity pay and 4 weeks of shared parental leave.
+{% endblock %}

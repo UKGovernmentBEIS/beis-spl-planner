@@ -6,6 +6,7 @@
 
 const delve = require('dlv')
 const Day = require('../common/lib/day')
+const { isAdoption } = require('../common/lib/dataUtils')
 const skip = require('./skip')
 const {
   prettyList,
@@ -48,7 +49,7 @@ function maternityAllowance (req) {
   if (skip.maternityAllowance(req)) {
     return true
   }
-  if (req.session.data['birth-or-adoption'] === 'adoption') {
+  if (isAdoption(req.session.data)) {
     return true
   }
   if (!isYesOrNo(delve(req.session.data, ['primary', 'maternity-allowance-eligible']))) {
@@ -126,11 +127,11 @@ function parentSalaries (req) {
   const {
     'salary-amount': primarySalary,
     'salary-period': primaryPeriod
-  } = req.session.data.primary
+  } = req.session.data.primary || {}
   const {
     'salary-amount': secondarySalary,
     'salary-period': secondaryPeriod
-  } = req.session.data.secondary
+  } = req.session.data.secondary || {}
 
   if (primarySalary && !primarySalary.match(/[0-9]+(\.[0-9]{1,2})?/)) {
     addError(req, 'primary-salary-amount', 'Salary must be an amount of money like 23000 or 139.45', '#primary-salary-amount')

@@ -26,7 +26,7 @@
       <h2 class="govuk-heading-m">
         What happens next
       </h2>
-      {% set readMoreHref "https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-birth-parents" if data | isBirth else "https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-adopters" %}
+      {% set readMoreHref = "https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-birth-parents" if data | isBirth else "https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-adopters" %}
       <p>
         You can read more about the <a href="{{ readMoreHref }}">eligibility rules for shared parental leave and pay</a>.
       </p>
