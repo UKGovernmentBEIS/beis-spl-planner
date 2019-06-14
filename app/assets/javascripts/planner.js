@@ -5,6 +5,7 @@ const stickybits = require('stickybits')
 const Stickyfill = require('stickyfill')
 const Planner = require('./components/Planner.vue')
 const { parseParentFromPlanner, parseStartDay } = require('../../utils')
+const dataUtils = require('../../../common/lib/dataUtils')
 
 Vue.filter('capitalise', function (value) {
   if (!value) {
@@ -15,7 +16,7 @@ Vue.filter('capitalise', function (value) {
 })
 
 function init (data, interactive) {
-  const isBirth = data['birth-or-adoption'] === 'birth'
+  const isBirth = dataUtils.isBirth(data)
   const planner = new (Vue.extend(Planner))({
     el: '#planner',
     data: {
