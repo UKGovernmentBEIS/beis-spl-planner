@@ -2,6 +2,7 @@
 {% from "radios/macro.njk" import govukRadios %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "button/macro.njk" import govukButton %}
 
 {% extends "layout.njk" %}
 
@@ -24,7 +25,7 @@
   {% endif %}
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
         {{ data | primaryName | capitalize }}’s leave and pay entitlements
       </h1>
@@ -90,9 +91,9 @@
           If you’re not sure, <a href="#">check if you can get shared parental leave or pay</a>
         </p>
 
-        <button type="submit" class="govuk-button">
-          Continue
-        </button>
+        {{ govukButton({
+          text: "Continue"
+        }) }}
       </form>
     </div>
   </div>

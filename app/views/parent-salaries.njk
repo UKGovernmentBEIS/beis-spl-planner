@@ -3,6 +3,7 @@
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "./components/salary-input.njk" import salaryInput %}
+{% from "button/macro.njk" import govukButton %}
 
 {% extends "layout.njk" %}
 
@@ -35,7 +36,7 @@
   {% endif %}
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
         What is your salary before tax?
       </h1>
@@ -70,9 +71,9 @@
             </div>
           {% endcall %}
         {% endcall %}
-        <button type="submit" class="govuk-button">
-          Continue
-        </button>
+        {{ govukButton({
+          text: "Continue"
+        }) }}
       </form>
       <a href="{{ withData('/planner') }}" class="govuk-link--no-visited-state govuk-body">
         Skip this step

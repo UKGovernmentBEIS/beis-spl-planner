@@ -1,10 +1,11 @@
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "button/macro.njk" import govukButton %}
 
 {% extends "layout.njk" %}
 
 {% block content %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
         Plan leave and pay when you have a child
       </h1>
@@ -33,9 +34,10 @@
       </ul>
       <form method="POST">
         {% call appendHiddenFields(data) %}{% endcall %}
-        <button type="submit" class="govuk-button govuk-button--start">
-          Start now
-        </button>
+        {{ govukButton({
+          text: "Start now",
+          classes: "govuk-button--start"
+        }) }}
       </form>
     </div>
   </div>

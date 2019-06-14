@@ -1,5 +1,5 @@
 {% from "back-link/macro.njk" import govukBackLink %}
-
+{% from "button/macro.njk" import govukButton %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "components/calendar.njk" import calendar %}
 
@@ -79,9 +79,9 @@
           If your plan is complete, continue for a summary of key dates and guidance on
           how to notify your employer.
         </p>
-        <button type="submit" class="govuk-button">
-          Continue
-        </button>
+        {{ govukButton({
+          text: "Continue"
+        }) }}
       </div>
     </div>
   </form>
