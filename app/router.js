@@ -7,6 +7,7 @@ const skip = require('./skip')
 const { getBlocks } = require('./lib/blocks')
 const { getWeeksArray } = require('./utils')
 const { registerEligibilityRouteForPrimaryParents, bothParentsAreIneligible } = require('./lib/routerUtils')
+const { isBirth } = require('../common/lib/dataUtils')
 
 router.use('/planner/examples', require('./router.examples'))
 
@@ -26,7 +27,7 @@ router.route(paths.getPath('birthOrAdoption'))
     if (!validate.birthOrAdoption(req)) {
       return res.redirect('back')
     }
-    const primaryParent = req.session.data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary-adopter'
+    const primaryParent = isBirth(req.session.data) ? 'mother' : 'primary-adopter'
     res.redirect(paths.getPath(`eligibility.${primaryParent}.sharedParentalLeaveAndPay`))
   })
 

@@ -8,12 +8,12 @@ const delve = require('dlv')
 const Day = require('../common/lib/day')
 const { isAdoption } = require('../common/lib/dataUtils')
 const skip = require('./skip')
+const { isNo } = require('../common/lib/dataUtils')
 const {
   prettyList,
   addError,
   validateParentYesNoFields,
-  isYesOrNo,
-  isNo
+  isYesOrNo
 } = require('./lib/validationUtils')
 
 function birthOrAdoption (req) {
