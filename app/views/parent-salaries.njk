@@ -54,7 +54,7 @@
               {{ salaryInput({
                 data: data,
                 parent: "primary",
-                labelText: data | primaryName | capitalize + "’s salary (£)",
+                labelText: data | primaryName | capitalise + "’s salary (£)",
                 amountError: errors['primary-salary-amount'] if errors['primary-salary-amount'],
                 periodError: errors['primary-salary-period'] if errors['primary-salary-period']
               }) }}
@@ -63,7 +63,7 @@
               {{ salaryInput({
                 data: data,
                 parent: "secondary",
-                labelText: data | secondaryName | capitalize + "’s salary (£)",
+                labelText: data | secondaryName | capitalise + "’s salary (£)",
                 amountError: errors['secondary-salary-amount'] if errors['secondary-salary-amount'],
                 periodError: errors['secondary-salary-period'] if errors['secondary-salary-period']
               }) }}

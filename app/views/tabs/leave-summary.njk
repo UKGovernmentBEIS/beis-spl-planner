@@ -24,14 +24,14 @@
     }) }}
 
     <h2 class="govuk-heading-l">
-      {{ data | primaryName | capitalize }}’s leave dates
+      {{ data | primaryName | capitalise }}’s leave dates
     </h2>
     <h3 class="govuk-heading-m">
-      {{ data | primaryLeaveType | capitalize }} leave
+      {{ data | primaryLeaveType | capitalise }} leave
     </h3>
 
     {{ leaveBlockSummary({
-      name: data | primaryLeaveType | capitalize + " leave",
+      name: data | primaryLeaveType | capitalise + " leave",
       block: leaveBlocks.primary.initial,
       data: data,
       notify: {
@@ -96,7 +96,7 @@
 
       {# TODO fix the href of this fileDownload #}
       {{ fileDownload({
-        name: (data | primaryName | capitalize) + "’s shared parental leave and pay notice form",
+        name: (data | primaryName | capitalise) + "’s shared parental leave and pay notice form",
         href: "#",
         description: {
           html: noticeDescription
@@ -119,7 +119,7 @@
 
     {% if leaveBlocks.secondary.initial or leaveBlocks.secondary.spl.length %}
       <h2 class="govuk-heading-l">
-        {{ data | secondaryName | capitalize }}’s leave dates
+        {{ data | secondaryName | capitalise }}’s leave dates
       </h2>
       {% if leaveBlocks.secondary.initial %}
         <h3 class="govuk-heading-m">
@@ -181,7 +181,7 @@
         </p>
         {#  TODO fix the href of this file download #}
         {{ fileDownload({
-          name: data | secondaryName | capitalize + "’s shared parental leave and pay notice form",
+          name: data | secondaryName | capitalise + "’s shared parental leave and pay notice form",
           href: "#",
           description: {
             html: noticeDescription

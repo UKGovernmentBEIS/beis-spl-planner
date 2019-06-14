@@ -41,11 +41,11 @@
         ],
         rows: [
           [
-            { text: data | primaryName | capitalize },
+            { text: data | primaryName | capitalise },
             { text: primaryPay }
           ],
           [
-            { text: data | secondaryName | capitalize },
+            { text: data | secondaryName | capitalise },
             { text: secondaryPay }
           ],
           [
@@ -109,7 +109,7 @@
     {% endset %}
 
     {{ fileDownload({
-      name: (data | primaryName | capitalize) + "’s shared parental leave and pay notice form",
+      name: (data | primaryName | capitalise) + "’s shared parental leave and pay notice form",
       href: "#",
       description: {
         html: noticeDescription
@@ -120,7 +120,7 @@
     }) }}
 
     {{ fileDownload({
-      name: data | secondaryName | capitalize + "’s shared parental leave and pay notice form",
+      name: data | secondaryName | capitalise + "’s shared parental leave and pay notice form",
       href: "#",
       description: {
         html: noticeDescription
