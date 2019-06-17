@@ -39,13 +39,13 @@ registerEligibilityRouteForPrimaryParents(router, 'sharedParentalLeaveAndPay', {
     if (!validate.primarySharedParentalLeaveAndPay(req)) {
       return res.redirect('back')
     }
-    if (skip.initialLeaveAndPay(req)) {
-      if (skip.maternityAllowance(req)) {
-        return res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
-      }
-      return res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
+    if (skip.initialLeaveAndPay(req) && skip.maternityAllowance(req)) {
+      res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
+    } else if (skip.initialLeaveAndPay(req)) {
+      res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
+    } else {
+      res.redirect(paths.getPath(`eligibility.${parentUrlPart}.initialLeaveAndPay`))
     }
-    res.redirect(paths.getPath(`eligibility.${parentUrlPart}.initialLeaveAndPay`))
   }
 })
 
@@ -61,9 +61,10 @@ registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
       return res.redirect('back')
     }
     if (skip.maternityAllowance(req)) {
-      return res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
+      res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
+    } else {
+      res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
     }
-    res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
   }
 })
 
@@ -91,12 +92,12 @@ router.route(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
       return res.redirect('back')
     }
     if (bothParentsAreIneligible(req.session.data)) {
-      return res.redirect(paths.getPath('notEligible'))
+      res.redirect(paths.getPath('notEligible'))
+    } else if (skip.paternityLeaveAndPay(req)) {
+      res.redirect(paths.getPath('startDate'))
+    } else {
+      res.redirect(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
     }
-    if (skip.paternityLeaveAndPay(req)) {
-      return res.redirect(paths.getPath('startDate'))
-    }
-    res.redirect(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
   })
 
 router.route(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
