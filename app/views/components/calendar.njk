@@ -4,6 +4,8 @@
   {% set startDay = (data | startDay) %}
   {% set minWeek = -11 if (data | isBirth) else -2 %}
   {% set maxWeek = 52 %}
+  {% set isBirth = (data | isBirth) %}
+  {% set weekZeroName = "birth" if isBirth else "placement" %}
   <div class="govuk-form-group">
     <fieldset class="govuk-fieldset">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
@@ -18,6 +20,22 @@
             {% set leaveName = parent + '[leave]' %}
             {% set payId = parent + '-pay_' + i %}
             {% set payName = parent + '[pay]' %}
+            {% set date = (startDay | offsetWeeks(i)) %}
+            {% if (i === minWeek) or ((date | formatDate("D") | int) <= 7) %}
+              <h4 class="govuk-heading-s govuk-!-padding-1 background-grey">
+                {{ date | formatDate("MMMM YYYY") }}
+              </h4>
+            {% endif %}
+            <h4 class="govuk-heading-s govuk-!-margin-bottom-0">
+              {{ date | formatDate("D MMMM") }}
+            </h4>
+            <div class="govuk-hint govuk-!-margin-top-0">
+              {% if (i === 0) %}
+                {{ weekZeroName | capitalise }} week
+              {% else %}
+                {{ i | abs }} week{{ "s" if (i | abs) !== 1 }} {{ "before" if i < 0 else "after" }} {{ weekZeroName }}
+              {% endif %}
+            </div>
             <div class="govuk-checkboxes__item">
               <input class="govuk-checkboxes__input" id="{{ leaveId }}" name="{{ leaveName }}" type="checkbox" value="{{ i }}"
                 data-aria-controls="conditional-{{ leaveId }}"
@@ -48,13 +66,13 @@
 
 {% macro calendar(data) %}
   <div class="govuk-grid-row js-hide">
-    <div class="govuk-grid-column-one-half-from-desktop">
+    <div class="govuk-grid-column-one-half">
       {{ leaveAndPayCheckboxes(data, "primary") }}
       {# Compulsory leave weeks are disabled checkboxes, so we need to include the values manually. #}
       <input type="hidden" name="primary[leave]" value="0" />
       <input type="hidden" name="primary[leave]" value="1" />
     </div>
-    <div class="govuk-grid-column-one-half-from-desktop">
+    <div class="govuk-grid-column-one-half">
       {{ leaveAndPayCheckboxes(data, "secondary") }}
     </div>
   </div>
