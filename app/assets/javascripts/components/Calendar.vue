@@ -12,15 +12,15 @@
     <thead class="govuk-table__head">
       <tr class="govuk-table__row not-pay">
         <th class="govuk-table__header" scope="col"></th>
-        <th class="govuk-table__header" scope="col" colspan="2">{{ names.primary | capitalise }}</th>
-        <th class="govuk-table__header" scope="col" colspan="2">{{ names.secondary | capitalise }}</th>
+        <th class="govuk-table__header" scope="col" colspan="2" id="primary-name">{{ names.primary | capitalise }}</th>
+        <th class="govuk-table__header" scope="col" colspan="2" id="secondary-name">{{ names.secondary | capitalise }}</th>
       </tr>
       <tr class="govuk-table__row">
         <th class="govuk-table__header" scope="col"></th>
-        <th class="govuk-table__header" scope="col">Leave</th>
-        <th class="govuk-table__header" scope="col">Pay</th>
-        <th class="govuk-table__header" scope="col">Leave</th>
-        <th class="govuk-table__header" scope="col">Pay</th>
+        <th class="govuk-table__header" scope="col" id="primary-leave">Leave</th>
+        <th class="govuk-table__header" scope="col" id="primary-pay">Pay</th>
+        <th class="govuk-table__header" scope="col" id="secondary-leave">Leave</th>
+        <th class="govuk-table__header" scope="col" id="secondary-pay">Pay</th>
       </tr>
     </thead>
     <tbody class="govuk-table__body">
@@ -41,17 +41,18 @@
           </th>
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week.number)">
-          <th class="govuk-table__cell date">
+          <th class="govuk-table__cell date" :id="`week-${i}-date`">
             {{ week.day.format('D') }}<br>
             {{ week.day.format('MMM') }}
           </th>
           <template v-for="(parent, j) in ['primary', 'secondary']">
             <template v-if="week[parent].disabled">
-              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled"></td>
-              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled"></td>
+              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`${parent}-name ${parent}-leave week-${i}-date`"></td>
+              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`${parent}-name ${parent}-pay week-${i}-date`"></td>
             </template>
             <template v-else>
               <td :key="parent + '-leave'" class="govuk-table__cell leave"
+                  :headers="`${parent}-name ${parent}-leave week-${i}-date`"
                   :class="week[parent].compulsory ? 'compulsory' : week[parent].leave"
                   tabindex="0" :data-row="i" :data-column="2*j"
                   @keydown.tab="onCellTab($event)"
@@ -75,6 +76,7 @@
                 </div>
               </td>
               <td :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
+                  :headers="`${parent}-name ${parent}-pay week-${i}-date`"
                   :class="{ 'unpaid': week[parent].leave && !week[parent].pay }"
                   tabindex="0" :data-row="i" :data-column="2*j + 1"
                   @keydown.tab="onCellTab($event)"
