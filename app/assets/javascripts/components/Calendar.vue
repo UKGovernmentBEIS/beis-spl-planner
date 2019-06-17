@@ -25,7 +25,7 @@
     </thead>
     <tbody class="govuk-table__body">
       <template v-for="(week, i) in weeks">
-        <tr :key="'month-header-' + week.id" v-if="i === 0 || week.day.date() <= 7">
+        <tr :key="'month-header-' + week.id" v-if="i === 0 || week.day.date() <= 7" aria-hidden="true">
           <th class="govuk-table__header month" colspan="5">
             {{ week.day.format('MMMM YYYY') }}
           </th>
