@@ -2,10 +2,12 @@
   <table ref="calendar" class="govuk-table"
     :class="{ 'dragging': isDragging, 'hide-focus': hideFocus, 'is-ie': isIexplorer, 'interactive': interactive }"
     @mouseleave="endDrag" @mouseup.left="endDrag">
-    <colgroup>
       <col class="col-date" />
+    <colgroup>
       <col class="col-leave" />
       <col class="col-pay" />
+    </colgroup>
+    <colgroup>
       <col class="col-leave" />
       <col class="col-pay" />
     </colgroup>
@@ -41,7 +43,7 @@
           </th>
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week.number)">
-          <th class="govuk-table__cell date" :id="`week-${i}-date`">
+          <th class="govuk-table__cell date" :id="`week-${i}-date`" scope="row">
             {{ week.day.format('D') }}<br>
             {{ week.day.format('MMM') }}
           </th>
