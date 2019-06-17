@@ -1,7 +1,18 @@
 {% from "summary-list/macro.njk" import govukSummaryList %}
 {% from "inset-text/macro.njk" import govukInsetText %}
+{% from "warning-text/macro.njk" import govukWarningText %}
 {% from "../components/leave-block-summary.njk" import leaveBlockSummary %}
 {% from "../components/file-download.njk" import fileDownload %}
+
+{% set noticeDescription %}
+{# TODO fix the href of this link #}
+  <p>This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#">download a blank version</a>.
+{% endset %}
+
+{% set noticeDetails %}
+{# TODO fix the href of this link #}
+  <p>This file may not be suitable for users of assistive technology. <a href="#">Request an accesible format</a>.
+{% endset %}
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -48,6 +59,35 @@
       Your employer can ask for this in writing.
       Your employer must write to you within 28 days confirming your start and end dates.
     </p>
+
+    {% if not leaveBlocks.primary.spl | length %}
+      <h4 class="govuk-heading-s">
+        Ending your {{ data | primaryLeaveType }} leave or pay
+      </h4>
+      <p>
+        You must end your {{ data | primaryLeaveType }} leave or pay to create shared parental leave or pay.
+        You can do this by returning to work or curtailing it (commiting to end it before you return to work).
+      </p>
+      <p>
+        You must also confirm that you’re not taking shared parental leave and pay and consent to your partner taking it.
+      </p>
+      <p>
+        You can do all of this by submitting the {{ data | primaryLeaveType }} leave curtailment and shared parental leave consent form
+        to your employer at least 8 weeks before your partner wants to start shared parental leave.
+      </p>
+      {# TODO fix the href of this fileDownload #}
+      {{ fileDownload({
+        name: data | primaryLeaveType | capitalise + " curtailment and SPL consent form",
+        href:"#",
+        description: {
+          html: noticeDescription
+        },
+        details: {
+          html: noticeDetails
+        }
+      }) }}
+    {% endif %}
+
     <h4 class="govuk-heading-s">
       Changing your plans
     </h4>
@@ -83,16 +123,6 @@
       <p>
         Complete the {{ data | primaryName }}’s shared parental leave and pay notice form and submit it to the {{ data | primaryName }}'s employer 8 weeks before the they want to start shared parental leave.
       </p>
-
-      {% set noticeDescription %}
-      {# TODO fix the href of this link #}
-        <p>This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#">download a blank version</a>.
-      {% endset %}
-
-      {% set noticeDetails %}
-      {# TODO fix the href of this link #}
-        <p>This file may not be suitable for users of assistive technology. <a href="#">Request an accesible format</a>.
-      {% endset %}
 
       {# TODO fix the href of this fileDownload #}
       {{ fileDownload({
@@ -190,6 +220,20 @@
             html: noticeDetails
           }
         }) }}
+
+        {% if not leaveBlocks.primary.spl | length %}
+          {% set curtailmentWarningHtml %}
+            The {{ data | primaryName }} must end their {{ data | primaryLeaveType }} leave and pay by returning to work or submitting a curtailment notice.
+            They must also give consent for the partner to take shared parental leave or pay.
+            {#  TODO fix the href of this link #}
+            They can do both by submitting the <a href="#">{{ data | primaryLeaveType | capitalise}} curtailment and SPL consent form</a>.
+          {% endset %}
+          {{ govukWarningText({
+            html: curtailmentWarningHtml,
+            iconFallBackText: "Warning"
+          }) }}
+        {% endif %}
+
         <h4 class="govuk-heading-s">
           Changing your plans
         </h4>
