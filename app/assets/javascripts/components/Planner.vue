@@ -79,6 +79,7 @@
 
   #sidebar {
     position: sticky;
+    position: -webkit-sticky;
     top: 10px;
   }
 </style>
