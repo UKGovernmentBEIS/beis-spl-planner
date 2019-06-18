@@ -2,6 +2,7 @@
 {% from "radios/macro.njk" import govukRadios %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "button/macro.njk" import govukButton %}
 
 {% extends "layout.njk" %}
 
@@ -13,80 +14,89 @@
 {% endblock %}
 
 {% block content %}
-  {% if errors['initial-leave-eligible'] or errors['initial-pay-eligible'] %}
+  {% if errors["initial-leave-eligible"] or errors["initial-pay-eligible"] %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
-        errors['initial-leave-eligible'],
-        errors['initial-pay-eligible']
+        errors["initial-leave-eligible"],
+        errors["initial-pay-eligible"]
       ]
     }) }}
   {% endif %}
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
         {{ data | primaryName | capitalise }}’s leave and pay entitlements
       </h1>
       <form method="POST">
         {% call appendHiddenFields(data) %}
-          {{ govukRadios({
-            classes: "govuk-radios--inline",
-            idPrefix: "primary-initial-leave-eligible",
-            name: "primary[initial-leave-eligible]",
-            fieldset: {
-              legend: {
-                text: "Is the " + data | primaryName + " eligible for " + data | primaryLeaveType + " leave?",
-                classes: "govuk-fieldset__legend--m"
-              }
-            },
-            errorMessage: {
-              text: errors["initial-leave-eligible"].text
-            } if errors["initial-leave-eligible"],
-            items: [
-              {
-                value: "yes",
-                text: "Yes",
-                checked: data["primary"]["initial-leave-eligible"] | isYes
+          {% if data["primary"]["spl-eligible"] | isNo %}
+            {{ govukRadios({
+              classes: "govuk-radios--inline",
+              idPrefix: "primary-initial-leave-eligible",
+              name: "primary[initial-leave-eligible]",
+              fieldset: {
+                legend: {
+                  text: "Is the " + data | primaryName + " eligible for " + data | primaryLeaveType + " leave?",
+                  classes: "govuk-fieldset__legend--m"
+                }
               },
-              {
-                value: "no",
-                text: "No",
-                checked: data["primary"]["initial-leave-eligible"] | isNo
-              }
-            ]
-          }) }}
+              errorMessage: {
+                text: errors["initial-leave-eligible"].text
+              } if errors["initial-leave-eligible"],
+              items: [
+                {
+                  value: "yes",
+                  text: "Yes",
+                  checked: data["primary"]["initial-leave-eligible"] | isYes
+                },
+                {
+                  value: "no",
+                  text: "No",
+                  checked: data["primary"]["initial-leave-eligible"] | isNo
+                }
+              ]
+            }) }}
+          {% endif %}
 
-          {{ govukRadios({
-            classes: "govuk-radios--inline",
-            idPrefix: "primary-initial-pay-eligible",
-            name: "primary[initial-pay-eligible]",
-            fieldset: {
-              legend: {
-                text: "Is the " + data | primaryName + " eligible for statutory " + data | primaryLeaveType + "  pay?",
-                classes: "govuk-fieldset__legend--m"
-              }
-            },
-            errorMessage: {
-              text: errors["initial-pay-eligible"].text
-            } if errors["initial-pay-eligible"].text,
-            items: [
-              {
-                value: "yes",
-                text: "Yes",
-                checked: data["primary"]["initial-pay-eligible"] | isYes
+          {% if data["primary"]["shpp-eligible"] | isNo %}
+            {{ govukRadios({
+              classes: "govuk-radios--inline",
+              idPrefix: "primary-initial-pay-eligible",
+              name: "primary[initial-pay-eligible]",
+              fieldset: {
+                legend: {
+                  text: "Is the " + data | primaryName + " eligible for statutory " + data | primaryLeaveType + "  pay?",
+                  classes: "govuk-fieldset__legend--m"
+                }
               },
-              {
-                value: "no",
-                text: "No",
-                checked: data["primary"]["initial-pay-eligible"] | isNo
-              }
-            ]
-          }) }}
+              errorMessage: {
+                text: errors["initial-pay-eligible"].text
+              } if errors["initial-pay-eligible"].text,
+              items: [
+                {
+                  value: "yes",
+                  text: "Yes",
+                  checked: data["primary"]["initial-pay-eligible"] | isYes
+                },
+                {
+                  value: "no",
+                  text: "No",
+                  checked: data["primary"]["initial-pay-eligible"] | isNo
+                }
+              ]
+            }) }}
+          {% endif %}
         {% endcall %}
-        <button type="submit" class="govuk-button">
-          Continue
-        </button>
+
+        <p class="govuk-hint">
+          If you’re not sure, <a href="https://www.gov.uk/pay-leave-for-parents">check if you can get leave and pay when you have a child</a>
+        </p>
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
       </form>
     </div>
   </div>

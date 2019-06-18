@@ -2,6 +2,7 @@
 {% from "radios/macro.njk" import govukRadios %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "button/macro.njk" import govukButton %}
 
 {% extends "layout.njk" %}
 
@@ -23,7 +24,7 @@
   {% endif %}
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
       <form method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
@@ -38,7 +39,7 @@
               }
             },
             hint: {
-              text: "Shared parental leave and pay is available for birth and adoptive parents."
+              text: "Shared parental leave and statutory shared parental pay are available for birth and adoptive parents."
             },
             errorMessage: {
               text: errors["birth-or-adoption"].text
@@ -57,9 +58,9 @@
             ]
           }) }}
         {% endcall %}
-        <button type="submit" class="govuk-button">
-          Continue
-        </button>
+        {{ govukButton({
+          text: "Continue"
+        }) }}
       </form>
     </div>
   </div>

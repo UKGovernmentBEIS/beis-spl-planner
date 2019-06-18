@@ -1,5 +1,5 @@
 {% from "back-link/macro.njk" import govukBackLink %}
-
+{% from "button/macro.njk" import govukButton %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "components/calendar.njk" import calendar %}
 
@@ -22,7 +22,7 @@
       </h1>
       <p>
         Click in the calendar to select the weeks you and your partner would like to
-        take off work when you have a child. The calendar is based on your child's
+        take off work when you have a child. The calendar is based on your child’s
         expected or actual week of {{ "birth" if isBirth else "placement" }}.
       </p>
       <p>
@@ -49,7 +49,7 @@
       <p class="govuk-hint">
         Examples will open in a new page.
       </p>
-      {% set examplePath = '/planner/examples/birth' if isBirth else '/planner/examples/adoption' %}
+      {% set examplePath = "/planner/examples/birth" if isBirth else "/planner/examples/adoption" %}
       <ul class="govuk-list govuk-list--bullet">
         <li>
           <a class="govuk-link" target="_blank" href="{{ examplePath }}/managing-parenting-and-work">
@@ -79,9 +79,9 @@
           If your plan is complete, continue for a summary of key dates and guidance on
           how to notify your employer.
         </p>
-        <button type="submit" class="govuk-button">
-          Continue
-        </button>
+        {{ govukButton({
+          text: "Continue"
+        }) }}
       </div>
     </div>
   </form>

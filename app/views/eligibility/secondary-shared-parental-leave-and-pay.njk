@@ -2,6 +2,7 @@
 {% from "radios/macro.njk" import govukRadios %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "button/macro.njk" import govukButton %}
 
 {% extends "layout.njk" %}
 
@@ -13,18 +14,18 @@
 {% endblock %}
 
 {% block content %}
-    {% if errors["spl-eligible"] or errors['shpp-eligible'] %}
+    {% if errors["spl-eligible"] or errors["shpp-eligible"] %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
         errors["spl-eligible"],
-        errors['shpp-eligible']
+        errors["shpp-eligible"]
       ]
     }) }}
   {% endif %}
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
         {{ data | secondaryName | capitalise }}’s leave and pay entitlements
       </h1>
@@ -84,9 +85,15 @@
             ]
           }) }}
         {% endcall %}
-        <button type="submit" class="govuk-button">
-          Continue
-        </button>
+
+        <p class="govuk-hint">
+        {# TODO check the href of this link #}
+          If you’re not sure, <a href="#">check if you can get shared parental leave or pay</a>
+        </p>
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
       </form>
     </div>
   </div>

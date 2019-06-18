@@ -2,6 +2,7 @@
 {% from "date-input/macro.njk" import govukDateInput %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "button/macro.njk" import govukButton %}
 
 {% extends "layout.njk" %}
 
@@ -18,9 +19,9 @@
 
 {% block content %}
   {% set questionText %}
-    {% if data['birth-or-adoption'] == 'birth' %}
+    {% if data | isBirth %}
       When is the baby due, or when was the baby born?
-    {% elif data['birth-or-adoption'] == 'adoption' %}
+    {% elif data | isAdoption %}
       When will, or when did the child start to live with you?
     {% endif %}
   {% endset %}
@@ -35,7 +36,7 @@
   {% endif %}
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
       <form method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukDateInput({
@@ -71,9 +72,9 @@
             ]
           }) }}
         {% endcall %}
-        <button type="submit" class="govuk-button">
-          Continue
-        </button>
+        {{ govukButton({
+          text: "Continue"
+        }) }}
       </form>
     </div>
   </div>

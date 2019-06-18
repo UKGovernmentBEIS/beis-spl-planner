@@ -6,7 +6,8 @@ const validate = require('./validate')
 const skip = require('./skip')
 const { getBlocks } = require('./lib/blocks')
 const { getWeeksArray } = require('./utils')
-const { registerEligibilityRouteForPrimaryParents } = require('./lib/routerUtils')
+const { registerEligibilityRouteForPrimaryParents, bothParentsAreIneligible } = require('./lib/routerUtils')
+const { isBirth } = require('../common/lib/dataUtils')
 
 router.use('/planner/examples', require('./router.examples'))
 
@@ -26,25 +27,32 @@ router.route(paths.getPath('birthOrAdoption'))
     if (!validate.birthOrAdoption(req)) {
       return res.redirect('back')
     }
-    res.redirect(paths.getPath('startDate'))
+    const primaryParent = isBirth(req.session.data) ? 'mother' : 'primary-adopter'
+    res.redirect(paths.getPath(`eligibility.${primaryParent}.sharedParentalLeaveAndPay`))
   })
 
 registerEligibilityRouteForPrimaryParents(router, 'sharedParentalLeaveAndPay', {
-  get: function (_, req, res) {
+  get: function (req, res) {
     res.render('eligibility/primary-shared-parental-leave-and-pay')
   },
   post: function (parentUrlPart, req, res) {
     if (!validate.primarySharedParentalLeaveAndPay(req)) {
       return res.redirect('back')
     }
-    res.redirect(paths.getPath(`eligibility.${parentUrlPart}.initialLeaveAndPay`))
+    if (skip.initialLeaveAndPay(req) && skip.maternityAllowance(req)) {
+      res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
+    } else if (skip.initialLeaveAndPay(req)) {
+      res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
+    } else {
+      res.redirect(paths.getPath(`eligibility.${parentUrlPart}.initialLeaveAndPay`))
+    }
   }
 })
 
 registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
-  get: function (parentUrlPart, req, res) {
+  get: function (req, res) {
     if (skip.initialLeaveAndPay(req)) {
-      return res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
+      return res.redirect(paths.getPreviousWorkFlowPath(req.url))
     }
     res.render('eligibility/primary-initial-leave-and-pay')
   },
@@ -52,14 +60,18 @@ registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
     if (!validate.initialLeaveAndPay(req)) {
       return res.redirect('back')
     }
-    res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
+    if (skip.maternityAllowance(req)) {
+      res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
+    } else {
+      res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
+    }
   }
 })
 
 registerEligibilityRouteForPrimaryParents(router, 'maternityAllowance', {
-  get: function (_, req, res) {
+  get: function (req, res) {
     if (skip.maternityAllowance(req)) {
-      return res.redirect(paths.getPath(`eligibility.partner.sharedParentalLeaveAndPay`))
+      return res.redirect(paths.getPreviousWorkFlowPath(req.url))
     }
     res.render('eligibility/maternity-allowance')
   },
@@ -79,11 +91,20 @@ router.route(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
     if (!validate.secondarySharedParentalLeaveAndPay(req)) {
       return res.redirect('back')
     }
-    res.redirect(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
+    if (bothParentsAreIneligible(req.session.data)) {
+      res.redirect(paths.getPath('notEligible'))
+    } else if (skip.paternityLeaveAndPay(req)) {
+      res.redirect(paths.getPath('startDate'))
+    } else {
+      res.redirect(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
+    }
   })
 
 router.route(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
   .get(function (req, res) {
+    if (skip.paternityLeaveAndPay(req)) {
+      return res.redirect(paths.getPreviousWorkFlowPath(req.url))
+    }
     res.render('eligibility/paternity-leave-and-pay')
   })
   .post(function (req, res) {
@@ -91,6 +112,11 @@ router.route(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
       return res.redirect('back')
     }
     res.redirect(paths.getPath('startDate'))
+  })
+
+router.route(paths.getPath('notEligible'))
+  .get(function (req, res) {
+    res.render('eligibility/not-eligible')
   })
 
 router.route(paths.getPath('startDate'))

@@ -4,7 +4,7 @@
 {% from "../components/file-download.njk" import fileDownload %}
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-column-two-thirds-from-desktop">
     <p>
       This is a summary of your leave plan.
       It shows your leave dates, when you need to notify your employer and how you can apply.
@@ -81,7 +81,7 @@
         How to give notice
       </h4>
       <p>
-        Complete the {{ data | primaryName }}’s shared parental leave and pay notice form and submit it to the {{ data | primaryName }}'s employer 8 weeks before the they want to start shared parental leave.
+        Complete the {{ data | primaryName }}’s shared parental leave and pay notice form and submit it to the {{ data | primaryName }}’s employer 8 weeks before the they want to start shared parental leave.
       </p>
 
       {% set noticeDescription %}
@@ -177,7 +177,7 @@
           How to give notice
         </h4>
         <p>
-          Complete the {{ data | secondaryName }}'s shared parental leave and pay notice form and submit it to the {{ data | secondaryName }}'s employer 8 weeks before they want to start shared parental leave.
+          Complete the {{ data | secondaryName }}’s shared parental leave and pay notice form and submit it to the {{ data | secondaryName }}’s employer 8 weeks before they want to start shared parental leave.
         </p>
         {#  TODO fix the href of this file download #}
         {{ fileDownload({

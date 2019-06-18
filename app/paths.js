@@ -92,9 +92,13 @@ class Paths {
           }
         }
       },
+      notEligible: {
+        url: '/not-eligible',
+        workflowParentPath: '/eligibility/partner/shared-parental-leave-and-pay'
+      },
       startDate: {
         url: '/start-date',
-        workflowParentPath: '/birth-or-adoption',
+        workflowParentPath: '/eligibility/partner/paternity-leave-and-pay',
         validator: validate.startDate
       },
       parentSalaries: {
