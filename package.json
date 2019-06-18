@@ -41,7 +41,6 @@
     "qs": "^6.7.0",
     "serve-favicon": "^2.5.0",
     "staticify": "^3.3.1",
-    "stickybits": "^3.6.6",
     "stickyfill": "^1.1.1-strict",
     "throng": "4.0.x",
     "vue": "^2.6.10"
