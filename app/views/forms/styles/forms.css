@@ -78,24 +78,22 @@ p {
   width: 14px !important;
 }
 
-.number-array table {
+.number-array table,
+.field-checkbox table {
   border-collapse: collapse;
+  display: inline-block;
 }
 
-.number-array td {
-  width: 14px;
+.number-array table:not(:first-of-type) {
+  margin-left: 6px;
+}
+
+.number-array td,
+.field-checkbox td {
+  width: 13px; /* 1px less than in design because https://stackoverflow.com/questions/19068909/why-is-box-sizing-acting-different-on-table-vs-div */
   height: 18px;
   padding: 0;
-}
-
-.number-array td {
   border: 1px solid darkgray;
-}
-
-.number-array .number-break {
-  width: 10px;
-  border-top: none !important;
-  border-bottom: none !important;
 }
 
 .row:after {
@@ -121,12 +119,64 @@ p {
   margin: 0;
 }
 
-.input {
+.field-number .input-field {
+  width: 29px; /* 1px more than in design to keep same size as two digit-fields */
+}
+
+.item-numbered-input {
   border-left: 1px solid darkgray;
   padding-bottom: 10px;
   padding-right: 19px;
 }
 
-.input p {
+.item-numbered-input p {
   margin-top: 0;
+}
+
+.field-range .field-date {
+  display: inline-block;
+}
+
+.field-range .date-separation {
+  display: inline-block;
+  position: relative;
+  top: -3px;
+  width: 13px;
+}
+
+.field-range .date-separation .separator {
+  display: table;
+  margin: 0 auto;
+}
+
+.field-range .range-title {
+  margin-bottom: 5px;
+}
+
+.field-range .range-title .start {
+  display: inline-block;
+  width: 148px;
+}
+
+.item-checkbox .field-checkbox {
+  margin-left: 21px;
+  position: relative;
+  top: 0.32em;
+}
+
+.item-checkbox p {
+  margin-bottom: 10px;
+}
+
+.no-margin {
+  margin-bottom: 0px !important;
+}
+
+.field-signature .input-field {
+  width: 257px;
+  height: 44px;
+}
+
+.item-numbered-input .field-range:not(:first-of-type) {
+  margin-top: 5px;
 }

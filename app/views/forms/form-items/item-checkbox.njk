@@ -1,0 +1,12 @@
+{% from "../input-fields/field-checkbox.njk" import fieldCheckbox %}
+
+{% macro itemCheckbox(options) %}
+  <div class="item-checkbox row">
+    <div class="column" style="width: 415px">
+      <p {{ 'class=no-margin' if options.noMargin }} > {{ options.text }} </p>
+    </div>
+    <div class="column" style="width: calc(100% - 415px)">
+      {{ fieldCheckbox(options.passdown) }}
+    </div>
+  </div>
+{% endmacro %}

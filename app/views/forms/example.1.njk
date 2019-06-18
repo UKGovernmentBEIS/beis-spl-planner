@@ -13,21 +13,31 @@
 
 
 {% from "./layout/two-column-layout.njk" import twoColumnLayout %}
-{% from "./form-elements/input.njk" import input %}
+{% from "./form-items/item-numbered-input.njk" import itemNumberedInput %}
+{% from "./form-items/item-signature-with-date.njk" import itemSignatureWithDate %}
+{% from "./form-items/item-checkbox.njk" import itemCheckbox %}
 
 <h4>You (the mother)</h4>
 
 {% set left %}
-  {{ input({ number: 1, type: "TEXT", text: "Surname" }) }}
-  {{ input({ number: 2, type: "NINR", text: "National insurance number" }) }}
-  {{ input({ number: 3, type: "ADDR", text: "Home address" }) }}
+  {{ itemNumberedInput({ number: 1, type: "TEXT", text: "Surname", passdown: "" }) }}
+  {{ itemNumberedInput({ number: 2, type: "NINR", text: "National insurance number", passdown: "" }) }}
+  {{ itemNumberedInput({ number: 3, type: "ADDR", text: "Home address", passdown: "" }) }}
 {% endset %}
 
 {% set right %}
-  {{ input({number: 7, type: "DATE", text: "What is the child's expected date of birth / actual date of birth?"}) }}
+  {{ itemNumberedInput({number: 7, type: "DATE", text: "What is the child's expected date of birth / actual date of birth?", passdown: ""}) }}
+  {{ itemNumberedInput({number: 8, type: "NUMB", text: "Number of weeks", passdown: ""}) }}
 {% endset %}
 
 {{ twoColumnLayout({
   leftcolumn: left,
   rightcolumn: right
 }) }}
+
+{{ itemNumberedInput({number: 9, type: "RBLK", text: "Enter the range", passdown: [{title: {start: "SPL start date", end: "SPL end date"} }, {}, {}] }) }}
+{{ itemCheckbox({text: "I had or (will have) the main responsibility for the care of the child at the time of the child’s birth (along with the father/partner who has made the declaration in Section 4).", passdown: ""}) }}
+{{ itemCheckbox({text: "- Shared Parental Leave", passdown: "", noMargin: true}) }}
+{{ itemCheckbox({text: "- Statutory Shared Parental Pay", passdown: ""}) }}
+<br/>
+{{ itemSignatureWithDate({passdown: ""}) }}

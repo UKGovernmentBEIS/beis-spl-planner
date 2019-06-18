@@ -1,0 +1,39 @@
+{% from "../input-fields/field-textbox.njk" import fieldTextbox %}
+{% from "../input-fields/field-ninr.njk" import fieldNINR %}
+{% from "../input-fields/field-date.njk" import fieldDate %}
+{% from "../input-fields/field-address.njk" import fieldAddress %}
+{% from "../input-fields/field-number.njk" import fieldNumber %}
+{% from "../input-fields/field-range.njk" import fieldRange %}
+
+{% macro itemNumberedInput(options) %}
+  <div class="item-numbered-input row">
+    <div class="column" style="width: 27px">
+      <div class="number-box">
+        {{ options.number }}
+      </div>
+    </div>
+    <div class="column" style="width: calc(100% - 27px)">
+      <p> {{ options.text }} </p>
+
+      {% switch options.type %}
+        {% case "TEXT" %}
+          {{ fieldTextbox(options.passdown) }}
+        {% case "NINR" %}
+          {{ fieldNINR(options.passdown) }}
+        {% case "ADDR" %}
+          {{ fieldAddress(options.passdown) }}
+        {% case "DATE" %}
+          {{ fieldDate(options.passdown) }}
+        {% case "NUMB" %}
+          {{ fieldNumber(options.passdown) }}
+        {% case "RANG" %}
+          {{ fieldRange(options.passdown) }}
+        {% case "RBLK" %}
+          {% for itemopt in options.passdown %}
+            {{ fieldRange(itemopt) }}
+          {% endfor %}
+      {% endswitch %}
+
+    </div>
+  </div>
+{% endmacro %}
