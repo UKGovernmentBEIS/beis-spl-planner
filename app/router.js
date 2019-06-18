@@ -6,13 +6,20 @@ const validate = require('./validate')
 const skip = require('./skip')
 const { getBlocks } = require('./lib/blocks')
 const { getWeeksArray } = require('./utils')
-const { registerEligibilityRouteForPrimaryParents, bothParentsAreIneligible } = require('./lib/routerUtils')
+const {
+  registerEligibilityRouteForPrimaryParents,
+  bothParentsAreIneligible,
+  parseExternalQueryString
+} = require('./lib/routerUtils')
 const { isBirth } = require('../common/lib/dataUtils')
 
 router.use('/planner/examples', require('./router.examples'))
 
 router.route(paths.getPath('root'))
   .get(function (req, res) {
+    if (req.query) {
+      parseExternalQueryString(req)
+    }
     res.render('index')
   })
   .post(function (req, res) {
