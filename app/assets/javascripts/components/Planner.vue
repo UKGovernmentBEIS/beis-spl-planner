@@ -57,12 +57,20 @@
 <style lang="scss">
   @import "node_modules/govuk-frontend/settings/colours-applied";
 
+  @mixin sticky() {
+    position: sticky;
+    position: -o-sticky;
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+  }
+
   #calendar {
     thead {
       /* Various styling to patch sticky headers. */
       $th-height: 48px;
       th {
-        position: sticky;
+        @include sticky();
         z-index: 1;
 
         height: $th-height;
@@ -78,7 +86,7 @@
   }
 
   #sidebar {
-    position: sticky;
+    @include sticky();
     top: 10px;
   }
 </style>

@@ -44,7 +44,7 @@ module.exports = function (env) {
     return isBirth(data) ? 'maternity' : 'adoption'
   }
 
-  function capitalize (string) {
+  function capitalise (string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
 
@@ -88,7 +88,7 @@ module.exports = function (env) {
     otherParentName,
     parentNameForUrl,
     primaryLeaveType,
-    capitalize,
+    capitalise,
     startDateName,
     offsetWeeks,
     exampleDate,
