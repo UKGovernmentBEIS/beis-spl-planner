@@ -72,7 +72,7 @@ function initialiseGlobalMiddleware (app) {
 
   app.use(sessionData)
 
-  function handleViewErrors (app) {
+  function handleFormErrorsForView (app) {
     app.route('*')
       .post(function initializeSessionErrors (req, res, next) {
         req.session.errors = {}
@@ -84,7 +84,7 @@ function initialiseGlobalMiddleware (app) {
       })
   }
 
-  handleViewErrors(app)
+  handleFormErrorsForView(app)
 
   app.get('*', require('./common/middleware/step-validation'))
 }
