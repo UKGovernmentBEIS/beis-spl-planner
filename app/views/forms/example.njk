@@ -1,16 +1,16 @@
-{% from "./pdf.njk" import pdf %}
+{% from "./layout/document.njk" import document %}
 
 {% set title %}
   <strong>{{ "Mother" if (data | isBirth) else "Adopter" }}’s</strong> notice and declaration of SPL
 {% endset %}
 
-{{ pdf({
+{{ document({
   parent: "primary",
   title: {
     html: title
   },
   pages: [
-    "./example.1.njk",
-    "./example.2.njk"
+    "../example.1.njk",
+    "../example.2.njk"
   ]
 }) }}

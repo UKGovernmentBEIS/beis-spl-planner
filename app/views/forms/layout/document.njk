@@ -1,4 +1,4 @@
-{% macro pdf(options) %}
+{% macro document(options) %}
   <html>
     <head>
       <meta charset="utf8">
@@ -9,7 +9,7 @@
       {% for page in options.pages %}
         <div class="page">
           <div class="content">
-            {% include page %}
+            {{ page | safe }}
           </div>
           <div class="footer">
             <div class="footer-title">

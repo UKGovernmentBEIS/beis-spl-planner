@@ -27,10 +27,10 @@ router.get('/example.html', function (req, res) {
   }
 })
 
-router.get('/example.pdf', function (req, res) {
+router.get('/declaration.pdf', function (req, res) {
   // TODO: Better error handling.
   try {
-    nunjucks.render('forms/example.njk', { data: req.session.data }, function (e, html) {
+    nunjucks.render('forms/pages/declaration.njk', { data: req.session.data }, function (e, html) {
       if (e) {
         console.log(e)
         res.send('error')

@@ -180,3 +180,15 @@ p {
 .item-numbered-input .field-range:not(:first-of-type) {
   margin-top: 5px;
 }
+
+.section-title {
+  border-bottom: 2px solid #005192;
+}
+
+.section-title h2 {
+  margin-bottom: 7px;
+}
+
+h4 {
+  margin: 9px 29px;
+}
