@@ -60,13 +60,13 @@
       Your employer must write to you within 28 days confirming your start and end dates.
     </p>
 
-    {% if not leaveBlocks.primary.spl | length %}
+    {% if leaveBlocks.primary.spl | length === 0 and leaveBlocks.secondary.spl | length > 0 %}
       <h4 class="govuk-heading-s">
         Ending your {{ data | primaryLeaveType }} leave or pay
       </h4>
       <p>
         You must end your {{ data | primaryLeaveType }} leave or pay to create shared parental leave or pay.
-        You can do this by returning to work or curtailing it (commiting to end it before you return to work).
+        You can do this by returning to work or curtailing it (committing to end it before you return to work).
       </p>
       <p>
         You must also confirm that you’re not taking shared parental leave and pay and consent to your partner taking it.
@@ -221,7 +221,7 @@
           }
         }) }}
 
-        {% if not leaveBlocks.primary.spl | length %}
+        {% if leaveBlocks.primary.spl | length === 0 and leaveBlocks.secondary.spl | length > 0 %}
           {% set curtailmentWarningHtml %}
             The {{ data | primaryName }} must end their {{ data | primaryLeaveType }} leave and pay by returning to work or submitting a curtailment notice.
             They must also give consent for the partner to take shared parental leave or pay.
