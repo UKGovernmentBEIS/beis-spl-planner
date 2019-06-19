@@ -7,10 +7,4 @@ router.route(paths.getPath('root'))
     res.render('index', { message: 'Hello world!' })
   })
 
-router.use(function (req, res) {
-  if (!paths.getAllPaths().includes(req.url)) {
-    res.status(404).render('./404-page')
-  }
-})
-
 module.exports = router
