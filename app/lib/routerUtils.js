@@ -1,6 +1,9 @@
 const delve = require('dlv')
+const dset = require('dset')
 const paths = require('../paths')
 const { isNo } = require('../../common/lib/dataUtils')
+const Day = require('../../common/lib/day')
+const { isYesOrNo } = require('./validationUtils')
 
 function registerEligibilityRouteForPrimaryParents (router, path, handlers) {
   for (const parent of ['mother', 'primary-adopter']) {
@@ -29,8 +32,27 @@ function bothParentsAreIneligible (data) {
          isNo(secondaryShppEligible)
 }
 
+function parseExternalQueryString (req) {
+  ['primary', 'secondary'].forEach(parent => {
+    ['spl', 'shpp'].forEach(policy => {
+      const parentPolicyEligibility = req.query[`${parent}-${policy}-eligible`]
+      if (isYesOrNo(parentPolicyEligibility)) {
+        dset(req.session.data, `${parent}.${policy}-eligible`, parentPolicyEligibility)
+      }
+    })
+  })
+  req.session.data['birth-or-adoption'] = req.query['birth-or-adoption']
+  const dueDate = new Day(req.query['due-date'])
+  if (dueDate.isValid()) {
+    req.session.data['start-date-day'] = dueDate.date()
+    req.session.data['start-date-month'] = dueDate.monthOneIndexed()
+    req.session.data['start-date-year'] = dueDate.year()
+  }
+}
+
 module.exports = {
   registerEligibilityRouteForPrimaryParents,
   getParent,
-  bothParentsAreIneligible
+  bothParentsAreIneligible,
+  parseExternalQueryString
 }
