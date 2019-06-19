@@ -131,6 +131,7 @@ p {
 
 .item-numbered-input p {
   margin-top: 0;
+  max-width: 281px;
 }
 
 .field-range .field-date {

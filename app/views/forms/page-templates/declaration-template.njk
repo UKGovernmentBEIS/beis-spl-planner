@@ -1,0 +1,258 @@
+{% from "../layout/document.njk" import document %}
+{% from "../layout/two-column-layout.njk" import twoColumnLayout %}
+{% from "../layout/section-title.njk" import sectionTitle %}
+{% from "../form-items/item-numbered-input.njk" import itemNumberedInput %}
+{% from "../form-items/item-signature-with-date.njk" import itemSignatureWithDate %}
+{% from "../form-items/item-checkbox.njk" import itemCheckbox %}
+{% from "../input-fields/field-range.njk" import fieldRange %}
+{% from "../input-fields/field-number.njk" import fieldNumber %}
+
+{% macro declarationTemplate(options) %}
+
+  {% set sectionNo = cycler(1,2,3,4,5) %}
+
+  {% set title %}
+    <strong>{{ options.parent | capitalize }}’s</strong> notice and declaration of SPL
+  {% endset %}
+
+  {% set page1 %}
+    <img src="images/beis-logo.png" alt="BEIS logo" width="114">
+    <h1>
+      Instructions
+    </h1>
+    <p>
+      These are the forms you need to complete to take Shared Parental Leave (SPL) and Statutory Shared
+      Parental Pay (ShPP). If your employer has their own forms they can be used instead.
+    </p>
+    <p>
+      There are {{options.sectionCount}} sections in this form. You must submit these forms to your employer at least 8 weeks before
+      your Shared Parental Leave or Statutory Shared Parental Pay starts.
+    </p>
+
+    {% set cls = cycler(1,2,3,4,5) %}
+    <p>{{cls.next()}}. {{options.parent | capitalize}}’s notice of entitlement and intention</p>
+    {% if options.type == "primary" %}
+      <p>{{cls.next()}}. {{options.parent | capitalize}}’s notice to curtail {{ options.state }} entitlement</p>
+    {% endif %}
+    <p>{{cls.next()}}. {{options.parent | capitalize}}’s declaration to employer</p>
+    <p>{{cls.next()}}. {{options.otherParent | capitalize}}’s declaration to {{options.parent}}’s employer</p>
+    <p>{{cls.next()}}. Period of leave notice</p>
+
+    {{ sectionTitle({text: "Section 1 of $count: $Parent’s notice of entitlement and intention" | formTemplate(options) }) }}
+    <h3>About the family</h3>
+    <h4>You (the {{ "primary " if options.state == "adoption" and options.type == "primary" }}{{ options.parent }})</h4>
+
+    {% set left %}
+      {{ itemNumberedInput({ number: 1, type: "TEXT", text: "Surname", passdown: "" }) }}
+      {{ itemNumberedInput({ number: 2, type: "TEXT", text: "First name(s)", passdown: "" }) }}
+      {{ itemNumberedInput({ number: 3, type: "NINR", text: "National insurance number", passdown: "" }) }}
+      {{ itemNumberedInput({ number: 4, type: "ADDR", text: "Home address", passdown: "" }) }}
+      <h4>{{options.otherParent | capitalize}}</h4>
+      {{ itemNumberedInput({ number: 5, type: "TEXT", text: "Surname", passdown: "" }) }}
+    {% endset %}
+
+    {% set right %}
+      {{ itemNumberedInput({number: 6, type: "TEXT", text: "First name(s)", passdown: ""}) }}
+      {{ itemNumberedInput({number: 7, type: "NINR", text: "National insurance number", passdown: ""}) }}
+      {{ itemNumberedInput({number: 8, type: "ADDR", text: "Home address", passdown: ""}) }}
+      <h4>Child</h4>
+      {{ itemNumberedInput({number: 9, type: "DATE", text: "What is the child's expected date of birth / actual date of birth?", passdown: ""}) }}
+    {% endset %}
+
+    {{ twoColumnLayout({
+      leftcolumn: left,
+      rightcolumn: right
+    }) }}
+  {% endset %}
+
+  {% set page2 %}
+    {{ sectionTitle({text: "Section 1 of $count: $Parent’s notice of entitlement and intention" | formTemplate(options) }) }}
+
+    {% if options.state == "adoption" %}
+      <p><strong>Complete the sections relevant to you.</strong></p>
+    {% endif %}
+
+    {% set left %}
+      <h4>{{ "About the " + options.otherParent + "'s " if options.type == "secondary" }}{{ options.state | capitalize}} Leave</h4>
+      {{ itemNumberedInput({ number: 10, type: "DATE", text: "Date $state leave will start" | formTemplate(options), passdown: "" }) }}
+      {{ itemNumberedInput({ number: 11, type: "DATE", text: "Date $state leave will end" | formTemplate(options), passdown: "" }) }}
+      {{ itemNumberedInput({ number: 12, type: "NUMB", text: "Number of weeks of $state leave left at the date $state leave will end" | formTemplate(options), passdown: "" }) }}
+      <h4>Shared Parental Leave</h4>
+      {{ itemNumberedInput({ number: 13, type: "NUMB", text: "Number of weeks of shared parental leave available", passdown: "" }) }}
+      {{ itemNumberedInput({ number: 14, type: "NUMB", text: "Number of weeks of shared parental leave $youintend to take" | formTemplate(options), passdown: "" }) }}
+      {{ itemNumberedInput({ number: 15, type: "NUMB", text: "Number of weeks of shared parental leave $partnerintends to take (if any)" | formTemplate(options), passdown: "" }) }}
+    {% endset %}
+
+    {% set right %}
+      <h4>{{ "About the " + options.otherParent + "'s " if options.type == "secondary" }}{{"Statutory $State Pay" | formTemplate(options) }}</h4>
+      {{ itemNumberedInput({ number: 16, type: "DATE", text: "Date $state pay will start" | formTemplate(options), passdown: "" }) }}
+      {{ itemNumberedInput({ number: 17, type: "DATE", text: "Date $state pay will end" | formTemplate(options), passdown: "" }) }}
+      {{ itemNumberedInput({ number: 18, type: "NUMB", text: "Number of weeks of statutory $state pay left at the date $state pay will end" | formTemplate(options), passdown: "" }) }}
+      <h4>Statutory Shared Parental Pay</h4>
+      {{ itemNumberedInput({ number: 19, type: "NUMB", text: "Number of weeks of shared parental pay available", passdown: "" }) }}
+      {{ itemNumberedInput({ number: 20, type: "NUMB", text: "Number of weeks of shared parental pay $youintend to take" | formTemplate(options), passdown: "" }) }}
+      {{ itemNumberedInput({ number: 21, type: "NUMB", text: "Number of weeks of shared parental pay $partnerintends to take (if any)" | formTemplate(options), passdown: "" }) }}
+    {% endset %}
+
+    {{ twoColumnLayout({
+      leftcolumn: left,
+      rightcolumn: right
+    }) }}
+  {% endset %}
+
+  {% set page3 %}
+    {{ sectionTitle({text: "Section 1 of $count: $Parent's notice of entitlement and intention" | formTemplate(options) }) }}
+    
+    <h4>Indication of when you intend to take Shared Parental Leave (SPL)</h4>
+    {{ itemNumberedInput({ 
+      number: 22, 
+      type: "RBLK", 
+      text: "At the date of this notice I intend to take Shared Parental Leave between the following dates:", 
+      passdown: 
+        [{
+          title: { start: "SPL start date", end: "SPL end date" }
+        },
+        {}, {}, {}, {}, {}]
+      }) }}
+
+    <h4>Indication of when you intend to take Statutory Shared Parental Pay (SHPP)</h4>
+    {{ itemNumberedInput({ 
+      number: 22, 
+      type: "RBLK", 
+      text: "At the date of this notice I intend to take Statutory Shared Parental Pay between the following dates:", 
+      passdown: 
+        [{
+          title: { start: "ShPP start date", end: "ShPP end date" }
+        },
+        {}, {}, {}, {}, {}]
+      }) }}
+  {% endset %}
+
+  {% set page4 %}
+    {{ sectionTitle({text: "Section 2 of $count: $Parent's notice to curtail maternity entitlement" | formTemplate(options) }) }}
+
+    {{ itemNumberedInput({ number: 1, type: "TEXT", text: "$Parent's name" | formTemplate(options), passdown: "" }) }}
+    <h4>{{"$State Leave ($leaveabbr) curtailment notice:" | formTemplate(options) }}</h4>
+    {{ itemNumberedInput({ number: 1, type: "DATE", text: "I would like my ($leaveabbr) to end on:" | formTemplate(options), passdown: "" }) }}
+    <h4>{{"Statutory $State Pay ($payabbr) curtailment notice:" | formTemplate(options) }}</h4>
+    {{ itemNumberedInput({ number: 1, type: "DATE", text: "I would like my $payabbr to end on:" | formTemplate(options), passdown: "" }) }}
+
+    <p>
+      I have given notice of {{ "my/the father’s/partner’s" if options.state == "maternity" else "my partner's" }} entitlement to and intention to take <br/>
+      Shared Parental Leave and/or Statutory Shared Parental Pay  in the Notice of <br/>
+      Entitlement and Intention.
+    </p>
+
+    <h4>Notice to employer:</h4>
+    <p>
+      Please accept this as my notice to curtail my {{options.state | capitalize}} Leave and/or my Statutory {{options.state | capitalize}} <br/>
+      Pay. Notice of Entitlement and Intention to Shared Parental Leave and/or Statutory Shared <br/>
+      Parental Pay is set out in Section 1 of this document.
+    </p>
+    <p>
+      I understand that my {{options.state | capitalize}} Leave and/or Statutory {{options.state | capitalize}} Pay will end on the dates <br/>
+      that I have given above.
+    </p>
+    <p>
+      I understand that I can only reinstate my {{options.state | capitalize}} Leave or Statutory {{options.state | capitalize}} Pay if I <br/>
+      revoke (withdraw) this notice before these dates. 
+    </p>
+    <p>
+      I confirm that the information provided in this notice is correct.
+    </p>
+
+    <h4>{{options.parent | capitalize}}'s signature</h4>
+    {{ itemSignatureWithDate({passdown: ""}) }}
+  {% endset %}
+
+  {% set page5 %}
+    {{ sectionTitle({text: "Section 3 of $count: $Parent's declaration to employer" | formTemplate(options) }) }}
+    
+    <p>I am giving notice that I am entitled to and intend to take:</p>
+    {{ itemCheckbox({text: "- Shared Parental Leave", passdown: "", noMargin: true}) }}
+    {{ itemCheckbox({text: "- Statutory Shared Parental Pay", passdown: ""}) }}
+    {% if options.type == "primary" %}
+      {{ itemCheckbox({text: "I had or (will have) the main responsibility for the care of the child at the time of the child’s birth (along with the father/partner who has made the declaration in Section 4). ", passdown: ""}) }}
+    {% else %}
+      {{ itemCheckbox({text: "I am the father of the child and/or at the date of the child’s birth I was (or will be) the mother’s: spouse; civil partner; or a partner living with the mother and her child in an enduring family relationship.", passdown: ""}) }}
+      {{ itemCheckbox({text: "I had or (will have) the main responsibility for the care of the child at the time of the child’s birth (along with the mother who has made the declaration in Section 3).", passdown: ""}) }}
+    {% endif %}
+    {{ itemCheckbox({text: "I am eligible for and intend to take Shared Parental Leave", passdown: ""}) }}
+    {{ itemCheckbox({text: "I am eligible for and intend to take Statutory Shared Parental Pay.", passdown: ""}) }}
+    {{ itemCheckbox({text: "I will be caring for my child during the weeks that I am on Shared Parental Leave. ", passdown: ""}) }}
+    {{ itemCheckbox({text: "I will provide additional evidence to my employer (on request) if my employer asks for this within 14 days of the date of this notice. ", passdown: ""}) }}
+    {{ itemCheckbox({text: "I will immediately inform my employer if my circumstances change and I cease to care for my child.", passdown: ""}) }}
+    {% if options.type == "primary" %}
+      {{ itemCheckbox({text: "I will inform my employer immediately if I withdraw or change my ‘$State Leave Curtailment Notice’ and/or my ‘$State Pay Curtailment Notice’ (See Section 2)." | formTemplate(options), passdown: ""}) }}
+    {% else %}
+      {{ itemCheckbox({text: "I will immediately inform my employer if the mother withdraws or changes her ‘Maternity Leave Curtailment Notice’ and/or her ‘Maternity Pay Curtailment Notice’. ", passdown: ""}) }}
+    {% endif %}
+    {{ itemCheckbox({text: "I will immediately inform my employer if I cease to be eligible for Shared Parental Leave and/or Statutory Shared Parental Pay for some other reason.", passdown: ""}) }}
+    {% if options.type == "primary" %}
+      {{ itemCheckbox({text: "I confirm that the information provided in my Notice of Entitlement and Intention (Section 1) and in the $Parent’s Declaration (this section) is correct." | formTemplate(options), passdown: ""}) }}
+    {% endif %}
+
+    <h4>{{ "$Parent's signature" | formTemplate(options) }}</h4>
+    {{ itemSignatureWithDate({passdown: ""}) }}
+  {% endset %}
+
+  {% set page6 %}
+    {{ sectionTitle({text: "Section 4 of $count: $Other’s declaration to $parent’s employer" | formTemplate(options) }) }}
+    
+    {% if options.type == "primary" %}
+      {{ itemCheckbox({text: "I had (or will have) the main responsibility for the care of the child at the time of the child’s birth (along with the child’s mother).", passdown: ""}) }}
+      {{ itemCheckbox({text: "I am the father of the child and/or at the date of the child’s birth I was (or will be) the mother’s: spouse; civil partner; or a partner living with the mother and her child in an enduring family relationship.", passdown: ""}) }}
+      {{ itemCheckbox({text: "I have read and comply with the conditions that apply to the father/partner where the mother is planning to take Shared Parental Leave and/or Statutory Shared Parental Pay.", passdown: ""}) }}
+      {{ itemCheckbox({text: "I consent to the mother taking the period or periods of Shared Parental Leave and/or Statutory Shared Parental Pay  that she has indicated in Section 1.", passdown: ""}) }}
+      {{ itemCheckbox({text: "I consent to the mother’s employer processing the information about me provided in the Mother’s Notice of Entitlement and Intention (see Section 1) and in the Father’s/Partner’s Declaration (see Section 3). ", passdown: ""}) }}
+      {{ itemCheckbox({text: "I confirm that the information provided in the Father’s/Partner’s Declaration (this section) is correct.", passdown: ""}) }}
+    {% else %}
+      {{ itemCheckbox({text: "I had (or will have) the main responsibility for the care of the child at the time of the birth (along with the child’s father/my partner).", passdown: ""}) }}
+      {{ itemCheckbox({text: "I am the mother of the child. ", passdown: ""}) }}
+      {{ itemCheckbox({text: "The father/partner is the child’s father and/or at the date of the child’s birth is my spouse, civil partner; or a partner living with me in an enduring relationship.", passdown: ""}) }}
+      {{ itemCheckbox({text: "I have read and comply with the conditions that apply to the mother where the father/partner is planning to take Shared Parental Leave and/or Statutory Shared Parental Pay.", passdown: ""}) }}
+      {{ itemCheckbox({text: "I consent to the father/partner taking the period or periods of Shared Parental Leave and/or Statutory Shared Parental Pay indicated in the Father’s/Partner’s Notice of Entitlement and Intention (see Section 1). ", passdown: ""}) }}
+      {{ itemCheckbox({text: "I will immediately inform the father/partner if I revoke (withdraw) my ‘Maternity Curtailment Notice’ and/or my ‘Maternity Pay Notice’. ", passdown: ""}) }}
+      {{ itemCheckbox({text: "I consent to the father’s/partner’s employer processing the information about me provided in the Father’s/Partner’s Notice of Entitlement and Intention and in the Mother’s Declaration. ", passdown: ""}) }}
+      {{ itemCheckbox({text: "I confirm that the information provided in the Mother’s Declaration is correct.", passdown: ""}) }}
+    {% endif %}
+
+    <h4>{{ "$Other's signature" | formTemplate(options) }}</h4>
+    {{ itemSignatureWithDate({passdown: ""}) }}
+  {% endset %}
+
+  {% set page7 %}
+    {{ sectionTitle({text: "Section 5 of $count: Period of Leave Notice" | formTemplate(options) }) }}
+
+    <p>
+      • Use this Period of Leave notice form to give binding notice to take Shared Parental Leave (SPL) <br/> 
+      8 weeks before your leave starts. <br/>
+      • You can amend your start and end dates, or book another period of leave by submiting <br/>
+      another Period of Leave Notice. <br/>
+      <strong>• You can submit up to 3 Period of Leave Notices in total, more if your employer allows.</strong>
+    </p>
+
+    <h4>Period of leave:</h4>
+    {{ fieldRange({ title: { start: "SPL start date", end: "SPL end date" } }) }}
+
+    <p><strong>If you do not know your exact start and end dates, complete the sentence below:</strong></p>
+    <p>I will take {{ fieldNumber({}) }} weeks of Shared Parental Leave. It will start {{ fieldNumber({}) }} weeks after {{ "my $State Leave ends" | formTemplate(options) if options.type == "primary" else ("my child's expected week of birth" if options.state == "maternity" else "the child is placed with our family")}}.</p>
+
+    <h4>Notice to employer:</h4>
+    <p>
+      Please accept this as a binding notice to take Shared Parental Leave on the dates specified <br/>
+      above.
+    </p>
+
+    <h4>{{ "$Parent's signature" | formTemplate(options) }}</h4>
+    {{ itemSignatureWithDate({passdown: ""}) }}
+  {% endset %}
+
+  {{ document({
+    parent: options.type,
+    title: {
+      html: title
+    },
+    pages: [page1, page2, page3, page4, page5, page6, page7] if options.type == "primary" else [page1, page2, page3, page5, page6, page7]
+  }) }}
+{% endmacro %}

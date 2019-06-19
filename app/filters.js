@@ -63,7 +63,26 @@ module.exports = function (env) {
     return isBirth(data) ? 'due date' : 'placement date'
   }
 
+  function formTemplate(text, options) {
+    const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+    return text
+      .replace(/\$parentOrPartner/g, options.parentOrPartner)
+      .replace(/\$parent/g, options.parent)
+      .replace(/\$Parent/g, capitalize(options.parent))
+      .replace(/\$other/g, options.otherParent)
+      .replace(/\$Other/g, capitalize(options.otherParent))
+      .replace(/\$state/g, options.state)
+      .replace(/\$State/g, capitalize(options.state))
+      .replace(/\$count/g, options.sectionCount)
+      .replace(/\$youintend/g, options.youIntendLabel)
+      .replace(/\$partnerintends/g, options.partnerIntendsLabel)
+      .replace(/\$leaveabbr/g, options.leaveAbbreviation)
+      .replace(/\$payabbr/g, options.payAbbreviation);
+  }
+
   return {
+    formTemplate,
     weekCheckboxes,
     startDay,
     startOfWeek,

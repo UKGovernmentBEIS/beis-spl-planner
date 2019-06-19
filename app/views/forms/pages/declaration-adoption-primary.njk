@@ -1,0 +1,15 @@
+{% from "../page-templates/declaration-template.njk" import declarationTemplate %}
+
+{{ declarationTemplate({
+  data: data,
+  parent: "adopter",
+  otherParent: "partner",
+  parentOrPartner: "mother",
+  type: "primary",
+  state: "adoption",
+  leaveAbbreviation: "AL",
+  payAbbreviation: "SAP",
+  sectionCount: 5,
+  youIntendLabel: "the adopter intends",
+  partnerIntendsLabel: "the adopter's partner intends"
+}) }}
