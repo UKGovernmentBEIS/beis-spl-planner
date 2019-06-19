@@ -1,0 +1,15 @@
+{% from "../page-templates/curtailment-notice-template.njk" import curtailmentNoticeTemplate %}
+
+{{ curtailmentNoticeTemplate({
+  data: data,
+  parent: "adopter",
+  otherParent: "partner",
+  parentOrPartner: "mother",
+  type: "primary",
+  state: "adoption",
+  leaveAbbreviation: "ML",
+  payAbbreviation: "SMP",
+  sectionCount: 5,
+  youIntendLabel: "the mother intends",
+  partnerIntendsLabel: "the partner intends"
+}) }}
