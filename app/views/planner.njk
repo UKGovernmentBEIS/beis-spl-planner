@@ -1,5 +1,6 @@
 {% from "back-link/macro.njk" import govukBackLink %}
 {% from "button/macro.njk" import govukButton %}
+{% from "details/macro.njk" import govukDetails %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "components/calendar.njk" import calendar %}
 
@@ -18,58 +19,97 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
-        Plan leave and pay when you have a child
+        Plan shared parental leave and pay
       </h1>
       <p>
-        Click in the calendar to select the weeks you and your partner would like to
-        take off work when you have a child. The calendar is based on your child’s
-        expected or actual week of {{ "birth" if isBirth else "placement" }}.
+        Use this calendar to plan <a href="https://www.gov.uk/shared-parental-leave-and-pay">shared parental leave and pay</a>
+        alongside <a href="https://www.gov.uk/{{ data | primaryLeaveType }}-pay-leave">{{ data | primaryLeaveType }}</a> and <a href="https://www.gov.uk/paternity-pay-leave">paternity</a> leave and pay.
+        The calendar is based on {{ "your child’s birth week" if data | isBirth else "the week your child starts living with you"}}.
       </p>
       <p>
-        The calendar will display
-        {% if isBirth %}
-          <a href="https://www.gov.uk/maternity-pay-leave">maternity</a>,
-        {% else %}
-          <a href="https://www.gov.uk/adoption-pay-leave">adoption</a>,
-        {% endif %}
-        <a href="https://www.gov.uk/paternity-pay-leave">paternity</a> or
-        {# TODO: Update link per environment. #}
-        <a href="https://spl-planner-alpha.herokuapp.com/shared-parental-leave-and-pay">shared parental leave</a> and an
-        indicative pay amount based on which parent is taking leave and pay, when
-        and for how long.
+        Click the cells to select the weeks each parent wants to take off work, starting with the {{ data | primaryName }}’s {{ data | primaryLeaveType }} leave.
       </p>
       <p>
-        You can try out different plans such taking leave in blocks with work in
-        between or taking leave at the same time as your partner. You can also plan
-        how you receive statutory pay.
+        If you’re taking more than 37 weeks of leave, you can also select which leave weeks are paid and unpaid. The statutory pay amount is indicative only.
       </p>
-      <h2 class="govuk-heading-m">
-        Example leave and pay plans
-      </h2>
-      <p class="govuk-hint">
-        Examples will open in a new page.
-      </p>
-      {% set examplePath = "/planner/examples/birth" if isBirth else "/planner/examples/adoption" %}
-      <ul class="govuk-list govuk-list--bullet">
-        <li>
-          <a class="govuk-link" target="_blank" href="{{ examplePath }}/managing-parenting-and-work">
-            Managing parenting and work
-          </a>
-        </li>
-        <li>
-          <a class="govuk-link" target="_blank" href="{{ examplePath }}/extending-time-as-a-family">
-            Extending time as a family after {{ "birth" if isBirth else "the child is placed" }}
-          </a>
-        </li>
-        <li>
-          <a class="govuk-link" target="_blank" href="{{ examplePath }}/sharing-primary-care-responsibility">
-            Sharing primary care responsibility
-          </a>
-        </li>
-      </ul>
+
+      {% set policyInfo %}
+        <p>
+          Shared parental leave and pay is created from unused maternity leave and pay.
+        </p>
+        <h2 class="govuk-heading-s">
+          How much you can get
+        </h2>
+        <p>
+          Parents can split up to 50 weeks of shared parental leave and 37 weeks of statutory shared parental pay between them.
+        </p>
+        <p>
+          Statutory shared parental pay is £148.68 per week, or 90% of your average weekly earnings, whichever is lower.
+        </p>
+
+        <h2 class="govuk-heading-s">
+          When you can start
+        </h2>
+        <p>
+          You can start shared parental leave any time after the {{ "child’s birth" if data | isBirth else "child starts living with you"}},
+          as long as the {{ data | primaryName }} has ended her {{ data | primaryLeaveType }} leave (either by returning to work or committing to an end date in writing).
+        </p>
+        <p>
+          This means the {{ data | secondaryName }} can start shared parental leave while the {{ data | primaryName }} is on {{ data | primaryLeaveType }} leave.
+        </p>
+        <h2 class="govuk-heading-s">
+          How you can take it
+        </h2>
+        <p>
+          Both the {{ data | primaryName }} and the {{ data | secondaryName }} can take shared parental leave in blocks, either at the same time or one after the other.
+        </p>
+      {% endset %}
+
+      {% set examples %}
+        <span class="govuk-hint">
+          Examples will open in a new page.
+        </span>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>
+            <a class="govuk-link" target="_blank" href="{{ examplePath }}/managing-parenting-and-work">
+              Managing parenting and work
+            </a>
+          </li>
+          <li>
+            <a class="govuk-link" target="_blank" href="{{ examplePath }}/extending-time-as-a-family">
+              Extending time as a family after {{ "birth" if isBirth else "your child is placed" }}
+            </a>
+          </li>
+          <li>
+            <a class="govuk-link" target="_blank" href="{{ examplePath }}/sharing-primary-care-responsibility">
+              Sharing primary care responsibility
+            </a>
+          </li>
+        </ul>
+      {% endset %}
+
+      {{ govukDetails({
+        summaryText: "How shared parental leave and pay works",
+        html: policyInfo
+      }) }}
+
+      {{ govukDetails({
+        summaryText: "Examples of shared parental leave and pay plans",
+        html: examples
+      }) }}
     </div>
   </div>
   <form id="leave-and-pay" method="POST">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds-from-desktop">
+        <h2 class="govuk-heading-m">
+          Your plan
+        </h2>
+        <p>
+          Create your own leave plane in this calendar.
+        </p>
+      </div>
+    </div>
     {% call appendHiddenFields(data) %}
       {{ calendar(data) }}
     {% endcall %}
