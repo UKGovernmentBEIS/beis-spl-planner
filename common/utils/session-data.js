@@ -1,9 +1,12 @@
 const qs = require('qs')
+const url = require('url')
 const paths = require('../../app/paths')
 
 module.exports = function (req, res, next) {
   if (req.method === 'GET' && req.query['data-in-query']) {
-    const { 'data-in-query': _, ...data } = req.query
+    const query = url.parse(req.url).query
+    const queryData = qs.parse(query, { comma: true })
+    const { 'data-in-query': _, ...data } = queryData
     req.session.data = data
     res.redirect(req.path)
     return
@@ -17,7 +20,7 @@ module.exports = function (req, res, next) {
   res.locals.data = req.session.data
   res.locals.withData = function (path) {
     const queryData = { 'data-in-query': true, ...req.session.data }
-    return `${path}?${qs.stringify(queryData)}`
+    return `${path}?${qs.stringify(queryData, { arrayFormat: 'comma' })}`
   }
   res.locals.backPath = function () {
     return res.locals.withData(paths.getPreviousWorkFlowPath(req.path))
