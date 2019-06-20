@@ -78,7 +78,10 @@ module.exports = function (env) {
       .replace(/\$youintend/g, options.youIntendLabel)
       .replace(/\$partnerintends/g, options.partnerIntendsLabel)
       .replace(/\$leaveabbr/g, options.leaveAbbreviation)
-      .replace(/\$payabbr/g, options.payAbbreviation);
+      .replace(/\$payabbr/g, options.payAbbreviation)
+      .replace(/\$her/g, options.her)
+      .replace(/\$event/g, options.event)
+      .replace(/\$father/g, options.father);
   }
 
   return {

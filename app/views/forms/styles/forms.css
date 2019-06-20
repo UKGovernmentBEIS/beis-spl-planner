@@ -22,7 +22,7 @@ html, body {
 .footer {
   background-color: lightgreen;
   position: absolute;
-  bottom: 30px;
+  bottom: 20px;
   left: 30px;
   right: 30px;
 }
@@ -31,6 +31,20 @@ html, body {
   position: absolute;
   bottom: 0;
   left: 0;
+}
+
+.header-title {
+  position: absolute;
+  width: 230px;
+  top: 25px;
+  right: 15px;
+  padding: 0;
+}
+
+.header-title h1 {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
 }
 
 .footer .footer-page-number {
@@ -119,6 +133,11 @@ p {
   margin: 0;
 }
 
+p .field-number {
+  display: inline-block;
+  margin: 0 3px;
+}
+
 .field-number .input-field {
   width: 29px; /* 1px more than in design to keep same size as two digit-fields */
 }
@@ -127,6 +146,10 @@ p {
   border-left: 1px solid darkgray;
   padding-bottom: 10px;
   padding-right: 19px;
+}
+
+.field-large .input-field {
+  width: 408px;
 }
 
 .item-numbered-input p {
@@ -183,13 +206,51 @@ p {
 }
 
 .section-title {
-  border-bottom: 2px solid #005192;
+  margin-bottom: 12px;
 }
 
 .section-title h2 {
   margin-bottom: 7px;
 }
 
+.primary .section-title {
+  border-bottom: 2px solid #005192;
+}
+
+.secondary .section-title {
+  border-bottom: 2px solid #B10E1E;
+}
+
+h1 {
+  margin-bottom: 0;
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
 h4 {
-  margin: 9px 29px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 4px;
+  padding-bottom: 7px;
+}
+
+.with-margin {
+  margin: 0px 28px;
+}
+
+.with-left-border {
+  border-left: 1px solid darkgray;
+}
+
+.with-left-border p {
+  margin: 0;
+  margin-left: 8px;
+  width: 260px;
+}
+
+.empty-line {
+  height: 10px;
 }

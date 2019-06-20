@@ -8,6 +8,11 @@
     <body class="{{ options.parent }}">
       {% for page in options.pages %}
         <div class="page">
+          {% if loop.first %}
+            <div class="header-title">
+              <h1>{{ options.title.headerhtml | safe }}</h1>
+            </div>
+          {% endif %}
           <div class="content">
             {{ page | safe }}
           </div>
