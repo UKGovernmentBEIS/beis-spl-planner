@@ -19,6 +19,8 @@ const router = require('./app/router')
 const paths = require('./app/paths')
 const noCache = require('./common/utils/no-cache')
 const correlationHeader = require('./common/middleware/correlation-header')
+const handle404 = require('./common/middleware/handle-404')
+const handle500 = require('./common/middleware/handle-500')
 const sessionData = require('./common/utils/session-data')
 
 // Global constants
@@ -73,7 +75,7 @@ function initialiseGlobalMiddleware (app) {
 
   app.use(sessionData)
 
-  function handleViewErrors (app) {
+  function handleFormErrorsForView (app) {
     app.route('*')
       .post(function initializeSessionErrors (req, res, next) {
         req.session.errors = {}
@@ -85,7 +87,7 @@ function initialiseGlobalMiddleware (app) {
       })
   }
 
-  handleViewErrors(app)
+  handleFormErrorsForView(app)
 
   app.get('*', require('./common/middleware/step-validation'))
 }
@@ -117,6 +119,8 @@ function initialiseTemplateEngine (app) {
   // if it's not production we want to re-evaluate the assets on each file change
   nunjucksEnvironment.addGlobal('css_path', NODE_ENV === 'production' ? CSS_PATH : staticify.getVersionedPath('/stylesheets/application.min.css'))
   nunjucksEnvironment.addGlobal('js_path', NODE_ENV === 'production' ? JAVASCRIPT_PATH : staticify.getVersionedPath('/javascripts/application.js'))
+  // TODO add value for service name
+  nunjucksEnvironment.addGlobal('service_name', 'common')
 
   // Paths to external resources and tools.
   // TODO: Update fallback with final path of eligibility tool.
@@ -145,6 +149,11 @@ function initialiseRoutes (app) {
   app.use('/', router)
 }
 
+function handleErrors (app) {
+  app.use(handle404)
+  app.use(handle500)
+}
+
 function listen () {
   const app = initialise()
   app.listen(PORT)
@@ -163,6 +172,7 @@ function initialise () {
   initialiseTemplateEngine(app)
   initialisePublic(app)
   initialiseRoutes(app)
+  handleErrors(app)
   return app
 }
 
