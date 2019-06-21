@@ -1,4 +1,4 @@
-{% from "checkboxes/macro.njk" import govukCheckboxes %}
+{% from "fieldset/macro.njk" import govukFieldset %}
 
 {% macro leaveAndPayCheckboxes(data, parent) %}
   {% set startDay = (data | startDay) %}
@@ -7,10 +7,12 @@
   {% set isBirth = (data | isBirth) %}
   {% set weekZeroName = "birth" if isBirth else "placement" %}
   <div class="govuk-form-group">
-    <fieldset class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        {{ data | parentName(parent) | capitalize }}’s leave
-      </legend>
+    {% call govukFieldset({
+      legend: {
+        html: "<h3 class=\"govuk-heading-m govuk-!-margin-0\">" + (data | parentName(parent) | capitalize) + "</h3>",
+        classes: "govuk-fieldset__legend--m"
+      }
+    }) %}
       <div class="govuk-checkboxes" data-module="checkboxes">
         <div class="govuk-checkboxes" data-module="checkboxes">
           {% for i in range(minWeek, maxWeek + 1) %}
@@ -26,46 +28,56 @@
                 {{ date | formatDate("MMMM YYYY") }}
               </h4>
             {% endif %}
-            <h4 class="govuk-heading-s govuk-!-margin-bottom-0">
-              {{ date | formatDate("D MMMM") }}
-            </h4>
-            <div class="govuk-hint govuk-!-margin-top-0">
+            {% set legend %}
+              <strong>
+                {{ date | formatDate("D MMMM") }}
+              </strong>
               {% if (i === 0) %}
-                {{ weekZeroName | capitalise }} week
+                ({{ weekZeroName | capitalise }} week)
               {% else %}
-                {{ i | abs }} week{{ "s" if (i | abs) !== 1 }} {{ "before" if i < 0 else "after" }} {{ weekZeroName }}
+                ({{ i | abs }} week{{ "s" if (i | abs) !== 1 }} {{ "before" if i < 0 else "after" }} {{ weekZeroName }})
               {% endif %}
-            </div>
-            <div class="govuk-checkboxes__item">
-              <input class="govuk-checkboxes__input" id="{{ leaveId }}" name="{{ leaveName }}" type="checkbox" value="{{ i }}"
-                data-aria-controls="conditional-{{ leaveId }}"
-                data-parent="{{ parent }}" data-property="leave"
-                {{ 'checked' if (data | isWeekChecked(parent, 'leave', i)) }}
-                {{ 'disabled' if (cumplsoryLeave or outOfRange) }}>
-              <label class="govuk-label govuk-checkboxes__label" for="{{ leaveId }}">
-                Taking leave
-              </label>
-            </div>
-            <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-{{ leaveId }}">
+            {% endset %}
+            {% call govukFieldset({
+              legend: {
+                html: legend | safe,
+                classes: "govuk-fieldset__legend--s govuk-!-font-weight-regular"
+              }
+            }) %}
               <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input" id="{{ payId }}" name="{{ payName }}" type="checkbox" value="{{ i }}"
-                  data-parent="{{ parent }}" data-property="pay"
-                  {{ 'checked' if (data | isWeekChecked(parent, 'pay', i)) }}
-                  {{ 'disabled' if outOfRange }}>
-                <label class="govuk-label govuk-checkboxes__label" for="{{ payId }}">
-                  Paid
+                <input class="govuk-checkboxes__input" id="{{ leaveId }}" name="{{ leaveName }}" type="checkbox" value="{{ i }}"
+                  data-parent="{{ parent }}" data-property="leave"
+                  {{ 'checked' if (data | isWeekChecked(parent, 'leave', i)) }}
+                  {{ 'disabled' if (cumplsoryLeave or outOfRange) }}>
+                <label class="govuk-label govuk-checkboxes__label" for="{{ leaveId }}">
+                  Taking leave
                 </label>
               </div>
-            </div>
+              {# We use the styling of conditionally revealed checkboxes, but have removed the actual conditional reveal. #}
+              <div class="govuk-checkboxes__conditional">
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="{{ payId }}" name="{{ payName }}" type="checkbox" value="{{ i }}"
+                    data-parent="{{ parent }}" data-property="pay"
+                    {{ 'checked' if (data | isWeekChecked(parent, 'pay', i)) }}
+                    {{ 'disabled' if outOfRange }}>
+                  <label class="govuk-label govuk-checkboxes__label" for="{{ payId }}">
+                    Paid
+                  </label>
+                </div>
+              </div>
+            {% endcall %}
           {% endfor %}
         </div>
       </div>
-    </fieldset>
+    {% endcall %}
   </div>
 {% endmacro %}
 
 {% macro calendar(data) %}
-  <div class="govuk-grid-row js-hide">
+  <div id="accessibility-switch">
+    {# Added via Vue when the JavaScript calendar is displayed. #}
+  </div>
+  <div class="govuk-grid-row accessible-layout-only">
     <div class="govuk-grid-column-one-half">
       {{ leaveAndPayCheckboxes(data, "primary") }}
       {# Compulsory leave weeks are disabled checkboxes, so we need to include the values manually. #}

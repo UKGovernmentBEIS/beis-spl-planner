@@ -12,7 +12,7 @@
       <col class="col-pay" />
     </colgroup>
     <thead class="govuk-table__head">
-      <tr class="govuk-table__row not-pay">
+      <tr class="govuk-table__row">
         <th class="govuk-table__header" scope="col"></th>
         <th class="govuk-table__header" scope="col" colspan="2" id="primary-name">{{ names.primary | capitalise }}</th>
         <th class="govuk-table__header" scope="col" colspan="2" id="secondary-name">{{ names.secondary | capitalise }}</th>
@@ -32,12 +32,12 @@
             {{ week.day.format('MMMM YYYY') }}
           </th>
         </tr>
-        <tr :key="'earliest-leave-week-' + week.id" v-if="i === 0" class="row-banner">
+        <tr :key="'earliest-leave-week-' + week.id" v-if="i === 0" class="row-banner" aria-hidden="true">
           <th colspan="5">
             {{ primaryLeaveType | capitalise }} leave can start in this week
           </th>
         </tr>
-        <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner">
+        <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner" aria-hidden="true">
           <th colspan="5">
             {{ isBirth ? 'Birth week' : 'First week the child lives with you' }}
           </th>
@@ -148,6 +148,9 @@
       },
       onCellMouseDown: function (event, parent, property, week, value) {
         this.hideFocus = true
+        if (!this.interactive) {
+          return
+        }
         this.isDragging = true
         this.lastClickedCell = event.currentTarget
         this.onDrag = function (week) {
@@ -175,7 +178,7 @@
       onKeyboardToggleCell: function (parent, property, week, value) {
         if (this.hideFocus) {
           this.hideFocus = false
-        } else {
+        } else if (this.interactive) {
           this.updateLeaveOrPay(parent, property, week, value)
         }
       },
