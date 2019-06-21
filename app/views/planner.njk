@@ -69,6 +69,7 @@
         <span class="govuk-hint">
           Examples will open in a new page.
         </span>
+        {% set examplePath = "/planner/examples/birth" if isBirth else "/planner/examples/adoption" %}
         <ul class="govuk-list govuk-list--bullet">
           <li>
             <a class="govuk-link" target="_blank" href="{{ examplePath }}/managing-parenting-and-work">
