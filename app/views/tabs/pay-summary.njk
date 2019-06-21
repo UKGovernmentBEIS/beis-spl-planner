@@ -108,27 +108,45 @@
       </p>
     {% endset %}
 
-    {{ fileDownload({
-      name: (data | primaryName | capitalise) + "’s shared parental leave and pay notice form",
-      href: "#",
-      description: {
-        html: noticeDescription
-      },
-      details: {
-        html: noticeDetails
-      }
-    }) }}
+    {% if data | shouldDisplayPrimaryLeaveAndPayForm %}
+    {# TODO check href for this fileDownload #}
+      {{ fileDownload({
+        name: (data | primaryName | capitalise) + "’s shared parental leave and pay notice form",
+        href: "#",
+        description: {
+          html: noticeDescription
+        },
+        details: {
+          html: noticeDetails
+        }
+      }) }}
+    {% elif data | shouldDisplayPrimaryCurtailmentForm %}
+    {# TODO check href for this fileDownload #}
+      {{ fileDownload({
+        name: data | primaryLeaveType | capitalise + " curtailment and SPL consent form",
+        href:"#",
+        description: {
+          html: noticeDescription
+        },
+        details: {
+          html: noticeDetails
+        }
+      }) }}
+    {% endif %}
 
-    {{ fileDownload({
-      name: data | secondaryName | capitalise + "’s shared parental leave and pay notice form",
-      href: "#",
-      description: {
-        html: noticeDescription
-      },
-      details: {
-        html: noticeDetails
-      }
-    }) }}
+    {% if data | shouldDisplaySecondaryLeaveAndPayForm %}
+    {# TODO check href for this fileDownload #}
+      {{ fileDownload({
+        name: data | secondaryName | capitalise + "’s shared parental leave and pay notice form",
+        href: "#",
+        description: {
+          html: noticeDescription
+        },
+        details: {
+          html: noticeDetails
+        }
+      }) }}
+    {% endif %}
   </div>
 </div>
 

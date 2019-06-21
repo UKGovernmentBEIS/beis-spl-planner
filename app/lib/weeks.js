@@ -63,6 +63,22 @@ class Weeks {
     }
   }
 
+  hasPrimarySharedPayOrLeave () {
+    // When the planner has been designed such that parents who are workers can take
+    // shared parental pay and not leave, we'll need to check here for shared pay as well.
+    return this.leaveAndPay().weeks.some(week => {
+      return week.primary.leave === 'shared'
+    })
+  }
+
+  hasSecondarySharedPayOrLeave () {
+    // When the planner has been designed such that parents who are workers can take
+    // shared parental pay and not leave, we'll need to check here for shared pay as well.
+    return this.leaveAndPay().weeks.some(week => {
+      return week.secondary.leave === 'shared'
+    })
+  }
+
   _getMinimumWeek () {
     return this.isBirth ? -11 : -2
   }

@@ -1,7 +1,8 @@
 const dlv = require('dlv')
 const _ = require('lodash')
+const Weeks = require('./lib/weeks')
 const Day = require('../common/lib/day')
-const isBirth = require('../common/lib/dataUtils')
+const { isBirth } = require('../common/lib/dataUtils')
 
 const MOTHER = Object.freeze({
   name: 'mother',
@@ -49,11 +50,21 @@ function parseStartDay (data) {
   return new Day(year, month, day)
 }
 
+function parseWeeksFromData (data) {
+  return new Weeks({
+    isBirth: isBirth(data),
+    startWeek: parseStartDay(data),
+    primary: parseParentFromPlanner(data, 'primary'),
+    secondary: parseParentFromPlanner(data, 'secondary')
+  })
+}
+
 module.exports = {
   getWeeksArray,
   nameAndNonSharedLeaveType,
   parseParentFromPlanner,
-  parseStartDay
+  parseStartDay,
+  parseWeeksFromData
 }
 
 function weeklyPay (data, parent) {
