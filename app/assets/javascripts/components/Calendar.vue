@@ -2,56 +2,59 @@
   <table ref="calendar" class="govuk-table"
     :class="{ 'dragging': isDragging, 'hide-focus': hideFocus, 'is-ie': isIexplorer, 'interactive': interactive }"
     @mouseleave="endDrag" @mouseup.left="endDrag">
-    <colgroup>
       <col class="col-date" />
+    <colgroup>
       <col class="col-leave" />
       <col class="col-pay" />
+    </colgroup>
+    <colgroup>
       <col class="col-leave" />
       <col class="col-pay" />
     </colgroup>
     <thead class="govuk-table__head">
-      <tr class="govuk-table__row not-pay">
+      <tr class="govuk-table__row">
         <th class="govuk-table__header" scope="col"></th>
-        <th class="govuk-table__header" scope="col" colspan="2">{{ names.primary | capitalise }}</th>
-        <th class="govuk-table__header" scope="col" colspan="2">{{ names.secondary | capitalise }}</th>
+        <th class="govuk-table__header" scope="col" colspan="2" id="primary-name">{{ names.primary | capitalise }}</th>
+        <th class="govuk-table__header" scope="col" colspan="2" id="secondary-name">{{ names.secondary | capitalise }}</th>
       </tr>
       <tr class="govuk-table__row">
         <th class="govuk-table__header" scope="col"></th>
-        <th class="govuk-table__header" scope="col">Leave</th>
-        <th class="govuk-table__header" scope="col">Pay</th>
-        <th class="govuk-table__header" scope="col">Leave</th>
-        <th class="govuk-table__header" scope="col">Pay</th>
+        <th class="govuk-table__header" scope="col" id="primary-leave">Leave</th>
+        <th class="govuk-table__header" scope="col" id="primary-pay">Pay</th>
+        <th class="govuk-table__header" scope="col" id="secondary-leave">Leave</th>
+        <th class="govuk-table__header" scope="col" id="secondary-pay">Pay</th>
       </tr>
     </thead>
     <tbody class="govuk-table__body">
       <template v-for="(week, i) in weeks">
-        <tr :key="'month-header-' + week.id" v-if="i === 0 || week.day.date() <= 7">
+        <tr :key="'month-header-' + week.id" v-if="i === 0 || week.day.date() <= 7" aria-hidden="true">
           <th class="govuk-table__header month" colspan="5">
             {{ week.day.format('MMMM YYYY') }}
           </th>
         </tr>
-        <tr :key="'earliest-leave-week-' + week.id" v-if="i === 0" class="row-banner">
+        <tr :key="'earliest-leave-week-' + week.id" v-if="i === 0" class="row-banner" aria-hidden="true">
           <th colspan="5">
             {{ primaryLeaveType | capitalise }} leave can start in this week
           </th>
         </tr>
-        <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner">
+        <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner" aria-hidden="true">
           <th colspan="5">
             {{ isBirth ? 'Birth week' : 'First week the child lives with you' }}
           </th>
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week.number)">
-          <th class="govuk-table__cell date">
+          <th class="govuk-table__cell date" :id="`week-${i}-date`" scope="row">
             {{ week.day.format('D') }}<br>
             {{ week.day.format('MMM') }}
           </th>
           <template v-for="(parent, j) in ['primary', 'secondary']">
             <template v-if="week[parent].disabled">
-              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled"></td>
-              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled"></td>
+              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`${parent}-name ${parent}-leave week-${i}-date`"></td>
+              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`${parent}-name ${parent}-pay week-${i}-date`"></td>
             </template>
             <template v-else>
               <td :key="parent + '-leave'" class="govuk-table__cell leave"
+                  :headers="`${parent}-name ${parent}-leave week-${i}-date`"
                   :class="week[parent].compulsory ? 'compulsory' : week[parent].leave"
                   tabindex="0" :data-row="i" :data-column="2*j"
                   @keydown.tab="onCellTab($event)"
@@ -75,6 +78,7 @@
                 </div>
               </td>
               <td :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
+                  :headers="`${parent}-name ${parent}-pay week-${i}-date`"
                   :class="{ 'unpaid': week[parent].leave && !week[parent].pay }"
                   tabindex="0" :data-row="i" :data-column="2*j + 1"
                   @keydown.tab="onCellTab($event)"
@@ -144,6 +148,9 @@
       },
       onCellMouseDown: function (event, parent, property, week, value) {
         this.hideFocus = true
+        if (!this.interactive) {
+          return
+        }
         this.isDragging = true
         this.lastClickedCell = event.currentTarget
         this.onDrag = function (week) {
@@ -171,7 +178,7 @@
       onKeyboardToggleCell: function (parent, property, week, value) {
         if (this.hideFocus) {
           this.hideFocus = false
-        } else {
+        } else if (this.interactive) {
           this.updateLeaveOrPay(parent, property, week, value)
         }
       },
