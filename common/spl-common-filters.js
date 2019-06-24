@@ -21,15 +21,15 @@ module.exports = function (env) {
   }
 
   function primaryName (data) {
-    return dataUtils.isBirth(data) ? 'mother' : 'primary adopter'
+    return dataUtils.primaryName(data)
   }
 
   function secondaryName (data) {
-    return 'partner'
+    return dataUtils.secondaryName(data)
   }
 
   function parentName (data, currentParent) {
-    return currentParent === 'primary' ? primaryName(data) : secondaryName(data)
+    return dataUtils.parentName(data, currentParent)
   }
 
   function otherParentName (data, currentParent) {
