@@ -97,7 +97,7 @@
       {# TODO fix the href of this fileDownload #}
       {{ fileDownload({
         name: (data | primaryName | capitalize) + "’s shared parental leave and pay notice form",
-        href: "#",
+        href: "/forms/declaration.pdf?state=" + (data | primaryLeaveType) + "&parent=primary",
         description: {
           html: noticeDescription
         },

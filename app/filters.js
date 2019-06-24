@@ -84,12 +84,17 @@ module.exports = function (env) {
       .replace(/\$father/g, options.father);
   }
 
+  function getTotalWeeksOfSPL(blocks) {
+    return blocks.spl.reduce((total, block) => total + block.end - block.start + 1, 0);
+  }
+
   return {
     formTemplate,
     weekCheckboxes,
     startDay,
     startOfWeek,
     endOfWeek,
-    startDateName
+    startDateName,
+    getTotalWeeksOfSPL
   }
 }
