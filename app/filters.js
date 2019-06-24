@@ -1,4 +1,4 @@
-const { getWeeksArray } = require('./utils')
+const { getWeeksArray, parseWeeksFromData } = require('./utils')
 const Day = require('../common/lib/day')
 
 // Existing filters can be imported from env using env.getFilter(name)
@@ -36,6 +36,19 @@ module.exports = function (env) {
     return '£' + ((primaryPay || 0) + (secondaryPay || 0)).toFixed(2)
   }
 
+  function shouldDisplayPrimaryLeaveAndPayForm (data) {
+    return parseWeeksFromData(data).hasPrimarySharedPayOrLeave()
+  }
+
+  function shouldDisplayPrimaryCurtailmentForm (data) {
+    const weeks = parseWeeksFromData(data)
+    return !weeks.hasPrimarySharedPayOrLeave() && weeks.hasSecondarySharedPayOrLeave()
+  }
+
+  function shouldDisplaySecondaryLeaveAndPayForm (data) {
+    return parseWeeksFromData(data).hasSecondarySharedPayOrLeave()
+  }
+
   return {
     hasStartDateError,
     isWeekChecked,
@@ -43,6 +56,9 @@ module.exports = function (env) {
     startOfWeek,
     endOfWeek,
     startDateName,
-    totalBlockPay
+    totalBlockPay,
+    shouldDisplayPrimaryLeaveAndPayForm,
+    shouldDisplayPrimaryCurtailmentForm,
+    shouldDisplaySecondaryLeaveAndPayForm
   }
 }

@@ -18,8 +18,7 @@ const examples = {
         ..._.range(42, 46)
       ],
       pay: [
-        ..._.range(-2, 33),
-        ..._.range(42, 46)
+        ..._.range(-2, 33)
       ]
     },
     secondary: {
@@ -28,7 +27,8 @@ const examples = {
         ..._.range(29, 42)
       ],
       pay: [
-        ..._.range(0, 2)
+        ..._.range(0, 2),
+        ..._.range(38, 42)
       ]
     }
   },

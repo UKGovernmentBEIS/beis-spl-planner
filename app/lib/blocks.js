@@ -97,7 +97,6 @@ function getPayBlocks (weeks) {
 
 function getBlocks (data) {
   const weeks = new Weeks({
-    // TODO commonise with filters
     isBirth: dataUtils.isBirth(data),
     startWeek: parseStartDay(data),
     primary: parseParentFromPlanner(data, 'primary'),
