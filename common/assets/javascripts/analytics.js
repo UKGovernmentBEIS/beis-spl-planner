@@ -1,7 +1,9 @@
 function getGaFields (element) {
   return Array.from(element.attributes).reduce((accumulator, attribute) => {
-    if (/data-ga-field-/.test(attribute.name)) {
-      accumulator[attribute.name.substring(14)] = attribute.value
+    const match = attribute.name.match(/^data-ga-field-(.*)/)
+    if (match) {
+      const fieldName = match[1]
+      accumulator[fieldName] = attribute.value
     }
     return accumulator
   }, {})
