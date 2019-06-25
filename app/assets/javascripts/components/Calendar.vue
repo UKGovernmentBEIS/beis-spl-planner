@@ -393,25 +393,25 @@
 
   @mixin cellHoverRules() {
     $empty-cell-background-colour: govuk-colour('white');
-    .leave, .pay {
+    .leave:not(.compulsory):not(.disabled), .pay:not(.disabled) {
       &:hover {
         background-color: hoverify($empty-cell-background-colour);
       }
     }
-    .leave:hover + .pay {
+    .leave:not(.compulsory):not(.disabled):hover + .pay {
       background-color: hoverify($empty-cell-background-colour);
     }
     @each $class, $colour in $cell-colours {
-      .leave, .pay {
+      .leave:not(.compulsory):not(.disabled), .pay:not(.disabled) {
         &.#{$class}:hover {
           background-color: hoverify($colour);
         }
       }
       .leave.#{$class} {
-        + .pay:not(.unpaid):hover {
+        + .pay:not(.disabled):not(.unpaid):hover {
           background-color: hoverify($colour);
         }
-        &:hover + .pay {
+        &:not(.compulsory):not(.disabled):hover + .pay {
           &.unpaid {
             background-color: hoverify(map-get($cell-colours, 'unpaid'))
           }
