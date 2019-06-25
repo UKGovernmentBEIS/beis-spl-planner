@@ -110,6 +110,7 @@ class Paths {
       planner: {
         url: '/planner',
         workflowParentPath: '/parent-salaries',
+        validator: validate.planner,
         'maternity-leave': {
           start: {
             url: '/planner/maternity-leave/start',

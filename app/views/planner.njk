@@ -1,6 +1,7 @@
 {% from "back-link/macro.njk" import govukBackLink %}
 {% from "button/macro.njk" import govukButton %}
 {% from "details/macro.njk" import govukDetails %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "inset-text/macro.njk" import govukInsetText %}
 {% from "components/calendar.njk" import calendar %}
@@ -26,7 +27,26 @@
 {% set STATUTORY_MAXIMUM_PAY = "£" + STATUTORY_MAXIMUM_PAY %}
 
 {% block content %}
-  <div class="govuk-grid-row ">
+  {% if (errors | hasCalendarError) %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        errors["calendar.shared.no-interaction"],
+        errors["calendar.shared.too-many-leave-weeks"],
+        errors["calendar.shared.too-many-pay-weeks"],
+        errors["calendar.primary.pay-without-leave"],
+        errors["calendar.secondary.pay-without-leave"],
+        errors["calendar.primary.leave-break-before-end-of-compulsory-leave"],
+        errors["calendar.primary.pay-break-before-end-of-compulsory-leave"],
+        errors["calendar.primary.not-taking-compulsory-leave"],
+        errors["calendar.primary.too-early"],
+        errors["calendar.secondary.too-early"],
+        errors["calendar.primary.too-late"],
+        errors["calendar.secondary.too-late"]
+      ] | removeEmpty
+    }) }}
+  {% endif %}
+  <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
         Plan shared parental leave and pay

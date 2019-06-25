@@ -6,6 +6,10 @@ function isAdoption (data) {
   return data['birth-or-adoption'] === 'adoption'
 }
 
+function earliestPrimaryLeaveWeek (data) {
+  return isBirth(data) ? -11 : -2
+}
+
 function parentName (data, currentParent) {
   return currentParent === 'primary' ? primaryName(data) : secondaryName(data)
 }
@@ -32,6 +36,7 @@ module.exports = {
   secondaryName,
   isAdoption,
   isBirth,
+  earliestPrimaryLeaveWeek,
   isYes,
   isNo
 }
