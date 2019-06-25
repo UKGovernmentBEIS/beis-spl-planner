@@ -3,7 +3,7 @@ const router = express.Router()
 const nunjucks = require('nunjucks')
 const fileUrl = require('file-url')
 const pdf = require('html-pdf')
-const { getBlocks } = require('./lib/blocks')
+const { getBlocks, getAdjustedPayBlocks } = require('./lib/blocks')
 
 const config = {
   base: fileUrl('app/views/forms') + '/',
@@ -13,15 +13,30 @@ const config = {
 router.get('/declaration.pdf', function (req, res) {
   // TODO: Better error handling.
   try {
-    console.log(req.session); // TODO remove
-
     const { leaveBlocks, payBlocks } = getBlocks(req.session.data);
+    const adjustedPayBlocks = getAdjustedPayBlocks(leaveBlocks, payBlocks);
+
+    let formdata = {};
+    if (req.query.parent === "primary") {
+      formdata = { 
+        data: req.session.data, 
+        leaveBlocks: leaveBlocks.primary, 
+        partnerLeaveBlocks: leaveBlocks.secondary,
+        sharedPayBlocks: adjustedPayBlocks.primary,
+        partnerSharedPayBlocks: adjustedPayBlocks.secondary
+      }
+    } else {
+      formdata = { 
+        data: req.session.data, 
+        leaveBlocks: leaveBlocks.secondary, 
+        partnerLeaveBlocks: leaveBlocks.primary,
+        sharedPayBlocks: adjustedPayBlocks.secondary,
+        partnerSharedPayBlocks: adjustedPayBlocks.primary
+      }
+    }
+
     nunjucks.render('forms/pages/declaration-'+req.query.state+'-'+req.query.parent+'.njk', 
-    { 
-      data: req.session.data, 
-      leaveBlocks: leaveBlocks.primary, 
-      partnerLeaveBlocks: leaveBlocks.secondary
-    }, 
+    formdata, 
     function (e, html) {
       if (e) {
         console.log(e)
@@ -39,7 +54,18 @@ router.get('/declaration.pdf', function (req, res) {
 router.get('/curtailment.pdf', function (req, res) {
   // TODO: Better error handling.
   try {
-    nunjucks.render('forms/pages/curtailment-notice-'+req.query.state+'.njk', { data: req.session.data }, function (e, html) {
+    const { leaveBlocks, payBlocks } = getBlocks(req.session.data);
+    const adjustedPayBlocks = getAdjustedPayBlocks(leaveBlocks, payBlocks);
+
+    let formdata = { 
+      data: req.session.data, 
+      leaveBlocks: leaveBlocks.primary, 
+      partnerLeaveBlocks: leaveBlocks.secondary,
+      sharedPayBlocks: adjustedPayBlocks.primary,
+      partnerSharedPayBlocks: adjustedPayBlocks.secondary
+    }
+
+    nunjucks.render('forms/pages/curtailment-notice-'+req.query.state+'.njk', formdata, function (e, html) {
       if (e) {
         console.log(e)
         res.send('error')

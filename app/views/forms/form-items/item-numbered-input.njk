@@ -29,8 +29,16 @@
         {% case "RANG" %}
           {{ fieldRange(options.passdown) }}
         {% case "RBLK" %}
-          {% for itemopt in options.passdown %}
-            {{ fieldRange(itemopt) }}
+          {% for item in options.passdown.content %}
+            {% if loop.first %}
+              {{ fieldRange({data: item, title: options.title}) }}
+            {% else %}
+              {{ fieldRange({data: item}) }}
+            {% endif %}
+          {% endfor %}
+
+          {% for i in range(1, 6-options.passdown.content.length) %}
+            {{ fieldRange() }}
           {% endfor %}
       {% endswitch %}
 

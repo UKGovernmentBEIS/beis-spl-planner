@@ -84,8 +84,19 @@ module.exports = function (env) {
       .replace(/\$father/g, options.father);
   }
 
-  function getTotalWeeksOfSPL(blocks) {
-    return blocks.spl.reduce((total, block) => total + block.end - block.start + 1, 0);
+  function countWeeks(blocks) {
+    return blocks.reduce((total, block) => total + block.end - block.start + 1, 0);
+  }
+  
+  function blocksToDates(data, blocks) {
+    const offsetWeeks = env.getFilter('offsetWeeks')
+
+    return blocks.map((block) => {
+      return {
+        start: offsetWeeks(startOfWeek(startDay(data)), block.start),
+        end: endOfWeek(offsetWeeks(startOfWeek(startDay(data)), block.end))
+      };
+    });
   }
 
   return {
@@ -95,6 +106,7 @@ module.exports = function (env) {
     startOfWeek,
     endOfWeek,
     startDateName,
-    getTotalWeeksOfSPL
+    countWeeks,
+    blocksToDates
   }
 }

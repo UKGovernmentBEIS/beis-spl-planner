@@ -11,6 +11,9 @@
 
 {% macro curtailmentNoticeTemplate(options) %}
 
+  {% set data_leaveEnd = options.data | startDay | startOfWeek | offsetWeeks(options.leaveBlocks.initial.end) | endOfWeek %}
+  {% set data_payEnd = options.data | startDay | startOfWeek | offsetWeeks(options.sharedPayBlocks.initial.end) | endOfWeek %}
+
   {% set title %}
     <strong>{{ options.parent | capitalize }}’s</strong> curtailment notice and consent to partner's SPL
   {% endset %}
@@ -42,12 +45,12 @@
     <div class="empty-line"></div>
     <h4>{{options.state | capitalize}} Leave curtailment notice</h4>
     <p><strong>I would like my {{options.state | capitalize}} Leave to end on:</strong></p>
-    {{ fieldDate() }}
+    {{ fieldDate(data_leaveEnd) }}
 
     <div class="empty-line"></div>
     <h4>Statutory {{options.state | capitalize}} Pay curtailment notice</h4>
     <p><strong>I would like my Statutory {{options.state | capitalize}} Pay to end on:</strong></p>
-    {{ fieldDate() }}
+    {{ fieldDate(data_payEnd) }}
 
     <div class="empty-line"></div>
     <h4>Notice to employer:</h4>

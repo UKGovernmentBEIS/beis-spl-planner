@@ -9,12 +9,35 @@
 
 {% macro declarationTemplate(options) %}
 
-  {% set data_dateOfBirth = options.data | startDay | formatDate("DDMMYYYY") %}
-  {% set data_dateMaternityLeaveWillStart = options.data | startDay | startOfWeek | offsetWeeks(options.leaveBlocks.initial.start) | formatDate("DDMMYYYY") %}
-  {% set data_dateMaternityLeaveWillEnd = options.data | startDay | startOfWeek | offsetWeeks(options.leaveBlocks.initial.end) | endOfWeek | formatDate("DDMMYYYY") %}
-  {% set data_numberOfWeeksOfMaternityLeaveAtTheDateMaternityLeaveWillEnd = 52 - (options.leaveBlocks.initial.end - options.leaveBlocks.initial.start + 1) %}
-  {% set data_totalNoOfWeeksOfSPL = options.leaveBlocks | getTotalWeeksOfSPL %}
-  {% set data_totalNoOfPartnerWeeksOfSPL = options.partnerLeaveBlocks | getTotalWeeksOfSPL %}
+  {% if options.type == "primary" %}
+    {% set data_primaryLeaveBlocks = options.leaveBlocks %}
+    {% set data_primaryPayBlocks = options.sharedPayBlocks %}
+  {% else %}
+    {% set data_primaryLeaveBlocks = options.partnerLeaveBlocks %}
+    {% set data_primaryPayBlocks = options.partnerSharedPayBlocks %}
+  {% endif %}
+
+  {% set data_startDate = options.data | startDay %}
+
+  {% set data_leaveStart = options.data | startDay | startOfWeek | offsetWeeks(data_primaryLeaveBlocks.initial.start) %}
+  {% set data_leaveEnd = options.data | startDay | startOfWeek | offsetWeeks(data_primaryLeaveBlocks.initial.end) | endOfWeek %}
+  {% set data_leaveWeeksLeft = 52 - (data_primaryLeaveBlocks.initial.end - data_primaryLeaveBlocks.initial.start + 1) %}
+
+  {% set data_noWeeksSPL = options.leaveBlocks.spl | countWeeks %}
+  {% set data_noPartnerWeeksSPL = options.partnerLeaveBlocks.spl | countWeeks %}
+
+  {% set data_payStart = options.data | startDay | startOfWeek | offsetWeeks(data_primaryPayBlocks.initial.start) %}
+  {% set data_payEnd = options.data | startDay | startOfWeek | offsetWeeks(data_primaryPayBlocks.initial.end) | endOfWeek %}
+  {% set data_payWeeksLeft = 39 - (data_primaryPayBlocks.initial.end - data_primaryPayBlocks.initial.start + 1) %}
+
+  {% set data_noWeeksSSPP = options.sharedPayBlocks.shared | countWeeks %}
+  {% set data_noPartnerWeeksSSPP = options.partnerSharedPayBlocks.shared | countWeeks %}
+
+  {% set data_sharedLeaveWeeks = options.data | blocksToDates(options.leaveBlocks.spl) %}
+  {% set data_sharedPayWeeks = options.data | blocksToDates(options.sharedPayBlocks.shared) %}
+
+  {% set data_firstSPLStart = options.data | startDay | startOfWeek | offsetWeeks(options.leaveBlocks.spl[0].start) if options.leaveBlocks.spl.length > 0 %}
+  {% set data_firstSPLEnd = options.data | startDay | startOfWeek | offsetWeeks(options.leaveBlocks.spl[0].end) | endOfWeek if options.leaveBlocks.spl.length > 0 %}
 
   {% set title %}
     <strong>{{ options.parent | capitalize }}’s</strong> notice and declaration of SPL
@@ -71,10 +94,10 @@
       {{ itemNumberedInput({number: 8, type: "ADDR", text: "Home address", passdown: ""}) }}
       <div class="with-left-border"><h4 class="with-margin">Child</h4></div>
       {% if options.state == "maternity" %}
-        {{ itemNumberedInput({number: 9, type: "DATE", text: "What is the child’s expected date of birth / actual date of birth?", passdown: data_dateOfBirth}) }}
+        {{ itemNumberedInput({number: 9, type: "DATE", text: "What is the child’s expected date of birth / actual date of birth?", passdown: data_startDate}) }}
       {% else %}
         {{ itemNumberedInput({number: 9, type: "DATE", text: "When were you notified of a match with the child?", passdown: ""}) }}
-        {{ itemNumberedInput({number: 10, type: "DATE", text: "When did, or when will the child begin to live with you? (Delete as appropriate)", passdown: ""}) }}
+        {{ itemNumberedInput({number: 10, type: "DATE", text: "When did, or when will the child begin to live with you? (Delete as appropriate)", passdown: data_startDate}) }}
         <div class="with-left-border"><p><strong>If you do not have a placement date, you must provide your employer with this information as soon as possible after the child’s placement and before you take any Shared Parental Leave or Pay.</strong></p></div>
       {% endif %}
     {% endset %}
@@ -94,24 +117,24 @@
 
     {% set left %}
       <h4 class="with-margin">{{ "About the " + options.otherParent + "’s " if options.type == "secondary" }}{{ options.state | capitalize}} Leave</h4>
-      {{ itemNumberedInput({ number: 10, type: "DATE", text: "Date $State Leave will start" | formTemplate(options), passdown: data_dateMaternityLeaveWillStart }) }}
-      {{ itemNumberedInput({ number: 11, type: "DATE", text: "Date $State Leave will end" | formTemplate(options), passdown: data_dateMaternityLeaveWillEnd }) }}
-      {{ itemNumberedInput({ number: 12, type: "NUMB", text: "Number of weeks of $State Leave left at the date $State Leave will end" | formTemplate(options), passdown: data_numberOfWeeksOfMaternityLeaveAtTheDateMaternityLeaveWillEnd }) }}
+      {{ itemNumberedInput({ number: 10, type: "DATE", text: "Date $State Leave will start" | formTemplate(options), passdown: data_leaveStart }) }}
+      {{ itemNumberedInput({ number: 11, type: "DATE", text: "Date $State Leave will end" | formTemplate(options), passdown: data_leaveEnd }) }}
+      {{ itemNumberedInput({ number: 12, type: "NUMB", text: "Number of weeks of $State Leave left at the date $State Leave will end" | formTemplate(options), passdown: data_leaveWeeksLeft }) }}
       <div class="with-left-border"><h4 class="with-margin">Shared Parental Leave</h4></div>
-      {{ itemNumberedInput({ number: 13, type: "NUMB", text: "Number of weeks of Shared Parental Leave available", passdown: data_numberOfWeeksOfMaternityLeaveAtTheDateMaternityLeaveWillEnd }) }}
-      {{ itemNumberedInput({ number: 14, type: "NUMB", text: "Number of weeks of Shared Parental Leave $youintend to take" | formTemplate(options), passdown: data_totalNoOfWeeksOfSPL }) }}
-      {{ itemNumberedInput({ number: 15, type: "NUMB", text: "Number of weeks of Shared Parental Leave $partnerintends to take (if any)" | formTemplate(options), passdown: data_totalNoOfPartnerWeeksOfSPL }) }}
+      {{ itemNumberedInput({ number: 13, type: "NUMB", text: "Number of weeks of Shared Parental Leave available", passdown: data_leaveWeeksLeft }) }}
+      {{ itemNumberedInput({ number: 14, type: "NUMB", text: "Number of weeks of Shared Parental Leave $youintend to take" | formTemplate(options), passdown: data_noWeeksSPL }) }}
+      {{ itemNumberedInput({ number: 15, type: "NUMB", text: "Number of weeks of Shared Parental Leave $partnerintends to take (if any)" | formTemplate(options), passdown: data_noPartnerWeeksSPL }) }}
     {% endset %}
 
     {% set right %}
       <h4 class="with-margin">{{ "About the " + options.otherParent + "’s " if options.type == "secondary" }}{{"Statutory $State Pay" | formTemplate(options) }}</h4>
-      {{ itemNumberedInput({ number: 16, type: "DATE", text: "Date Statutory $State Pay will start" | formTemplate(options), passdown: data_dateMaternityLeaveWillStart }) }}
-      {{ itemNumberedInput({ number: 17, type: "DATE", text: "Date Statutory $State Pay will end" | formTemplate(options), passdown: data_dateMaternityLeaveWillEnd }) }}
-      {{ itemNumberedInput({ number: 18, type: "NUMB", text: "Number of weeks of Statutory $State Pay left at the date Statutory $State Pay will end" | formTemplate(options), passdown: "" }) }}
+      {{ itemNumberedInput({ number: 16, type: "DATE", text: "Date Statutory $State Pay will start" | formTemplate(options), passdown: data_payStart }) }}
+      {{ itemNumberedInput({ number: 17, type: "DATE", text: "Date Statutory $State Pay will end" | formTemplate(options), passdown: data_payEnd }) }}
+      {{ itemNumberedInput({ number: 18, type: "NUMB", text: "Number of weeks of Statutory $State Pay left at the date Statutory $State Pay will end" | formTemplate(options), passdown: data_payWeeksLeft }) }}
       <div class="with-left-border"><h4 class="with-margin">Statutory Shared Parental Pay</h4></div>
-      {{ itemNumberedInput({ number: 19, type: "NUMB", text: "Number of weeks of Shared Parental Pay available", passdown: "" }) }}
-      {{ itemNumberedInput({ number: 20, type: "NUMB", text: "Number of weeks of Shared Parental Pay $youintend to take" | formTemplate(options), passdown: "" }) }}
-      {{ itemNumberedInput({ number: 21, type: "NUMB", text: "Number of weeks of Shared Parental Pay $partnerintends to take (if any)" | formTemplate(options), passdown: "" }) }}
+      {{ itemNumberedInput({ number: 19, type: "NUMB", text: "Number of weeks of Shared Parental Pay available", passdown: data_payWeeksLeft }) }}
+      {{ itemNumberedInput({ number: 20, type: "NUMB", text: "Number of weeks of Shared Parental Pay $youintend to take" | formTemplate(options), passdown: data_noWeeksSSPP }) }}
+      {{ itemNumberedInput({ number: 21, type: "NUMB", text: "Number of weeks of Shared Parental Pay $partnerintends to take (if any)" | formTemplate(options), passdown: data_noPartnerWeeksSSPP }) }}
     {% endset %}
 
     {{ twoColumnLayout({
@@ -128,12 +151,10 @@
       number: 22, 
       type: "RBLK", 
       text: "At the date of this notice I intend to take Shared Parental Leave between the following dates:", 
-      passdown: 
-        [{
-          title: { start: "SPL start date", end: "SPL end date" }
-        },
-        {}, {}, {}, {}, {}]
-      }) }}
+      passdown: {
+        title: { start: "SPL start date", end: "SPL end date" },
+        content: data_sharedLeaveWeeks
+      } }) }}
 
     <div class="empty-line"></div>
     <h4>Indication of when you intend to take Statutory Shared Parental Pay (ShPP)</h4>
@@ -141,12 +162,10 @@
       number: 23, 
       type: "RBLK", 
       text: "At the date of this notice I intend to take Statutory Shared Parental Pay between the following dates:", 
-      passdown: 
-        [{
-          title: { start: "ShPP start date", end: "ShPP end date" }
-        },
-        {}, {}, {}, {}, {}]
-      }) }}
+      passdown: {
+        title: { start: "ShPP start date", end: "ShPP end date" },
+        content: data_sharedPayWeeks  
+      } }) }}
   {% endset %}
 
   {% set page4 %}
@@ -155,9 +174,9 @@
     <div class="empty-line"></div>
     {{ itemNumberedInput({ number: 1, type: "TEXT", text: "$Parent’s name" | formTemplate(options), passdown: "" }) }}
     <div class="with-left-border"><h4 class="with-margin">{{"$State Leave ($leaveabbr) curtailment notice:" | formTemplate(options) }}</h4></div>
-    {{ itemNumberedInput({ number: 2, type: "DATE", text: "I would like my ($leaveabbr) to end on:" | formTemplate(options), passdown: "" }) }}
+    {{ itemNumberedInput({ number: 2, type: "DATE", text: "I would like my $leaveabbr to end on:" | formTemplate(options), passdown: data_leaveEnd }) }}
     <div class="with-left-border"><h4 class="with-margin">{{"Statutory $State Pay ($payabbr) curtailment notice:" | formTemplate(options) }}</h4></div>
-    {{ itemNumberedInput({ number: 3, type: "DATE", text: "I would like my $payabbr to end on:" | formTemplate(options), passdown: "" }) }}
+    {{ itemNumberedInput({ number: 3, type: "DATE", text: "I would like my $payabbr to end on:" | formTemplate(options), passdown: data_payEnd }) }}
 
     <p>
       I have given notice of {{ "my/the father’s/partner’s" if options.state == "maternity" else "my partner’s" }} entitlement to and intention to take <br/>
@@ -294,11 +313,14 @@
     <div class="empty-line"></div>
     <div class="empty-line"></div>
     <h4>Period of leave:</h4>
-    {{ fieldRange({ title: { start: "SPL start date", end: "SPL end date" } }) }}
+    {{ fieldRange({ 
+      title: { start: "SPL start date", end: "SPL end date" },
+      data: { start: data_firstSPLStart, end: data_firstSPLEnd }
+    }) }}
 
     <div class="empty-line"></div>
     <p><strong>If you do not know your exact start and end dates, complete the sentence below:</strong></p>
-    <p>I will take {{ fieldNumber({}) }} weeks of Shared Parental Leave. It will start {{ fieldNumber({}) }} weeks after {{ "my $State Leave ends" | formTemplate(options) if options.type == "primary" else ("my child’s expected week of birth" if options.state == "maternity" else "the child is placed with our family")}}.</p>
+    <p>I will take {{ fieldNumber() }} weeks of Shared Parental Leave. It will start {{ fieldNumber() }} weeks after {{ "my $State Leave ends" | formTemplate(options) if options.type == "primary" else ("my child’s expected week of birth" if options.state == "maternity" else "the child is placed with our family")}}.</p>
 
     <div class="empty-line"></div>
     <div class="empty-line"></div>
