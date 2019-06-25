@@ -1,85 +1,47 @@
 <template>
   <div>
     <h2 class="govuk-heading-m">
-      Leave and pay totals
+      Your leave balance
     </h2>
     <p>
-      Any unused {{ primaryLeaveType }} leave can be taken as shared parental leave,
-      and any unused {{ primaryLeaveType }} pay can be taken as shared parental pay.
+      You can take a total of <span v-html="formatWeeks(52)"></span> as {{ primaryLeaveType }} leave
+      or shared parental leave.
     </p>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          {{ primaryLeaveType | capitalise }}
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ leaveWeeks.primary.nonSpl | weeks }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          {{ names.primary | capitalise }}’s SPL
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ leaveWeeks.primary.spl | weeks }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          {{ names.secondary | capitalise }}’s SPL
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ leaveWeeks.secondary.spl | weeks }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row remaining" :class="{ 'negative': remainingPrimaryLeaveOrSpl < 0 }">
-        <dt class="govuk-summary-list__key">
-          Remaining
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ remainingPrimaryLeaveOrSpl | weeks }}
-        </dd>
-      </div>
-    </dl>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Paid weeks
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ shppWeeks | weeks }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row remaining" :class="{ 'negative': remainingPrimaryLeaveOrShpp < 0 }">
-        <dt class="govuk-summary-list__key">
-          Remaining
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ remainingPrimaryLeaveOrShpp | weeks }}
-        </dd>
-      </div>
-    </dl>
     <p>
-      Paternity leave and pay are separate entitlements.
+      You’ve taken <span v-html="formatWeeks(primaryLeaveUsed)"></span> as {{ primaryLeaveType }} leave and
+      <span v-html="formatWeeks(splUsed)"></span> as shared parental leave.
+      You have <span v-html="formatWeeks(sharedLeaveRemaining)"></span> left.
     </p>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Paternity
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ leaveWeeks.secondary.nonSpl | weeks }}
-        </dd>
+    <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
+      v-if="sharedLeaveRemaining < 0">
+      <div class="govuk-error-summary__body">
+        You’ve taken too many weeks of leave. Unselect <span v-html="formatWeeks(-sharedLeaveRemaining)"></span>.
       </div>
-      <div class="govuk-summary-list__row remaining" :class="{ 'negative': remaingPaternity < 0 }">
-        <dt class="govuk-summary-list__key">
-          Remaining
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ remainingPaternity | weeks }}
-        </dd>
+    </div>
+    <h2 class="govuk-heading-m">
+      Your pay balance
+    </h2>
+    <p>
+      You can get a total of <span v-html="formatWeeks(39)"></span> of statutory maternity pay or
+      statutory shared parental pay.
+    </p>
+    <p>
+      You’ve taken <span v-html="formatWeeks(payUsed)"></span> of pay.
+      You have <span v-html="formatWeeks(payRemaining)"></span> of pay left.
+    </p>
+    <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
+      v-if="payRemaining < 0">
+      <div class="govuk-error-summary__body">
+        You’ve taken too many weeks of pay. Uncheck <span v-html="formatWeeks(-payRemaining)"></span>.
       </div>
-    </dl>
+    </div>
+    <h2 class="govuk-heading-m">
+      Paternity leave
+    </h2>
+    <p>
+      The partner has <span v-html="formatWeeks(paternityLeaveRemaining)"></span> left to take as
+      paternity leave.
+    </p>
   </div>
 </template>
 
@@ -97,20 +59,28 @@
       weeks: Array,
       primaryLeaveType: String
     },
-    filters: {
-      weeks: function (number) {
-        return number + ' ' + (Math.abs(number) === 1 ? 'week' : 'weeks')
-      }
-    },
     computed: {
-      remainingPrimaryLeaveOrSpl: function () {
-        return 52 - this.leaveWeeks.primary.nonSpl - this.leaveWeeks.primary.spl - this.leaveWeeks.secondary.spl
+      primaryLeaveUsed: function () {
+        return this.leaveWeeks.primary.nonSpl
       },
-      remainingPrimaryLeaveOrShpp: function () {
-        return 39 - this.shppWeeks
+      splUsed: function () {
+        return this.leaveWeeks.primary.spl + this.leaveWeeks.secondary.spl
       },
-      remainingPaternity: function () {
-        return 2 - this.leaveWeeks.secondary.nonSpl
+      sharedLeaveRemaining: function () {
+        const leaveBalanceUsed = this.primaryLeaveUsed + this.splUsed
+        return 52 - leaveBalanceUsed
+      },
+      payUsed: function () {
+        return this.shppWeeks
+      },
+      payRemaining: function () {
+        return 39 - this.payUsed
+      },
+      paternityLeaveUsed: function () {
+        return this.leaveWeeks.secondary.nonSpl
+      },
+      paternityLeaveRemaining: function () {
+        return 2 - this.paternityLeaveUsed
       }
     },
     watch: {
@@ -126,6 +96,10 @@
       }
     },
     methods: {
+      formatWeeks: function (number) {
+        number = Math.max(number, 0)
+        return '<strong>' + number + '</strong> ' + (number === 1 ? 'week' : 'weeks')
+      },
       resetTotals: function () {
         this.leaveWeeks = {
           primary: { nonSpl: 0, spl: 0 },
@@ -156,21 +130,10 @@
 
 <style lang="scss" scoped>
   @import "node_modules/govuk-frontend/settings/colours-applied";
-  .govuk-summary-list {
-    .govuk-summary-list__key {
-      width: 55%;
-      padding-right: 10px;
-    }
-    .govuk-summary-list__value {
-      width: 45%;
-      padding-right: 0;
-    }
-    .remaining {
-      color: $govuk-secondary-text-colour;
-      &.negative {
-        color: $govuk-error-colour;
-      }
-    }
+
+  .govuk-error-summary__body {
+    color: $govuk-error-colour;
+    font-weight: bold;
   }
 </style>
 

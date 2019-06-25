@@ -88,5 +88,7 @@
   #sidebar {
     @include sticky();
     top: 10px;
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
   }
 </style>
