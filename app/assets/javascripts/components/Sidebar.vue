@@ -12,6 +12,12 @@
       <span v-html="formatWeeks(splUsed)"></span> as shared parental leave.
       You have <span v-html="formatWeeks(sharedLeaveRemaining)"></span> left.
     </p>
+    <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
+      v-if="sharedLeaveRemaining < 0">
+      <div class="govuk-error-summary__body">
+        You’ve taken too many weeks of leave. Unselect <span v-html="formatWeeks(-sharedLeaveRemaining)"></span>.
+      </div>
+    </div>
     <h2 class="govuk-heading-m">
       Your pay balance
     </h2>
@@ -23,6 +29,12 @@
       You’ve taken <span v-html="formatWeeks(payUsed)"></span> of pay.
       You have <span v-html="formatWeeks(payRemaining)"></span> of pay left.
     </p>
+    <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
+      v-if="payRemaining < 0">
+      <div class="govuk-error-summary__body">
+        You’ve taken too many weeks of pay. Uncheck <span v-html="formatWeeks(-payRemaining)"></span>.
+      </div>
+    </div>
     <h2 class="govuk-heading-m">
       Paternity leave
     </h2>
@@ -118,5 +130,10 @@
 
 <style lang="scss" scoped>
   @import "node_modules/govuk-frontend/settings/colours-applied";
+
+  .govuk-error-summary__body {
+    color: $govuk-error-colour;
+    font-weight: bold;
+  }
 </style>
 
