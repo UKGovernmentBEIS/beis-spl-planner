@@ -22,7 +22,7 @@
       Your pay balance
     </h2>
     <p>
-      You can get a total of <span v-html="formatWeeks(39)"></span> of statutory maternity pay or
+      You can get a total of <span v-html="formatWeeks(39)"></span> of statutory {{ primaryLeaveType }} pay or
       statutory shared parental pay.
     </p>
     <p>
