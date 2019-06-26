@@ -38,50 +38,44 @@
       </p>
 
       {% set policyInfo %}
+        <p>If you’re using the visual layout, these rules are built into the calendar.</p>
         <h2 class="govuk-heading-s">
-          Shared parental leave and pay
+          How many weeks of leave and pay parents can take
         </h2>
         <p>
-          Shared parental leave and pay is created from unused {{ primaryLeaveType }} leave and pay.
-          Parents can split up to 50 weeks of shared parental leave and 37 weeks of statutory shared parental pay between them.
+          Shared parental leave and pay is created from unused {{ primaryLeaveType }} leave and pay. The {{ primaryName }} must take 2 weeks of {{ primaryLeaveType }} leave and pay straight after the child’s {{ "birth" if data | isBirth else "placement"}}.
         </p>
         <p>
-          Statutory shared parental pay is always {{ STATUTORY_MAXIMUM }} per week, or 90% of your average weekly earnings, whichever is lower.
+          This leaves 50 weeks of leave and 39 weeks of statutory pay for parents to split between them.
         </p>
         <p>
-          You can only start shared parental leave and pay after the child's birth.
+          The partner can take two weeks of paternity leave in addition to this.
+        </p>
+
+        <h2 class="govuk-heading-s">
+          How much pay can you get
+        </h2>
+        <p>
+          The {{ primaryName }} will receive 90% of their average weekly earnings for the first 6 weeks of statutory {{ primaryLeaveType }} pay, then {{ STATUTORY_MAXIMUM }} per week or 90% of their average weekly earnings, whichever is lower.
         </p>
         <p>
-          The partner can start shared parental leave and pay while the {{ primaryName }} is on {{ primaryLeaveType }} leave and pay.
+          The parent claiming statutory shared parental pay will receive {{ STATUTORY_MAXIMUM }} per week, or 90% of their average weekly earnings, whichever is lower.
+        </p>
+        <p>
+          If the partner is claiming statutory paternity pay, they will receive {{ STATUTORY_MAXIMUM }} per week, or 90% of their average weekly earnings, whichever is lower.
+        </p>
+
+        <h2 class="govuk-heading-s">
+          When can you start
+        </h2>
+        <p>
+          The {{ primaryName }} can start {{ primaryLeaveType }} leave up to {{ "11" if data | isBirth else "2" }} weeks before the week of {{ "birth" if data | isBirth else "placement"}}.
+        </p>
+        <p>
+          The partner can start shared parental leave and pay while the {{ primaryName }} is on {{ primaryLeaveType }} leave and pay, but only after the child is {{ "born" if data | isBirth else "placed" }}.
         </p>
         <p>
           Both the {{ primaryName }} and the partner can take shared parental leave in blocks, either at the same time or one after the other.
-        </p>
-        <h2 class="govuk-heading-s">
-          {{ primaryLeaveType | capitalise }} leave and pay
-        </h2>
-        <p>
-          The {{ primaryName }} can take up to 52 weeks of {{ primaryLeaveType }} leave and claim 39 weeks of statutory {{ primaryLeaveType }} pay.
-        </p>
-        <p>
-          Statutory {{ primaryLeaveType }} pay is 90% of the {{ primaryName }}’s average weekly earnings for the first 6 weeks,
-          then {{ STATUTORY_MAXIMUM }} per week or 90% of the {{ primaryName }}’s average weekly earnings, whichever is lower.
-        </p>
-        <p>
-          {{ primaryLeaveType | capitalise }} leave and pay must be taken in one continuous block.
-          It can start up to {{ "11" if isBirth else "2" }} weeks before the expected week of birth.
-        </p>
-        <p>
-          The {{ primaryName }} must take 2 weeks of compulsory {{ primaryLeaveType }} leave and pay as soon as the child is born.
-        </p>
-        <h2 class="govuk-heading-s">
-          Paternity leave and pay
-        </h2>
-        <p>
-          The partner can take 2 weeks of paternity leave. It must be taken within the first 8 weeks after birth.
-        </p>
-        <p>
-          Statutory paternity pay is always {{ STATUTORY_MAXIMUM }} per week, or 90% of your average weekly earnings, whichever is lower.
         </p>
       {% endset %}
 
@@ -110,7 +104,7 @@
       {% endset %}
 
       {{ govukDetails({
-        summaryText: "The rules for shared parental, " + primaryLeaveType + " and paternity leave and pay",
+        summaryText: "How shared parental, " + primaryLeaveType + " and paternity leave and pay work",
         html: policyInfo
       }) }}
 
