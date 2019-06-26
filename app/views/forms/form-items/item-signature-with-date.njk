@@ -1,0 +1,10 @@
+{% from "../input-fields/field-signature.njk" import fieldSignature %}
+{% from "../input-fields/field-date.njk" import fieldDate %}
+
+{% macro itemSignatureWithDate(options) %}
+  <div class="item-signature-with-date">
+    {{ fieldSignature(options.passdown) }}
+    <p>Date</p>
+    {{ fieldDate(options.passdown) }}
+  </div>
+{% endmacro %}

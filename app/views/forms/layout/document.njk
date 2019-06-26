@@ -1,0 +1,31 @@
+{% macro document(options) %}
+  <html>
+    <head>
+      <meta charset="utf8">
+      <link href="styles/fonts.css" rel="stylesheet">
+      <link href="styles/forms.css" rel="stylesheet">
+    </head>
+    <body class="{{ options.parent }}">
+      {% for page in options.pages %}
+        <div class="page">
+          {% if loop.first %}
+            <div class="header-title">
+              <h1>{{ options.title.headerhtml | safe }}</h1>
+            </div>
+          {% endif %}
+          <div class="content">
+            {{ page | safe }}
+          </div>
+          <div class="footer">
+            <div class="footer-title">
+              {{ options.title.html | safe }}
+            </div>
+            <div class="footer-page-number">
+              Page {{ loop.index }} of {{ loop.length }}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </body>
+  </html>
+{% endmacro %}

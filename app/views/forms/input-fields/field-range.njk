@@ -1,0 +1,16 @@
+{% from "./field-date.njk" import fieldDate %}
+
+{% macro fieldRange(options) %}
+  <div class="field-range">
+    {% if options.title %}
+      <div class="range-title">
+        <span class="start">{{ options.title.start }}</span>
+        <span class="end">{{ options.title.end }}</span>
+      </div>
+    {% endif %}
+
+    {{ fieldDate(options.data.start) }}
+    <div class="date-separation"><span class="separator">-</span></div>
+    {{ fieldDate(options.data.end) }}
+  </div>
+{% endmacro %}

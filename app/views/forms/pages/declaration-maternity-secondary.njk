@@ -1,0 +1,22 @@
+{% from "../page-templates/declaration-template.njk" import declarationTemplate %}
+
+{{ declarationTemplate({
+  data: data,
+  leaveBlocks: leaveBlocks,
+  partnerLeaveBlocks: partnerLeaveBlocks,
+  sharedPayBlocks: sharedPayBlocks,
+  partnerSharedPayBlocks: partnerSharedPayBlocks,
+  parent: "partner",
+  otherParent: "mother",
+  parentOrPartner: "father/my partner",
+  type: "secondary",
+  state: "maternity",
+  leaveAbbreviation: "ML",
+  payAbbreviation: "SMP",
+  sectionCount: 4,
+  youIntendLabel: "you (the partner) intend",
+  partnerIntendsLabel: "the mother intends",
+  her: "her",
+  event: "birth",
+  father: "father of the child"
+}) }}

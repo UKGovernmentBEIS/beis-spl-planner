@@ -1,0 +1,258 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+.page {
+  zoom: calc(16/12);
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: block;
+  page-break-after: auto;
+  overflow: hidden;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.footer {
+  background-color: lightgreen;
+  position: absolute;
+  bottom: 20px;
+  left: 30px;
+  right: 30px;
+}
+
+.footer .footer-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.header-title {
+  position: absolute;
+  width: 230px;
+  top: 25px;
+  right: 15px;
+  padding: 0;
+}
+
+.header-title h1 {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+.footer .footer-page-number {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+p {
+  margin: 0.5rem 0;
+}
+
+.primary h1,
+.primary h2,
+.primary h3,
+.primary h4,
+.primary h5,
+.primary h6 {
+  color: #005192;
+}
+
+.secondary h1,
+.secondary h2,
+.secondary h3,
+.secondary h4,
+.secondary h5,
+.secondary h6 {
+  color: #B10E1E;
+}
+
+.input-field {
+  border: 1px solid darkgray;
+  text-align: center;
+}
+
+.two-column-layout .input-field {
+  width: 100%;
+}
+
+.digit-field {
+  width: 14px !important;
+}
+
+.number-array table,
+.field-checkbox table {
+  border-collapse: collapse;
+  display: inline-block;
+}
+
+.number-array table:not(:first-of-type) {
+  margin-left: 6px;
+}
+
+.number-array td,
+.field-checkbox td {
+  width: 13px; /* 1px less than in design because https://stackoverflow.com/questions/19068909/why-is-box-sizing-acting-different-on-table-vs-div */
+  height: 18px;
+  padding: 0;
+  border: 1px solid darkgray;
+  text-align: center;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+  float: left;
+}
+
+.number-box {
+  border: 1px solid darkgray;
+  border-left: none;
+  width: 16px;
+  height: 17px;
+  text-align: right;
+  padding-right: 3px;
+}
+
+.field-address .input-field {
+  margin: 0;
+}
+
+p .field-number {
+  display: inline-block;
+  margin: 0 3px;
+}
+
+.field-number .input-field {
+  width: 29px; /* 1px more than in design to keep same size as two digit-fields */
+}
+
+.item-numbered-input {
+  border-left: 1px solid darkgray;
+  padding-bottom: 10px;
+  padding-right: 19px;
+}
+
+.field-large .input-field {
+  width: 408px;
+}
+
+.item-numbered-input p {
+  margin-top: 0;
+  max-width: 281px;
+}
+
+.field-range .field-date {
+  display: inline-block;
+}
+
+.field-range .date-separation {
+  display: inline-block;
+  position: relative;
+  top: -3px;
+  width: 13px;
+}
+
+.field-range .date-separation .separator {
+  display: table;
+  margin: 0 auto;
+}
+
+.field-range .range-title {
+  margin-bottom: 5px;
+}
+
+.field-range .range-title .start {
+  display: inline-block;
+  width: 148px;
+}
+
+.item-checkbox .field-checkbox {
+  margin-left: 21px;
+  position: relative;
+  top: 0.32em;
+}
+
+.item-checkbox p {
+  margin-bottom: 10px;
+}
+
+.no-margin {
+  margin-bottom: 0px !important;
+}
+
+.field-signature .input-field {
+  width: 257px;
+  height: 44px;
+}
+
+.item-numbered-input .field-range:not(:first-of-type) {
+  margin-top: 5px;
+}
+
+.section-title {
+  margin-bottom: 12px;
+}
+
+.section-title h2 {
+  margin-bottom: 7px;
+}
+
+.primary .section-title {
+  border-bottom: 2px solid #005192;
+}
+
+.secondary .section-title {
+  border-bottom: 2px solid #B10E1E;
+}
+
+h1 {
+  margin-bottom: 0;
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 4px;
+  padding-bottom: 7px;
+}
+
+.with-margin {
+  margin: 0px 28px;
+}
+
+.with-left-border {
+  border-left: 1px solid darkgray;
+}
+
+.with-left-border p {
+  margin: 0;
+  margin-left: 8px;
+  width: 260px;
+}
+
+.empty-line {
+  height: 10px;
+}

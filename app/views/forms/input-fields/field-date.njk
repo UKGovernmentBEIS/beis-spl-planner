@@ -1,0 +1,28 @@
+{% macro fieldDate(options) %}
+  {% set content = options | formatDate("DDMMYYYY") if options %}
+  
+  <div class="field-date number-array">
+    <table>
+      <tr>
+        <td>{{content[0]}}</td>
+        <td>{{content[1]}}</td>
+      </tr>
+    </table>
+    
+    <table>
+      <tr>
+        <td>{{content[2]}}</td>
+        <td>{{content[3]}}</td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <td>{{content[4]}}</td>
+        <td>{{content[5]}}</td>
+        <td>{{content[6]}}</td>
+        <td>{{content[7]}}</td>
+      </tr>
+    </table>
+  </div>
+{% endmacro %}

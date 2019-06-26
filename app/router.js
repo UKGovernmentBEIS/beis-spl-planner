@@ -15,6 +15,8 @@ const { isBirth } = require('../common/lib/dataUtils')
 
 router.use('/planner/examples', require('./router.examples'))
 
+router.use('/forms', require('./router.forms'))
+
 router.route(paths.getPath('root'))
   .get(function (req, res) {
     if (req.query) {

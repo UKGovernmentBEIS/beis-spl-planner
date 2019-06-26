@@ -1,0 +1,10 @@
+{% macro twoColumnLayout(options) %}
+  <div class="two-column-layout row">
+    <div class="column" style="width: 50%">
+      {{ options.leftcolumn | safe }}
+    </div>
+    <div class="column" style="width: 50%">
+      {{ options.rightcolumn | safe }}
+    </div>
+  </div>
+{% endmacro %}

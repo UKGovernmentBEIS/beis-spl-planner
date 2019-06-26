@@ -126,8 +126,8 @@
 
       {# TODO fix the href of this fileDownload #}
       {{ fileDownload({
-        name: (data | primaryName | capitalise) + "’s shared parental leave and pay notice form",
-        href: "#",
+        name: (data | primaryName | capitalize) + "’s shared parental leave and pay notice form",
+        href: "/forms/declaration.pdf?state=" + (data | primaryLeaveType) + "&parent=primary",
         description: {
           html: noticeDescription
         },
@@ -211,8 +211,8 @@
         </p>
         {#  TODO fix the href of this file download #}
         {{ fileDownload({
-          name: data | secondaryName | capitalise + "’s shared parental leave and pay notice form",
-          href: "#",
+          name: data | secondaryName | capitalize + "’s shared parental leave and pay notice form",
+          href: "/forms/declaration.pdf?state=" + (data | primaryLeaveType) + "&parent=secondary",
           description: {
             html: noticeDescription
           },

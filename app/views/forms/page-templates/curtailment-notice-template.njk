@@ -1,0 +1,92 @@
+{% from "../layout/document.njk" import document %}
+{% from "../layout/two-column-layout.njk" import twoColumnLayout %}
+{% from "../layout/section-title.njk" import sectionTitle %}
+{% from "../form-items/item-numbered-input.njk" import itemNumberedInput %}
+{% from "../form-items/item-signature-with-date.njk" import itemSignatureWithDate %}
+{% from "../form-items/item-checkbox.njk" import itemCheckbox %}
+{% from "../input-fields/field-range.njk" import fieldRange %}
+{% from "../input-fields/field-number.njk" import fieldNumber %}
+{% from "../input-fields/field-textbox.njk" import fieldTextbox %}
+{% from "../input-fields/field-date.njk" import fieldDate %}
+
+{% macro curtailmentNoticeTemplate(options) %}
+
+  {% set data_leaveEnd = options.data | startDay | startOfWeek | offsetWeeks(options.leaveBlocks.initial.end) | endOfWeek %}
+  {% set data_payEnd = options.data | startDay | startOfWeek | offsetWeeks(options.sharedPayBlocks.initial.end) | endOfWeek %}
+
+  {% set title %}
+    <strong>{{ options.parent | capitalize }}’s</strong> curtailment notice and consent to partner's SPL
+  {% endset %}
+
+  {% set headertitle %}
+    <strong>{{ options.state | capitalize }}’s</strong> curtailment notice and {{ options.parent }}’s SPL consent
+  {% endset %}
+
+  {% set page1 %}
+    <img src="images/beis-logo.png" alt="BEIS logo" width="114">
+    <h1>
+      Instructions
+    </h1>
+    <p>
+      The {{options.parent | capitalize}} should complete this form in the case where the <strong>Partner is taking</strong> Shared Parental Leave and / or Pay and the <strong>{{options.parent | capitalize}} is not.</strong> 
+    </p>
+    <p>
+      This form must be submitted  to the {{options.parent | capitalize}}’s employer at least 8 weeks before the partner intends to take Shared Parental Leave and / or Pay. 
+    </p>
+    <p>
+      <strong>If the {{options.parent | capitalize}} has returned to work, they can skip section 1 and complete section 2.</strong>
+    </p>
+    
+    {{ sectionTitle({text: "Section 1 of 2: $Parent’s notice to curtail $State entitlement" | formTemplate(options) }) }}
+  
+    <p><strong>{{options.parent | capitalize}}'s name</strong></p>
+    <div class="field-large">{{ fieldTextbox() }}</div>
+
+    <div class="empty-line"></div>
+    <h4>{{options.state | capitalize}} Leave curtailment notice</h4>
+    <p><strong>I would like my {{options.state | capitalize}} Leave to end on:</strong></p>
+    {{ fieldDate(data_leaveEnd) }}
+
+    <div class="empty-line"></div>
+    <h4>Statutory {{options.state | capitalize}} Pay curtailment notice</h4>
+    <p><strong>I would like my Statutory {{options.state | capitalize}} Pay to end on:</strong></p>
+    {{ fieldDate(data_payEnd) }}
+
+    <div class="empty-line"></div>
+    <h4>Notice to employer:</h4>
+    <p>Please accept this as my notice to curtail my {{options.state | capitalize}} Leave and/or my Statutory {{options.state | capitalize}} Pay</p>
+    <p>I understand that my {{options.state | capitalize}} Leave and/or Statutory {{options.state | capitalize}} Pay will end on the dates that I have given above.</p>
+    <p>I understand that I can only reinstate my {{options.state | capitalize}} Leave or Statutory {{options.state | capitalize}} Pay if I revoke (withdraw) this notice before these dates.</p>
+    <p>I will inform my employer immediately if I withdraw or change my ‘{{options.state | capitalize}} Leave Curtailment Notice’ and/or my ‘{{options.state | capitalize}} Pay Curtailment Notice’</p>
+
+    <div class="empty-line"></div>
+    <h4>{{ "$Parent's signature" | formTemplate(options) }}</h4>
+    {{ itemSignatureWithDate({passdown: ""}) }}
+  {% endset %}
+
+  {% set page2 %}
+    {{ sectionTitle({text: "Section 2 of 2: $Parent’s confirmation and consent" | formTemplate(options) }) }}
+
+    <div class="empty-line"></div>
+    {{ itemCheckbox({text: "I am either not entitled to Shared Parental Leave (or Statutory Shared Parental Pay where relevant), or I do not intend to take Shared Parental Leave (or claim Statutory Shared Parental Pay where relevant)", passdown: ""}) }}
+    
+    <div class="empty-line"></div>
+    {{ itemCheckbox({text: "I declare that my partner has given notice to their employer to take Shared Parental Leave and/or Statutory Shared Parental Pay.", passdown: ""}) }}
+    
+    <div class="empty-line"></div>
+    {{ itemCheckbox({text: "I consent to my partner’s intended claim for Shared Parental Leave and/or Statutory Shared Parental Pay.", passdown: ""}) }}
+
+    <div class="empty-line"></div>
+    <h4>{{ "$Parent's signature" | formTemplate(options) }}</h4>
+    {{ itemSignatureWithDate({passdown: ""}) }}
+  {% endset %}
+
+  {{ document({
+    parent: options.type,
+    title: {
+      html: title,
+      headerhtml: headertitle
+    },
+    pages: [page1, page2]
+  }) }}
+{% endmacro %}

@@ -1,0 +1,22 @@
+{% from "../page-templates/declaration-template.njk" import declarationTemplate %}
+
+{{ declarationTemplate({
+  data: data,
+  leaveBlocks: leaveBlocks,
+  partnerLeaveBlocks: partnerLeaveBlocks,
+  sharedPayBlocks: sharedPayBlocks,
+  partnerSharedPayBlocks: partnerSharedPayBlocks,
+  parent: "adopter’s partner",
+  otherParent: "adopter",
+  parentOrPartner: "mother",
+  type: "secondary",
+  state: "adoption",
+  leaveAbbreviation: "AL",
+  payAbbreviation: "SAP",
+  sectionCount: 4,
+  youIntendLabel: "you (the adopter’s partner) intend",
+  partnerIntendsLabel: "the adopter intends",
+  her: "their",
+  event: "placement with the family",
+  father: "adopter's partner"
+}) }}
