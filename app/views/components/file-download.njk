@@ -2,7 +2,6 @@
 
 {% macro fileDownload(options) %}
   {% set body %}
-    {{ options.description.html | safe }}
     <div class="document-card-container">
       <a class="document" href="{{ options.href }}">
         <img alt="PDF document" src="./images/document-placeholder.png"/>
@@ -17,6 +16,7 @@
         {{ options.details.html | safe }}
       </div>
     </div>
+    {{ options.description.html | safe }}
   {% endset %}
 
   {{ govukInsetText({
