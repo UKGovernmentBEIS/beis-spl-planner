@@ -1,5 +1,6 @@
 {% from "table/macro.njk" import govukTable %}
-{% from "../components/file-download.njk" import fileDownload %}
+{% from "../components/primary-notice.njk" import primaryNotice %}
+{% from "../components/secondary-notice.njk" import secondaryNotice %}
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds-from-desktop">
@@ -108,45 +109,13 @@
       </p>
     {% endset %}
 
-    {% if data | shouldDisplayPrimaryLeaveAndPayForm %}
-    {# TODO check href for this fileDownload #}
-      {{ fileDownload({
-        name: (data | primaryName | capitalise) + "’s shared parental leave and pay notice form",
-        href: "#",
-        description: {
-          html: noticeDescription
-        },
-        details: {
-          html: noticeDetails
-        }
-      }) }}
-    {% elif data | shouldDisplayPrimaryCurtailmentForm %}
-    {# TODO check href for this fileDownload #}
-      {{ fileDownload({
-        name: data | primaryLeaveType | capitalise + " curtailment and SPL consent form",
-        href:"#",
-        description: {
-          html: noticeDescription
-        },
-        details: {
-          html: noticeDetails
-        }
-      }) }}
-    {% endif %}
+    {{ primaryNotice ({
+      data: data
+    }) }}
 
-    {% if data | shouldDisplaySecondaryLeaveAndPayForm %}
-    {# TODO check href for this fileDownload #}
-      {{ fileDownload({
-        name: data | secondaryName | capitalise + "’s shared parental leave and pay notice form",
-        href: "#",
-        description: {
-          html: noticeDescription
-        },
-        details: {
-          html: noticeDetails
-        }
-      }) }}
-    {% endif %}
+    {{ secondaryNotice({
+      data: data
+    }) }}
   </div>
 </div>
 

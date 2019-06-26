@@ -1,0 +1,37 @@
+{% from './file-download.njk' import fileDownload %}
+
+{% macro primaryNotice(options) %}
+  {% set data = options.data %}
+  {% set noticeDescription %}
+    {# TODO fix the href of this link #}
+    <p>This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#">download a blank version</a>.
+  {% endset %}
+  {% set noticeDetails %}
+    {# TODO fix the href of this link #}
+    <p>This file may not be suitable for users of assistive technology. <a href="#">Request an accesible format</a>.
+  {% endset %}
+  {% if data | shouldDisplayPrimaryLeaveAndPayForm %}
+    {{ fileDownload({
+      name: (data | primaryName | capitalize) + "’s shared parental leave and pay notice form",
+      href: "/forms/declaration.pdf?state=" + (data | primaryLeaveType) + "&parent=primary",
+      description: {
+        html: noticeDescription
+      },
+      details: {
+        html: noticeDetails
+      }
+    }) }}
+  {% elif data | shouldDisplayPrimaryCurtailmentForm %}
+    {# TODO fix the href of this fileDownload #}
+    {{ fileDownload({
+      name: data | primaryLeaveType | capitalise + " curtailment and SPL consent form",
+      href:"#",
+      description: {
+        html: noticeDescription
+      },
+      details: {
+        html: noticeDetails
+      }
+    }) }}
+  {% endif %}
+{% endmacro %}
