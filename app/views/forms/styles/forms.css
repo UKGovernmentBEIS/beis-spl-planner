@@ -8,7 +8,6 @@ html, body {
 }
 
 .page {
-  zoom: calc(16/12);
   position: relative;
   height: 100%;
   width: 100%;
