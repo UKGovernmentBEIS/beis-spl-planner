@@ -59,7 +59,12 @@
           }) }}
         {% endcall %}
         {{ govukButton({
-          text: "Continue"
+          text: "Continue",
+          attributes: {
+            "data-ga-hit-type": "parent_type",
+            "data-ga-field-event_category": "eligibility_questions",
+            "data-ga-field-event_action": "parent_type"
+          }
         }) }}
       </form>
     </div>

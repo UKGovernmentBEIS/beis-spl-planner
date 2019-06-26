@@ -68,10 +68,21 @@
           {% endcall %}
         {% endcall %}
         {{ govukButton({
-          text: "Continue"
+          text: "Continue",
+          attributes: {
+            "data-ga-hit-type": "pay_entered",
+            "data-ga-field-event_category": "planner_questions",
+            "data-ga-field-event_action": "pay_entered"
+          }
         }) }}
       </form>
-      <a href="{{ withData('/planner') }}" class="govuk-link--no-visited-state govuk-body">
+      <a
+        href="{{ withData('/planner') }}"
+        class="govuk-link--no-visited-state govuk-body"
+        data-ga-hit-type="pay_skipped"
+        data-ga-field-event_category="planner_questions"
+        data-ga-field-event_action="pay_skipped"
+      >
         Skip this step
       </a>
     </div>

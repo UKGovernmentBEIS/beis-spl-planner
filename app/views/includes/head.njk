@@ -6,7 +6,7 @@
 </style>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=ANALYTICS_ID"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-142639139-4"></script>
 <script>
   window.dataLayer = window.dataLayer || []
   function gtag () {
@@ -14,5 +14,9 @@
   }
   gtag("js", new Date())
 
-  gtag("config", "ANALYTICS_ID")
+  gtag("config", "UA-142639139-4", {
+    custom_map: {
+      "dimension1": "birth_or_adoption"
+    }
+  })
 </script>
