@@ -17,11 +17,6 @@ router.use('/planner/examples', require('./router.examples'))
 
 router.use('/forms', require('./router.forms'))
 
-router.route(paths.getPath('feedback'))
-  .get(function (req, res) {
-    res.render('feedback')
-  })
-
 router.route(paths.getPath('root'))
   .get(function (req, res) {
     if (req.query) {
@@ -174,6 +169,12 @@ router.route(paths.getPath('summary'))
   .get(function (req, res) {
     const { leaveBlocks, payBlocks } = getBlocks(req.session.data)
     res.render('summary', { leaveBlocks, payBlocks })
+  })
+
+router.route(paths.getPath('feedback'))
+  .get(function (req, res) {
+    const referrer = req.header('Referrer')
+    res.render('feedback/feedback', { referrer })
   })
 
 module.exports = router

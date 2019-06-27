@@ -1,0 +1,33 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+
+{% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {{ super() }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: withData(referrer)
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <h1 class="govuk-heading-xl">
+        Provide feedback about this service
+      </h1>
+
+      <p>
+        If you would like to report a problem, give feedback or suggest an improvement to this service, please contact:
+        <br/><br/>
+        <strong>feedback@example.com</strong>
+      </p>
+    </div>
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <a href="{{ withData(referrer) }}" class="govuk-button">
+        Return to service
+      </a>
+    </div>
+  </div>
+{% endblock %}
