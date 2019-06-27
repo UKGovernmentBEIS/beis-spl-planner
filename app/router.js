@@ -17,6 +17,11 @@ router.use('/planner/examples', require('./router.examples'))
 
 router.use('/forms', require('./router.forms'))
 
+router.route(paths.getPath('feedback'))
+  .get(function (req, res) {
+    res.render('feedback')
+  })
+
 router.route(paths.getPath('root'))
   .get(function (req, res) {
     if (req.query) {

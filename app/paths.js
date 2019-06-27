@@ -113,6 +113,9 @@ class Paths {
       summary: {
         url: '/summary',
         workflowParentPath: '/planner'
+      },
+      feedback: {
+        url: '/feedback'
       }
     }
   }
