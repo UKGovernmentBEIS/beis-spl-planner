@@ -1,3 +1,4 @@
+{% from "phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "footer/macro.njk" import govukFooter %}
 
 {% extends "template.njk" %}
@@ -8,6 +9,15 @@
 
 {% block head %}
   {% include "./includes/head.njk" %}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "beta"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="/feedback">feedback</a> will help us to improve it.'
+  }) }}
 {% endblock %}
 
 {% block footer %}
