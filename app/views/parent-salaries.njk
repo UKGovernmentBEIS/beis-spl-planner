@@ -15,7 +15,8 @@
 {% endblock %}
 
 {% block content %}
-  {% if errors["primary-salary-amount"] or
+  {% if errors["skip-this-question"] or
+        errors["primary-salary-amount"] or
         errors["secondary-salary-amount"] or
         errors["primary-salary-period"] or
         errors["secondary-salary-period"]
@@ -23,6 +24,7 @@
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
+        errors["skip-this-question"],
         errors["primary-salary-amount"],
         errors["secondary-salary-amount"],
         errors["primary-salary-period"],
@@ -71,8 +73,8 @@
           text: "Continue"
         }) }}
       </form>
-      <a href="{{ withData('/planner') }}" class="govuk-link--no-visited-state govuk-body">
-        Skip this step
+      <a href="{{ withData('/planner') }}" class="govuk-link--no-visited-state govuk-body" id="skip-this-question">
+        Skip this question
       </a>
     </div>
   </div>
