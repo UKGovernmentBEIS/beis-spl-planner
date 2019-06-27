@@ -1,13 +1,18 @@
 {% from "inset-text/macro.njk" import govukInsetText %}
 
 {% macro fileDownload(options) %}
+  {% set ga_fileDownloadedAttributes = options.attributes.ga_fileDownloaded | htmlAttributesFromObject %}
+  {% set noticeDescription %}
+    {# TODO fix the href of this link #}
+    <p>This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#" {{ ga_fileDownloadedAttributes }}>download a blank version</a>.
+  {% endset %}
   {% set body %}
-    <div class="document-card-container">
-      <a class="document" href="{{ options.href }}">
+    <div class="document-card-container govuk-body govuk-!-margin-bottom-2" {{ ga_fileDownloadedAttributes }}>
+      <a class="document" href="{{ options.href }}" {{ ga_fileDownloadedAttributes }}>
         <img alt="PDF document" src="./images/document-placeholder.png"/>
       </a>
       <div class="document-card-details">
-        <a href="{{ options.href }}" class="govuk-body-l">
+        <a href="{{ options.href }}" class="govuk-body-l" {{ ga_fileDownloadedAttributes }}>
           {{ options.name }}
         </a>
         <p class="govuk-body-xs">
@@ -16,7 +21,7 @@
         {{ options.details.html | safe }}
       </div>
     </div>
-    {{ options.description.html | safe }}
+    {{ noticeDescription | safe }}
   {% endset %}
 
   {{ govukInsetText({

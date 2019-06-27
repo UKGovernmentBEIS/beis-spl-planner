@@ -4,15 +4,6 @@
 {% macro secondaryNotice(options) %}
   {% set data = options.data %}
   {% if data | shouldDisplaySecondaryLeaveAndPayForm %}
-    {% set noticeDescription %}
-      {# TODO fix the href of this link #}
-      <p>This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#">download a blank version</a>.
-    {% endset %}
-    {% set noticeDetails %}
-      {# TODO fix the href of this link #}
-      <p>This file may not be suitable for users of assistive technology. <a href="#">Request an accesible format</a>.
-    {% endset %}
-
     {{ fileDownload({
       name: data | secondaryName | capitalize + "’s shared parental leave and pay notice form",
       href: "/forms/declaration.pdf?state=" + (data | primaryLeaveType) + "&parent=secondary",
@@ -21,6 +12,13 @@
       },
       details: {
         html: noticeDetails
+      },
+      attributes: {
+        ga_fileDownloaded: {
+          "data-ga-hit-type": "secondary_notice_clicked",
+          "data-ga-field-event_category": "summary",
+          "data-ga-field-event_action": "secondary_notice_clicked"
+        }
       }
     }) }}
   {% endif %}
