@@ -50,39 +50,39 @@ module.exports = function (env) {
   }
 
   function formTemplate (text, options) {
-    const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
+    const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1)
 
     return text
-    .replace(/\$parentOrPartner/g, options.parentOrPartner)
-    .replace(/\$parent/g, options.parent)
-    .replace(/\$Parent/g, capitalize(options.parent))
-    .replace(/\$other/g, options.otherParent)
-    .replace(/\$Other/g, capitalize(options.otherParent))
-    .replace(/\$state/g, options.state)
-    .replace(/\$State/g, capitalize(options.state))
-    .replace(/\$count/g, options.sectionCount)
-    .replace(/\$youintend/g, options.youIntendLabel)
-    .replace(/\$partnerintends/g, options.partnerIntendsLabel)
-    .replace(/\$leaveabbr/g, options.leaveAbbreviation)
-    .replace(/\$payabbr/g, options.payAbbreviation)
-    .replace(/\$her/g, options.her)
-    .replace(/\$event/g, options.event)
-    .replace(/\$father/g, options.father);
+      .replace(/\$parentOrPartner/g, options.parentOrPartner)
+      .replace(/\$parent/g, options.parent)
+      .replace(/\$Parent/g, capitalize(options.parent))
+      .replace(/\$other/g, options.otherParent)
+      .replace(/\$Other/g, capitalize(options.otherParent))
+      .replace(/\$state/g, options.state)
+      .replace(/\$State/g, capitalize(options.state))
+      .replace(/\$count/g, options.sectionCount)
+      .replace(/\$youintend/g, options.youIntendLabel)
+      .replace(/\$partnerintends/g, options.partnerIntendsLabel)
+      .replace(/\$leaveabbr/g, options.leaveAbbreviation)
+      .replace(/\$payabbr/g, options.payAbbreviation)
+      .replace(/\$her/g, options.her)
+      .replace(/\$event/g, options.event)
+      .replace(/\$father/g, options.father)
   }
 
-  function countWeeks(blocks) {
-    return blocks.reduce((total, block) => total + block.end - block.start + 1, 0);
+  function countWeeks (blocks) {
+    return blocks.reduce((total, block) => total + block.end - block.start + 1, 0)
   }
 
-  function blocksToDates(data, blocks) {
+  function blocksToDates (data, blocks) {
     const offsetWeeks = env.getFilter('offsetWeeks')
 
     return blocks.map((block) => {
       return {
         start: offsetWeeks(startOfWeek(startDay(data)), block.start),
         end: endOfWeek(offsetWeeks(startOfWeek(startDay(data)), block.end))
-      };
-    });
+      }
+    })
   }
 
   return {

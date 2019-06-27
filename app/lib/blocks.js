@@ -112,60 +112,58 @@ function getBlocks (data) {
 }
 
 function categorisePayBlocksByType (leaveBlocksSet, payBlocksSet) {
-  if (payBlocksSet.length == 0)
-    return [];
-  
-  const sharedPayBlocks = [];
+  if (payBlocksSet.length === 0) {
+    return []
+  }
+
+  const sharedPayBlocks = []
   let initialPayBlock = {
     start: payBlocksSet[0].start,
     end: payBlocksSet[0].end
-  };
-  let lastSharedPayBlock = null;
-  let index = 0;
-  let currentBlock;
+  }
+  let lastSharedPayBlock = null
+  let index = 0
+  let currentBlock
 
   while (index < payBlocksSet.length) {
-      currentBlock = payBlocksSet[index];
-      // if current pay block is within maternity/paternity/adoption statutory leave
-      if (currentBlock.start <= leaveBlocksSet.initial.end) {
+    currentBlock = payBlocksSet[index]
+    // if current pay block is within maternity/paternity/adoption statutory leave
+    if (currentBlock.start <= leaveBlocksSet.initial.end) {
+      if (currentBlock.end <= leaveBlocksSet.initial.end) {
         // if blocks has all weeks within statutory leave
-        if (currentBlock.end <= leaveBlocksSet.initial.end) {
-          initialPayBlock.end = currentBlock.end;
-        }
+        initialPayBlock.end = currentBlock.end
+      } else {
         // else we need to split the block in two
-        else {
-          initialPayBlock.end = leaveBlocksSet.initial.end;
-          lastSharedPayBlock = {
-            start: initialPayBlock.end + 1,
-            end: currentBlock.end
-          };
+        initialPayBlock.end = leaveBlocksSet.initial.end
+        lastSharedPayBlock = {
+          start: initialPayBlock.end + 1,
+          end: currentBlock.end
         }
       }
+    } else if (lastSharedPayBlock === null) {
       // if current pay block is a new separate pay block
-      else if (lastSharedPayBlock === null) {
-        lastSharedPayBlock = {
-          start: currentBlock.start,
-          end: currentBlock.end
-        };
+      lastSharedPayBlock = {
+        start: currentBlock.start,
+        end: currentBlock.end
       }
+    } else if (lastSharedPayBlock.end === currentBlock.start - 1) {
       // there is a shared pay block adjacent to the current pay block
-      else if (lastSharedPayBlock.end === currentBlock.start - 1) {
-        lastSharedPayBlock.end = currentBlock.end;
-      }
+      lastSharedPayBlock.end = currentBlock.end
+    } else {
       // there is a shared pay block but it is not adjacent to current pay block
-      else {
-        sharedPayBlocks.push(lastSharedPayBlock);
-        lastSharedPayBlock = {
-          start: currentBlock.start,
-          end: currentBlock.end
-        };
+      sharedPayBlocks.push(lastSharedPayBlock)
+      lastSharedPayBlock = {
+        start: currentBlock.start,
+        end: currentBlock.end
       }
+    }
 
-      index++;
+    index++
   }
 
-  if (lastSharedPayBlock != null)
-    sharedPayBlocks.push(lastSharedPayBlock);
+  if (lastSharedPayBlock) {
+    sharedPayBlocks.push(lastSharedPayBlock)
+  }
 
   return {
     initial: initialPayBlock,
@@ -174,8 +172,8 @@ function categorisePayBlocksByType (leaveBlocksSet, payBlocksSet) {
 }
 
 function getAdjustedPayBlocks (leaveBlocks, payBlocks) {
-  const primaryPayBlocks = payBlocks.filter((block) => block.primary != undefined);
-  const secondaryPayBlocks = payBlocks.filter((block) => block.secondary != undefined);
+  const primaryPayBlocks = payBlocks.filter((block) => !!block.primary)
+  const secondaryPayBlocks = payBlocks.filter((block) => !!block.secondary)
 
   return {
     primary: categorisePayBlocksByType(leaveBlocks.primary, primaryPayBlocks),
