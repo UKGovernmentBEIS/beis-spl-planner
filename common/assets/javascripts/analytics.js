@@ -8,3 +8,9 @@ function getGaFields (element) {
     return accumulator
   }, {})
 }
+
+function getBirthOrAdoption () {
+  const field = document.querySelector('[name=birth-or-adoption]:checked') ||
+                document.querySelector('[name=birth-or-adoption]')
+  return field ? field.value : null
+}
