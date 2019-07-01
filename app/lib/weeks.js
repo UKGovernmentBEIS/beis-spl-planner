@@ -1,4 +1,5 @@
 const LeaveTracker = require('./leaveTracker')
+const { STATUTORY_MAXIMUM_PAY } = require('../constants')
 
 class Weeks {
   constructor ({ isBirth, startWeek, primary, secondary }) {
@@ -130,10 +131,9 @@ class Weeks {
   }
 
   _getStatutoryPay (weeklyPay) {
-    const STATUTORY_MAXIMUM = 148.68
     return weeklyPay
-      ? this._formatPay(Math.min(weeklyPay * 0.9, STATUTORY_MAXIMUM))
-      : 'Up to ' + this._formatPay(STATUTORY_MAXIMUM)
+      ? this._formatPay(Math.min(weeklyPay * 0.9, STATUTORY_MAXIMUM_PAY))
+      : 'Up to ' + this._formatPay(STATUTORY_MAXIMUM_PAY)
   }
 
   _formatPay (pay) {

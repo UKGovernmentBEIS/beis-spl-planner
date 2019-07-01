@@ -16,8 +16,7 @@
 {% set isBirth = (data | isBirth) %}
 {% set primaryName = (data | primaryName) %}
 {% set primaryLeaveType = (data | primaryLeaveType) %}
-{# TODO: Commonise statutory maximum. #}
-{% set STATUTORY_MAXIMUM = "£148.68" %}
+{% set STATUTORY_MAXIMUM_PAY = "£" + STATUTORY_MAXIMUM_PAY %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -58,15 +57,15 @@
         </h2>
         <p>
           The {{ primaryName }} will receive 90% of their average weekly earnings for the first 6 weeks of
-          statutory {{ primaryLeaveType }} pay, then {{ STATUTORY_MAXIMUM }} per week or 90% of their
+          statutory {{ primaryLeaveType }} pay, then {{ STATUTORY_MAXIMUM_PAY }} per week or 90% of their
           average weekly earnings, whichever is lower.
         </p>
         <p>
-          The parent claiming statutory shared parental pay will receive {{ STATUTORY_MAXIMUM }} per week,
+          The parent claiming statutory shared parental pay will receive {{ STATUTORY_MAXIMUM_PAY }} per week,
           or 90% of their average weekly earnings, whichever is lower.
         </p>
         <p>
-          If the partner is claiming statutory paternity pay, they will receive {{ STATUTORY_MAXIMUM }} per week,
+          If the partner is claiming statutory paternity pay, they will receive {{ STATUTORY_MAXIMUM_PAY }} per week,
           or 90% of their average weekly earnings, whichever is lower.
         </p>
         <h2 class="govuk-heading-s">
