@@ -25,62 +25,62 @@
       <h1 class="govuk-heading-xl">
         Plan shared parental leave and pay
       </h1>
-      <p>
+      <p class="print-hide">
         Use this calendar to plan <a href="https://www.gov.uk/shared-parental-leave-and-pay">shared parental leave and pay</a>
         alongside <a href="https://www.gov.uk/{{ primaryLeaveType }}-pay-leave">{{ primaryLeaveType }}</a> and <a href="https://www.gov.uk/paternity-pay-leave">paternity</a> leave and pay.
         The calendar is based on {{ "your child’s birth week" if isBirth else "the week your child starts living with you"}}.
       </p>
-      <p>
+      <p class="print-hide">
         Click in the calendar to select each week you and your partner want to take as leave.
       </p>
-      <p>
+      <p class="print-hide">
         If you’re taking more than 37 weeks of leave, you can also select which leave weeks are paid and unpaid. The statutory pay amount is indicative only.
       </p>
 
       {% set policyInfo %}
-        <p>If you’re using the visual layout, these rules are built into the calendar.</p>
-        <h2 class="govuk-heading-s">
+        <p class="print-hide">If you’re using the visual layout, these rules are built into the calendar.</p>
+        <h2 class="govuk-heading-s print-hide">
           How many weeks of leave and pay parents can take
         </h2>
-        <p>
+        <p class="print-hide">
           Shared parental leave and pay is created from unused {{ primaryLeaveType }} leave and pay.
           The {{ primaryName }} must take 2 weeks of {{ primaryLeaveType }} leave and pay straight
           after the child’s {{ "birth" if isBirth else "placement"}}.
         </p>
-        <p>
+        <p class="print-hide">
           This leaves 50 weeks of leave and 37 weeks of statutory pay for parents to split between them.
         </p>
-        <p>
+        <p class="print-hide">
           The partner can take two weeks of paternity leave in addition to this.
         </p>
         <h2 class="govuk-heading-s">
           How much pay can you get
         </h2>
-        <p>
+        <p class="print-hide">
           The {{ primaryName }} will receive 90% of their average weekly earnings for the first 6 weeks of
           statutory {{ primaryLeaveType }} pay, then {{ STATUTORY_MAXIMUM_PAY }} per week or 90% of their
           average weekly earnings, whichever is lower.
         </p>
-        <p>
+        <p class="print-hide">
           The parent claiming statutory shared parental pay will receive {{ STATUTORY_MAXIMUM_PAY }} per week,
           or 90% of their average weekly earnings, whichever is lower.
         </p>
-        <p>
+        <p class="print-hide">
           If the partner is claiming statutory paternity pay, they will receive {{ STATUTORY_MAXIMUM_PAY }} per week,
           or 90% of their average weekly earnings, whichever is lower.
         </p>
         <h2 class="govuk-heading-s">
           When can you start
         </h2>
-        <p>
+        <p class="print-hide">
           The {{ primaryName }} can start {{ primaryLeaveType }} leave up to {{ "11" if isBirth else "2" }}
           weeks before the week of {{ "birth" if isBirth else "placement"}}.
         </p>
-        <p>
+        <p class="print-hide">
           The partner can start shared parental leave and pay while the {{ primaryName }} is on {{ primaryLeaveType }}
           leave and pay, but only after the child is {{ "born" if isBirth else "placed" }}.
         </p>
-        <p>
+        <p class="print-hide">
           Both the {{ primaryName }} and the partner can take shared parental leave in blocks,
           either at the same time or one after the other.
         </p>
@@ -112,12 +112,14 @@
 
       {{ govukDetails({
         summaryText: "How shared parental, " + primaryLeaveType + " and paternity leave and pay work",
-        html: policyInfo
+        html: policyInfo,
+        classes: "print-hide"
       }) }}
 
       {{ govukDetails({
         summaryText: "Examples of shared parental leave and pay plans",
-        html: examples
+        html: examples,
+        classes: "print-hide"
       }) }}
     </div>
   </div>
@@ -147,6 +149,17 @@
       </div>
     </div>
   </form>
+  <div class="govuk-grid-row print-hide">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <h2 class="govuk-heading-m">
+        Print your plan
+      </h2>
+      <p>
+        Click this link to print your leave and pay calendar. You can print for your own reference or give it to your employers.
+      </p>
+      <a onclick="window.print()" class="govuk-link--no-visited-state govuk-body print-hide" href="#">Print your plan</a>
+    </div>
+  </div>
 {% endblock %}
 
 {% block bodyEnd %}
