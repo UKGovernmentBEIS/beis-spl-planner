@@ -2,6 +2,12 @@ const path = require('path')
 const nodeSass = require('node-sass')
 
 module.exports = function (grunt) {
+  const env = {
+    dev: {
+      GOOGLE_ANALYTICS_ID: 'id'
+    }
+  }
+
   const sass = {
     dev: {
       options: {
@@ -167,6 +173,7 @@ module.exports = function (grunt) {
   }
 
   grunt.initConfig({
+    env,
     clean: ['public', 'govuk_modules'],
     copy,
     sass,
@@ -182,6 +189,7 @@ module.exports = function (grunt) {
   });
 
   [
+    'grunt-env',
     'grunt-contrib-copy',
     'grunt-contrib-cssmin',
     'grunt-contrib-compress',
@@ -199,6 +207,7 @@ module.exports = function (grunt) {
   })
 
   grunt.registerTask('generate-assets', [
+    'env:dev',
     'clean',
     'copy',
     'sass',
