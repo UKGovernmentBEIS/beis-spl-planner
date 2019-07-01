@@ -41,6 +41,10 @@
       <p>
         Enter your salary to see statutory pay amounts. You might get more or less if your salary changes, has changed, or if your employer enhances pay.
       </p>
+      {#
+        novalidate attribute in this form is used to override the pattern attribute
+        of the hmcts currencyInput component used in salaryInput
+      #}
       <form action="parent-salaries" method="POST" novalidate>
         {% call appendHiddenFields(data) %}
           {% call govukFieldset({
