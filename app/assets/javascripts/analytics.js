@@ -1,4 +1,6 @@
-/* global gtag, getGaFields, getBirthOrAdoption */
+/* global gtag */
+
+const { getGaFields, getBirthOrAdoption } = require('../../../common/lib/analyticsUtils')
 
 function queryByAttrNameStartsWith (prefix, contextualSelector = '*') {
   const elements = Array.from(document.querySelectorAll(contextualSelector))

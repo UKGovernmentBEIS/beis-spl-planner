@@ -31,6 +31,7 @@ const PORT = (process.env.PORT || 3000)
 const { NODE_ENV } = process.env
 const CSS_PATH = staticify.getVersionedPath('/stylesheets/application.min.css')
 const JAVASCRIPT_PATH = staticify.getVersionedPath('/javascripts/application.js')
+const { STATUTORY_MAXIMUM_PAY } = require('./app/constants')
 
 // Define app views
 const APP_VIEWS = [
@@ -121,11 +122,14 @@ function initialiseTemplateEngine (app) {
   nunjucksEnvironment.addGlobal('js_path', NODE_ENV === 'production' ? JAVASCRIPT_PATH : staticify.getVersionedPath('/javascripts/application.js'))
   // TODO add value for service name
   nunjucksEnvironment.addGlobal('service_name', 'Plan shared parental leave and pay')
+  nunjucksEnvironment.addGlobal('STATUTORY_MAXIMUM_PAY', STATUTORY_MAXIMUM_PAY)
 
   // Paths to external resources and tools.
   // TODO: Update fallback with final path of eligibility tool.
   nunjucksEnvironment.addGlobal('mainstream_guidance_root_path', process.env.MAINSTREAM_GUIDANCE_ROOT_PATH || 'https://www.gov.uk/shared-parental-leave-and-pay')
   nunjucksEnvironment.addGlobal('eligibility_tool_root_path', process.env.ELIGIBILITY_ROOT_PATH || 'https://beis-spl-eligibility-tool.london.cloudapps.digital')
+
+  nunjucksEnvironment.addGlobal('GOOGLE_ANALYTICS_ID', process.env.GOOGLE_ANALYTICS_ID)
 
   // Add filters
   const commonFilters = require('./common/spl-common-filters')(nunjucksEnvironment)
