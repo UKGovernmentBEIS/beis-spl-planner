@@ -14,3 +14,8 @@ function getBirthOrAdoption () {
                 document.querySelector('[name=birth-or-adoption]')
   return field ? field.value : null
 }
+
+module.exports = {
+  getBirthOrAdoption,
+  getGaFields
+}

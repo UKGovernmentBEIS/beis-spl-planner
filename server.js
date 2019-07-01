@@ -129,6 +129,8 @@ function initialiseTemplateEngine (app) {
   nunjucksEnvironment.addGlobal('mainstream_guidance_root_path', process.env.MAINSTREAM_GUIDANCE_ROOT_PATH || 'https://www.gov.uk/shared-parental-leave-and-pay')
   nunjucksEnvironment.addGlobal('eligibility_tool_root_path', process.env.ELIGIBILITY_ROOT_PATH || 'https://beis-spl-eligibility-tool.london.cloudapps.digital')
 
+  nunjucksEnvironment.addGlobal('GOOGLE_ANALYTICS_ID', process.env.GOOGLE_ANALYTICS_ID)
+
   // Add filters
   const commonFilters = require('./common/spl-common-filters')(nunjucksEnvironment)
   Object.entries(commonFilters).forEach(nameAndFunction => nunjucksEnvironment.addFilter(...nameAndFunction))
