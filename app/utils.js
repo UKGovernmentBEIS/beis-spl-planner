@@ -37,7 +37,8 @@ function parseParentFromPlanner (data, parent) {
   return {
     leaveWeeks: getWeeksArray(data, parent, 'leave'),
     payWeeks: getWeeksArray(data, parent, 'pay'),
-    weeklyPay: weeklyPay(data, parent)
+    weeklyPay: weeklyPay(data, parent),
+    hasSalary: !!data[parent]['salary-amount']
   }
 }
 

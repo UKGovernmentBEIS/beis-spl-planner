@@ -44,7 +44,7 @@
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week.number)">
           <th class="govuk-table__cell date" :id="`week-${i}-date`" scope="row">
-            {{ week.day.format('D') }}<br>
+            {{ week.day.format('D') }}<br class="print-hide">
             {{ week.day.format('MMM') }}
           </th>
           <template v-for="(parent, j) in ['primary', 'secondary']">
@@ -65,7 +65,7 @@
                   @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'leave', week.number, !week[parent].leave)"
                   @mousedown.left="onCellMouseDown($event, parent, 'leave', week.number, !week[parent].leave)">
                 <div v-if="week[parent].leave">
-                  <div class="govuk-body no-margin">
+                  <div class="govuk-body no-margin print-hide">
                     {{ week[parent].pay || 'Unpaid' }}
                   </div>
                   <div class="govuk-body-s no-margin">
@@ -77,7 +77,7 @@
                     Work or other leave
                 </div>
               </td>
-              <td :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
+              <td :key="parent + '-pay'" class="govuk-table__cell pay"
                   :headers="`${parent}-name ${parent}-pay week-${i}-date`"
                   :class="{ 'unpaid': week[parent].leave && !week[parent].pay }"
                   tabindex="0" :data-row="i" :data-column="2*j + 1"
@@ -89,8 +89,11 @@
                   @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'pay', week.number, !week[parent].pay)"
                   @mousedown.left="onCellMouseDown($event, parent, 'pay', week.number, !week[parent].pay)">
                 <div v-if="week[parent].leave">
-                  <div class="govuk-body govuk-!-font-weight-bold no-margin">
+                  <div class="govuk-body govuk-!-font-weight-bold no-margin print-hide">
                     {{ week[parent].pay ? '✓' : '✗' }}
+                  </div>
+                  <div class="govuk-body no-margin print-show">
+                    {{ week[parent].pay | printPayLabel }}
                   </div>
                 </div>
               </td>
@@ -130,12 +133,27 @@
       weeks: Array,
       leaveBoundaries: Object,
       updateLeaveOrPay: Function,
-      interactive: Boolean
+      interactive: Boolean,
+      hasSalary: Object
     },
     filters: {
       leaveLabel: function (type, compulsory) {
         return compulsory ? 'compulsory leave' : LEAVE_LABELS[type]
+      },
+      printPayLabel: function (pay) {
+        let label;
+        if (pay && pay[0] === '£') {
+          label = pay
+        } else if (pay) {
+          label = 'Paid'
+        } else {
+          label = 'Unpaid'
+        }
+        return label
       }
+    },
+    bothSalariesKnown: function () {
+      this.hasSalary.primary && this.hasSalary.secondary
     },
     created: function () {
       window.addEventListener('keydown', this.onWindowMouseDown)

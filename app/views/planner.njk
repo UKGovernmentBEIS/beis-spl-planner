@@ -9,7 +9,8 @@
 {% block beforeContent %}
   {{ govukBackLink({
     text: "Back",
-    href: backPath()
+    href: backPath(),
+    classes: "print-hide"
   }) }}
 {% endblock %}
 
@@ -19,7 +20,7 @@
 {% set STATUTORY_MAXIMUM_PAY = "£" + STATUTORY_MAXIMUM_PAY %}
 
 {% block content %}
-  <div class="govuk-grid-row">
+  <div class="govuk-grid-row ">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
         Plan shared parental leave and pay
@@ -121,7 +122,7 @@
     </div>
   </div>
   <form id="leave-and-pay" method="POST">
-    <div class="govuk-grid-row">
+    <div class="govuk-grid-row print-hide">
       <div class="govuk-grid-column-two-thirds-from-desktop">
         <h2 class="govuk-heading-m">
           Your plan
@@ -134,7 +135,7 @@
     {% call appendHiddenFields(data) %}
       {{ calendar(data) }}
     {% endcall %}
-    <div class="govuk-grid-row">
+    <div class="govuk-grid-row print-hide">
       <div class="govuk-grid-column-two-thirds-from-desktop">
         <p>
           If your plan is complete, continue for a summary of key dates and guidance on

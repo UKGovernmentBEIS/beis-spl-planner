@@ -1,10 +1,10 @@
 <template>
   <div class="govuk-grid-row">
-    <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full" v-if="!useAccessibleLayout">
+    <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop print-full-width" v-if="!useAccessibleLayout">
       <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :isBirth="isBirth"
-        :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" />
+        :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" :hasSalary="hasSalary"/>
     </div>
-    <div id="sidebar" class="govuk-grid-column-full" :class="{ 'govuk-grid-column-one-third-from-desktop': !useAccessibleLayout }">
+    <div id="sidebar" class="print-hide" :class="{ 'govuk-grid-column-one-third-from-desktop': !useAccessibleLayout }">
       <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" />
     </div>
   </div>
@@ -38,6 +38,12 @@
           secondary: this.secondary
         })
         return weeks.leaveAndPay()
+      },
+      hasSalary: function () {
+        return {
+          primary: this.primary.hasSalary,
+          secondary: this.secondary.hasSalary
+        }
       }
     },
     methods: {
@@ -58,11 +64,13 @@
   @import "node_modules/govuk-frontend/settings/colours-applied";
 
   @mixin sticky() {
-    position: sticky;
-    position: -o-sticky;
-    position: -webkit-sticky;
-    position: -moz-sticky;
-    position: -ms-sticky;
+    @media not print {
+      position: sticky;
+      position: -o-sticky;
+      position: -webkit-sticky;
+      position: -moz-sticky;
+      position: -ms-sticky;
+    }
   }
 
   #calendar {
