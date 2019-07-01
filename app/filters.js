@@ -89,9 +89,9 @@ module.exports = function (env) {
     if (!object) {
       return
     }
-    return Object.entries(object).reduce((htmlAttributes, entry) => {
-      return [htmlAttributes, `${entry[0]}=${entry[1]}`].join(' ')
-    }, '')
+    return Object.entries(object)
+      .map((key, value) => `${key}=${value}`)
+      .join(' ')
   }
 
   return {

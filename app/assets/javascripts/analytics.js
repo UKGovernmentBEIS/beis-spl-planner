@@ -2,15 +2,7 @@
 
 const { getGaFields, getBirthOrAdoption } = require('../../../common/lib/analyticsUtils')
 
-function queryByAttrNameStartsWith (prefix, contextualSelector = '*') {
-  const elements = Array.from(document.querySelectorAll(contextualSelector))
-  const elementsWithAttributes = elements.filter(element => {
-    return Array.from(element.attributes).some(attr => attr.name.startsWith(prefix))
-  })
-  return elementsWithAttributes
-}
-
-queryByAttrNameStartsWith('data-ga-').forEach(element => {
+document.querySelectorAll('[data-ga-hit-type]').forEach(element => {
   const gaFields = getGaFields(element)
   const gaHitType = element.getAttribute('data-ga-hit-type')
   element.addEventListener('click', function (e) {
