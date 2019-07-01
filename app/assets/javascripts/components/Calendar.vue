@@ -121,8 +121,7 @@
       lastDraggedRow: null,
       lastClickedCell: null,
       onDrag: null,
-      hideFocus: false,
-      ga_hasBeenUsed: false
+      hideFocus: false
     }),
     props: {
       isBirth: Boolean,
@@ -148,7 +147,6 @@
         }
       },
       onCellMouseDown: function (event, parent, property, week, value) {
-        this.ga_sendFirstUseAnalytics()
         this.hideFocus = true
         if (!this.interactive) {
           return
@@ -212,12 +210,6 @@
           return _.range(this.lastDraggedRow + 1, currentRow + 1)
         } else {
           return _.range(currentRow, this.lastDraggedRow)
-        }
-      },
-      ga_sendFirstUseAnalytics: function () {
-        if (!this.ga_hasBeenUsed) {
-          window.analytics.calendarHasBeenUsed()
-          this.ga_hasBeenUsed = true
         }
       }
     }

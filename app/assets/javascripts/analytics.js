@@ -11,7 +11,19 @@ document.querySelectorAll('[data-ga-hit-type]').forEach(element => {
   })
 })
 
-function calendarHasBeenUsed () {
+function trackFirstCalendarUsage () {
+  let hasBeenUsed = false
+  Array.from(document.querySelectorAll('#calendar-checkboxes input[type=checkbox]')).forEach(checkbox => {
+    checkbox.addEventListener('change', function (_) {
+      if (!hasBeenUsed) {
+        sendCalendarHasBeenUsed()
+        hasBeenUsed = true
+      }
+    })
+  })
+}
+
+function sendCalendarHasBeenUsed () {
   const gaFields = {
     event_category: 'planner',
     event_action: 'planner_interaction',
@@ -21,5 +33,5 @@ function calendarHasBeenUsed () {
 }
 
 window.analytics = {
-  calendarHasBeenUsed
+  trackFirstCalendarUsage
 }

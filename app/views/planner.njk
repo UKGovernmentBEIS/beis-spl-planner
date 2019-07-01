@@ -152,5 +152,6 @@
   {{ super() }}
   <script>
     window.planner.init({{ data | dump | safe }}, true)
+    window.analytics.trackFirstCalendarUsage()
   </script>
 {% endblock %}
