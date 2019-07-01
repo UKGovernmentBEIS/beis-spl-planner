@@ -121,6 +121,8 @@ function initialiseTemplateEngine (app) {
   // TODO add value for service name
   nunjucksEnvironment.addGlobal('service_name', 'common')
 
+  nunjucksEnvironment.addGlobal('GOOGLE_ANALYTICS_ID', process.env.GOOGLE_ANALYTICS_ID)
+
   // Add filters
   const commonFilters = require('./common/spl-common-filters')(nunjucksEnvironment)
   Object.entries(commonFilters).forEach(nameAndFunction => nunjucksEnvironment.addFilter(...nameAndFunction))
