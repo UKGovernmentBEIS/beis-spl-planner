@@ -157,7 +157,16 @@
       <p>
         Click this link to print your leave and pay calendar. You can print for your own reference or give it to your employers.
       </p>
-      <a onclick="window.print()" class="govuk-link--no-visited-state govuk-body print-hide" href="#">Print your plan</a>
+      <a
+        onclick="window.print()"
+        class="govuk-link--no-visited-state govuk-body print-hide"
+        href="#"
+        data-ga-hit-type="print_planner"
+        data-ga-field-event_category="planner"
+        data-ga-field-event_action="print_page"
+      >
+        Print your plan
+      </a>
     </div>
   </div>
 {% endblock %}
