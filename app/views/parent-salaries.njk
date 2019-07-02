@@ -15,7 +15,8 @@
 {% endblock %}
 
 {% block content %}
-  {% if errors["primary-salary-amount"] or
+  {% if errors["skip-this-question"] or
+        errors["primary-salary-amount"] or
         errors["secondary-salary-amount"] or
         errors["primary-salary-period"] or
         errors["secondary-salary-period"]
@@ -23,6 +24,7 @@
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
+        errors["skip-this-question"],
         errors["primary-salary-amount"],
         errors["secondary-salary-amount"],
         errors["primary-salary-period"],
@@ -39,7 +41,11 @@
       <p>
         Enter your salary to see statutory pay amounts. You might get more or less if your salary changes, has changed, or if your employer enhances pay.
       </p>
-      <form action="parent-salaries" method="POST">
+      {#
+        hmcts currencyInput component used in salaryInput has a pattern attribute which cannot be set to null.
+        novalidate attribute in this form overrides this.
+      #}
+      <form action="parent-salaries" method="POST" novalidate>
         {% call appendHiddenFields(data) %}
           {% call govukFieldset({
             legend: {
@@ -71,8 +77,8 @@
           text: "Continue"
         }) }}
       </form>
-      <a href="{{ withData('/planner') }}" class="govuk-link--no-visited-state govuk-body">
-        Skip this step
+      <a href="{{ withData('/planner') }}" class="govuk-link--no-visited-state govuk-body" id="skip-this-question">
+        Skip this question
       </a>
     </div>
   </div>

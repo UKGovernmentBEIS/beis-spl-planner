@@ -123,7 +123,6 @@ function addStartDateError (req, message, dateParts) {
 }
 
 function parentSalaries (req) {
-  let isValid = true
   const {
     'salary-amount': primarySalary,
     'salary-period': primaryPeriod
@@ -133,12 +132,20 @@ function parentSalaries (req) {
     'salary-period': secondaryPeriod
   } = req.session.data.secondary || {}
 
-  if (primarySalary && !primarySalary.match(/[0-9]+(\.[0-9]{1,2})?/)) {
+  if (!primarySalary && !secondarySalary) {
+    addError(req, 'skip-this-question', "If you do not want to submit either parent’s salary, click 'Skip this question'", '#skip-this-question')
+    return false
+  }
+
+  let isValid = true
+  const validSalary = /^[0-9]+(\.[0-9]{1,2})?\s*$/
+
+  if (primarySalary && !validSalary.test(primarySalary)) {
     addError(req, 'primary-salary-amount', 'Salary must be an amount of money like 23000 or 139.45', '#primary-salary-amount')
     isValid = false
   }
 
-  if (secondarySalary && !secondarySalary.match(/[0-9]+(\.[0-9]{1,2})?/)) {
+  if (secondarySalary && !validSalary.test(secondarySalary)) {
     addError(req, 'secondary-salary-amount', 'Salary must be an amount of money like 23000 or 139.45', '#secondary-salary-amount')
     isValid = false
   }
