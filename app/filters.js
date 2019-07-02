@@ -90,7 +90,7 @@ module.exports = function (env) {
       return
     }
     return Object.entries(object)
-      .map((key, value) => `${key}=${value}`)
+      .map(([key, value]) => `${key}="${value}"`)
       .join(' ')
   }
 
