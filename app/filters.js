@@ -85,6 +85,15 @@ module.exports = function (env) {
     })
   }
 
+  function htmlAttributesFromObject (object) {
+    if (!object) {
+      return
+    }
+    return Object.entries(object)
+      .map(([key, value]) => `${key}="${value}"`)
+      .join(' ')
+  }
+
   return {
     hasStartDateError,
     isWeekChecked,
@@ -98,6 +107,7 @@ module.exports = function (env) {
     shouldDisplayPrimaryCurtailmentForm,
     shouldDisplaySecondaryLeaveAndPayForm,
     countWeeks,
-    blocksToDates
+    blocksToDates,
+    htmlAttributesFromObject
   }
 }

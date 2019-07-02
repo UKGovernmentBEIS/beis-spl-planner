@@ -15,6 +15,10 @@
     }
     gtag("js", new Date())
 
-    gtag("config", "{{ GOOGLE_ANALYTICS_ID }}")
+    gtag("config", "{{ GOOGLE_ANALYTICS_ID }}", {
+      custom_map: {
+        "dimension1": "birth_or_adoption"
+      }
+    })
   }
 </script>

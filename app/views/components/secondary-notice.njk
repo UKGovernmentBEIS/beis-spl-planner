@@ -1,0 +1,25 @@
+{% from "inset-text/macro.njk" import govukInsetText %}
+{% from "./file-download.njk" import fileDownload %}
+
+{% macro secondaryNotice(options) %}
+  {% set data = options.data %}
+  {% if data | shouldDisplaySecondaryLeaveAndPayForm %}
+    {{ fileDownload({
+      name: data | secondaryName | capitalize + "’s shared parental leave and pay notice form",
+      href: "/forms/declaration.pdf?state=" + (data | primaryLeaveType) + "&parent=secondary",
+      description: {
+        html: noticeDescription
+      },
+      details: {
+        html: noticeDetails
+      },
+      attributes: {
+        ga_fileDownloaded: {
+          "data-ga-hit-type": "secondary_notice_clicked",
+          "data-ga-field-event_category": "summary",
+          "data-ga-field-event_action": "secondary_notice_clicked"
+        }
+      }
+    }) }}
+  {% endif %}
+{% endmacro %}

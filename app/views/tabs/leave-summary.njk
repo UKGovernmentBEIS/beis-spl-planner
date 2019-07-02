@@ -2,7 +2,8 @@
 {% from "inset-text/macro.njk" import govukInsetText %}
 {% from "warning-text/macro.njk" import govukWarningText %}
 {% from "../components/leave-block-summary.njk" import leaveBlockSummary %}
-{% from "../components/file-download.njk" import fileDownload %}
+{% from "../components/secondary-notice.njk" import secondaryNotice %}
+{% from "../components/primary-notice.njk" import primaryNotice %}
 
 {% set noticeDescription %}
 {# TODO fix the href of this link #}
@@ -75,16 +76,8 @@
         You can do all of this by submitting the {{ data | primaryLeaveType }} leave curtailment and shared parental leave consent form
         to your employer at least 8 weeks before your partner wants to start shared parental leave.
       </p>
-      {# TODO fix the href of this fileDownload #}
-      {{ fileDownload({
-        name: data | primaryLeaveType | capitalise + " curtailment and SPL consent form",
-        href:"#",
-        description: {
-          html: noticeDescription
-        },
-        details: {
-          html: noticeDetails
-        }
+      {{ primaryNotice ({
+        data: data
       }) }}
     {% endif %}
 
@@ -124,16 +117,8 @@
         Complete the {{ data | primaryName }}’s shared parental leave and pay notice form and submit it to the {{ data | primaryName }}’s employer 8 weeks before the they want to start shared parental leave.
       </p>
 
-      {# TODO fix the href of this fileDownload #}
-      {{ fileDownload({
-        name: (data | primaryName | capitalize) + "’s shared parental leave and pay notice form",
-        href: "/forms/declaration.pdf?state=" + (data | primaryLeaveType) + "&parent=primary",
-        description: {
-          html: noticeDescription
-        },
-        details: {
-          html: noticeDetails
-        }
+      {{ primaryNotice ({
+        data: data
       }) }}
 
       <h4 class="govuk-heading-s">
@@ -209,16 +194,9 @@
         <p>
           Complete the {{ data | secondaryName }}’s shared parental leave and pay notice form and submit it to the {{ data | secondaryName }}’s employer 8 weeks before they want to start shared parental leave.
         </p>
-        {#  TODO fix the href of this file download #}
-        {{ fileDownload({
-          name: data | secondaryName | capitalize + "’s shared parental leave and pay notice form",
-          href: "/forms/declaration.pdf?state=" + (data | primaryLeaveType) + "&parent=secondary",
-          description: {
-            html: noticeDescription
-          },
-          details: {
-            html: noticeDetails
-          }
+
+        {{ secondaryNotice ({
+          data: data
         }) }}
 
         {% if leaveBlocks.primary.spl | length === 0 and leaveBlocks.secondary.spl | length > 0 %}

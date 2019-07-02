@@ -34,6 +34,11 @@
             id: "leave-summary",
             panel: {
               html: leaveSummary
+            },
+            attributes: {
+              "data-ga-hit-type": "leave_tab_clicked",
+              "data-ga-field-event_category": "summary",
+              "data-ga-field-event_action": "leave_tab_clicked"
             }
           },
           {
@@ -41,6 +46,11 @@
             id: "pay-summary",
             panel: {
               html: paySummary
+            },
+            attributes: {
+              "data-ga-hit-type": "pay_tab_clicked",
+              "data-ga-field-event_category": "summary",
+              "data-ga-field-event_action": "pay_tab_clicked"
             }
           }
         ]
