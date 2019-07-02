@@ -154,19 +154,21 @@
       <h2 class="govuk-heading-m">
         Print your plan
       </h2>
+      {% set printLink %}
+        <a
+          onclick="window.print()"
+          class="govuk-link--no-visited-state govuk-body print-hide"
+          href="#"
+          data-ga-hit-type="print_planner"
+          data-ga-field-event_category="planner"
+          data-ga-field-event_action="print_page"
+        >
+          print your plan
+        </a>
+      {% endset %}
       <p>
-        Click this link to print your leave and pay calendar. You can print for your own reference or give it to your employers.
+        You can {{ printLink | safe }} if you want to refer to it later.
       </p>
-      <a
-        onclick="window.print()"
-        class="govuk-link--no-visited-state govuk-body print-hide"
-        href="#"
-        data-ga-hit-type="print_planner"
-        data-ga-field-event_category="planner"
-        data-ga-field-event_action="print_page"
-      >
-        Print your plan
-      </a>
     </div>
   </div>
 {% endblock %}
