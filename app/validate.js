@@ -132,7 +132,7 @@ function parentSalaries (req) {
     'salary-period': secondaryPeriod
   } = req.session.data.secondary || {}
 
-  if (!primarySalary && !secondarySalary) {
+  if (req.method === 'POST' && !primarySalary && !secondarySalary) {
     addError(req, 'skip-this-question', "If you do not want to submit either parent’s salary, click 'Skip this question'", '#skip-this-question')
     return false
   }
