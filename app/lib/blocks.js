@@ -1,6 +1,7 @@
 const Weeks = require('./weeks')
 const { parseParentFromPlanner, parseStartDay } = require('../utils')
 const dataUtils = require('../../common/lib/dataUtils')
+const { parseEligibilityFromData } = require('./eligibility')
 
 function getLeaveBlocks (weeks) {
   return {
@@ -62,12 +63,12 @@ function getPayBlocks (weeks) {
   }
 
   const payWeeks = weeks
-    .filter(week => week.primary.pay || week.secondary.pay)
+    .filter(week => week.primary.pay.text || week.secondary.pay.text)
     .map(week => {
       return {
         number: week.number,
-        primary: week.primary.pay,
-        secondary: week.secondary.pay
+        primary: week.primary.pay.text,
+        secondary: week.secondary.pay.text
       }
     })
 
@@ -100,7 +101,8 @@ function getBlocks (data) {
     isBirth: dataUtils.isBirth(data),
     startWeek: parseStartDay(data),
     primary: parseParentFromPlanner(data, 'primary'),
-    secondary: parseParentFromPlanner(data, 'secondary')
+    secondary: parseParentFromPlanner(data, 'secondary'),
+    eligibility: parseEligibilityFromData(data)
   })
     .leaveAndPay()
     .weeks

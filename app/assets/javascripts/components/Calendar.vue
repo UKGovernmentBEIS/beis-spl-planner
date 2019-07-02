@@ -66,7 +66,7 @@
                   @mousedown.left="onCellMouseDown($event, parent, 'leave', week.number, !week[parent].leave)">
                 <div v-if="week[parent].leave">
                   <div class="govuk-body no-margin">
-                    {{ week[parent].pay || 'Unpaid' }}
+                    {{ cellIsEligible(week, parent, 'pay') ? (week[parent].pay.text || 'Unpaid') : "Not eligible for pay" }}
                   </div>
                   <div class="govuk-body-s no-margin">
                     {{ week[parent].leave | leaveLabel(week[parent].compulsory) | capitalise }}
@@ -79,18 +79,21 @@
               </td>
               <td :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
                   :headers="`${parent}-name ${parent}-pay week-${i}-date`"
-                  :class="{ 'unpaid': week[parent].leave && !week[parent].pay }"
+                  :class="{
+                    'unpaid': cellIsEligible(week, parent, 'pay') && week[parent].leave && !week[parent].pay.text,
+                    'disabled': !cellIsEligible(week, parent, 'pay')
+                    }"
                   tabindex="0" :data-row="i" :data-column="2*j + 1"
                   @keydown.tab="onCellTab($event)"
                   @keydown.up.stop.prevent="focusCell(i - 1, 2*j + 1)"
                   @keydown.down.stop.prevent="focusCell(i + 1, 2*j + 1)"
                   @keydown.left.stop.prevent="focusCell(i, 2*j)"
                   @keydown.right.stop.prevent="focusCell(i, 2*j + 2)"
-                  @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'pay', week.number, !week[parent].pay)"
-                  @mousedown.left="onCellMouseDown($event, parent, 'pay', week.number, !week[parent].pay)">
+                  @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'pay', week.number, !week[parent].pay.text)"
+                  @mousedown.left="onCellMouseDown($event, parent, 'pay', week.number, !week[parent].pay.text)">
                 <div v-if="week[parent].leave">
                   <div class="govuk-body govuk-!-font-weight-bold no-margin">
-                    {{ week[parent].pay ? '✓' : '✗' }}
+                    {{ cellIsEligible(week, parent, 'pay') ? (week[parent].pay.text ? '✓' : '✗') : INELIGIBLE }}
                   </div>
                 </div>
               </td>
@@ -121,7 +124,8 @@
       lastDraggedRow: null,
       lastClickedCell: null,
       onDrag: null,
-      hideFocus: false
+      hideFocus: false,
+      INELIGIBLE: "\u20E0"
     }),
     props: {
       isBirth: Boolean,
@@ -212,6 +216,12 @@
         } else {
           return _.range(currentRow, this.lastDraggedRow)
         }
+      },
+      cellIsEligible: function (week, parent, property) {
+        // remove LHS of left "||" below once eligible is implemented for pay
+        if(property === 'leave') { return true } // TODO remove when leave has eligibility
+        const output = week[parent][property].eligible === undefined || week[parent][property].eligible
+        return output
       }
     }
   }
@@ -387,7 +397,7 @@
         background-color: $colour;
       }
     }
-    .leave.#{$class} + .pay:not(.unpaid) {
+    .leave.#{$class} + .pay:not(.unpaid):not(.disabled) {
       background-color: $colour;
     }
   }
@@ -399,7 +409,7 @@
         background-color: hoverify($empty-cell-background-colour);
       }
     }
-    .leave:not(.compulsory):not(.disabled):hover + .pay {
+    .leave:not(.compulsory):not(.disabled):hover + .pay:not(.disabled) {
       background-color: hoverify($empty-cell-background-colour);
     }
     @each $class, $colour in $cell-colours {
@@ -412,7 +422,7 @@
         + .pay:not(.disabled):not(.unpaid):hover {
           background-color: hoverify($colour);
         }
-        &:not(.compulsory):not(.disabled):hover + .pay {
+        &:not(.compulsory):not(.disabled):hover + .pay:not(.disabled) {
           &.unpaid {
             background-color: hoverify(map-get($cell-colours, 'unpaid'))
           }

@@ -35,7 +35,8 @@
           isBirth: this.isBirth,
           startWeek: this.startWeek,
           primary: this.primary,
-          secondary: this.secondary
+          secondary: this.secondary,
+          eligibility: this.eligibility
         })
         return weeks.leaveAndPay()
       }

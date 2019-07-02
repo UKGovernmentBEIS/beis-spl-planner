@@ -120,7 +120,7 @@
         }
 
         const isPaternity = !isSpl && (parent === 'secondary')
-        if (week[parent].pay && !isPaternity) {
+        if (week[parent].pay.text && !isPaternity) {
           this.shppWeeks++
         }
       }
