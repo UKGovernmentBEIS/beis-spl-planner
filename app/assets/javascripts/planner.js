@@ -4,10 +4,11 @@ const _ = require('lodash')
 const Vue = require('vue/dist/vue.common')
 const isIexplorer = require('is-iexplorer')
 const Stickyfill = require('stickyfill')
-const AccessibileLayoutSwitch = require('./components/AccessibleLayoutSwitch.vue')
+const AccessibleLayoutSwitch = require('./components/AccessibleLayoutSwitch.vue')
 const Planner = require('./components/Planner.vue')
 const { parseParentFromPlanner, parseStartDay } = require('../../utils')
 const dataUtils = require('../../../common/lib/dataUtils')
+const { parseEligibilityFromData } = require('../../lib/eligibility')
 
 const USE_ACCESSIBLE_LAYOUT = 'use_accessible_layout'
 
@@ -26,6 +27,7 @@ function init (data, interactive) {
   const startWeek = parseStartDay(data).startOfWeek()
   const primary = parseParentFromPlanner(data, 'primary')
   const secondary = parseParentFromPlanner(data, 'secondary')
+  const eligibility = parseEligibilityFromData(data)
   const planner = new (Vue.extend(Planner))({
     el: '#planner',
     data: {
@@ -35,14 +37,15 @@ function init (data, interactive) {
       secondary,
       interactive,
       useAccessibleLayout,
-      updateLeaveOrPay
+      updateLeaveOrPay,
+      eligibility
     },
     mounted: function () {
       patchStickyStylingOnInternetExplorer()
     }
   })
 
-  const accessibleLayoutSwitch = new (Vue.extend(AccessibileLayoutSwitch))({
+  const accessibleLayoutSwitch = new (Vue.extend(AccessibleLayoutSwitch))({
     el: '#accessibility-switch',
     data: {
       useAccessibleLayout,

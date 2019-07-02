@@ -2,7 +2,7 @@
   <div class="govuk-grid-row">
     <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full" v-if="!useAccessibleLayout">
       <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :isBirth="isBirth"
-        :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" />
+        :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" :eligibility="eligibility"/>
     </div>
     <div id="sidebar" class="govuk-grid-column-full" :class="{ 'govuk-grid-column-one-third-from-desktop': !useAccessibleLayout }">
       <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" />

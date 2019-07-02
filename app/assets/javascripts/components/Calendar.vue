@@ -130,7 +130,8 @@
       weeks: Array,
       leaveBoundaries: Object,
       updateLeaveOrPay: Function,
-      interactive: Boolean
+      interactive: Boolean,
+      eligibility: Object
     },
     filters: {
       leaveLabel: function (type, compulsory) {
