@@ -75,10 +75,10 @@
         You can do all of this by submitting the {{ data | primaryLeaveType }} leave curtailment and shared parental leave consent form
         to your employer at least 8 weeks before your partner wants to start shared parental leave.
       </p>
-      {# TODO fix the href of this fileDownload #}
+
       {{ fileDownload({
         name: data | primaryLeaveType | capitalise + " curtailment and SPL consent form",
-        href:"#",
+        href: "/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if data | primaryLeaveType == "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf"),
         description: {
           html: noticeDescription
         },
@@ -124,10 +124,9 @@
         Complete the {{ data | primaryName }}’s shared parental leave and pay notice form and submit it to the {{ data | primaryName }}’s employer 8 weeks before the they want to start shared parental leave.
       </p>
 
-      {# TODO fix the href of this fileDownload #}
       {{ fileDownload({
         name: (data | primaryName | capitalize) + "’s shared parental leave and pay notice form",
-        href: "/forms/declaration.pdf?state=" + (data | primaryLeaveType) + "&parent=primary",
+        href: "/forms/" + ("SPL_Mother_Birth.pdf" if data | primaryLeaveType == "maternity" else "SPL_Primary_Adopter.pdf"),
         description: {
           html: noticeDescription
         },
@@ -209,10 +208,10 @@
         <p>
           Complete the {{ data | secondaryName }}’s shared parental leave and pay notice form and submit it to the {{ data | secondaryName }}’s employer 8 weeks before they want to start shared parental leave.
         </p>
-        {#  TODO fix the href of this file download #}
+
         {{ fileDownload({
           name: data | secondaryName | capitalize + "’s shared parental leave and pay notice form",
-          href: "/forms/declaration.pdf?state=" + (data | primaryLeaveType) + "&parent=secondary",
+          href: "/forms/" + ("SPL_FatherOrPartner_Birth.pdf" if data | primaryLeaveType == "maternity" else "SPL_Primary_Adopters_Partner.pdf"),
           description: {
             html: noticeDescription
           },
@@ -225,8 +224,7 @@
           {% set curtailmentWarningHtml %}
             The {{ data | primaryName }} must end their {{ data | primaryLeaveType }} leave and pay by returning to work or submitting a curtailment notice.
             They must also give consent for the partner to take shared parental leave or pay.
-            {#  TODO fix the href of this link #}
-            They can do both by submitting the <a href="#">{{ data | primaryLeaveType | capitalise}} curtailment and SPL consent form</a>.
+            They can do both by submitting the <a href={{"/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if data | primaryLeaveType == "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf")}}>{{ data | primaryLeaveType | capitalise}} curtailment and SPL consent form</a>.
           {% endset %}
           {{ govukWarningText({
             html: curtailmentWarningHtml,

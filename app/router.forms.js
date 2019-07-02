@@ -10,14 +10,14 @@ const config = {
   format: 'A4'
 }
 
-router.get('/declaration.pdf', function (req, res) {
+function generateFormAndReturn(req, res, templateName, parent) {
   // TODO: Better error handling.
   try {
     const { leaveBlocks, payBlocks } = getBlocks(req.session.data);
     const adjustedPayBlocks = getAdjustedPayBlocks(leaveBlocks, payBlocks);
-
+    
     let formdata = {};
-    if (req.query.parent === "primary") {
+    if (parent === "primary") {
       formdata = { 
         data: req.session.data, 
         leaveBlocks: leaveBlocks.primary, 
@@ -35,48 +35,45 @@ router.get('/declaration.pdf', function (req, res) {
       }
     }
 
-    nunjucks.render('forms/pages/declaration-'+req.query.state+'-'+req.query.parent+'.njk', 
-    formdata, 
-    function (e, html) {
-      if (e) {
-        console.log(e)
-        res.send('error')
-      } else {
-        pdf.create(html, config).toStream((e, stream) => stream.pipe(res))
-      }
-    })
+    nunjucks.render(
+      templateName, 
+      formdata, 
+      function (e, html) {
+        if (e) {
+          console.log(e)
+          res.send('error')
+        } else {
+          pdf.create(html, config).toStream((e, stream) => stream.pipe(res))
+        }
+      })
   } catch (e) {
     console.log(e)
     res.send('error')
   }
+}
+
+router.get('/SPL_Mother_Birth.pdf', function(req, res) {
+  generateFormAndReturn(req, res, 'forms/pages/declaration-maternity-primary.njk', 'primary');
 })
 
-router.get('/curtailment.pdf', function (req, res) {
-  // TODO: Better error handling.
-  try {
-    const { leaveBlocks, payBlocks } = getBlocks(req.session.data);
-    const adjustedPayBlocks = getAdjustedPayBlocks(leaveBlocks, payBlocks);
+router.get('/SPL_FatherOrPartner_Birth.pdf', function(req, res) {
+  generateFormAndReturn(req, res, 'forms/pages/declaration-maternity-secondary.njk', 'secondary');
+})
 
-    let formdata = { 
-      data: req.session.data, 
-      leaveBlocks: leaveBlocks.primary, 
-      partnerLeaveBlocks: leaveBlocks.secondary,
-      sharedPayBlocks: adjustedPayBlocks.primary,
-      partnerSharedPayBlocks: adjustedPayBlocks.secondary
-    }
+router.get('/SPL_Primary_Adopter.pdf', function(req, res) {
+  generateFormAndReturn(req, res, 'forms/pages/declaration-adoption-primary.njk', 'primary');
+})
 
-    nunjucks.render('forms/pages/curtailment-notice-'+req.query.state+'.njk', formdata, function (e, html) {
-      if (e) {
-        console.log(e)
-        res.send('error')
-      } else {
-        pdf.create(html, config).toStream((e, stream) => stream.pipe(res))
-      }
-    })
-  } catch (e) {
-    console.log(e)
-    res.send('error')
-  }
+router.get('/SPL_Primary_Adopters_Partner.pdf', function(req, res) {
+  generateFormAndReturn(req, res, 'forms/pages/declaration-adoption-secondary.njk', 'secondary');
+})
+
+router.get('/Maternity_Leave_Curtailment_SPL_Consent.pdf', function(req, res) {
+  generateFormAndReturn(req, res, 'forms/pages/curtailment-notice-maternity.njk', 'primary');
+})
+
+router.get('/Adoption_Leave_Curtailment_SPL_Consent.pdf', function(req, res) {
+  generateFormAndReturn(req, res, 'forms/pages/curtailment-notice-adoption.njk', 'primary');
 })
 
 module.exports = router
