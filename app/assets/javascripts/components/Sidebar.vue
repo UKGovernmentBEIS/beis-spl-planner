@@ -1,10 +1,10 @@
 <template>
   <div>
     <h2 class="govuk-heading-m">
-      Your leave balance
+      Your leave weeks
     </h2>
     <p>
-      You can take a total of <span v-html="formatWeeks(52)"></span> as {{ primaryLeaveType }} leave
+      You can split a total of <span v-html="formatWeeks(52)"></span> as {{ primaryLeaveType }} leave
       or shared parental leave.
     </p>
     <p>
@@ -15,14 +15,14 @@
     <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
       v-if="sharedLeaveRemaining < 0">
       <div class="govuk-error-summary__body">
-        You’ve taken too many weeks of leave. Unselect <span v-html="formatWeeks(-sharedLeaveRemaining)"></span>.
+        You’ve taken too many leave weeks. Unselect <span v-html="formatWeeks(-sharedLeaveRemaining, 'leave')"></span>.
       </div>
     </div>
     <h2 class="govuk-heading-m">
-      Your pay balance
+      Your pay weeks
     </h2>
     <p>
-      You can get a total of <span v-html="formatWeeks(39)"></span> of statutory {{ primaryLeaveType }} pay or
+      You can split a total of <span v-html="formatWeeks(39)"></span> of statutory {{ primaryLeaveType }} pay or
       statutory shared parental pay.
     </p>
     <p>
@@ -32,15 +32,15 @@
     <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
       v-if="payRemaining < 0">
       <div class="govuk-error-summary__body">
-        You’ve taken too many weeks of pay. Uncheck <span v-html="formatWeeks(-payRemaining)"></span>.
+        You’ve taken too many paid weeks. Untick <span v-html="formatWeeks(-payRemaining, 'paid')"></span>.
       </div>
     </div>
     <h2 class="govuk-heading-m">
-      Paternity leave
+      Paternity leave and pay
     </h2>
     <p>
       The partner has <span v-html="formatWeeks(paternityLeaveRemaining)"></span> left to take as
-      paternity leave.
+      paternity leave and pay.
     </p>
   </div>
 </template>
@@ -96,9 +96,9 @@
       }
     },
     methods: {
-      formatWeeks: function (number) {
+      formatWeeks: function (number, weekType) {
         number = Math.max(number, 0)
-        return '<strong>' + number + '</strong> ' + (number === 1 ? 'week' : 'weeks')
+        return '<strong>' + number + '</strong> ' + (weekType ? `${weekType} ` : '') + (number === 1 ? 'week' : 'weeks')
       },
       resetTotals: function () {
         this.leaveWeeks = {
