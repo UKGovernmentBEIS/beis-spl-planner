@@ -133,8 +133,7 @@
       weeks: Array,
       leaveBoundaries: Object,
       updateLeaveOrPay: Function,
-      interactive: Boolean,
-      hasSalary: Object
+      interactive: Boolean
     },
     filters: {
       leaveLabel: function (type, compulsory) {
@@ -143,17 +142,13 @@
       printPayLabel: function (pay) {
         let label;
         if (pay && pay[0] === '£') {
-          label = pay
+          return pay
         } else if (pay) {
-          label = 'Paid'
+          return 'Paid'
         } else {
-          label = 'Unpaid'
+          return 'Unpaid'
         }
-        return label
       }
-    },
-    bothSalariesKnown: function () {
-      this.hasSalary.primary && this.hasSalary.secondary
     },
     created: function () {
       window.addEventListener('keydown', this.onWindowMouseDown)

@@ -2,7 +2,7 @@
   <div class="govuk-grid-row">
     <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop print-full-width" v-if="!useAccessibleLayout">
       <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :isBirth="isBirth"
-        :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" :hasSalary="hasSalary"/>
+        :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" />
     </div>
     <div id="sidebar" class="print-hide" :class="{ 'govuk-grid-column-one-third-from-desktop': !useAccessibleLayout }">
       <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" />
@@ -38,12 +38,6 @@
           secondary: this.secondary
         })
         return weeks.leaveAndPay()
-      },
-      hasSalary: function () {
-        return {
-          primary: this.primary.hasSalary,
-          secondary: this.secondary.hasSalary
-        }
       }
     },
     methods: {
