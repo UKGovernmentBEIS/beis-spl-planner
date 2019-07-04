@@ -108,17 +108,20 @@
         this.shppWeeks = 0
       },
       updateTotalsForParent: function (parent, week) {
-        if (!week[parent].leave) {
+        if (!week[parent].leave.text || !week[parent].leave.eligible) {
           return
         }
 
-        const isSpl = week[parent].leave === 'shared'
+        const isSpl = week[parent].leave.text === 'shared'
         if (isSpl) {
           this.leaveWeeks[parent].spl++
         } else {
           this.leaveWeeks[parent].nonSpl++
         }
 
+        if(!week[parent].pay.eligible) {
+          return
+        }
         const isPaternity = !isSpl && (parent === 'secondary')
         if (week[parent].pay.text && !isPaternity) {
           this.shppWeeks++

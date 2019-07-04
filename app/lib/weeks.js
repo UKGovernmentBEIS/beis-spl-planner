@@ -74,7 +74,7 @@ class Weeks {
     if (this.eligibility.primary.shpp) {
       return true
     } else if (this.eligibility.primary.statutoryPay) {
-      return week.primary.leave === 'maternity'
+      return week.primary.leave.text === 'maternity'
     } else {
       return false
     }
@@ -84,7 +84,7 @@ class Weeks {
     if (this.eligibility.secondary.shpp) {
       return true
     } else if (this.eligibility.secondary.statutoryPay) {
-      return week.secondary.leave === 'paternity'
+      return week.secondary.leave.text === 'paternity'
     } else {
       return false
     }
@@ -94,7 +94,7 @@ class Weeks {
     // When the planner has been designed such that parents who are workers can take
     // shared parental pay and not leave, we'll need to check here for shared pay as well.
     return this.leaveAndPay().weeks.some(week => {
-      return week.primary.leave === 'shared'
+      return week.primary.leave.text === 'shared'
     })
   }
 
@@ -102,7 +102,7 @@ class Weeks {
     // When the planner has been designed such that parents who are workers can take
     // shared parental pay and not leave, we'll need to check here for shared pay as well.
     return this.leaveAndPay().weeks.some(week => {
-      return week.secondary.leave === 'shared'
+      return week.secondary.leave.text === 'shared'
     })
   }
 
@@ -118,7 +118,7 @@ class Weeks {
       primary: {
         disabled: false,
         compulsory: idx === 0 || idx === 1,
-        leave: undefined,
+        leave: {},
         pay: {}
       },
       secondary: {

@@ -16,6 +16,10 @@ function getParentLeaveBlocks (weeks, parent) {
     spl: []
   }
 
+  function getLeaveIfEligible (parentWeek) {
+    return (parentWeek.leave.eligible && parentWeek.leave.text) || undefined
+  }
+
   function store (block) {
     if (block && ['maternity', 'paternity', 'adoption'].includes(block.leave)) {
       blocks.initial = block
@@ -24,27 +28,27 @@ function getParentLeaveBlocks (weeks, parent) {
     }
   }
 
-  function newBlock (week) {
-    return { start: week.number, end: week.number, leave: week.leave }
+  function newBlock (parentLeaveWeek) {
+    return { start: parentLeaveWeek.number, end: parentLeaveWeek.number, leave: parentLeaveWeek.leave }
   }
 
   const parentLeaveWeeks = weeks
     .map(week => {
-      return { number: week.number, leave: week[parent].leave }
+      return { number: week.number, leave: getLeaveIfEligible(week[parent]) }
     })
-    .sort((week1, week2) => week1.number - week2.number)
     .filter(week => week.leave)
+    .sort((week1, week2) => week1.number - week2.number)
 
   let currentBlock = null
-  for (let week of parentLeaveWeeks) {
+  for (let parentLeaveWeek of parentLeaveWeeks) {
     if (currentBlock === null) {
-      currentBlock = newBlock(week)
+      currentBlock = newBlock(parentLeaveWeek)
     }
-    if (week.leave !== currentBlock.leave || week.number - currentBlock.end > 1) {
+    if (parentLeaveWeek.leave !== currentBlock.leave || parentLeaveWeek.number - currentBlock.end > 1) {
       store(currentBlock)
-      currentBlock = newBlock(week)
+      currentBlock = newBlock(parentLeaveWeek)
     } else {
-      currentBlock.end = week.number
+      currentBlock.end = parentLeaveWeek.number
     }
   }
 

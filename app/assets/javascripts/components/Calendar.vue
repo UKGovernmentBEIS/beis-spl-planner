@@ -42,7 +42,7 @@
             {{ isBirth ? 'Birth week' : 'First week the child lives with you' }}
           </th>
         </tr>
-        <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week.number)">
+        <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week)">
           <th class="govuk-table__cell date" :id="`week-${i}-date`" scope="row">
             {{ week.day.format('D') }}<br>
             {{ week.day.format('MMM') }}
@@ -55,21 +55,21 @@
             <template v-else>
               <td :key="parent + '-leave'" class="govuk-table__cell leave"
                   :headers="`${parent}-name ${parent}-leave week-${i}-date`"
-                  :class="week[parent].compulsory ? 'compulsory' : week[parent].leave"
+                  :class="week[parent].compulsory ? 'compulsory' : week[parent].leave.text"
                   tabindex="0" :data-row="i" :data-column="2*j"
                   @keydown.tab="onCellTab($event)"
                   @keydown.up.stop.prevent="focusCell(i - 1, 2*j)"
                   @keydown.down.stop.prevent="focusCell(i + 1, 2*j)"
                   @keydown.left.stop.prevent="focusCell(i, 2*j - 1)"
                   @keydown.right.stop.prevent="focusCell(i, 2*j + 1)"
-                  @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'leave', week.number, !week[parent].leave)"
-                  @mousedown.left="onCellMouseDown($event, parent, 'leave', week.number, !week[parent].leave)">
-                <div v-if="week[parent].leave">
+                  @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'leave', week)"
+                  @mousedown.left="onCellMouseDown($event, parent, 'leave', week)">
+                <div v-if="week[parent].leave.text">
                   <div class="govuk-body no-margin">
                     {{ cellIsEligible(week, parent, 'pay') ? (week[parent].pay.text || 'Unpaid') : "Not eligible for pay" }}
                   </div>
                   <div class="govuk-body-s no-margin">
-                    {{ week[parent].leave | leaveLabel(week[parent].compulsory) | capitalise }}
+                    {{ week[parent].leave.text | leaveLabel(week[parent].compulsory) | capitalise }}
                   </div>
                 </div>
                 <div v-else-if="week.number > leaveBoundaries[parent].firstWeek && week.number < leaveBoundaries[parent].lastWeek"
@@ -80,7 +80,7 @@
               <td :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
                   :headers="`${parent}-name ${parent}-pay week-${i}-date`"
                   :class="{
-                    'unpaid': cellIsEligible(week, parent, 'pay') && week[parent].leave && !week[parent].pay.text,
+                    'unpaid': cellIsEligible(week, parent, 'pay') && week[parent].leave.text && !week[parent].pay.text,
                     'disabled': !cellIsEligible(week, parent, 'pay')
                     }"
                   tabindex="0" :data-row="i" :data-column="2*j + 1"
@@ -89,9 +89,9 @@
                   @keydown.down.stop.prevent="focusCell(i + 1, 2*j + 1)"
                   @keydown.left.stop.prevent="focusCell(i, 2*j)"
                   @keydown.right.stop.prevent="focusCell(i, 2*j + 2)"
-                  @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'pay', week.number, !week[parent].pay.text)"
-                  @mousedown.left="onCellMouseDown($event, parent, 'pay', week.number, !week[parent].pay.text)">
-                <div v-if="week[parent].leave">
+                  @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'pay', week)"
+                  @mousedown.left="onCellMouseDown($event, parent, 'pay', week)">
+                <div v-if="week[parent].leave.text">
                   <div class="govuk-body govuk-!-font-weight-bold no-margin">
                     {{ cellIsEligible(week, parent, 'pay') ? (week[parent].pay.text ? '✓' : '✗') : INELIGIBLE }}
                   </div>
@@ -109,6 +109,7 @@
   const _ = require('lodash')
   const dlv = require('dlv')
   const isIexplorer = require('is-iexplorer')
+  const { getWeekByNumber } = require('../../../lib/weekUtils')
 
   const LEAVE_LABELS = Object.freeze({
     'maternity': 'maternity leave',
@@ -121,7 +122,7 @@
     data: () => ({
       isIexplorer: isIexplorer,
       isDragging: false,
-      lastDraggedRow: null,
+      lastDraggedWeekNumber: null,
       lastClickedCell: null,
       onDrag: null,
       hideFocus: false,
@@ -151,26 +152,30 @@
           this.hideFocus = false
         }
       },
-      onCellMouseDown: function (event, parent, property, week, value) {
+      onCellMouseDown: function (event, parent, property, week) {
+        const value = !week[parent][property].text
         this.hideFocus = true
-        if (!this.interactive) {
+        if (!this.interactive || !this.cellIsEligible(week, parent, property)) {
           return
         }
         this.isDragging = true
         this.lastClickedCell = event.currentTarget
         this.onDrag = function (week) {
-          this.updateLeaveOrPay(parent, property, week, value)
+          if (!this.cellIsEligible(week, parent, property)) {
+            return
+          }
+          this.updateLeaveOrPay(parent, property, week.number, value)
         }
         // Perfom drag action on initial cell.
         this.onRowMouseEnter(week)
       },
       onRowMouseEnter: function (week) {
         if (this.onDrag) {
-          const rowsToUpdate = this.getRowsToUpdate(week)
-          for (let row of rowsToUpdate) {
-            this.onDrag(row)
+          const weeksToUpdate = this.getWeeksToUpdate(week)
+          for (let week of weeksToUpdate) {
+            this.onDrag(week)
           }
-          this.lastDraggedRow = week
+          this.lastDraggedWeekNumber = week.number
         }
       },
       onCellTab: function (event) {
@@ -180,11 +185,11 @@
           event.stopPropagation()
         }
       },
-      onKeyboardToggleCell: function (parent, property, week, value) {
+      onKeyboardToggleCell: function (parent, property, week) {
         if (this.hideFocus) {
           this.hideFocus = false
-        } else if (this.interactive) {
-          this.updateLeaveOrPay(parent, property, week, value)
+        } else if (this.interactive && this.cellIsEligible(week, parent, property)) {
+          this.updateLeaveOrPay(parent, property, week.number, !week[parent][property].text)
         }
       },
       focusCell: function (row, column) {
@@ -199,22 +204,31 @@
       },
       endDrag: function () {
         this.isDragging = false
-        this.lastDraggedRow = null
+        this.lastDraggedWeekNumber = null
         this.onDrag = null
         if (this.lastClickedCell) {
           this.lastClickedCell.focus()
           this.lastClickedCell = null
         }
       },
-      getRowsToUpdate: function (currentRow) {
-        if (this.lastDraggedRow === null) {
-          return [currentRow]
+      getWeeksToUpdate: function (currentWeek) {
+        if (this.lastDraggedWeekNumber === null) {
+          return [currentWeek]
         }
+
+        const currentWeekNumber = currentWeek.number
+
+        const calendar = this
+        function toWeek (number) {
+          return number === currentWeekNumber ? currentWeek : getWeekByNumber(calendar.weeks, number)
+        }
+
         // Avoid skips.
-         if (this.lastDraggedRow < currentRow) {
-          return _.range(this.lastDraggedRow + 1, currentRow + 1)
+        // currently returns array of week numbers need to get week object for each number
+        if (this.lastDraggedWeekNumber < currentWeekNumber) {
+          return _.range(this.lastDraggedWeekNumber + 1, currentWeekNumber + 1).map(toWeek)
         } else {
-          return _.range(currentRow, this.lastDraggedRow)
+          return _.range(currentWeekNumber, this.lastDraggedWeekNumber).map(toWeek)
         }
       },
       cellIsEligible: function (week, parent, property) {
