@@ -234,8 +234,7 @@
       cellIsEligible: function (week, parent, property) {
         // remove LHS of left "||" below once eligible is implemented for pay
         if(property === 'leave') { return true } // TODO remove when leave has eligibility
-        const output = week[parent][property].eligible === undefined || week[parent][property].eligible
-        return output
+        return week[parent][property].eligible === undefined || week[parent][property].eligible
       }
     }
   }

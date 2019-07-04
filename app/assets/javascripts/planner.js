@@ -58,9 +58,9 @@ function init (data, interactive) {
   const minimumWeek = isBirth ? -11 : -2
   function updateLeaveOrPay (parent, property, week, value) {
     if (property === 'leave') {
-      updateLeave(parent, week, value, minimumWeek)
+      updateLeave(parent, week, value, minimumWeek, eligibility)
     } else if (property === 'pay') {
-      updatePay(parent, week, value, minimumWeek)
+      updatePay(parent, week, value, minimumWeek, eligibility)
     }
   }
 
@@ -89,7 +89,7 @@ function init (data, interactive) {
   }
 }
 
-function updateLeave (parent, week, value, minimumWeek) {
+function updateLeave (parent, week, value, minimumWeek, eligibility) {
   // Maternity / adoption leave taken before the 0th week must be in a continuous block.
   let weeksToUpdate
   if (week >= 0) {
@@ -111,10 +111,10 @@ function updateLeave (parent, week, value, minimumWeek) {
   }
 }
 
-function updatePay (parent, week, value, minimumWeek) {
+function updatePay (parent, week, value, minimumWeek, eligibility) {
   if (value && !getCheckbox(parent, 'leave', week).checked) {
     // Pay cannot be added without leave.
-    updateLeave(parent, week, true)
+    updateLeave(parent, week, true, eligibility)
     return
   }
 
@@ -124,14 +124,19 @@ function updatePay (parent, week, value, minimumWeek) {
   // taken as Statutory Shared Parental Pay.
   let weeksToUpdate
   const lastCompulsoryWeek = 1
-  if (parent !== 'primary' || week > lastCompulsoryWeek) {
+  if (parent !== 'primary' || (eligibility.primary.shpp && week > lastCompulsoryWeek)) {
     weeksToUpdate = [week]
   } else if (value) {
     // Add pay from earliest week.
     weeksToUpdate = _.range(minimumWeek, week + 1)
   } else {
-    // Remove pay until end of compulsory leave.
-    weeksToUpdate = _.range(week, lastCompulsoryWeek + 1)
+    if (eligibility.primary.shpp) {
+      // Remove pay until end of compulsory leave.
+      weeksToUpdate = _.range(week, lastCompulsoryWeek + 1)
+    } else {
+      // Remove all pay until end of calendar.
+      weeksToUpdate = _.range(week, -minimumWeek + 52)
+    }
   }
 
   for (let weekToUpdate of weeksToUpdate) {
