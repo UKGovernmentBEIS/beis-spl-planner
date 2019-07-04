@@ -58,17 +58,23 @@ function getParentLeaveBlocks (weeks, parent) {
 function getPayBlocks (weeks) {
   const blocks = []
 
+  function getPayIfEligible (week, parent) {
+    return (week[parent].pay.eligible && week[parent].pay.text) || undefined
+  }
+
   function newBlock (week) {
     return { start: week.number, end: week.number, primary: week.primary, secondary: week.secondary }
   }
 
   const payWeeks = weeks
-    .filter(week => week.primary.pay.text || week.secondary.pay.text)
+    .filter(week => {
+      return getPayIfEligible(week, 'primary') || getPayIfEligible(week, 'secondary')
+    })
     .map(week => {
       return {
         number: week.number,
-        primary: week.primary.pay.text,
-        secondary: week.secondary.pay.text
+        primary: getPayIfEligible(week, 'primary'),
+        secondary: getPayIfEligible(week, 'secondary')
       }
     })
 
