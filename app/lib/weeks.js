@@ -31,7 +31,7 @@ class Weeks {
           const startSplBecauseOfPayAfterCurtailment = hasCurtailedPrimaryPay && weekLeaveAndPay.primary.pay
           primarySplHasStarted = startSplBecauseOfBreak || startSplBecauseOfPayAfterCurtailment
         }
-        week.primary.leave = !primarySplHasStarted ? this.primaryLeaveType : 'shared'
+        dset(week.primary, 'leave.text', !primarySplHasStarted ? this.primaryLeaveType : 'shared')
         if (weekLeaveAndPay.primary.pay) {
           if (primarySplHasStarted) {
             dset(week.primary, 'pay.text', this.payRates.primary.statutory)
@@ -43,18 +43,20 @@ class Weeks {
           hasCurtailedPrimaryPay = true
         }
         dset(week.primary, 'pay.eligible', this._weekEligibleForPrimaryPay(week))
+        dset(week.primary, 'leave.eligible', true)
       }
 
       if (!week.secondary.disabled) {
         secondaryLeaveTracker.next(weekLeaveAndPay.secondary.leave, weekLeaveAndPay.secondary.pay, i)
         if (weekLeaveAndPay.secondary.leave) {
           const usePaternityLeave = i < 8 && !secondaryLeaveTracker.initialBlockEnded && secondaryLeaveTracker.initialBlockLength <= 2
-          week.secondary.leave = usePaternityLeave ? 'paternity' : 'shared'
+          dset(week.secondary, 'leave.text', usePaternityLeave ? 'paternity' : 'shared')
           if (weekLeaveAndPay.secondary.pay) {
             dset(week.secondary, 'pay.text', this.payRates.secondary.statutory)
           }
           dset(week.secondary, 'pay.eligible', this._weekEligibleForSecondaryPay(week))
         }
+        dset(week.secondary, 'leave.eligible', true)
       }
 
       weeks.push(week)
@@ -122,7 +124,7 @@ class Weeks {
       secondary: {
         disabled: idx < 0,
         compulsory: false,
-        leave: undefined,
+        leave: {},
         pay: {}
       }
     }
