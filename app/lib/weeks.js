@@ -1,6 +1,7 @@
 const LeaveTracker = require('./leaveTracker')
 const { STATUTORY_MAXIMUM_PAY } = require('../constants')
 const dset = require('dset')
+const dlv = require('dlv')
 
 class Weeks {
   constructor ({ isBirth, startWeek, primary, secondary, eligibility }) {
@@ -43,7 +44,7 @@ class Weeks {
           hasCurtailedPrimaryPay = true
         }
         dset(week.primary, 'pay.eligible', this._weekEligibleForPrimaryPay(week))
-        dset(week.primary, 'leave.eligible', true)
+        dset(week.primary, 'leave.eligible', this._weekEligibleForPrimaryLeave(week))
       }
 
       if (!week.secondary.disabled) {
@@ -56,7 +57,7 @@ class Weeks {
           }
           dset(week.secondary, 'pay.eligible', this._weekEligibleForSecondaryPay(week))
         }
-        dset(week.secondary, 'leave.eligible', true)
+        dset(week.secondary, 'leave.eligible', this._weekEligibleForSecondaryLeave(week))
       }
 
       weeks.push(week)
@@ -70,7 +71,21 @@ class Weeks {
     }
   }
 
-  _weekEligibleForPrimaryPay (week, tracker) {
+  _weekEligibleForPrimaryLeave (week) {
+    return true
+  }
+
+  _weekEligibleForSecondaryLeave (week) {
+    if (this.eligibility.secondary.spl) {
+      return true
+    } else if (!this.eligibility.secondary.statutoryLeave) {
+      return false
+    } else {
+      return dlv(week.secondary, ['leave', 'text']) === 'paternity'
+    }
+  }
+
+  _weekEligibleForPrimaryPay (week) {
     if (this.eligibility.primary.shpp) {
       return true
     } else if (this.eligibility.primary.statutoryPay) {
@@ -80,7 +95,7 @@ class Weeks {
     }
   }
 
-  _weekEligibleForSecondaryPay (week, tracker) {
+  _weekEligibleForSecondaryPay (week) {
     if (this.eligibility.secondary.shpp) {
       return true
     } else if (this.eligibility.secondary.statutoryPay) {
