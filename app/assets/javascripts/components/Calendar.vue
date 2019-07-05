@@ -55,7 +55,10 @@
             <template v-else>
               <td :key="parent + '-leave'" class="govuk-table__cell leave"
                   :headers="`${parent}-name ${parent}-leave week-${i}-date`"
-                  :class="week[parent].compulsory ? 'compulsory' : week[parent].leave.text"
+                  :class="[
+                      week[parent].compulsory ? 'compulsory' : week[parent].leave.text,
+                      { 'ineligible': !cellIsEligible(week, parent, 'leave') && week[parent].leave.text }
+                    ]"
                   tabindex="0" :data-row="i" :data-column="2*j"
                   @keydown.tab="onCellTab($event)"
                   @keydown.up.stop.prevent="focusCell(i - 1, 2*j)"
@@ -69,7 +72,7 @@
                     {{ cellIsEligible(week, parent, 'pay') ? (week[parent].pay.text || 'Unpaid') : "Not eligible for pay" }}
                   </div>
                   <div class="govuk-body-s no-margin">
-                    {{ week[parent].leave.text | leaveLabel(week[parent].compulsory) | capitalise }}
+                    {{ week[parent].leave.text | leaveLabel(week[parent].compulsory, cellIsEligible(week, parent, 'leave')) | capitalise }}
                   </div>
                 </div>
                 <div v-else-if="week.number > leaveBoundaries[parent].firstWeek && week.number < leaveBoundaries[parent].lastWeek"
@@ -81,7 +84,7 @@
                   :headers="`${parent}-name ${parent}-pay week-${i}-date`"
                   :class="{
                     'unpaid': cellIsEligible(week, parent, 'pay') && week[parent].leave.text && !week[parent].pay.text,
-                    'disabled': !cellIsEligible(week, parent, 'pay')
+                    'ineligible': !cellIsEligible(week, parent, 'pay')
                     }"
                   tabindex="0" :data-row="i" :data-column="2*j + 1"
                   @keydown.tab="onCellTab($event)"
@@ -139,7 +142,10 @@
       eligibility: Object
     },
     filters: {
-      leaveLabel: function (type, compulsory) {
+      leaveLabel: function (type, compulsory, isEligible) {
+        if (!isEligible) {
+          return "Not eligible for leave"
+        }
         return compulsory ? 'compulsory leave' : LEAVE_LABELS[type]
       }
     },
@@ -232,8 +238,6 @@
         }
       },
       cellIsEligible: function (week, parent, property) {
-        // remove LHS of left "||" below once eligible is implemented for pay
-        if(property === 'leave') { return true } // TODO remove when leave has eligibility
         return week[parent][property].eligible === undefined || week[parent][property].eligible
       }
     }
@@ -313,7 +317,7 @@
           &.leave, &.pay {
             cursor: cell;
           }
-          &.disabled, &.compulsory {
+          &.disabled, &.compulsory, &.ineligible.pay {
             cursor: not-allowed;
           }
         }
@@ -413,6 +417,13 @@
     .leave.#{$class} + .pay:not(.unpaid):not(.disabled) {
       background-color: $colour;
     }
+  }
+
+  .ineligible {
+    background-color: map-get($cell-colours, 'disabled') !important;
+      &.leave:hover {
+        background-color: hoverify(map-get($cell-colours, 'disabled')) !important;
+      }
   }
 
   @mixin cellHoverRules() {

@@ -89,7 +89,7 @@ function init (data, interactive) {
   }
 }
 
-function updateLeave (parent, week, value, minimumWeek, eligibility) {
+function updateLeave (parent, week, value, minimumWeek) {
   // Maternity / adoption leave taken before the 0th week must be in a continuous block.
   let weeksToUpdate
   if (week >= 0) {
