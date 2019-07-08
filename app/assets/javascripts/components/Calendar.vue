@@ -158,6 +158,14 @@
           this.hideFocus = false
         }
       },
+      updateCell: function (week, parent, property, value) {
+        if (!week[parent].leave.eligible) {
+          // when not eligible for leave, clicking in leave or pay toggles both
+          this.updateLeaveOrPay(parent, 'leave', week.number, value)
+          this.updateLeaveOrPay(parent, 'pay', week.number, value)
+        }
+        this.updateLeaveOrPay(parent, property, week.number, value)
+      },
       onCellMouseDown: function (event, parent, property, week) {
         const value = !week[parent][property].text
         this.hideFocus = true
@@ -169,12 +177,8 @@
         this.onDrag = function (week) {
           if (!this.cellIsClickable(week, parent, property)) {
             return
-          } else if (!week[parent].leave.eligible) {
-            // when not eligible for leave, clicking in leave or pay toggles both
-            this.updateLeaveOrPay(parent, 'leave', week.number, value)
-            this.updateLeaveOrPay(parent, 'pay', week.number, value)
           }
-          this.updateLeaveOrPay(parent, property, week.number, value)
+          this.updateCell(week, parent, property, value)
         }
         // Perfom drag action on initial cell.
         this.onRowMouseEnter(week)
@@ -198,12 +202,8 @@
       onKeyboardToggleCell: function (parent, property, week) {
         if (this.hideFocus) {
           this.hideFocus = false
-        } else if (this.interactive && this.cellIsEligible(week, parent, property)) {
-          if (!week[parent].leave.eligible) {
-            // when not eligible for leave, clicking in leave or pay toggles both
-            return this.updateLeaveOrPay(parent, 'leave', week.number, !week[parent][property].text)
-          }
-          this.updateLeaveOrPay(parent, property, week.number, !week[parent][property].text)
+        } else if (this.interactive && this.cellIsClickable(week, parent, property)) {
+          this.updateCell(week, parent, property, !week[parent][property].text)
         }
       },
       focusCell: function (row, column) {
