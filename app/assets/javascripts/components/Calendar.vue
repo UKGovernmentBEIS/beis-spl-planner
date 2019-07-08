@@ -161,14 +161,17 @@
       onCellMouseDown: function (event, parent, property, week) {
         const value = !week[parent][property].text
         this.hideFocus = true
-        if (!this.interactive || !this.cellIsEligible(week, parent, property)) {
+        if (!this.interactive || !this.cellIsClickable(week, parent, property)) {
           return
         }
         this.isDragging = true
         this.lastClickedCell = event.currentTarget
         this.onDrag = function (week) {
-          if (!this.cellIsEligible(week, parent, property)) {
+          if (!this.cellIsClickable(week, parent, property)) {
             return
+          } else if (!week[parent].leave.eligible) {
+            // when not eligible for leave, clicking in leave or pay toggles both
+            return this.updateLeaveOrPay(parent, 'leave', week.number, value)
           }
           this.updateLeaveOrPay(parent, property, week.number, value)
         }
@@ -195,6 +198,10 @@
         if (this.hideFocus) {
           this.hideFocus = false
         } else if (this.interactive && this.cellIsEligible(week, parent, property)) {
+          if (!week[parent].leave.eligible) {
+            // when not eligible for leave, clicking in leave or pay toggles both
+            return this.updateLeaveOrPay(parent, 'leave', week.number, !week[parent][property].text)
+          }
           this.updateLeaveOrPay(parent, property, week.number, !week[parent][property].text)
         }
       },
@@ -239,6 +246,9 @@
       },
       cellIsEligible: function (week, parent, property) {
         return week[parent][property].eligible === undefined || week[parent][property].eligible
+      },
+      cellIsClickable: function (week, parent, property) {
+        return this.cellIsEligible(week, parent, property) || property !== 'pay'
       }
     }
   }

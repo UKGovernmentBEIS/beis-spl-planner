@@ -1,7 +1,6 @@
 const LeaveTracker = require('./leaveTracker')
 const { STATUTORY_MAXIMUM_PAY } = require('../constants')
 const dset = require('dset')
-const dlv = require('dlv')
 
 class Weeks {
   constructor ({ isBirth, startWeek, primary, secondary, eligibility }) {
@@ -72,7 +71,13 @@ class Weeks {
   }
 
   _weekEligibleForPrimaryLeave (week) {
-    return true
+    if (this.eligibility.primary.spl) {
+      return true
+    } else if (!this.eligibility.primary.statutoryLeave) {
+      return false
+    } else {
+      return week.primary.leave.text === 'maternity'
+    }
   }
 
   _weekEligibleForSecondaryLeave (week) {
@@ -81,7 +86,7 @@ class Weeks {
     } else if (!this.eligibility.secondary.statutoryLeave) {
       return false
     } else {
-      return dlv(week.secondary, ['leave', 'text']) === 'paternity'
+      return week.secondary.leave.text === 'paternity'
     }
   }
 
