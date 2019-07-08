@@ -16,15 +16,15 @@ class Weeks {
 
   leaveAndPay () {
     const weeks = []
-    let primaryLeaveTracker = new LeaveTracker()
-    let secondaryLeaveTracker = new LeaveTracker()
+    const primaryLeaveTracker = new LeaveTracker()
+    const secondaryLeaveTracker = new LeaveTracker()
     let hasCurtailedPrimaryPay = false
     let primarySplHasStarted = false
     for (let i = this.minimumWeek; i <= 52; i++) {
       const week = this._getBaseWeek(i)
       const weekLeaveAndPay = this._getWeekLeaveAndPay(i)
 
-      primaryLeaveTracker.next(weekLeaveAndPay.primary.leave, weekLeaveAndPay.primary.pay, i)
+      primaryLeaveTracker.next(weekLeaveAndPay.primary.leave, i)
       if (weekLeaveAndPay.primary.leave) {
         if (!primarySplHasStarted) {
           const startSplBecauseOfBreak = primaryLeaveTracker.initialBlockEnded
@@ -47,7 +47,7 @@ class Weeks {
       }
 
       if (!week.secondary.disabled) {
-        secondaryLeaveTracker.next(weekLeaveAndPay.secondary.leave, weekLeaveAndPay.secondary.pay, i)
+        secondaryLeaveTracker.next(weekLeaveAndPay.secondary.leave, i)
         if (weekLeaveAndPay.secondary.leave) {
           const usePaternityLeave = i < 8 && !secondaryLeaveTracker.initialBlockEnded && secondaryLeaveTracker.initialBlockLength <= 2
           dset(week.secondary, 'leave.text', usePaternityLeave ? 'paternity' : 'shared')
@@ -111,18 +111,17 @@ class Weeks {
   }
 
   hasPrimarySharedPayOrLeave () {
-    // When the planner has been designed such that parents who are workers can take
-    // shared parental pay and not leave, we'll need to check here for shared pay as well.
-    return this.leaveAndPay().weeks.some(week => {
-      return week.primary.leave.text === 'shared'
-    })
+    return this._hasSharedPayOrLeave('primary')
   }
 
   hasSecondarySharedPayOrLeave () {
-    // When the planner has been designed such that parents who are workers can take
-    // shared parental pay and not leave, we'll need to check here for shared pay as well.
-    return this.leaveAndPay().weeks.some(week => {
-      return week.secondary.leave.text === 'shared'
+    return this._hasSharedPayOrLeave('secondary')
+  }
+
+  _hasSharedPayOrLeave (parent) {
+    const weeks = this.leaveAndPay().weeks
+    return weeks.some(week => {
+      return week[parent].leave.text === 'shared'
     })
   }
 
