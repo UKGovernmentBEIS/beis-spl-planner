@@ -53,7 +53,15 @@
               <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`${parent}-name ${parent}-pay week-${i}-date`"></td>
             </template>
             <template v-else>
-              <td :key="parent + '-leave'" class="govuk-table__cell leave"
+              <td v-if="disableCell(week, parent)" :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`${parent}-name ${parent}-leave week-${i}-date`">
+                <div class="govuk-body no-margin">
+                    Not eligible for pay
+                  </div>
+                  <div class="govuk-body-s no-margin">
+                    Not eligible for leave
+                  </div>
+              </td>
+              <td v-else :key="parent + '-leave'" class="govuk-table__cell leave"
                   :headers="`${parent}-name ${parent}-leave week-${i}-date`"
                   :class="[
                       week[parent].compulsory ? 'compulsory' : week[parent].leave.text,
@@ -83,7 +91,10 @@
                     Work or other leave
                 </div>
               </td>
-              <td :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
+              <td v-if="disableCell(week, parent)" :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`${parent}-name ${parent}-pay week-${i}-date`">
+                {{ week | payLabel(parent, false) }}
+              </td>
+              <td v-else :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
                   :headers="`${parent}-name ${parent}-pay week-${i}-date`"
                   :class="{
                     'unpaid': cellIsEligible(week, parent, 'pay') && week[parent].leave.text && !week[parent].pay.text,
@@ -264,6 +275,10 @@
       },
       hasNoEligibility: function (parent) {
         return Object.values(this.eligibility[parent]).every(eligiblity => !eligiblity)
+      },
+      disableCell: function (week, parent) {
+        return this.hasNoEligibility(parent) ||
+          (parent === 'secondary' && !this.eligibility.shpp && !this.eligibility.spl && week.number > 7)
       }
     }
   }
