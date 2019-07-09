@@ -58,7 +58,7 @@ function init (data, interactive) {
   const minimumWeek = isBirth ? -11 : -2
   function updateLeaveOrPay (parent, property, week, value) {
     if (property === 'leave') {
-      updateLeave(parent, week, value, minimumWeek, eligibility)
+      updateLeave(parent, week, value, minimumWeek)
     } else if (property === 'pay') {
       updatePay(parent, week, value, minimumWeek, eligibility)
     }
