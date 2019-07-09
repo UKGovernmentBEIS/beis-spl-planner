@@ -42,6 +42,12 @@
       The partner has <span v-html="formatWeeks(paternityLeaveRemaining)"></span> left to take as
       paternity leave.
     </p>
+    <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
+      v-if="paternityLeaveRemaining < 0">
+      <div class="govuk-error-summary__body">
+        You’ve taken too many weeks of paternity leave. Unselect <span v-html="formatWeeks(-paternityLeaveRemaining)"></span>.
+      </div>
+    </div>
   </div>
 </template>
 

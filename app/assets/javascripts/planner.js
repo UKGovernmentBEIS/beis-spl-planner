@@ -58,7 +58,7 @@ function init (data, interactive) {
   const minimumWeek = isBirth ? -11 : -2
   function updateLeaveOrPay (parent, property, week, value) {
     if (property === 'leave') {
-      updateLeave(parent, week, value, minimumWeek)
+      updateLeave(parent, week, value, minimumWeek, eligibility)
     } else if (property === 'pay') {
       updatePay(parent, week, value, minimumWeek, eligibility)
     }
@@ -89,14 +89,26 @@ function init (data, interactive) {
   }
 }
 
-function updateLeave (parent, week, value, minimumWeek) {
+function updateLeave (parent, week, value, minimumWeek, eligibility) {
   // Maternity / adoption leave taken before the 0th week must be in a continuous block.
   let weeksToUpdate
-  if (week >= 0) {
-    weeksToUpdate = [week]
+  let earliestSelectedWeek
+  if (parent === 'primary') {
+    earliestSelectedWeek = 0
+  } else {
+    const earliestSelectedCheckbox = document.querySelector(`input[type=checkbox][name="${parent}[leave]"]:checked`)
+    earliestSelectedWeek = earliestSelectedCheckbox && earliestSelectedCheckbox.value < week ? parseInt(earliestSelectedCheckbox.value) : week
+  }
+
+  if (week >= earliestSelectedWeek) {
+    if (!eligibility[parent].spl && !eligibility[parent].shpp) {
+      weeksToUpdate = getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity(week, parent, earliestSelectedWeek, minimumWeek, value)
+    } else {
+      weeksToUpdate = [week]
+    }
   } else if (value) {
-    // Add leave from selected week to 0th week.
-    weeksToUpdate = _.range(week, 0)
+    // Add leave from selected week to earliestSelectedWeek week.
+    weeksToUpdate = _.range(week, earliestSelectedWeek)
   } else {
     // Remove leave before selected week.
     weeksToUpdate = _.range(minimumWeek, week + 1)
@@ -111,10 +123,32 @@ function updateLeave (parent, week, value, minimumWeek) {
   }
 }
 
+function getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity (week, parent, earliestSelectedWeek, minimumWeek, value) {
+  const checkboxes = document.querySelectorAll(`input[type=checkbox][name="${parent}[leave]"]:checked`)
+  const latestSelectedCheckbox = checkboxes.length === 0 ? null : checkboxes[checkboxes.length - 1]
+  const latestSelectedWeek = latestSelectedCheckbox && latestSelectedCheckbox.value > week ? parseInt(latestSelectedCheckbox.value) : week
+  if (week === earliestSelectedWeek) {
+    if (week < latestSelectedWeek && value) {
+      // if later leave exists fill in all cells up to later leave
+      return _.range(week, latestSelectedWeek + 1)
+    } else {
+      // only toggle selected week if clicking on first week
+      return [week]
+    }
+  } else if (value) {
+    // add leave from earliestSelectedWeek to selected week
+    return _.range(earliestSelectedWeek, latestSelectedWeek + 1)
+  } else {
+    // remove leave after selected week
+    let maximumPeriodDisplayedAsInitialLeave = parent === 'primary' ? (-minimumWeek + 52) : 8
+    return _.range(week, maximumPeriodDisplayedAsInitialLeave)
+  }
+}
+
 function updatePay (parent, week, value, minimumWeek, eligibility) {
   if (value && !getCheckbox(parent, 'leave', week).checked) {
     // Pay cannot be added without leave.
-    updateLeave(parent, week, true, eligibility)
+    updateLeave(parent, week, true, minimumWeek, eligibility)
     return
   }
 
@@ -124,7 +158,23 @@ function updatePay (parent, week, value, minimumWeek, eligibility) {
   // taken as Statutory Shared Parental Pay.
   let weeksToUpdate
   const lastCompulsoryWeek = 1
-  if (parent !== 'primary' || (eligibility.primary.shpp && week > lastCompulsoryWeek)) {
+  if (parent === 'secondary') {
+    const lastPossiblePaternityLeave = 7
+    if (!eligibility.secondary.shpp && !eligibility.secondary.spl) {
+      if (value) {
+        // add pay to all cells before selected
+        const earliestSelectedCheckbox = document.querySelector(`input[type=checkbox][name="${parent}[leave]"]:checked`)
+        const earliestSelectedWeek = earliestSelectedCheckbox && earliestSelectedCheckbox.value < week ? parseInt(earliestSelectedCheckbox.value) : week
+        weeksToUpdate = _.range(earliestSelectedWeek, week + 1)
+      } else {
+        // Remove pay for all cells after selected
+        weeksToUpdate = _.range(week, lastPossiblePaternityLeave + 1)
+      }
+    } else {
+      // Add pay from earliest week.
+      weeksToUpdate = [week]
+    }
+  } else if (eligibility.primary.shpp && week > lastCompulsoryWeek) {
     weeksToUpdate = [week]
   } else if (value) {
     // Add pay from earliest week.

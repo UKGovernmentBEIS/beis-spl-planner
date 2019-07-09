@@ -49,7 +49,8 @@ class Weeks {
       if (!week.secondary.disabled) {
         secondaryLeaveTracker.next(weekLeaveAndPay.secondary.leave, i)
         if (weekLeaveAndPay.secondary.leave) {
-          const usePaternityLeave = i < 8 && !secondaryLeaveTracker.initialBlockEnded && secondaryLeaveTracker.initialBlockLength <= 2
+          const maxCellsDisplayedAsPaternity = this.eligibility.secondary.spl || this.eligibility.secondary.shpp ? 2 : 8
+          const usePaternityLeave = i < 8 && !secondaryLeaveTracker.initialBlockEnded && secondaryLeaveTracker.initialBlockLength <= maxCellsDisplayedAsPaternity
           dset(week.secondary, 'leave.text', usePaternityLeave ? 'paternity' : 'shared')
           if (weekLeaveAndPay.secondary.pay) {
             dset(week.secondary, 'pay.text', this.payRates.secondary.statutory)
@@ -83,6 +84,8 @@ class Weeks {
   _weekEligibleForSecondaryLeave (week) {
     if (this.eligibility.secondary.spl) {
       return true
+    } else if (!this.eligibility.secondary.spl && !this.eligibility.secondary.shpp) {
+      return week.number < 8
     } else if (!this.eligibility.secondary.statutoryLeave) {
       return false
     } else {
@@ -103,6 +106,8 @@ class Weeks {
   _weekEligibleForSecondaryPay (week) {
     if (this.eligibility.secondary.shpp) {
       return true
+    } else if (!this.eligibility.secondary.spl && !this.eligibility.secondary.shpp) {
+      return week.number < 8
     } else if (this.eligibility.secondary.statutoryPay) {
       return week.secondary.leave.text === 'paternity'
     } else {
