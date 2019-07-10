@@ -1,3 +1,4 @@
+const dlv = require('dlv')
 const { getWeeksArray, parseWeeksFromData } = require('./utils')
 const Day = require('../common/lib/day')
 
@@ -28,6 +29,10 @@ module.exports = function (env) {
 
   function startDateName (data) {
     return isBirth(data) ? 'due date' : 'placement date'
+  }
+
+  function hasEitherSalary (data) {
+    return !!dlv(data, ['primary', 'salary-amount']) || !!dlv(data, ['secondary', 'salary-amount'])
   }
 
   function totalBlockPay (block) {
@@ -102,6 +107,7 @@ module.exports = function (env) {
     startOfWeek,
     endOfWeek,
     startDateName,
+    hasEitherSalary,
     totalBlockPay,
     shouldDisplayPrimaryLeaveAndPayForm,
     shouldDisplayPrimaryCurtailmentForm,
