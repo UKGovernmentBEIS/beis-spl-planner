@@ -1,15 +1,10 @@
-/* global localStorage */
-
 const _ = require('lodash')
 const Vue = require('vue/dist/vue.common')
 const isIexplorer = require('is-iexplorer')
 const Stickyfill = require('stickyfill')
-const AccessibileLayoutSwitch = require('./components/AccessibleLayoutSwitch.vue')
 const Planner = require('./components/Planner.vue')
 const { parseParentFromPlanner, parseStartDay } = require('../../utils')
 const dataUtils = require('../../../common/lib/dataUtils')
-
-const USE_ACCESSIBLE_LAYOUT = 'use_accessible_layout'
 
 Vue.filter('capitalise', function (value) {
   if (!value) {
@@ -20,8 +15,6 @@ Vue.filter('capitalise', function (value) {
 })
 
 function init (data, interactive) {
-  let useAccessibleLayout = localStorage.getItem(USE_ACCESSIBLE_LAYOUT) === 'yes'
-
   const isBirth = dataUtils.isBirth(data)
   const startWeek = parseStartDay(data).startOfWeek()
   const primary = parseParentFromPlanner(data, 'primary')
@@ -34,23 +27,12 @@ function init (data, interactive) {
       primary,
       secondary,
       interactive,
-      useAccessibleLayout,
       updateLeaveOrPay
     },
     mounted: function () {
       patchStickyStylingOnInternetExplorer()
     }
   })
-
-  const accessibleLayoutSwitch = new (Vue.extend(AccessibileLayoutSwitch))({
-    el: '#accessibility-switch',
-    data: {
-      useAccessibleLayout,
-      toggleAccessibleLayout
-    }
-  })
-
-  toggleAccessibleLayout(useAccessibleLayout)
 
   const minimumWeek = isBirth ? -11 : -2
   function updateLeaveOrPay (parent, property, week, value) {
@@ -59,18 +41,6 @@ function init (data, interactive) {
     } else if (property === 'pay') {
       updatePay(parent, week, value, minimumWeek)
     }
-  }
-
-  function toggleAccessibleLayout (value) {
-    if (value === true || value === false) {
-      useAccessibleLayout = value
-    } else {
-      useAccessibleLayout = !useAccessibleLayout
-    }
-    localStorage.setItem(USE_ACCESSIBLE_LAYOUT, useAccessibleLayout ? 'yes' : 'no')
-    accessibleLayoutSwitch.useAccessibleLayout = useAccessibleLayout
-    planner.useAccessibleLayout = useAccessibleLayout
-    document.body.classList.toggle('use-accessible-layout', useAccessibleLayout)
   }
 
   if (interactive) {

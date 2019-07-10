@@ -23,7 +23,7 @@ module.exports = function (req, res, next) {
     return `${path}?${qs.stringify(queryData, { arrayFormat: 'comma' })}`
   }
   res.locals.backPath = function () {
-    return res.locals.withData(paths.getPreviousWorkFlowPath(req.path))
+    return res.locals.withData(paths.getPreviousWorkflowPath(req.path, req.session.data))
   }
   next()
 }

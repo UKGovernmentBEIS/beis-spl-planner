@@ -1,0 +1,60 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "button/macro.njk" import govukButton %}
+{% from "fieldset/macro.njk" import govukFieldset %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "select/macro.njk" import govukSelect %}
+
+{% extends "layout.njk" %}
+
+{% set parent = (data["leave-blocks"]["spl-block-planning-order"] | castArray | last) %}
+{# Subtract 1 from the length because the block will have already been created when getting the start week. #}
+{% set index = (data["leave-blocks"][parent]["spl"] | length) - 1 %}
+
+{% set parentName = (data | parentName(parent)) %}
+{% set zeroWeek = (data | zeroWeek) %}
+{% set remainingLeaveAllowance = (data["leave-blocks"] | remainingLeaveAllowance) %}
+
+{% set firstWeekOfLeave = (data["leave-blocks"][parent]["spl"]["_" + index]["start"] | int) %}
+{% set maxWeek = 52 if (firstWeekOfLeave + remainingLeaveAllowance > 52) else (firstWeekOfLeave + remainingLeaveAllowance)  %}
+{% set options = range(firstWeekOfLeave, maxWeek) %}
+
+{% macro optionText(weekNumber) %}
+  {% set totalWeeks = weekNumber - firstWeekOfLeave + 1 %}
+  {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
+  (taking {{ totalWeeks | weeks }} of leave)
+{% endmacro %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {% set hint %}
+            <p class="govuk-hint">
+              The first week in this block of leave is {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}.
+            </p>
+          {% endset %}
+          {% call govukFieldset({
+            legend: {
+              text: "Which week will be the " + parentName + "’s last week of shared parental leave in this block?",
+              classes: "govuk-fieldset__legend--xl",
+              isPageHeading: true
+            }
+          })%}
+            {{ govukSelect({
+              id: "shared-parental-leave-end",
+              name: "leave-blocks[" + parent + "][spl][_" + index + "][end]",
+              hint: {
+                html: hint
+              },
+              items: options | mapValuesToSelectOptions(optionText)
+            }) }}
+          {% endcall %}
+        {% endcall %}
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

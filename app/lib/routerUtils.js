@@ -5,14 +5,22 @@ const { isNo } = require('../../common/lib/dataUtils')
 const Day = require('../../common/lib/day')
 const { isYesOrNo } = require('./validationUtils')
 
-function registerEligibilityRouteForPrimaryParents (router, path, handlers) {
-  for (const parent of ['mother', 'primary-adopter']) {
-    const route = router.route(paths.getPath(`eligibility.${parent}.${path}`))
+function registerEligibilityRouteForPrimaryParents (router, endpoint, handlers) {
+  registerRoutes(router, 'eligibility', ['mother', 'primary-adopter'], endpoint, handlers)
+}
+
+function registerPlannerRouteForPrimaryLeaveTypes (router, endpoint, handlers) {
+  registerRoutes(router, 'planner', ['maternity-leave', 'adoption-leave'], endpoint, handlers)
+}
+
+function registerRoutes (router, path, subpaths, endpoint, handlers) {
+  for (const subpath of subpaths) {
+    const route = router.route(paths.getPath(`${path}.${subpath}.${endpoint}`))
     if (handlers.get) {
       route.get(handlers.get.bind(this))
     }
     if (handlers.post) {
-      route.post(handlers.post.bind(this, parent))
+      route.post(handlers.post.bind(this, subpath))
     }
   }
 }
@@ -52,6 +60,7 @@ function parseExternalQueryString (req) {
 
 module.exports = {
   registerEligibilityRouteForPrimaryParents,
+  registerPlannerRouteForPrimaryLeaveTypes,
   getParent,
   bothParentsAreIneligible,
   parseExternalQueryString
