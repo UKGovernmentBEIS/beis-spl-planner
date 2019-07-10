@@ -1,7 +1,7 @@
 {% macro appendHiddenFields(data) %}
-  {{ caller() }}
   {% set excludedFields = caller() | fieldNames %}
   {{ hiddenFields(data, excludedFields) }}
+  {{ caller() }}
 {% endmacro %}
 
 {% macro hiddenFields(dataObject, excludedFields, parentPath) %}

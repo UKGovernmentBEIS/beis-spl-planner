@@ -1,6 +1,7 @@
 const delve = require('dlv')
 const isString = require('lodash/isString')
 const validate = require('./validate')
+const dataUtils = require('../common/lib/dataUtils')
 
 /*
  * This class is used to manage all paths in the app.
@@ -108,7 +109,54 @@ class Paths {
       },
       planner: {
         url: '/planner',
-        workflowParentPath: '/parent-salaries'
+        workflowParentPath: '/parent-salaries',
+        'maternity-leave': {
+          start: {
+            url: '/planner/maternity-leave/start',
+            workflowParentPath: '/planner'
+          },
+          end: {
+            url: '/planner/maternity-leave/end',
+            workflowParentPath: '/planner/maternity-leave/start'
+          }
+        },
+        'adoption-leave': {
+          start: {
+            url: '/planner/adoption-leave/start',
+            workflowParentPath: '/planner'
+          },
+          end: {
+            url: '/planner/adoption-leave/end',
+            workflowParentPath: '/planner/adoption-leave/start'
+          }
+        },
+        'paternity-leave': {
+          url: '/planner/paternity-leave',
+          workflowParentPath: {
+            birth: '/planner/maternity-leave/end',
+            adoption: '/planner/adoption-leave/end'
+          },
+          start: {
+            url: '/planner/paternity-leave/start',
+            workflowParentPath: '/planner/paternity-leave'
+          },
+          end: {
+            url: '/planner/paternity-leave/end',
+            workflowParentPath: '/planner/paternity-leave/start'
+          }
+        },
+        'shared-parental-leave': {
+          url: '/planner/shared-parental-leave',
+          workflowParentPath: '/planner/paternity-leave/end',
+          start: {
+            url: '/planner/shared-parental-leave/start',
+            workflowParentPath: '/planner/shared-parental-leave'
+          },
+          end: {
+            url: '/planner/shared-parental-leave/end',
+            workflowParentPath: '/planner/shared-parental-leave/start'
+          }
+        }
       },
       summary: {
         url: '/summary',
@@ -139,9 +187,18 @@ class Paths {
     return findObjectByUrl(this.pathObjects, url)
   }
 
-  getPreviousWorkFlowPath (url) {
+  getPreviousWorkflowPath (url, data) {
     const pathObject = this.getPathObjectFromUrl(url)
-    return pathObject ? pathObject.workflowParentPath : undefined
+    const workflowParentPath = delve(pathObject, 'workflowParentPath', undefined)
+    if (!workflowParentPath) {
+      return undefined
+    } else if (typeof workflowParentPath === 'string') {
+      return workflowParentPath
+    } else if (workflowParentPath.birth && workflowParentPath.adoption) {
+      return dataUtils.isBirth(data) ? workflowParentPath.birth : workflowParentPath.adoption
+    } else {
+      return undefined
+    }
   }
 
   getPath (location) {
