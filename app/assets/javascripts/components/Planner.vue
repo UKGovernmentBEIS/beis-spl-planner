@@ -5,7 +5,12 @@
         :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" />
     </div>
     <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full">
-      <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :reset="resetIfChanged" />
+      <div id="sidebar-information">
+        <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :reset="resetIfChanged" />
+      </div>
+      <a class="govuk-button" @click="resetIfChanged()">
+        Reset
+      </a>
     </div>
   </div>
 </template>
@@ -104,7 +109,14 @@
   #sidebar {
     @include sticky();
     top: 10px;
-    max-height: calc(100vh - 20px);
-    overflow-y: auto;
+
+    #sidebar-information {
+      max-height: calc(100vh - 65px);
+      overflow-y: auto;
+    }
+
+    .govuk-button {
+      margin-top: 5px;
+    }
   }
 </style>
