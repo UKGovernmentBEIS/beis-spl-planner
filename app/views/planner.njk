@@ -29,34 +29,25 @@
         The calendar is based on {{ "your child’s birth week" if isBirth else "the week your child starts living with you"}}.
       </p>
       <p>
-        You can click the cells to select the weeks each parent wants to take as leave, starting with the {{ primaryName }}’s {{ primaryLeaveType }} leave.
+        You can click the cells to select the weeks each parent wants to take as leave. You have 52 week of leave to split between you.
       </p>
       <p>
-        If you’re taking more than 39 weeks of leave, you can also select which leave weeks are paid and unpaid. The statutory pay amount is indicative only.
+        The {{ primaryName }} must take 2 weeks of {{ primaryLeaveType }} when the child is {{ "born" if isBirth else "placed with you" }}.
+        The partner can take an additional 2 weeks as paternity leave in the first 8 weeks after the child is {{ "born" if isBirth else "placed with you" }}.
+      </p>
+      <p>
+        If you're taking more than 39 weeks in total, you can also select which leave weeks are paid and unpaid.
+        The statutory pay amount is {% if data | hasEitherSalary %} based on your salary and is {% endif %} indicative only.
       </p>
 
-      <h2 class="govuk-heading-s">
-        How many weeks of leave and pay you can take
-      </h2>
-      <p>
-        Shared parental leave and pay is created from unused {{ primaryLeaveType }} leave and statutory {{ primaryLeaveType }} pay.
-        The {{ primaryName }} must take 2 weeks of {{ primaryLeaveType }} leave and pay when the child {{ "is born" if isBirth else "starts living with you"}}.
-      </p>
-      <p>
-        This leaves 50 weeks of leave and 37 weeks of statutory pay for parents to split between them.
-      </p>
-      <p>
-        The partner can take two weeks of paternity leave in addition to this.
-      </p>
       <h2 class="govuk-heading-s">
         How much pay you can get
       </h2>
       <p>
-        The {{ primaryName }} gets 90% of their average weekly earnings for the first 6 weeks of
-        statutory {{ primaryLeaveType }} pay.
+        The {{ primaryName }} gets 90% of their average weekly earnings for the first 6 weeks of statutory {{ primaryLeaveType }} pay.
       </p>
       <p>
-        For the remaining 33 paid weeks, parents can get the statutory pay rate of {{ STATUTORY_MAXIMUM_PAY }} per week,
+        For the remaining 33 paid weeks, each parent can get the statutory pay rate of {{ STATUTORY_MAXIMUM_PAY }} per week,
         or 90% of their average weekly salary, whichever is lower.
       </p>
       <h2 class="govuk-heading-s">
@@ -65,17 +56,22 @@
       <p>
         The {{ primaryName }} can start {{ primaryLeaveType }} leave up to {{ "11" if isBirth else "2" }}
         weeks before the week of {{ "birth" if isBirth else "placement"}}.
+        The partner can only take leave after the child is {{ "born" if isBirth else "placed with you" }}.
       </p>
       <p>
-        Shared parental leave and pay can start after the child’s {{ "birth" if isBirth else "placement" }}.
-        The partner can start shared parental leave and pay while the {{ primaryName }} is on {{ primaryLeaveType }} leave.
-        The partner can start paternity leave and pay in the first 8 weeks after the child’s {{ "birth" if isBirth else "placement" }}.
+        The {{ primaryName }} and the partner can take leave at the same time, or one after the other.
       </p>
+
       <h2 class="govuk-heading-s">
         Blocks of leave
       </h2>
       <p>
-        {{ primaryLeaveType | capitalise }} leave and pay must be taken in one continuous block. Shared parental leave can be taken as three separate blocks, or more if employers allow.
+        {{ primaryLeaveType | capitalise }} leave and pay must be taken in one continuous block.
+        Shared parental leave can be taken in blocks separated by work or other leave.
+      </p>
+
+      <p>
+        You’re entitled to three blocks of shared parental leave, more if your employer allows.
       </p>
 
       {% set examples %}
