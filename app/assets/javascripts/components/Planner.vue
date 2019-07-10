@@ -5,12 +5,13 @@
         :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" />
     </div>
     <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full">
-      <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" />
+      <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :reset="resetIfChanged" />
     </div>
   </div>
 </template>
 
 <script>
+  const { isEqual } = require('lodash')
   const Calendar = require('./Calendar.vue')
   const Sidebar = require('./Sidebar.vue')
   const Weeks = require('../../../lib/weeks')
@@ -49,6 +50,21 @@
           const index = weeks.indexOf(week)
           weeks.splice(index, 1)
         }
+      },
+      resetIfChanged: function () {
+        if (this.hasBeenEdited()) {
+          if (window.confirm("This will overwrite any leave or pay which you have already entered in the calender.")) {
+            this.reset()
+          }
+        }
+      },
+      hasBeenEdited: function () {
+        return !(
+          isEqual(this.primary.leaveWeeks, [0, 1]) &&
+          isEqual(this.primary.payWeeks, [0, 1]) &&
+          this.secondary.leaveWeeks.length === 0 &&
+          this.secondary.payWeeks.length === 0
+        )
       }
     }
   }

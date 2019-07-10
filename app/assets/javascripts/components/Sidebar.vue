@@ -42,6 +42,9 @@
       The partner has <span v-html="formatWeeks(paternityLeaveRemaining)"></span> left to take as
       paternity leave and pay.
     </p>
+    <a class="govuk-button" @click="reset()">
+      Reset
+    </a>
   </div>
 </template>
 
@@ -57,7 +60,8 @@
     props: {
       names: Object,
       weeks: Array,
-      primaryLeaveType: String
+      primaryLeaveType: String,
+      reset: Function
     },
     computed: {
       primaryLeaveUsed: function () {

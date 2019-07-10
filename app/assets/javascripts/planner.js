@@ -1,3 +1,5 @@
+/* global Event */
+
 const _ = require('lodash')
 const Vue = require('vue/dist/vue.common')
 const isIexplorer = require('is-iexplorer')
@@ -27,7 +29,8 @@ function init (data, interactive) {
       primary,
       secondary,
       interactive,
-      updateLeaveOrPay
+      updateLeaveOrPay,
+      reset
     },
     mounted: function () {
       patchStickyStylingOnInternetExplorer()
@@ -53,6 +56,20 @@ function init (data, interactive) {
         planner.updateWeek(parent, property, week, this.checked)
       })
     }
+  }
+
+  function reset () {
+    function isNotCompulsory (checkbox) {
+      return !(checkbox.getAttribute('data-parent') === 'primary' && ['0', '1'].includes(checkbox.value))
+    }
+    const checkboxes = Array.from(document.querySelectorAll('form#leave-and-pay input[type="checkbox"]:checked'))
+    checkboxes
+      .filter(checkbox => isNotCompulsory(checkbox))
+      .forEach(checkbox => {
+        checkbox.checked = false
+        const changeEvent = new Event('change', { cancelable: true })
+        checkbox.dispatchEvent(changeEvent)
+      })
   }
 }
 
