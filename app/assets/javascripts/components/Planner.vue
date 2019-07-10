@@ -8,9 +8,16 @@
       <div id="sidebar-information">
         <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :reset="resetIfChanged" />
       </div>
-      <a class="govuk-button" @click="resetIfChanged()">
+      <button
+        class="govuk-button"
+        type="button"
+        @click="resetIfChanged()"
+        data-ga-hit-type="planner_reset"
+        data-ga-field-event_category="planner"
+        data-ga-field-event_action="reset"
+      >
         Reset
-      </a>
+      </button>
     </div>
   </div>
 </template>
@@ -57,10 +64,9 @@
         }
       },
       resetIfChanged: function () {
-        if (this.hasBeenEdited()) {
-          if (window.confirm("This will overwrite any leave or pay which you have already entered in the calender.")) {
-            this.reset()
-          }
+        const warning = "This will overwrite any leave or pay which you have already entered in the calender."
+        if (this.hasBeenEdited() && window.confirm(warning)) {
+          this.reset()
         }
       },
       hasBeenEdited: function () {
