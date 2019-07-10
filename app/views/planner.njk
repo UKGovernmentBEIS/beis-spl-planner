@@ -2,6 +2,7 @@
 {% from "button/macro.njk" import govukButton %}
 {% from "details/macro.njk" import govukDetails %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "inset-text/macro.njk" import govukInsetText %}
 {% from "components/calendar.njk" import calendar %}
 
 {% extends "layout.njk" %}
@@ -110,6 +111,25 @@
         <h2 class="govuk-heading-l">
           Your plan
         </h2>
+        {% set accessibleViewInsetHtml %}
+          <p class="govuk-body-s">
+            Below is the interactive calendar layout of the leave planner.
+          </p>
+          <p class="govuk-body-s">
+            If you prefer, you can instead answer questions about your leave to build your plan.
+          </p>
+          <p class="govuk-body-s">
+            This is particularly recommended for users of assistive technology.
+          </p>
+          <p class="govuk-body-s">
+            <a href="/planner/maternity-leave/start" class="govuk-body-s">
+              Use question based planner
+            </a>
+          </p>
+        {% endset %}
+        {{ govukInsetText({
+          html: accessibleViewInsetHtml
+        }) }}
         <p>
           Click in the calendar to create your leave plan. There are separate columns for the {{ primaryName }} and the partner and for leave and pay.
         </p>
