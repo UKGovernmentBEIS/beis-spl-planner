@@ -196,20 +196,20 @@
         }
       },
       onCellMouseDown: function (event, parent, property, week) {
-        const value = !week[parent][property].text
         this.hideFocus = true
         if (!this.interactive || !this.cellIsClickable(week, parent, property)) {
           return
         }
         this.isDragging = true
         this.lastClickedCell = event.currentTarget
+        const value = !week[parent][property].text
         this.onDrag = function (week) {
           if (!this.cellIsClickable(week, parent, property) || this.disableCell(week, parent)) {
             return
           }
           this.updateCell(week, parent, property, value)
         }
-        // Perfom drag action on initial cell.
+        // Perform drag action on initial cell.
         this.onRowMouseEnter(week)
       },
       onRowMouseEnter: function (week) {
