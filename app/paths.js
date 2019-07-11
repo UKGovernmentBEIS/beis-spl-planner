@@ -38,6 +38,9 @@ class Paths {
     this.pathObjects = {
       root: {
         url: '/'
+      },
+      cookies: {
+        url: '/cookies'
       }
     }
   }

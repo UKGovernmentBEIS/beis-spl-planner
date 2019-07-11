@@ -1,0 +1,145 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "table/macro.njk" import govukTable %}
+
+{% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {{ super() }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: withData(referrer)
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <h1 class="govuk-heading-xl">
+        Cookies
+      </h1>
+      <p>
+        The {{ service_name }} service puts small files (known as 'cookies') on to your computer.
+      </p>
+      <p>
+        These cookies are used to:
+      </p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>help us understand how you use the service, so we can make improvements</li>
+        <li>remember what notifications you’ve seen so that you’re not shown them more than once</li>
+        <li>temporarily store the information you enter</li>
+      </ul>
+      <p>
+        Find out <a href="https://www.aboutcookies.org/">how to manage cookies</a>.
+      </p>
+
+      <h2 class="govuk-heading-m">
+        Google Analytics cookies
+      </h2>
+      <p>
+        We use Google Analytics to collect information about how you use the service.
+        This information helps us to improve the service.
+      </p>
+      <p>
+        The Google analytics cookies collect and store information about:
+      </p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>the pages you visit - how long you spend on each page</li>
+        <li>how you got to the service</li>
+        <li>what you click on while you’re use your service</li>
+      </ul>
+      {{ govukTable({
+        firstCellIsHeader: true,
+        head: [
+          {
+            text: "Name",
+            classes: 'govuk-!-width-one-quarter'
+          },
+          {
+            text: "Purpose",
+            classes: 'govuk-!-width-one-half'
+          },
+          {
+            text: "Expires",
+            classes: 'govuk-!-width-one-quarter'
+          }
+        ],
+        rows: [
+          [
+            {
+              text: "_ga"
+            },
+            {
+              text: "A randomly generated reference used to identify unique users and inform referring sites, visitor and session counts"
+            },
+            {
+              text: "2 years"
+            }
+          ],
+          [
+            {
+              text: "_gat_gtag_" + GOOGLE_ANALYTICS_ID
+            },
+            {
+              text: "Used to throttle request rate"
+            },
+            {
+              text: "1 minute"
+            }
+          ],
+          [
+            {
+              text: "_gid"
+            },
+            {
+              text: "Used to distinguish users"
+            },
+            {
+              text: "24 hours"
+            }
+          ]
+        ]
+      }) }}
+      <p>
+        Google isn’t allowed to use or share our analytics data with anyone, but you can opt out of Google Analytics cookies.
+      </p>
+
+      <h2 class="govuk-heading-m">
+        Session cookie
+      </h2>
+      <p>
+        We store session cookies on your computer to help keep your information secure while you use the service.
+      </p>
+      {{ govukTable({
+        firstCellIsHeader: true,
+        head: [
+          {
+            text: "Name",
+            classes: 'govuk-!-width-one-quarter'
+          },
+          {
+            text: "Purpose",
+            classes: 'govuk-!-width-one-half'
+          },
+          {
+            text: "Expires",
+            classes: 'govuk-!-width-one-quarter'
+          }
+        ],
+        rows: [
+          [
+            {
+              text: "application"
+            },
+            {
+              text: "Stores encrypted session data"
+            },
+            {
+              text: "24 hours"
+            }
+          ]
+        ]
+      }) }}
+    </div>
+  </div>
+{% endblock %}

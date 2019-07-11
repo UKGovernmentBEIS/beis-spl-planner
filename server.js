@@ -64,6 +64,7 @@ function initialiseGlobalMiddleware (app) {
   const maxAge = 86400000 // Prune expired entries every 24 hours.
   app.use(session({
     secret: 'beis-spl-planner',
+    name: 'application',
     cookie: { maxAge },
     store: new MemoryStore({
       checkPeriod: maxAge
