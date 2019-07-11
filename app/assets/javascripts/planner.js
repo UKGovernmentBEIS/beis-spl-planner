@@ -59,17 +59,13 @@ function init (data, interactive) {
   }
 
   function reset () {
-    function isNotCompulsory (checkbox) {
-      return !(checkbox.getAttribute('data-parent') === 'primary' && ['0', '1'].includes(checkbox.value))
-    }
-    const checkboxes = Array.from(document.querySelectorAll('form#leave-and-pay input[type="checkbox"]:checked'))
-    checkboxes
-      .filter(checkbox => isNotCompulsory(checkbox))
-      .forEach(checkbox => {
-        checkbox.checked = false
-        const changeEvent = new Event('change', { cancelable: true })
-        checkbox.dispatchEvent(changeEvent)
+    const parents = ['primary', 'secondary']
+    const weekNumbers = _.range(minimumWeek, 52)
+    parents.forEach(parent => {
+      weekNumbers.forEach(weekNumber => {
+        updateLeaveOrPay(parent, 'leave', weekNumber, false)
       })
+    })
   }
 }
 
