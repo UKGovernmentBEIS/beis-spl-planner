@@ -141,8 +141,7 @@ function toggleCheckbox (parent, property, week, value) {
     return false
   }
   checkbox.checked = value
-  const changeEvent = document.createEvent('HTMLEvents')
-  changeEvent.initEvent('change', false, true)
+  const changeEvent = new Event('change', { cancelable: true })
   checkbox.dispatchEvent(changeEvent)
   return true
 }
