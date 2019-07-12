@@ -1,9 +1,9 @@
 {% from "fieldset/macro.njk" import govukFieldset %}
 
 {% macro leaveAndPayCheckboxes(data, parent) %}
-  {% set startDay = (data | startDay) %}
   {% set minWeek = -11 if (data | isBirth) else -2 %}
   {% set maxWeek = 52 %}
+  {% set zeroWeekDate = (data | startDay | startOfWeek) %}
   {% set isBirth = (data | isBirth) %}
   {% set weekZeroName = "birth" if isBirth else "placement" %}
   <div class="govuk-form-group">
@@ -22,7 +22,7 @@
             {% set leaveName = parent + '[leave]' %}
             {% set payId = parent + '-pay_' + i %}
             {% set payName = parent + '[pay]' %}
-            {% set date = (startDay | offsetWeeks(i)) %}
+            {% set date = (zeroWeekDate | offsetWeeks(i)) %}
             {% if (i === minWeek) or ((date | formatDate("D") | int) <= 7) %}
               <h4 class="govuk-heading-s govuk-!-padding-1 background-grey">
                 {{ date | formatDate("MMMM YYYY") }}
