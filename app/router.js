@@ -7,4 +7,10 @@ router.route(paths.getPath('root'))
     res.render('index', { message: 'Hello world!' })
   })
 
+router.route(paths.getPath('cookies'))
+  .get(function (req, res) {
+    const referrer = req.header('Referrer')
+    res.render('privacy/cookies', { referrer })
+  })
+
 module.exports = router
