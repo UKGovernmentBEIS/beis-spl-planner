@@ -48,7 +48,7 @@
             {{ week.day.format('MMM') }}
           </th>
           <template v-for="(parent, j) in ['primary', 'secondary']">
-            <template v-if="week[parent].disabled">
+            <template v-if="week[parent].outOfPermittedRange">
               <td :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`${parent}-name ${parent}-leave week-${i}-date`"></td>
               <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`${parent}-name ${parent}-pay week-${i}-date`"></td>
             </template>
@@ -157,22 +157,22 @@
     filters: {
       leaveCellLeaveLabel: function (type, compulsory, isEligible) {
         if (!isEligible) {
-          return "Not eligible for leave"
+          return 'Not eligible for leave'
         }
         return compulsory ? 'compulsory leave' : LEAVE_LABELS[type]
       },
       leaveCellPayLabel: function (payText, isEligible) {
         if (isEligible) {
-          return payText || "Unpaid"
+          return payText || 'Unpaid'
         } else {
-          return "Not eligible for pay"
+          return 'Not eligible for pay'
         }
       },
       payCellLabel: function (payText, cellIsEligible) {
         if (cellIsEligible)  {
           return payText ? '✓' : '✗'
         } else {
-          const INELIGIBLE = "\u20E0"
+          const INELIGIBLE = '\u20E0'
           return INELIGIBLE
         }
       },
@@ -266,7 +266,6 @@
         }
 
         // Avoid skips.
-        // currently returns array of week numbers need to get week object for each number
         if (this.lastDraggedWeekNumber < currentWeekNumber) {
           return _.range(this.lastDraggedWeekNumber + 1, currentWeekNumber + 1).map(toWeek)
         } else {

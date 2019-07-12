@@ -146,7 +146,7 @@ class Weeks {
         pay: {}
       },
       secondary: {
-        disabled: idx < 0,
+        outOfPermittedRange: idx < 0,
         compulsory: false,
         leave: {},
         pay: {}

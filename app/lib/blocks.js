@@ -17,7 +17,12 @@ function getParentLeaveBlocks (weeks, parent) {
   }
 
   function getLeaveIfEligible (parentWeek) {
-    return (parentWeek.leave.eligible && parentWeek.leave.text) || undefined
+    const leave = parentWeek.leave.eligible && parentWeek.leave.text
+    if (leave) {
+      return leave
+    } else {
+      return undefined
+    }
   }
 
   function store (block) {
@@ -63,7 +68,12 @@ function getPayBlocks (weeks) {
   const blocks = []
 
   function getPayIfEligible (week, parent) {
-    return (week[parent].pay.eligible && week[parent].pay.text) || undefined
+    const pay = week[parent].pay.eligible && week[parent].pay.text
+    if (pay) {
+      return pay
+    } else {
+      return undefined
+    }
   }
 
   function newBlock (week) {

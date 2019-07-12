@@ -163,7 +163,6 @@ function updatePay (parent, week, value, minimumWeek, eligibility) {
     if (!eligibility.secondary.shpp && !eligibility.secondary.spl) {
       weeksToUpdate = getPayWeeksToUpdateWhenSecondaryHasNoSharedEligiblity(week, parent, value, lastPossiblePaternityLeave)
     } else {
-      // Add pay from earliest week.
       weeksToUpdate = [week]
     }
   } else if (eligibility.primary.shpp && week > lastCompulsoryWeek) {
@@ -180,7 +179,7 @@ function updatePay (parent, week, value, minimumWeek, eligibility) {
       weeksToUpdate = _.range(week, -minimumWeek + 52)
     }
   }
-  console.log('weeksToUpdate ', weeksToUpdate)
+
   for (let weekToUpdate of weeksToUpdate) {
     togglePay(parent, weekToUpdate, value)
   }
