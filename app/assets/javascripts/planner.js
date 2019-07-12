@@ -92,26 +92,14 @@ function init (data, interactive) {
 function updateLeave (parent, week, value, minimumWeek, eligibility) {
   // Maternity / adoption leave taken before the 0th week must be in a continuous block.
   let weeksToUpdate
-  let earliestSelectedWeek
-  if (parent === 'primary') {
-    earliestSelectedWeek = 0
-  } else {
-    const earliestSelectedCheckbox = document.querySelector(`input[type=checkbox][name="${parent}[leave]"]:checked`)
-    earliestSelectedWeek = earliestSelectedCheckbox && earliestSelectedCheckbox.value < week ? parseInt(earliestSelectedCheckbox.value) : week
-  }
+  const hasNoSharedEligibility = !eligibility[parent].spl && !eligibility[parent].shpp
 
-  if (week >= earliestSelectedWeek) {
-    if (!eligibility[parent].spl && !eligibility[parent].shpp) {
-      weeksToUpdate = getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity(week, parent, earliestSelectedWeek, minimumWeek, value)
-    } else {
-      weeksToUpdate = [week]
-    }
-  } else if (value) {
-    // Add leave from selected week to earliestSelectedWeek week.
-    weeksToUpdate = _.range(week, earliestSelectedWeek)
+  if (week < 0) {
+    weeksToUpdate = getLeaveWeeksToUpdateWhenBeforeZeroWeek(week, value, minimumWeek)
+  } else if (hasNoSharedEligibility) {
+    weeksToUpdate = getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity(week, parent, minimumWeek, value)
   } else {
-    // Remove leave before selected week.
-    weeksToUpdate = _.range(minimumWeek, week + 1)
+    weeksToUpdate = [week]
   }
 
   for (let weekToUpdate of weeksToUpdate) {
@@ -123,9 +111,21 @@ function updateLeave (parent, week, value, minimumWeek, eligibility) {
   }
 }
 
-function getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity (week, parent, earliestSelectedWeek, minimumWeek, value) {
+function getLeaveWeeksToUpdateWhenBeforeZeroWeek (week, value, minimumWeek) {
+  if (value) {
+    // Add leave from selected week to earliestSelectedWeek week.
+    return _.range(week, 0)
+  } else {
+    // Remove leave before selected week.
+    return _.range(minimumWeek, week + 1)
+  }
+}
+
+function getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity (week, parent, minimumWeek, value) {
   const checkboxes = document.querySelectorAll(`input[type=checkbox][name="${parent}[leave]"]:checked`)
-  const latestSelectedCheckbox = checkboxes.length === 0 ? null : checkboxes[checkboxes.length - 1]
+  const earliestSelectedCheckbox = _.first(checkboxes)
+  const earliestSelectedWeek = earliestSelectedCheckbox && earliestSelectedCheckbox.value < week ? parseInt(earliestSelectedCheckbox.value) : week
+  const latestSelectedCheckbox = _.last(checkboxes)
   const latestSelectedWeek = latestSelectedCheckbox && latestSelectedCheckbox.value > week ? parseInt(latestSelectedCheckbox.value) : week
   if (week === earliestSelectedWeek) {
     if (week < latestSelectedWeek && value) {
@@ -140,7 +140,7 @@ function getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity (week, parent, ear
     return _.range(earliestSelectedWeek, latestSelectedWeek + 1)
   } else {
     // remove leave after selected week
-    let maximumPeriodDisplayedAsInitialLeave = parent === 'primary' ? (-minimumWeek + 52) : 8
+    let maximumPeriodDisplayedAsInitialLeave = parent === 'primary' ? 53 : 8
     return _.range(week, maximumPeriodDisplayedAsInitialLeave)
   }
 }
@@ -152,32 +152,14 @@ function updatePay (parent, week, value, minimumWeek, eligibility) {
     return
   }
 
-  // Maternity / adoption pay must be taken in a continuous block from the start
-  // of the maternity / adoption leave until the pay is curtailed.
-  // After the end of compulsory leave, it is valid for non-continuous pay to be
-  // taken as Statutory Shared Parental Pay.
   let weeksToUpdate
   const lastCompulsoryWeek = 1
   if (parent === 'secondary') {
-    const lastPossiblePaternityLeave = 7
-    if (!eligibility.secondary.shpp && !eligibility.secondary.spl) {
-      weeksToUpdate = getPayWeeksToUpdateWhenSecondaryHasNoSharedEligiblity(week, parent, value, lastPossiblePaternityLeave)
-    } else {
-      weeksToUpdate = [week]
-    }
-  } else if (eligibility.primary.shpp && week > lastCompulsoryWeek) {
-    weeksToUpdate = [week]
-  } else if (value) {
-    // Add pay from earliest week.
-    weeksToUpdate = _.range(minimumWeek, week + 1)
+    weeksToUpdate = getSecondaryPayWeeksToUpdate(week, parent, value, eligibility)
+  } else if (week < lastCompulsoryWeek) {
+    weeksToUpdate = getPrimaryPayWeeksToUpdateBeforeCompulsoryWeeks(week, value, minimumWeek, eligibility, lastCompulsoryWeek)
   } else {
-    if (eligibility.primary.shpp) {
-      // Remove pay until end of compulsory leave.
-      weeksToUpdate = _.range(week, lastCompulsoryWeek + 1)
-    } else {
-      // Remove all pay until end of calendar.
-      weeksToUpdate = _.range(week, -minimumWeek + 52)
-    }
+    weeksToUpdate = getPrimaryPayWeeksToUpdateAfterCompulsoryWeeks(week, value, minimumWeek, eligibility)
   }
 
   for (let weekToUpdate of weeksToUpdate) {
@@ -185,15 +167,48 @@ function updatePay (parent, week, value, minimumWeek, eligibility) {
   }
 }
 
-function getPayWeeksToUpdateWhenSecondaryHasNoSharedEligiblity (week, parent, value, lastPossiblePaternityLeave) {
-  if (value) {
-    // add pay to all cells before selected
-    const earliestSelectedCheckbox = document.querySelector(`input[type=checkbox][name="${parent}[leave]"]:checked`)
-    const earliestSelectedWeek = earliestSelectedCheckbox && earliestSelectedCheckbox.value < week ? parseInt(earliestSelectedCheckbox.value) : week
-    return _.range(earliestSelectedWeek, week + 1)
+function getSecondaryPayWeeksToUpdate (week, parent, value, eligibility) {
+  const lastPossiblePaternityLeave = 7
+  const hasNoSharedEligibility = !eligibility.secondary.shpp && !eligibility.secondary.spl
+  if (hasNoSharedEligibility) {
+    if (value) {
+      // add pay to all cells before selected
+      const earliestSelectedCheckbox = document.querySelector(`input[type=checkbox][name="${parent}[leave]"]:checked`)
+      const earliestSelectedWeek = earliestSelectedCheckbox && earliestSelectedCheckbox.value < week ? parseInt(earliestSelectedCheckbox.value) : week
+      return _.range(earliestSelectedWeek, week + 1)
+    } else {
+      // Remove pay for all cells after selected
+      return _.range(week, lastPossiblePaternityLeave + 1)
+    }
   } else {
-    // Remove pay for all cells after selected
-    return _.range(week, lastPossiblePaternityLeave + 1)
+    return [week]
+  }
+}
+
+function getPrimaryPayWeeksToUpdateBeforeCompulsoryWeeks (week, value, minimumWeek, eligibility, lastCompulsoryWeek) {
+  // Maternity / adoption pay must be taken in a continuous block from the start
+  // of the maternity / adoption leave until the pay is curtailed.
+  if (value) {
+    // Add pay from earliest week.
+    return _.range(minimumWeek, week + 1)
+  } else {
+    // Remove pay until end of compulsory leave, or if not shpp eligible remove all pay.
+    const finalWeekToUpdate = eligibility.primary.shpp ? lastCompulsoryWeek + 1 : 53
+    return _.range(week, finalWeekToUpdate)
+  }
+}
+
+function getPrimaryPayWeeksToUpdateAfterCompulsoryWeeks (week, value, minimumWeek, eligibility) {
+  // After the end of compulsory leave, it is valid for non-continuous pay to be
+  // taken as Statutory Shared Parental Pay.
+  if (eligibility.primary.shpp) {
+    return [week]
+  } else if (value) {
+    // Add pay from earliest week.
+    return _.range(minimumWeek, week + 1)
+  } else {
+    // Remove all pay until end of calendar.
+    return _.range(week, 53)
   }
 }
 
