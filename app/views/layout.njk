@@ -24,7 +24,16 @@
   {{
     govukFooter({
       meta: {
-        html: 'Built by the <a href="#" class="govuk-footer__link">Government Digital Service</a>'
+        items: [
+          {
+            href: "/cookies",
+            text: 'Cookies'
+          },
+          {
+            href: "/feedback",
+            text: 'Feedback'
+          }
+        ]
       }
     })
   }}

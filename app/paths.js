@@ -161,6 +161,9 @@ class Paths {
       summary: {
         url: '/summary',
         workflowParentPath: '/planner'
+      },
+      cookies: {
+        url: '/cookies'
       }
     }
   }
