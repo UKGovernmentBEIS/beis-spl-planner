@@ -1,5 +1,6 @@
 const { getWeeksArray, parseWeeksFromData } = require('./utils')
 const Day = require('../common/lib/day')
+const { parseEligibilityFromData } = require('./lib/eligibility')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
@@ -34,6 +35,13 @@ module.exports = function (env) {
     const primaryPay = block.primary && parseFloat(block.primary.substring(1))
     const secondaryPay = block.secondary && parseFloat(block.secondary.substring(1))
     return '£' + ((primaryPay || 0) + (secondaryPay || 0)).toFixed(2)
+  }
+
+  function displayPayBlockTotal (data) {
+    const eligibility = parseEligibilityFromData(data)
+    return eligibility.primary.statutoryPay &&
+           data.primary['salary-amount'].length > 0 &&
+           data.secondary['salary-amount'].length > 0
   }
 
   function shouldDisplayPrimaryLeaveAndPayForm (data) {
@@ -103,6 +111,7 @@ module.exports = function (env) {
     endOfWeek,
     startDateName,
     totalBlockPay,
+    displayPayBlockTotal,
     shouldDisplayPrimaryLeaveAndPayForm,
     shouldDisplayPrimaryCurtailmentForm,
     shouldDisplaySecondaryLeaveAndPayForm,

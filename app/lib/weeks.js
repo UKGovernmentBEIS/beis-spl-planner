@@ -9,9 +9,9 @@ class Weeks {
     this.primary = primary
     this.secondary = secondary
     this.primaryLeaveType = isBirth ? 'maternity' : 'adoption'
+    this.eligibility = eligibility
     this.payRates = this._getPayRates()
     this.minimumWeek = this._getMinimumWeek()
-    this.eligibility = eligibility
   }
 
   leaveAndPay () {
@@ -94,9 +94,14 @@ class Weeks {
   }
 
   _weekEligibleForPrimaryPay (week) {
-    if (this.eligibility.primary.shpp) {
+    const {
+      'shpp': shppEligible,
+      'statutoryPay': statutoryPayEligible,
+      'maternityAllowance': maternityAllowanceEligible
+    } = this.eligibility.primary
+    if (shppEligible) {
       return true
-    } else if (this.eligibility.primary.statutoryPay) {
+    } else if (statutoryPayEligible || maternityAllowanceEligible) {
       return week.primary.leave.text === 'maternity'
     } else {
       return false
@@ -171,12 +176,29 @@ class Weeks {
   _getPayRates () {
     return {
       primary: {
-        initial: this.primary.weeklyPay ? this._formatPay(0.9 * this.primary.weeklyPay) : '90% of weekly pay',
-        statutory: this._getStatutoryPay(this.primary.weeklyPay)
+        initial: this._getPrimaryPayRate('initial'),
+        statutory: this._getPrimaryPayRate('statutory')
       },
       secondary: {
         statutory: this._getStatutoryPay(this.secondary.weeklyPay)
       }
+    }
+  }
+
+  _getPrimaryPayRate (period) {
+    const {
+      'shpp': shppEligible,
+      'statutoryPay': statutoryPayEligible,
+      'maternityAllowance': maternityAllowanceEligible
+    } = this.eligibility.primary
+    const maternityAllowanceOnly = !shppEligible && !statutoryPayEligible && maternityAllowanceEligible
+    if (maternityAllowanceOnly) {
+      // when maternity allowance only, we only know the upper bound of the mother’s pay
+      return this._getStatutoryPay()
+    } else if (period === 'initial') {
+      return this.primary.weeklyPay ? this._formatPay(0.9 * this.primary.weeklyPay) : '90% of weekly pay'
+    } else {
+      return this._getStatutoryPay(this.primary.weeklyPay)
     }
   }
 
