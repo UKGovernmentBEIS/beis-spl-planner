@@ -5,7 +5,7 @@
         :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" :eligibility="eligibility"/>
     </div>
     <div id="sidebar" class="govuk-grid-column-full" :class="{ 'govuk-grid-column-one-third-from-desktop': !useAccessibleLayout }">
-      <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" />
+      <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :eligibility="eligibility"/>
     </div>
   </div>
 </template>
