@@ -84,10 +84,10 @@ class Weeks {
   _weekEligibleForSecondaryLeave (week) {
     if (this.eligibility.secondary.spl) {
       return true
-    } else if (!this.eligibility.secondary.spl && !this.eligibility.secondary.shpp) {
-      return week.number < 8
     } else if (!this.eligibility.secondary.statutoryLeave) {
       return false
+    } else if (!this.eligibility.secondary.shpp) {
+      return week.number < 8
     } else {
       return week.secondary.leave.text === 'paternity'
     }
@@ -111,12 +111,12 @@ class Weeks {
   _weekEligibleForSecondaryPay (week) {
     if (this.eligibility.secondary.shpp) {
       return true
-    } else if (!this.eligibility.secondary.spl && !this.eligibility.secondary.shpp) {
-      return week.number < 8
-    } else if (this.eligibility.secondary.statutoryPay) {
-      return week.secondary.leave.text === 'paternity'
-    } else {
+    } else if (!this.eligibility.secondary.statutoryPay) {
       return false
+    } else if (!this.eligibility.secondary.spl) {
+      return week.number < 8
+    } else {
+      return week.secondary.leave.text === 'paternity'
     }
   }
 
