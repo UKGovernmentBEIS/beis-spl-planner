@@ -114,23 +114,21 @@
         this.shppWeeks = 0
       },
       updateTotalsForParent: function (parent, week) {
-        if (!week[parent].leave.text || !week[parent].leave.eligible) {
-          return
-        }
-
         const isSpl = week[parent].leave.text === 'shared'
-        if (isSpl) {
-          this.leaveWeeks[parent].spl++
-        } else {
-          this.leaveWeeks[parent].nonSpl++
+
+        if (week[parent].leave.text && week[parent].leave.eligible) {
+          if (isSpl) {
+            this.leaveWeeks[parent].spl++
+          } else {
+            this.leaveWeeks[parent].nonSpl++
+          }
         }
 
-        if(!week[parent].pay.eligible) {
-          return
-        }
-        const isPaternity = !isSpl && (parent === 'secondary')
-        if (week[parent].pay.text && !isPaternity) {
-          this.shppWeeks++
+        if (week[parent].pay.text && week[parent].pay.eligible) {
+          const isPaternity = !isSpl && (parent === 'secondary')
+          if (week[parent].pay.text && !isPaternity) {
+            this.shppWeeks++
+          }
         }
       }
     }
