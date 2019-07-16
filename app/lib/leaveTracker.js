@@ -7,13 +7,13 @@ class LeaveTracker {
     this.initialBlockLength = 0
   }
 
-  next (value, weekNumber) {
-    if (value) {
+  next (isLeave, weekNumber) {
+    if (isLeave) {
       this.firstLeaveWeek = this.firstLeaveWeek !== null ? this.firstLeaveWeek : weekNumber
       this.lastLeaveWeek = weekNumber
     }
     this.initialBlockStarted = this.firstLeaveWeek !== null
-    this.initialBlockEnded = this.initialBlockEnded || (this.initialBlockStarted && !value)
+    this.initialBlockEnded = this.initialBlockEnded || (this.initialBlockStarted && !isLeave)
     if (this.initialBlockStarted && !this.initialBlockEnded) {
       this.initialBlockLength++
     }

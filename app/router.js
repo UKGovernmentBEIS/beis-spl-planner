@@ -280,4 +280,10 @@ router.route(paths.getPath('summary'))
     res.render('summary', { leaveBlocks, payBlocks })
   })
 
+router.route(paths.getPath('cookies'))
+  .get(function (req, res) {
+    const referrer = req.header('Referrer')
+    res.render('privacy/cookies', { referrer })
+  })
+
 module.exports = router

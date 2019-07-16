@@ -2,11 +2,11 @@
   <div class="govuk-grid-row">
     <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full">
       <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :isBirth="isBirth"
-        :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" />
+        :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" :eligibility="eligibility"/>
     </div>
     <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full">
       <div id="sidebar-information">
-        <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :reset="resetIfChanged" />
+        <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :reset="resetIfChanged" :eligibility="eligibility"/>
       </div>
       <button
         class="govuk-button"
@@ -48,7 +48,8 @@
           isBirth: this.isBirth,
           startWeek: this.startWeek,
           primary: this.primary,
-          secondary: this.secondary
+          secondary: this.secondary,
+          eligibility: this.eligibility
         })
         return weeks.leaveAndPay()
       }
