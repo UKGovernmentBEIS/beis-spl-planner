@@ -1,10 +1,10 @@
 <template>
   <div class="govuk-grid-row">
-    <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full">
+    <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full print-full-width">
       <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :isBirth="isBirth"
         :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" :eligibility="eligibility"/>
     </div>
-    <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full">
+    <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full print-hide">
       <div id="sidebar-information">
         <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :reset="resetIfChanged" :eligibility="eligibility"/>
       </div>
@@ -86,11 +86,13 @@
   @import "node_modules/govuk-frontend/settings/colours-applied";
 
   @mixin sticky() {
-    position: sticky;
-    position: -o-sticky;
-    position: -webkit-sticky;
-    position: -moz-sticky;
-    position: -ms-sticky;
+    @media not print {
+      position: sticky;
+      position: -o-sticky;
+      position: -webkit-sticky;
+      position: -moz-sticky;
+      position: -ms-sticky;
+    }
   }
 
   #calendar {

@@ -44,7 +44,7 @@
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week)">
           <th class="govuk-table__cell date" :id="`week-${i}-date`" scope="row">
-            {{ week.day.format('D') }}<br>
+            {{ week.day.format('D') }}<br class="print-hide">
             {{ week.day.format('MMM') }}
           </th>
           <template v-for="(parent, j) in ['primary', 'secondary']">
@@ -79,7 +79,7 @@
                   @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'leave', week)"
                   @mousedown.left="onCellMouseDown($event, parent, 'leave', week)">
                 <div v-if="week[parent].leave.text">
-                  <div class="govuk-body no-margin">
+                  <div class="govuk-body no-margin print-hide">
                     {{ week[parent].pay.text | leaveCellPayLabel(cellIsEligible(week, parent, 'pay')) }}
                   </div>
                   <div class="govuk-body-s no-margin">
@@ -109,8 +109,11 @@
                   @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'pay', week)"
                   @mousedown.left="onCellMouseDown($event, parent, 'pay', week)">
                 <div v-if="week[parent].leave.text || hasNoEligibility(parent)">
-                  <div class="govuk-body govuk-!-font-weight-bold no-margin">
+                  <div class="govuk-body govuk-!-font-weight-bold no-margin print-hide">
                     {{ week[parent].pay.text | payCellLabel(cellIsClickable(week, parent, 'pay')) }}
+                  </div>
+                  <div class="govuk-body no-margin print-show">
+                    {{ week[parent].pay | printPayLabel }}
                   </div>
                 </div>
               </td>
@@ -176,9 +179,19 @@
           return INELIGIBLE
         }
       },
+      printPayLabel: function (pay) {
+        let label;
+        if (pay && pay[0] === '£') {
+          return pay
+        } else if (pay) {
+          return 'Paid'
+        } else {
+          return 'Unpaid'
+        }
+      },
       created: function () {
         window.addEventListener('keydown', this.onWindowMouseDown)
-      },
+      }
     },
     methods: {
       onWindowKeydown: function (event) {

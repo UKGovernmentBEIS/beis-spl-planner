@@ -22,58 +22,58 @@
 {% set STATUTORY_MAXIMUM_PAY = "£" + STATUTORY_MAXIMUM_PAY %}
 
 {% block content %}
-  <div class="govuk-grid-row">
+  <div class="govuk-grid-row ">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
         Plan shared parental leave and pay
       </h1>
-      <p>
+      <p class="print-hide">
         Use the calendar below to plan shared parental leave and pay alongside {{ primaryLeaveType }} and paternity leave and pay.
         The calendar is based on {{ "your child’s birth week" if isBirth else "the week your child starts living with you"}}.
       </p>
-      <p>
+      <p class="print-hide">
         You can click the cells to select the weeks each parent wants to take as leave. You have 52 week of leave to split between you.
       </p>
-      <p>
+      <p class="print-hide">
         The {{ primaryName }} must take 2 weeks of {{ primaryLeaveType }} when the child is {{ "born" if isBirth else "placed with you" }}.
         The partner can take an additional 2 weeks as paternity leave in the first 8 weeks after the child is {{ "born" if isBirth else "placed with you" }}.
       </p>
-      <p>
+      <p class="print-hide">
         If you're taking more than 39 weeks in total, you can also select which leave weeks are paid and unpaid.
         The statutory pay amount is {% if data | hasEitherSalary %} based on your salary and is {% endif %} indicative only.
       </p>
 
-      <h2 class="govuk-heading-s">
+      <h2 class="govuk-heading-s print-hide">
         How much pay you can get
       </h2>
-      <p>
+      <p class="print-hide">
         The {{ primaryName }} gets 90% of their average weekly earnings for the first 6 weeks of statutory {{ primaryLeaveType }} pay.
       </p>
-      <p>
+      <p class="print-hide">
         For the remaining 33 paid weeks, each parent can get the statutory pay rate of {{ STATUTORY_MAXIMUM_PAY }} per week,
         or 90% of their average weekly salary, whichever is lower.
       </p>
-      <h2 class="govuk-heading-s">
+      <h2 class="govuk-heading-s print-hide">
         When you can start
       </h2>
-      <p>
+      <p class="print-hide">
         The {{ primaryName }} can start {{ primaryLeaveType }} leave up to {{ "11" if isBirth else "2" }}
         weeks before the week of {{ "birth" if isBirth else "placement"}}.
         The partner can only take leave after the child is {{ "born" if isBirth else "placed with you" }}.
       </p>
-      <p>
+      <p class="print-hide">
         The {{ primaryName }} and the partner can take leave at the same time, or one after the other.
       </p>
 
-      <h2 class="govuk-heading-s">
+      <h2 class="govuk-heading-s print-hide">
         Blocks of leave
       </h2>
-      <p>
+      <p class="print-hide">
         {{ primaryLeaveType | capitalise }} leave and pay must be taken in one continuous block.
         Shared parental leave can be taken in blocks separated by work or other leave.
       </p>
 
-      <p>
+      <p class="print-hide">
         You’re entitled to three blocks of shared parental leave, more if your employer allows.
       </p>
 
@@ -103,12 +103,13 @@
 
       {{ govukDetails({
         summaryText: "Examples of shared parental leave and pay plans",
-        html: examples
+        html: examples,
+        classes: "print-hide"
       }) }}
     </div>
   </div>
   <form id="leave-and-pay" method="POST">
-    <div class="govuk-grid-row">
+    <div class="govuk-grid-row print-hide">
       <div class="govuk-grid-column-two-thirds-from-desktop">
         <h2 class="govuk-heading-l">
           Your plan
@@ -143,7 +144,7 @@
     {% call appendHiddenFields(data) %}
       {{ calendar(data) }}
     {% endcall %}
-    <div class="govuk-grid-row">
+    <div class="govuk-grid-row print-hide">
       <div class="govuk-grid-column-two-thirds-from-desktop">
         <p>
           If your plan is complete, continue for a summary of key dates and guidance on
@@ -155,6 +156,28 @@
       </div>
     </div>
   </form>
+  <div class="govuk-grid-row print-hide">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <h2 class="govuk-heading-m">
+        Print your plan
+      </h2>
+      {% set printLink %}
+        <a
+          onclick="window.print()"
+          class="govuk-link--no-visited-state govuk-body print-hide"
+          href="#"
+          data-ga-hit-type="print_planner"
+          data-ga-field-event_category="planner"
+          data-ga-field-event_action="print_page"
+        >
+          print your plan
+        </a>
+      {% endset %}
+      <p>
+        You can {{ printLink | safe }} if you want to refer to it later.
+      </p>
+    </div>
+  </div>
 {% endblock %}
 
 {% block bodyEnd %}

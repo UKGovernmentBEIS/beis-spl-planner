@@ -1,0 +1,52 @@
+@media not print {
+  .print-show {
+    display: none;
+  }
+}
+
+@include govuk-media-query($media-type: print) {
+  html {
+    background-color: govuk-colour('white') !important;
+  }
+
+  .govuk-back-link {
+    display: none;
+  }
+
+
+  #calendar {
+    width: 100%;
+  }
+
+  .print-hide {
+    display: none !important;
+  }
+
+  .work-or-other-leave {
+    margin: 0;
+  }
+
+  .col-leave {
+    width: 20% !important;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+
+  .govuk-table {
+    .govuk-table__cell {
+      &.leave, &.pay {
+        height: auto !important;
+      }
+    }
+
+    th {
+      transform: none !important;
+    }
+  }
+
+  footer {
+    page-break-inside: avoid;
+  }
+}
