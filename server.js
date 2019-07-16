@@ -31,6 +31,7 @@ const PORT = (process.env.PORT || 3000)
 const { NODE_ENV } = process.env
 const CSS_PATH = staticify.getVersionedPath('/stylesheets/application.min.css')
 const JAVASCRIPT_PATH = staticify.getVersionedPath('/javascripts/application.js')
+const { SERVICE_NAME } = require('./app/constants')
 
 // Define app views
 const APP_VIEWS = [
@@ -120,7 +121,7 @@ function initialiseTemplateEngine (app) {
   nunjucksEnvironment.addGlobal('css_path', NODE_ENV === 'production' ? CSS_PATH : staticify.getVersionedPath('/stylesheets/application.min.css'))
   nunjucksEnvironment.addGlobal('js_path', NODE_ENV === 'production' ? JAVASCRIPT_PATH : staticify.getVersionedPath('/javascripts/application.js'))
   // TODO add value for service name
-  nunjucksEnvironment.addGlobal('service_name', 'common')
+  nunjucksEnvironment.addGlobal('service_name', SERVICE_NAME)
 
   nunjucksEnvironment.addGlobal('GOOGLE_ANALYTICS_ID', process.env.GOOGLE_ANALYTICS_ID)
 
