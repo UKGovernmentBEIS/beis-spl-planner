@@ -1,5 +1,6 @@
 const Day = require('./lib/day')
 const dataUtils = require('./lib/dataUtils')
+const { SERVICE_NAME } = require('../app/constants')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
@@ -76,6 +77,10 @@ module.exports = function (env) {
     return array.filter(element => !!element)
   }
 
+  function pageTitle (...pageSpecificParts) {
+    return [...pageSpecificParts, capitalise(SERVICE_NAME), 'GOV.UK'].filter(string => string).join(' - ')
+  }
+
   return {
     isYes,
     isNo,
@@ -96,6 +101,7 @@ module.exports = function (env) {
     formatForDisplay,
     isInPast,
     removeEmpty,
+    pageTitle,
     ...require('./macros/hidden-fields/filters')(env)
   }
 }
