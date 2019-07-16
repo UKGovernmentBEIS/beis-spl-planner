@@ -16,6 +16,7 @@
     tag: {
       text: "beta"
     },
+    classes: "print-hide",
     html: 'This is a new service – your <a class="govuk-link" href="/feedback">feedback</a> will help us to improve it.'
   }) }}
 {% endblock %}
@@ -24,7 +25,16 @@
   {{
     govukFooter({
       meta: {
-        html: 'Built by the <a href="#" class="govuk-footer__link">Government Digital Service</a>'
+        items: [
+          {
+            href: "/cookies",
+            text: 'Cookies'
+          },
+          {
+            href: "/feedback",
+            text: 'Feedback'
+          }
+        ]
       }
     })
   }}

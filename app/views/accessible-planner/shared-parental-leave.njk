@@ -1,0 +1,60 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "button/macro.njk" import govukButton %}
+{% from "fieldset/macro.njk" import govukFieldset %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "radios/macro.njk" import govukRadios %}
+
+{% extends "layout.njk" %}
+
+{% set primaryName = (data | primaryName) %}
+{% set remainingLeaveAllowance = (data["leave-blocks"] | remainingLeaveAllowance) %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {% set hint %}
+            <p class="govuk-hint">
+              You have {{ remainingLeaveAllowance | weeks }} of shared parental leave left to take.
+            </p>
+            <p class="govuk-hint">
+              Shared parental leave can be taken by either the {{ primaryName }} or the partner.
+            </p>
+          {% endset %}
+          {{ govukRadios({
+            idPrefix: "shared-parental-leave",
+            name: "leave-blocks[spl-block-planning-order][]",
+            fieldset: {
+              legend: {
+                text: "Do you want to plan a block of shared parental leave?",
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            hint: {
+              html: hint
+            },
+            items: [
+              {
+                value: "primary",
+                text: "Yes, plan a block of shared parental leave for the " + primaryName
+              },
+              {
+                value: "secondary",
+                text: "Yes, plan a block of shared parental leave for the partner"
+              },
+              {
+                value: "done",
+                text: "No, do not plan any more leave"
+              }
+            ]
+          }) }}
+        {% endcall %}
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

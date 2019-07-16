@@ -42,34 +42,48 @@
             {{ isBirth ? 'Birth week' : 'First week the child lives with you' }}
           </th>
         </tr>
-        <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week.number)">
+        <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week)">
           <th class="govuk-table__cell date" :id="`week-${i}-date`" scope="row">
             {{ week.day.format('D') }}<br class="print-hide">
             {{ week.day.format('MMM') }}
           </th>
           <template v-for="(parent, j) in ['primary', 'secondary']">
-            <template v-if="week[parent].disabled">
+            <template v-if="week[parent].outOfPermittedRange">
               <td :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`${parent}-name ${parent}-leave week-${i}-date`"></td>
               <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`${parent}-name ${parent}-pay week-${i}-date`"></td>
             </template>
             <template v-else>
-              <td :key="parent + '-leave'" class="govuk-table__cell leave"
+              <td v-if="disableCell(week, parent)" :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`${parent}-name ${parent}-leave week-${i}-date`">
+                <div class="govuk-body no-margin">
+                    Not eligible for pay
+                  </div>
+                  <div class="govuk-body-s no-margin">
+                    Not eligible for leave
+                  </div>
+              </td>
+              <td v-else :key="parent + '-leave'" class="govuk-table__cell leave"
                   :headers="`${parent}-name ${parent}-leave week-${i}-date`"
-                  :class="week[parent].compulsory ? 'compulsory' : week[parent].leave"
+                  :class="[
+                      week[parent].compulsory ? 'compulsory' : week[parent].leave.text,
+                      {
+                        'ineligible': !cellIsEligible(week, parent, 'leave') && week[parent].leave.text,
+                        'disabled': hasNoEligibility(parent)
+                      }
+                    ]"
                   tabindex="0" :data-row="i" :data-column="2*j"
                   @keydown.tab="onCellTab($event)"
                   @keydown.up.stop.prevent="focusCell(i - 1, 2*j)"
                   @keydown.down.stop.prevent="focusCell(i + 1, 2*j)"
                   @keydown.left.stop.prevent="focusCell(i, 2*j - 1)"
                   @keydown.right.stop.prevent="focusCell(i, 2*j + 1)"
-                  @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'leave', week.number, !week[parent].leave)"
-                  @mousedown.left="onCellMouseDown($event, parent, 'leave', week.number, !week[parent].leave)">
-                <div v-if="week[parent].leave">
+                  @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'leave', week)"
+                  @mousedown.left="onCellMouseDown($event, parent, 'leave', week)">
+                <div v-if="week[parent].leave.text">
                   <div class="govuk-body no-margin print-hide">
-                    {{ week[parent].pay || 'Unpaid' }}
+                    {{ week[parent].pay.text | leaveCellPayLabel(cellIsEligible(week, parent, 'pay')) }}
                   </div>
                   <div class="govuk-body-s no-margin">
-                    {{ week[parent].leave | leaveLabel(week[parent].compulsory) | capitalise }}
+                    {{ week[parent].leave.text | leaveCellLeaveLabel(week[parent].compulsory, cellIsEligible(week, parent, 'leave')) | capitalise }}
                   </div>
                 </div>
                 <div v-else-if="week.number > leaveBoundaries[parent].firstWeek && week.number < leaveBoundaries[parent].lastWeek"
@@ -77,20 +91,26 @@
                     Work or other leave
                 </div>
               </td>
-              <td :key="parent + '-pay'" class="govuk-table__cell pay"
+              <td v-if="disableCell(week, parent)" :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`${parent}-name ${parent}-pay week-${i}-date`">
+                {{ week | payCellLabel(false) }}
+              </td>
+              <td v-else :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
                   :headers="`${parent}-name ${parent}-pay week-${i}-date`"
-                  :class="{ 'unpaid': week[parent].leave && !week[parent].pay }"
+                  :class="{
+                    'unpaid': cellIsEligible(week, parent, 'pay') && week[parent].leave.text && !week[parent].pay.text,
+                    'ineligible': !cellIsEligible(week, parent, 'pay')
+                    }"
                   tabindex="0" :data-row="i" :data-column="2*j + 1"
                   @keydown.tab="onCellTab($event)"
                   @keydown.up.stop.prevent="focusCell(i - 1, 2*j + 1)"
                   @keydown.down.stop.prevent="focusCell(i + 1, 2*j + 1)"
                   @keydown.left.stop.prevent="focusCell(i, 2*j)"
                   @keydown.right.stop.prevent="focusCell(i, 2*j + 2)"
-                  @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'pay', week.number, !week[parent].pay)"
-                  @mousedown.left="onCellMouseDown($event, parent, 'pay', week.number, !week[parent].pay)">
-                <div v-if="week[parent].leave">
+                  @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'pay', week)"
+                  @mousedown.left="onCellMouseDown($event, parent, 'pay', week)">
+                <div v-if="week[parent].leave.text || hasNoEligibility(parent)">
                   <div class="govuk-body govuk-!-font-weight-bold no-margin print-hide">
-                    {{ week[parent].pay ? '✓' : '✗' }}
+                    {{ week[parent].pay.text | payCellLabel(cellIsClickable(week, parent, 'pay')) }}
                   </div>
                   <div class="govuk-body no-margin print-show">
                     {{ week[parent].pay | printPayLabel }}
@@ -109,6 +129,7 @@
   const _ = require('lodash')
   const dlv = require('dlv')
   const isIexplorer = require('is-iexplorer')
+  const { getWeekByNumber } = require('../../../lib/weekUtils')
 
   const LEAVE_LABELS = Object.freeze({
     'maternity': 'maternity leave',
@@ -121,7 +142,7 @@
     data: () => ({
       isIexplorer: isIexplorer,
       isDragging: false,
-      lastDraggedRow: null,
+      lastDraggedWeekNumber: null,
       lastClickedCell: null,
       onDrag: null,
       hideFocus: false
@@ -133,11 +154,30 @@
       weeks: Array,
       leaveBoundaries: Object,
       updateLeaveOrPay: Function,
-      interactive: Boolean
+      interactive: Boolean,
+      eligibility: Object
     },
     filters: {
-      leaveLabel: function (type, compulsory) {
+      leaveCellLeaveLabel: function (type, compulsory, isEligible) {
+        if (!isEligible) {
+          return 'Not eligible for leave'
+        }
         return compulsory ? 'compulsory leave' : LEAVE_LABELS[type]
+      },
+      leaveCellPayLabel: function (payText, isEligible) {
+        if (isEligible) {
+          return payText || 'Unpaid'
+        } else {
+          return 'Not eligible for pay'
+        }
+      },
+      payCellLabel: function (payText, cellIsEligible) {
+        if (cellIsEligible)  {
+          return payText ? '✓' : '✗'
+        } else {
+          const INELIGIBLE = '\u20E0'
+          return INELIGIBLE
+        }
       },
       printPayLabel: function (pay) {
         let label;
@@ -148,10 +188,10 @@
         } else {
           return 'Unpaid'
         }
+      },
+      created: function () {
+        window.addEventListener('keydown', this.onWindowMouseDown)
       }
-    },
-    created: function () {
-      window.addEventListener('keydown', this.onWindowMouseDown)
     },
     methods: {
       onWindowKeydown: function (event) {
@@ -159,26 +199,39 @@
           this.hideFocus = false
         }
       },
-      onCellMouseDown: function (event, parent, property, week, value) {
+      updateCell: function (week, parent, property, value) {
+        if (!week[parent].leave.eligible) {
+          // when not eligible for leave, clicking in leave or pay toggles both
+          this.updateLeaveOrPay(parent, 'leave', week.number, value)
+          this.updateLeaveOrPay(parent, 'pay', week.number, value)
+        } else {
+          this.updateLeaveOrPay(parent, property, week.number, value)
+        }
+      },
+      onCellMouseDown: function (event, parent, property, week) {
         this.hideFocus = true
-        if (!this.interactive) {
+        if (!this.interactive || !this.cellIsClickable(week, parent, property)) {
           return
         }
         this.isDragging = true
         this.lastClickedCell = event.currentTarget
+        const value = !week[parent][property].text
         this.onDrag = function (week) {
-          this.updateLeaveOrPay(parent, property, week, value)
+          if (!this.cellIsClickable(week, parent, property) || this.disableCell(week, parent)) {
+            return
+          }
+          this.updateCell(week, parent, property, value)
         }
-        // Perfom drag action on initial cell.
+        // Perform drag action on initial cell.
         this.onRowMouseEnter(week)
       },
       onRowMouseEnter: function (week) {
         if (this.onDrag) {
-          const rowsToUpdate = this.getRowsToUpdate(week)
-          for (let row of rowsToUpdate) {
-            this.onDrag(row)
+          const weeksToUpdate = this.getWeeksToUpdate(week)
+          for (let week of weeksToUpdate) {
+            this.onDrag(week)
           }
-          this.lastDraggedRow = week
+          this.lastDraggedWeekNumber = week.number
         }
       },
       onCellTab: function (event) {
@@ -188,11 +241,11 @@
           event.stopPropagation()
         }
       },
-      onKeyboardToggleCell: function (parent, property, week, value) {
+      onKeyboardToggleCell: function (parent, property, week) {
         if (this.hideFocus) {
           this.hideFocus = false
-        } else if (this.interactive) {
-          this.updateLeaveOrPay(parent, property, week, value)
+        } else if (this.interactive && this.cellIsClickable(week, parent, property)) {
+          this.updateCell(week, parent, property, !week[parent][property].text)
         }
       },
       focusCell: function (row, column) {
@@ -207,23 +260,44 @@
       },
       endDrag: function () {
         this.isDragging = false
-        this.lastDraggedRow = null
+        this.lastDraggedWeekNumber = null
         this.onDrag = null
         if (this.lastClickedCell) {
           this.lastClickedCell.focus()
           this.lastClickedCell = null
         }
       },
-      getRowsToUpdate: function (currentRow) {
-        if (this.lastDraggedRow === null) {
-          return [currentRow]
+      getWeeksToUpdate: function (currentWeek) {
+        if (this.lastDraggedWeekNumber === null) {
+          return [currentWeek]
         }
+
+        const currentWeekNumber = currentWeek.number
+        const calendar = this
+        function toWeek (number) {
+          return number === currentWeekNumber ? currentWeek : getWeekByNumber(calendar.weeks, number)
+        }
+
         // Avoid skips.
-         if (this.lastDraggedRow < currentRow) {
-          return _.range(this.lastDraggedRow + 1, currentRow + 1)
+        if (this.lastDraggedWeekNumber < currentWeekNumber) {
+          return _.range(this.lastDraggedWeekNumber + 1, currentWeekNumber + 1).map(toWeek)
         } else {
-          return _.range(currentRow, this.lastDraggedRow)
+          return _.range(currentWeekNumber, this.lastDraggedWeekNumber).map(toWeek)
         }
+      },
+      cellIsEligible: function (week, parent, property) {
+        return week[parent][property].eligible === undefined || week[parent][property].eligible
+      },
+      cellIsClickable: function (week, parent, property) {
+        return !this.hasNoEligibility(parent) &&
+          (this.cellIsEligible(week, parent, property) || property !== 'pay')
+      },
+      hasNoEligibility: function (parent) {
+        return Object.values(this.eligibility[parent]).every(eligiblity => !eligiblity)
+      },
+      disableCell: function (week, parent) {
+        return this.hasNoEligibility(parent) ||
+          (parent === 'secondary' && !this.eligibility.secondary.shpp && !this.eligibility.secondary.spl && week.number > 7)
       }
     }
   }
@@ -302,7 +376,7 @@
           &.leave, &.pay {
             cursor: cell;
           }
-          &.disabled, &.compulsory {
+          &.disabled, &.compulsory, &.ineligible.pay {
             cursor: not-allowed;
           }
         }
@@ -399,9 +473,16 @@
         background-color: $colour;
       }
     }
-    .leave.#{$class} + .pay:not(.unpaid) {
+    .leave.#{$class} + .pay:not(.unpaid):not(.disabled) {
       background-color: $colour;
     }
+  }
+
+  .ineligible {
+    background-color: map-get($cell-colours, 'disabled') !important;
+      &.leave:hover:not(.disabled) {
+        background-color: hoverify(map-get($cell-colours, 'disabled')) !important;
+      }
   }
 
   @mixin cellHoverRules() {
@@ -411,7 +492,7 @@
         background-color: hoverify($empty-cell-background-colour);
       }
     }
-    .leave:not(.compulsory):not(.disabled):hover + .pay {
+    .leave:not(.compulsory):not(.disabled):hover + .pay:not(.disabled) {
       background-color: hoverify($empty-cell-background-colour);
     }
     @each $class, $colour in $cell-colours {
@@ -424,7 +505,7 @@
         + .pay:not(.disabled):not(.unpaid):hover {
           background-color: hoverify($colour);
         }
-        &:not(.compulsory):not(.disabled):hover + .pay {
+        &:not(.compulsory):not(.disabled):hover + .pay:not(.disabled) {
           &.unpaid {
             background-color: hoverify(map-get($cell-colours, 'unpaid'))
           }

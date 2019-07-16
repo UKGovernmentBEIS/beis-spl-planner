@@ -26,8 +26,6 @@
         {{ block["secondary"] + " per week" if block["secondary"] else "Unpaid" }}
       {% endset %}
 
-      {% set displayTotal = (data["primary"]["salary-amount"] | length > 0) and (data["secondary"]["salary-amount"] | length > 0) %}
-
       {{ govukTable({
         classes: "app-table--fixed",
         caption: tableCaption,
@@ -52,7 +50,7 @@
           [
             { html: "<strong>Total pay</br>(before tax) </strong>" },
             { html: "<strong>" + block | totalBlockPay + " per week</strong>" }
-          ] if displayTotal
+          ] if data | displayPayBlockTotal
         ]
       }) }}
     {% endfor %}

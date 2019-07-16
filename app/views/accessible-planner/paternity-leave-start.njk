@@ -1,0 +1,84 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "button/macro.njk" import govukButton %}
+{% from "fieldset/macro.njk" import govukFieldset %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "select/macro.njk" import govukSelect %}
+
+{% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {{ super() }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: backPath()
+  }) }}
+{% endblock %}
+
+{% set primaryName = (data | primaryName) %}
+{% set primaryLeaveType = (data | primaryLeaveType) %}
+{% set zeroWeek = (data | zeroWeek) %}
+{% set isBirth = (data | isBirth) %}
+{% set birthOrPlacement = "birth" if isBirth else "placement" %}
+{% set primaryLeaveEnd = data["leave-blocks"]["primary"]["initial"]["end"] %}
+
+{% set options = range(0, 8) %}
+
+{% macro optionText(weekNumber) %}
+  {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
+  {% if (weekNumber === 0) %}
+    (the {{ birthOrPlacement }} week)
+  {% else %}
+    ({{ weekNumber | weeks }} after {{ birthOrPlacement }})
+  {% endif %}
+{% endmacro %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {% set hint %}
+            <p class="govuk-hint">
+              The partner can take up to 2 weeks of paternity leave during the first 8 weeks after placement.
+              The leave must be taken in one block.
+            </p>
+            <p class="govuk-hint">
+              That means that if your first week of paternity leave is {{ zeroWeek | offsetWeeks(7) | formatForDisplay }},
+              you will only be able to take 1 week of paternity leave.
+            </p>
+            {% if (primaryLeaveEnd >= 7) %}
+              <p class="govuk-hint">
+                The {{ primaryName }} is on {{ primaryLeaveType }} leave during the entire 8 week period.
+              </p>
+            {% else %}
+              <p class="govuk-hint">
+                The {{ primaryName }}’s last week of {{ primaryLeaveType }} leave is {{ zeroWeek | offsetWeeks(primaryLeaveEnd) | formatForDisplay }}.
+              </p>
+            {% endif %}
+          {% endset %}
+          {% call govukFieldset({
+            legend: {
+              text: "Which week will be the partner’s first week of paternity leave?",
+              classes: "govuk-fieldset__legend--xl",
+              isPageHeading: true
+            }
+          })%}
+            {{ govukSelect({
+              id: "primary-leave-start",
+              name: "leave-blocks[secondary][initial][start]",
+              hint: {
+                html: hint
+              },
+              items: options | mapValuesToSelectOptions(optionText)
+            }) }}
+            <input type="hidden" name="leave-blocks[secondary][initial][leave]" value="paternity">
+          {% endcall %}
+        {% endcall %}
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

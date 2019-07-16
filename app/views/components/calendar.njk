@@ -1,9 +1,9 @@
 {% from "fieldset/macro.njk" import govukFieldset %}
 
 {% macro leaveAndPayCheckboxes(data, parent) %}
-  {% set startDay = (data | startDay) %}
   {% set minWeek = -11 if (data | isBirth) else -2 %}
   {% set maxWeek = 52 %}
+  {% set zeroWeekDate = (data | startDay | startOfWeek) %}
   {% set isBirth = (data | isBirth) %}
   {% set weekZeroName = "birth" if isBirth else "placement" %}
   <div class="govuk-form-group">
@@ -13,7 +13,7 @@
         classes: "govuk-fieldset__legend--m"
       }
     }) %}
-      <div class="govuk-checkboxes" data-module="checkboxes">
+      <div id="calendar-checkboxes" class="govuk-checkboxes" data-module="checkboxes">
         <div class="govuk-checkboxes" data-module="checkboxes">
           {% for i in range(minWeek, maxWeek + 1) %}
             {% set cumplsoryLeave = (parent === 'primary' and (i === 0 or i === 1)) %}
@@ -22,7 +22,7 @@
             {% set leaveName = parent + '[leave]' %}
             {% set payId = parent + '-pay_' + i %}
             {% set payName = parent + '[pay]' %}
-            {% set date = (startDay | offsetWeeks(i)) %}
+            {% set date = (zeroWeekDate | offsetWeeks(i)) %}
             {% if (i === minWeek) or ((date | formatDate("D") | int) <= 7) %}
               <h4 class="govuk-heading-s govuk-!-padding-1 background-grey">
                 {{ date | formatDate("MMMM YYYY") }}
@@ -74,10 +74,7 @@
 {% endmacro %}
 
 {% macro calendar(data) %}
-  <div id="accessibility-switch">
-    {# Added via Vue when the JavaScript calendar is displayed. #}
-  </div>
-  <div id="calendar-checkboxes" class="govuk-grid-row accessible-layout-only">
+  <div class="govuk-grid-row js-hide">
     <div class="govuk-grid-column-one-half">
       {{ leaveAndPayCheckboxes(data, "primary") }}
       {# Compulsory leave weeks are disabled checkboxes, so we need to include the values manually. #}

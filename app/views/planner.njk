@@ -2,11 +2,14 @@
 {% from "button/macro.njk" import govukButton %}
 {% from "details/macro.njk" import govukDetails %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "inset-text/macro.njk" import govukInsetText %}
 {% from "components/calendar.njk" import calendar %}
 
 {% extends "layout.njk" %}
 
 {% block beforeContent %}
+  {{ super() }}
+
   {{ govukBackLink({
     text: "Back",
     href: backPath()
@@ -25,65 +28,54 @@
         Plan shared parental leave and pay
       </h1>
       <p class="print-hide">
-        Use this calendar to plan <a href="https://www.gov.uk/shared-parental-leave-and-pay">shared parental leave and pay</a>
-        alongside <a href="https://www.gov.uk/{{ primaryLeaveType }}-pay-leave">{{ primaryLeaveType }}</a> and <a href="https://www.gov.uk/paternity-pay-leave">paternity</a> leave and pay.
+        Use the calendar below to plan shared parental leave and pay alongside {{ primaryLeaveType }} and paternity leave and pay.
         The calendar is based on {{ "your child’s birth week" if isBirth else "the week your child starts living with you"}}.
       </p>
       <p class="print-hide">
-        Click in the calendar to select each week you and your partner want to take as leave.
+        You can click the cells to select the weeks each parent wants to take as leave. You have 52 week of leave to split between you.
       </p>
       <p class="print-hide">
-        If you’re taking more than 37 weeks of leave, you can also select which leave weeks are paid and unpaid. The statutory pay amount is indicative only.
+        The {{ primaryName }} must take 2 weeks of {{ primaryLeaveType }} when the child is {{ "born" if isBirth else "placed with you" }}.
+        The partner can take an additional 2 weeks as paternity leave in the first 8 weeks after the child is {{ "born" if isBirth else "placed with you" }}.
+      </p>
+      <p class="print-hide">
+        If you're taking more than 39 weeks in total, you can also select which leave weeks are paid and unpaid.
+        The statutory pay amount is {% if data | hasEitherSalary %} based on your salary and is {% endif %} indicative only.
       </p>
 
-      {% set policyInfo %}
-        <p class="print-hide">If you’re using the visual layout, these rules are built into the calendar.</p>
-        <h2 class="govuk-heading-s print-hide">
-          How many weeks of leave and pay parents can take
-        </h2>
-        <p class="print-hide">
-          Shared parental leave and pay is created from unused {{ primaryLeaveType }} leave and pay.
-          The {{ primaryName }} must take 2 weeks of {{ primaryLeaveType }} leave and pay straight
-          after the child’s {{ "birth" if isBirth else "placement"}}.
-        </p>
-        <p class="print-hide">
-          This leaves 50 weeks of leave and 37 weeks of statutory pay for parents to split between them.
-        </p>
-        <p class="print-hide">
-          The partner can take two weeks of paternity leave in addition to this.
-        </p>
-        <h2 class="govuk-heading-s">
-          How much pay can you get
-        </h2>
-        <p class="print-hide">
-          The {{ primaryName }} will receive 90% of their average weekly earnings for the first 6 weeks of
-          statutory {{ primaryLeaveType }} pay, then {{ STATUTORY_MAXIMUM_PAY }} per week or 90% of their
-          average weekly earnings, whichever is lower.
-        </p>
-        <p class="print-hide">
-          The parent claiming statutory shared parental pay will receive {{ STATUTORY_MAXIMUM_PAY }} per week,
-          or 90% of their average weekly earnings, whichever is lower.
-        </p>
-        <p class="print-hide">
-          If the partner is claiming statutory paternity pay, they will receive {{ STATUTORY_MAXIMUM_PAY }} per week,
-          or 90% of their average weekly earnings, whichever is lower.
-        </p>
-        <h2 class="govuk-heading-s">
-          When can you start
-        </h2>
-        <p class="print-hide">
-          The {{ primaryName }} can start {{ primaryLeaveType }} leave up to {{ "11" if isBirth else "2" }}
-          weeks before the week of {{ "birth" if isBirth else "placement"}}.
-        </p>
-        <p class="print-hide">
-          The partner can start shared parental leave and pay while the {{ primaryName }} is on {{ primaryLeaveType }}
-          leave and pay, but only after the child is {{ "born" if isBirth else "placed" }}.
-        </p>
-        <p class="print-hide">
-          Both the {{ primaryName }} and the partner can take shared parental leave in blocks,
-          either at the same time or one after the other.
-        </p>
-      {% endset %}
+      <h2 class="govuk-heading-s print-hide">
+        How much pay you can get
+      </h2>
+      <p class="print-hide">
+        The {{ primaryName }} gets 90% of their average weekly earnings for the first 6 weeks of statutory {{ primaryLeaveType }} pay.
+      </p>
+      <p class="print-hide">
+        For the remaining 33 paid weeks, each parent can get the statutory pay rate of {{ STATUTORY_MAXIMUM_PAY }} per week,
+        or 90% of their average weekly salary, whichever is lower.
+      </p>
+      <h2 class="govuk-heading-s print-hide">
+        When you can start
+      </h2>
+      <p class="print-hide">
+        The {{ primaryName }} can start {{ primaryLeaveType }} leave up to {{ "11" if isBirth else "2" }}
+        weeks before the week of {{ "birth" if isBirth else "placement"}}.
+        The partner can only take leave after the child is {{ "born" if isBirth else "placed with you" }}.
+      </p>
+      <p class="print-hide">
+        The {{ primaryName }} and the partner can take leave at the same time, or one after the other.
+      </p>
+
+      <h2 class="govuk-heading-s print-hide">
+        Blocks of leave
+      </h2>
+      <p class="print-hide">
+        {{ primaryLeaveType | capitalise }} leave and pay must be taken in one continuous block.
+        Shared parental leave can be taken in blocks separated by work or other leave.
+      </p>
+
+      <p class="print-hide">
+        You’re entitled to three blocks of shared parental leave, more if your employer allows.
+      </p>
 
       {% set examples %}
         <span class="govuk-hint">
@@ -110,12 +102,6 @@
       {% endset %}
 
       {{ govukDetails({
-        summaryText: "How shared parental, " + primaryLeaveType + " and paternity leave and pay work",
-        html: policyInfo,
-        classes: "print-hide"
-      }) }}
-
-      {{ govukDetails({
         summaryText: "Examples of shared parental leave and pay plans",
         html: examples,
         classes: "print-hide"
@@ -125,11 +111,33 @@
   <form id="leave-and-pay" method="POST">
     <div class="govuk-grid-row print-hide">
       <div class="govuk-grid-column-two-thirds-from-desktop">
-        <h2 class="govuk-heading-m">
+        <h2 class="govuk-heading-l">
           Your plan
         </h2>
+        {% set accessibleViewInsetHtml %}
+          <p class="govuk-body-s">
+            Below is the interactive calendar layout of the leave planner.
+          </p>
+          <p class="govuk-body-s">
+            If you prefer, you can instead answer questions about your leave to build your plan.
+          </p>
+          <p class="govuk-body-s">
+            This is particularly recommended for users of assistive technology.
+          </p>
+          <p class="govuk-body-s">
+            <a href="/planner/maternity-leave/start" class="govuk-body-s">
+              Use question based planner
+            </a>
+          </p>
+        {% endset %}
+        {{ govukInsetText({
+          html: accessibleViewInsetHtml
+        }) }}
         <p>
-          Create your own leave plan in this calendar.
+          Click in the calendar to create your leave plan. There are separate columns for the {{ primaryName }} and the partner and for leave and pay.
+        </p>
+        <p>
+          After you’ve selected leave and pay for each parent, continue for a summary of key dates and how to give notice.
         </p>
       </div>
     </div>

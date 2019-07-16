@@ -1,0 +1,71 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "button/macro.njk" import govukButton %}
+{% from "fieldset/macro.njk" import govukFieldset %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "radios/macro.njk" import govukRadios %}
+
+{% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {{ super() }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: backPath()
+  }) }}
+{% endblock %}
+
+{% set birthOrPlacement = "birth" if isBirth else "placement" %}
+{% set remainingLeaveAllowance = (data["leave-blocks"] | remainingLeaveAllowance) %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {% set hint %}
+            <p class="govuk-hint">
+              The partner can take up to 2 weeks of paternity leave during the first 8 weeks after {{ birthOrPlacement }}.
+              The leave must be taken in one block.
+            </p>
+            {% if (remainingLeaveAllowance > 0) %}
+              <p class="govuk-hint">
+                The paternity leave allowance is separate from the shared parental leave allowance.
+                The partner’s shared parental leave can be planned later.
+              </p>
+            {% endif %}
+          {% endset %}
+          {{ govukRadios({
+            idPrefix: "changed-name",
+            name: "leave-blocks[secondary][is-taking-paternity-leave]",
+            fieldset: {
+              legend: {
+                text: "Will the partner take any paternity leave?",
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            hint: {
+              html: hint
+            },
+            items: [
+              {
+                value: "yes",
+                text: "Yes, the partner will take paternity leave",
+                checked: data["leave-blocks"]["secondary"]["is-taking-paternity-leave"] | isYes
+              },
+              {
+                value: "no",
+                text: "No, the partner will not take paternity leave",
+                checked: data["leave-blocks"]["secondary"]["is-taking-paternity-leave"] | isNo
+              }
+            ]
+          }) }}
+        {% endcall %}
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
