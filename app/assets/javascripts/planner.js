@@ -1,15 +1,13 @@
-/* global localStorage */
+/* global Event */
 
 const _ = require('lodash')
 const Vue = require('vue/dist/vue.common')
 const isIexplorer = require('is-iexplorer')
 const Stickyfill = require('stickyfill')
-const AccessibileLayoutSwitch = require('./components/AccessibleLayoutSwitch.vue')
 const Planner = require('./components/Planner.vue')
 const { parseParentFromPlanner, parseStartDay } = require('../../utils')
 const dataUtils = require('../../../common/lib/dataUtils')
-
-const USE_ACCESSIBLE_LAYOUT = 'use_accessible_layout'
+const { parseEligibilityFromData } = require('../../lib/eligibility')
 
 Vue.filter('capitalise', function (value) {
   if (!value) {
@@ -20,12 +18,11 @@ Vue.filter('capitalise', function (value) {
 })
 
 function init (data, interactive) {
-  let useAccessibleLayout = localStorage.getItem(USE_ACCESSIBLE_LAYOUT) === 'yes'
-
   const isBirth = dataUtils.isBirth(data)
   const startWeek = parseStartDay(data).startOfWeek()
   const primary = parseParentFromPlanner(data, 'primary')
   const secondary = parseParentFromPlanner(data, 'secondary')
+  const eligibility = parseEligibilityFromData(data)
   const planner = new (Vue.extend(Planner))({
     el: '#planner',
     data: {
@@ -34,43 +31,22 @@ function init (data, interactive) {
       primary,
       secondary,
       interactive,
-      useAccessibleLayout,
-      updateLeaveOrPay
+      updateLeaveOrPay,
+      reset,
+      eligibility
     },
     mounted: function () {
       patchStickyStylingOnInternetExplorer()
     }
   })
 
-  const accessibleLayoutSwitch = new (Vue.extend(AccessibileLayoutSwitch))({
-    el: '#accessibility-switch',
-    data: {
-      useAccessibleLayout,
-      toggleAccessibleLayout
-    }
-  })
-
-  toggleAccessibleLayout(useAccessibleLayout)
-
   const minimumWeek = isBirth ? -11 : -2
   function updateLeaveOrPay (parent, property, week, value) {
     if (property === 'leave') {
-      updateLeave(parent, week, value, minimumWeek)
+      updateLeave(parent, week, value, minimumWeek, eligibility)
     } else if (property === 'pay') {
-      updatePay(parent, week, value, minimumWeek)
+      updatePay(parent, week, value, minimumWeek, eligibility)
     }
-  }
-
-  function toggleAccessibleLayout (value) {
-    if (value === true || value === false) {
-      useAccessibleLayout = value
-    } else {
-      useAccessibleLayout = !useAccessibleLayout
-    }
-    localStorage.setItem(USE_ACCESSIBLE_LAYOUT, useAccessibleLayout ? 'yes' : 'no')
-    accessibleLayoutSwitch.useAccessibleLayout = useAccessibleLayout
-    planner.useAccessibleLayout = useAccessibleLayout
-    document.body.classList.toggle('use-accessible-layout', useAccessibleLayout)
   }
 
   if (interactive) {
@@ -84,19 +60,29 @@ function init (data, interactive) {
       })
     }
   }
+
+  function reset () {
+    const parents = ['primary', 'secondary']
+    const weekNumbers = _.range(minimumWeek, 52)
+    parents.forEach(parent => {
+      weekNumbers.forEach(weekNumber => {
+        updateLeaveOrPay(parent, 'leave', weekNumber, false)
+      })
+    })
+  }
 }
 
-function updateLeave (parent, week, value, minimumWeek) {
+function updateLeave (parent, week, value, minimumWeek, eligibility) {
   // Maternity / adoption leave taken before the 0th week must be in a continuous block.
   let weeksToUpdate
-  if (week >= 0) {
-    weeksToUpdate = [week]
-  } else if (value) {
-    // Add leave from selected week to 0th week.
-    weeksToUpdate = _.range(week, 0)
+  const hasNoSharedEligibility = !eligibility[parent].spl && !eligibility[parent].shpp
+
+  if (week < 0) {
+    weeksToUpdate = getLeaveWeeksToUpdateWhenBeforeZeroWeek(week, value, minimumWeek)
+  } else if (hasNoSharedEligibility) {
+    weeksToUpdate = getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity(week, parent, minimumWeek, value)
   } else {
-    // Remove leave before selected week.
-    weeksToUpdate = _.range(minimumWeek, week + 1)
+    weeksToUpdate = [week]
   }
 
   for (let weekToUpdate of weeksToUpdate) {
@@ -108,31 +94,104 @@ function updateLeave (parent, week, value, minimumWeek) {
   }
 }
 
-function updatePay (parent, week, value, minimumWeek) {
+function getLeaveWeeksToUpdateWhenBeforeZeroWeek (week, value, minimumWeek) {
+  if (value) {
+    // Add leave from selected week to earliestSelectedWeek week.
+    return _.range(week, 0)
+  } else {
+    // Remove leave before selected week.
+    return _.range(minimumWeek, week + 1)
+  }
+}
+
+function getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity (week, parent, minimumWeek, value) {
+  const checkboxes = document.querySelectorAll(`input[type=checkbox][name="${parent}[leave]"]:checked`)
+  const earliestSelectedCheckbox = _.first(checkboxes)
+  const earliestSelectedWeek = earliestSelectedCheckbox && earliestSelectedCheckbox.value < week ? parseInt(earliestSelectedCheckbox.value) : week
+  const latestSelectedCheckbox = _.last(checkboxes)
+  const latestSelectedWeek = latestSelectedCheckbox && latestSelectedCheckbox.value > week ? parseInt(latestSelectedCheckbox.value) : week
+  if (week === earliestSelectedWeek) {
+    if (week < latestSelectedWeek && value) {
+      // if later leave exists fill in all cells up to later leave
+      return _.range(week, latestSelectedWeek + 1)
+    } else {
+      // only toggle selected week if clicking on first week
+      return [week]
+    }
+  } else if (value) {
+    // add leave from earliestSelectedWeek to selected week
+    return _.range(earliestSelectedWeek, latestSelectedWeek + 1)
+  } else {
+    // remove leave after selected week
+    let maximumPeriodDisplayedAsInitialLeave = parent === 'primary' ? 53 : 8
+    return _.range(week, maximumPeriodDisplayedAsInitialLeave)
+  }
+}
+
+function updatePay (parent, week, value, minimumWeek, eligibility) {
   if (value && !getCheckbox(parent, 'leave', week).checked) {
     // Pay cannot be added without leave.
-    updateLeave(parent, week, true)
+    updateLeave(parent, week, true, minimumWeek, eligibility)
     return
   }
 
-  // Maternity / adoption pay must be taken in a continuous block from the start
-  // of the maternity / adoption leave until the pay is curtailed.
-  // After the end of compulsory leave, it is valid for non-continuous pay to be
-  // taken as Statutory Shared Parental Pay.
   let weeksToUpdate
   const lastCompulsoryWeek = 1
-  if (parent !== 'primary' || week > lastCompulsoryWeek) {
-    weeksToUpdate = [week]
-  } else if (value) {
-    // Add pay from earliest week.
-    weeksToUpdate = _.range(minimumWeek, week + 1)
+  if (parent === 'secondary') {
+    weeksToUpdate = getSecondaryPayWeeksToUpdate(week, parent, value, eligibility)
+  } else if (week < lastCompulsoryWeek) {
+    weeksToUpdate = getPrimaryPayWeeksToUpdateBeforeCompulsoryWeeks(week, value, minimumWeek, eligibility, lastCompulsoryWeek)
   } else {
-    // Remove pay until end of compulsory leave.
-    weeksToUpdate = _.range(week, lastCompulsoryWeek + 1)
+    weeksToUpdate = getPrimaryPayWeeksToUpdateAfterCompulsoryWeeks(week, value, minimumWeek, eligibility)
   }
 
   for (let weekToUpdate of weeksToUpdate) {
     togglePay(parent, weekToUpdate, value)
+  }
+}
+
+function getSecondaryPayWeeksToUpdate (week, parent, value, eligibility) {
+  const lastPossiblePaternityLeave = 7
+  const hasNoSharedEligibility = !eligibility.secondary.shpp && !eligibility.secondary.spl
+  if (hasNoSharedEligibility) {
+    if (value) {
+      // add pay to all cells before selected
+      const earliestSelectedCheckbox = document.querySelector(`input[type=checkbox][name="${parent}[leave]"]:checked`)
+      const earliestSelectedWeek = earliestSelectedCheckbox && earliestSelectedCheckbox.value < week ? parseInt(earliestSelectedCheckbox.value) : week
+      return _.range(earliestSelectedWeek, week + 1)
+    } else {
+      // Remove pay for all cells after selected
+      return _.range(week, lastPossiblePaternityLeave + 1)
+    }
+  } else {
+    return [week]
+  }
+}
+
+function getPrimaryPayWeeksToUpdateBeforeCompulsoryWeeks (week, value, minimumWeek, eligibility, lastCompulsoryWeek) {
+  // Maternity / adoption pay must be taken in a continuous block from the start
+  // of the maternity / adoption leave until the pay is curtailed.
+  if (value) {
+    // Add pay from earliest week.
+    return _.range(minimumWeek, week + 1)
+  } else {
+    // Remove pay until end of compulsory leave, or if not shpp eligible remove all pay.
+    const finalWeekToUpdate = eligibility.primary.shpp ? lastCompulsoryWeek + 1 : 53
+    return _.range(week, finalWeekToUpdate)
+  }
+}
+
+function getPrimaryPayWeeksToUpdateAfterCompulsoryWeeks (week, value, minimumWeek, eligibility) {
+  // After the end of compulsory leave, it is valid for non-continuous pay to be
+  // taken as Statutory Shared Parental Pay.
+  if (eligibility.primary.shpp) {
+    return [week]
+  } else if (value) {
+    // Add pay from earliest week.
+    return _.range(minimumWeek, week + 1)
+  } else {
+    // Remove all pay until end of calendar.
+    return _.range(week, 53)
   }
 }
 
@@ -154,8 +213,7 @@ function toggleCheckbox (parent, property, week, value) {
     return false
   }
   checkbox.checked = value
-  const changeEvent = document.createEvent('HTMLEvents')
-  changeEvent.initEvent('change', false, true)
+  const changeEvent = new Event('change', { cancelable: true })
   checkbox.dispatchEvent(changeEvent)
   return true
 }

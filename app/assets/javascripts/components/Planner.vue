@@ -1,16 +1,29 @@
 <template>
   <div class="govuk-grid-row">
-    <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full" v-if="!useAccessibleLayout">
+    <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full">
       <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :isBirth="isBirth"
-        :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" />
+        :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" :eligibility="eligibility"/>
     </div>
-    <div id="sidebar" class="govuk-grid-column-full" :class="{ 'govuk-grid-column-one-third-from-desktop': !useAccessibleLayout }">
-      <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" />
+    <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full">
+      <div id="sidebar-information">
+        <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :reset="resetIfChanged" :eligibility="eligibility"/>
+      </div>
+      <button
+        class="govuk-button"
+        type="button"
+        @click="resetIfChanged()"
+        data-ga-hit-type="planner_reset"
+        data-ga-field-event_category="planner"
+        data-ga-field-event_action="reset"
+      >
+        Reset
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+  const { isEqual } = require('lodash')
   const Calendar = require('./Calendar.vue')
   const Sidebar = require('./Sidebar.vue')
   const Weeks = require('../../../lib/weeks')
@@ -35,7 +48,8 @@
           isBirth: this.isBirth,
           startWeek: this.startWeek,
           primary: this.primary,
-          secondary: this.secondary
+          secondary: this.secondary,
+          eligibility: this.eligibility
         })
         return weeks.leaveAndPay()
       }
@@ -49,6 +63,20 @@
           const index = weeks.indexOf(week)
           weeks.splice(index, 1)
         }
+      },
+      resetIfChanged: function () {
+        const warning = "This will overwrite any leave or pay which you have already entered in the calender."
+        if (this.hasBeenEdited() && window.confirm(warning)) {
+          this.reset()
+        }
+      },
+      hasBeenEdited: function () {
+        return !(
+          isEqual(this.primary.leaveWeeks, [0, 1]) &&
+          isEqual(this.primary.payWeeks, [0, 1]) &&
+          this.secondary.leaveWeeks.length === 0 &&
+          this.secondary.payWeeks.length === 0
+        )
       }
     }
   }
@@ -88,7 +116,14 @@
   #sidebar {
     @include sticky();
     top: 10px;
-    max-height: calc(100vh - 20px);
-    overflow-y: auto;
+
+    #sidebar-information {
+      max-height: calc(100vh - 65px);
+      overflow-y: auto;
+    }
+
+    .govuk-button {
+      margin-top: 5px;
+    }
   }
 </style>

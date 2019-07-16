@@ -1,6 +1,9 @@
+const delve = require('dlv')
+const _ = require('lodash')
 const Weeks = require('./weeks')
 const { parseParentFromPlanner, parseStartDay } = require('../utils')
 const dataUtils = require('../../common/lib/dataUtils')
+const { parseEligibilityFromData } = require('./eligibility')
 
 function getLeaveBlocks (weeks) {
   return {
@@ -15,6 +18,14 @@ function getParentLeaveBlocks (weeks, parent) {
     spl: []
   }
 
+  function getLeaveIfEligible (parentWeek) {
+    if (parentWeek.leave.eligible) {
+      return parentWeek.leave.text || undefined
+    } else {
+      return undefined
+    }
+  }
+
   function store (block) {
     if (block && ['maternity', 'paternity', 'adoption'].includes(block.leave)) {
       blocks.initial = block
@@ -23,27 +34,27 @@ function getParentLeaveBlocks (weeks, parent) {
     }
   }
 
-  function newBlock (week) {
-    return { start: week.number, end: week.number, leave: week.leave }
+  function newBlock (parentLeaveWeek) {
+    return { start: parentLeaveWeek.number, end: parentLeaveWeek.number, leave: parentLeaveWeek.leave }
   }
 
   const parentLeaveWeeks = weeks
     .map(week => {
-      return { number: week.number, leave: week[parent].leave }
+      return { number: week.number, leave: getLeaveIfEligible(week[parent]) }
     })
-    .sort((week1, week2) => week1.number - week2.number)
     .filter(week => week.leave)
+    .sort((week1, week2) => week1.number - week2.number)
 
   let currentBlock = null
-  for (let week of parentLeaveWeeks) {
+  for (let parentLeaveWeek of parentLeaveWeeks) {
     if (currentBlock === null) {
-      currentBlock = newBlock(week)
+      currentBlock = newBlock(parentLeaveWeek)
     }
-    if (week.leave !== currentBlock.leave || week.number - currentBlock.end > 1) {
+    if (parentLeaveWeek.leave !== currentBlock.leave || parentLeaveWeek.number - currentBlock.end > 1) {
       store(currentBlock)
-      currentBlock = newBlock(week)
+      currentBlock = newBlock(parentLeaveWeek)
     } else {
-      currentBlock.end = week.number
+      currentBlock.end = parentLeaveWeek.number
     }
   }
 
@@ -57,17 +68,27 @@ function getParentLeaveBlocks (weeks, parent) {
 function getPayBlocks (weeks) {
   const blocks = []
 
+  function getPayIfEligible (week, parent) {
+    if (week[parent].pay.eligible) {
+      return week[parent].pay.text || undefined
+    } else {
+      return undefined
+    }
+  }
+
   function newBlock (week) {
     return { start: week.number, end: week.number, primary: week.primary, secondary: week.secondary }
   }
 
   const payWeeks = weeks
-    .filter(week => week.primary.pay || week.secondary.pay)
+    .filter(week => {
+      return getPayIfEligible(week, 'primary') || getPayIfEligible(week, 'secondary')
+    })
     .map(week => {
       return {
         number: week.number,
-        primary: week.primary.pay,
-        secondary: week.secondary.pay
+        primary: getPayIfEligible(week, 'primary'),
+        secondary: getPayIfEligible(week, 'secondary')
       }
     })
 
@@ -96,11 +117,20 @@ function getPayBlocks (weeks) {
 }
 
 function getBlocks (data) {
+  const leaveBlocksDataObject = data['leave-blocks']
+  if (leaveBlocksDataObject) {
+    return {
+      leaveBlocks: parseLeaveBlocks(leaveBlocksDataObject),
+      payBlocks: []
+    }
+  }
+
   const weeks = new Weeks({
     isBirth: dataUtils.isBirth(data),
     startWeek: parseStartDay(data),
     primary: parseParentFromPlanner(data, 'primary'),
-    secondary: parseParentFromPlanner(data, 'secondary')
+    secondary: parseParentFromPlanner(data, 'secondary'),
+    eligibility: parseEligibilityFromData(data)
   })
     .leaveAndPay()
     .weeks
@@ -109,6 +139,74 @@ function getBlocks (data) {
     leaveBlocks: getLeaveBlocks(weeks),
     payBlocks: getPayBlocks(weeks)
   }
+}
+
+function parseLeaveBlocks (leaveBlocksDataObject) {
+  const blocks = {
+    primary: {
+      initial: parseInitialLeaveBlock(leaveBlocksDataObject, 'primary'),
+      spl: parseSplLeaveBlocks(leaveBlocksDataObject, 'primary')
+    },
+    secondary: {
+      initial: parseInitialLeaveBlock(leaveBlocksDataObject, 'secondary'),
+      spl: parseSplLeaveBlocks(leaveBlocksDataObject, 'secondary')
+    }
+  }
+  return blocks
+}
+
+function parseInitialLeaveBlock (leaveBlocksDataObject, parent) {
+  const blockDataObject = delve(leaveBlocksDataObject, [parent, 'initial'], null)
+  return parseLeaveBlock(blockDataObject)
+}
+
+function parseSplLeaveBlocks (leaveBlocksDataObject, parent) {
+  const splLeaveBlocksDataObject = delve(leaveBlocksDataObject, [parent, 'spl'], {})
+  const blockDataObjects = []
+
+  // The SPL object in data has the indexes the blocks with keys like "_0", "_1", "_2", etc.
+  let i = 0
+  let block
+  const getBlock = n => splLeaveBlocksDataObject[`_${n}`]
+  while (isBlockDataObject(block = getBlock(i++))) {
+    blockDataObjects.push(block)
+  }
+
+  return blockDataObjects.map(obj => parseLeaveBlock(obj))
+}
+
+function parseLeaveBlock (obj) {
+  if (!isBlockDataObject(obj)) {
+    return null
+  }
+  return {
+    leave: obj.leave,
+    start: parseInt(obj.start),
+    end: parseInt(obj.end)
+  }
+}
+
+function getRemainingLeaveAllowance (leaveBlocks) {
+  const initialPrimaryLeave = delve(leaveBlocks, 'primary.initial', {})
+  const primarySpl = delve(leaveBlocks, 'primary.spl', [])
+  const secondarySpl = delve(leaveBlocks, 'secondary.spl', [])
+  const blocks = [initialPrimaryLeave, ...primarySpl, ...secondarySpl]
+  const totalAllowanceUsed = blocks.reduce((total, block) => total + getBlockLength(block), 0)
+  return 52 - totalAllowanceUsed
+}
+
+function getBlockLength (block) {
+  if (!block || isNaN(block.start) || isNaN(block.end)) {
+    return 0
+  }
+  return parseInt(block.end) - parseInt(block.start) + 1
+}
+
+function isBlockDataObject (obj) {
+  return _.isObject(obj) &&
+    obj.leave !== undefined &&
+    !isNaN(parseInt(obj.start)) &&
+    !isNaN(parseInt(obj.end))
 }
 
 function categorisePayBlocksByType (leaveBlocksSet, payBlocksSet) {
@@ -183,5 +281,8 @@ function getAdjustedPayBlocks (leaveBlocks, payBlocks) {
 
 module.exports = {
   getBlocks,
-  getAdjustedPayBlocks
+  getAdjustedPayBlocks,
+  parseLeaveBlocks,
+  getRemainingLeaveAllowance,
+  getBlockLength
 }

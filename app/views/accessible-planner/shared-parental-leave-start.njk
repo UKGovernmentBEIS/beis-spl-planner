@@ -1,0 +1,72 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "button/macro.njk" import govukButton %}
+{% from "fieldset/macro.njk" import govukFieldset %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "select/macro.njk" import govukSelect %}
+
+{% extends "layout.njk" %}
+
+{% set parent = (data["leave-blocks"]["spl-block-planning-order"] | castArray | last) %}
+{% set index = (data["leave-blocks"][parent]["spl"] | length) - 1 %}
+
+{% set parentName = (data | parentName(parent)) %}
+{% set zeroWeek = (data | zeroWeek) %}
+{% set isBirth = (data | isBirth) %}
+{% set birthOrPlacement = "birth" if isBirth else "placement" %}
+
+{% set endOfInitialLeave = (data["leave-blocks"][parent]["initial"]["end"] | int) %}
+{% set endOfLastSplBlock = (data["leave-blocks"][parent]["spl"]["_" + (index - 1)]["end"] | int) %}
+{% set endOfLastBlock = endOfLastSplBlock or endOfInitialLeave or -1 %}
+{% set options = range(endOfLastBlock + 1, 52) %}
+
+{% macro optionText(weekNumber) %}
+  {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
+  {% if endOfLastBlock === -1 %}
+    {% if weekNumber === 0 %}
+      (the {{ birthOrPlacement }} week)
+    {% else %}
+      ({{ weekNumber | weeks }} after {{ birthOrPlacement }})
+    {% endif %}
+  {% else %}
+    ({{ (weekNumber - endOfLastBlock) | weeks }} after the {{ parentName }}’s last leave block)
+  {% endif %}
+{% endmacro %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {% set hint %}
+            <p class="govuk-hint">
+              {% if endOfLastBlock === -1 %}
+                The {{ parentName }} has not yet taken any leave.
+              {% else %}
+                The {{ parentName }}’s last block of leave ended with the week of {{ zeroWeek | offsetWeeks(endOfLastBlock) | formatForDisplay }}.
+              {% endif %}
+            </p>
+          {% endset %}
+          {% call govukFieldset({
+            legend: {
+              text: "Which week will be the " + parentName + "’s first week of shared parental leave in this block?",
+              classes: "govuk-fieldset__legend--xl",
+              isPageHeading: true
+            }
+          })%}
+            {{ govukSelect({
+              id: "shared-parental-leave-start",
+              name: "leave-blocks[" + parent + "][spl][_" + index + "][start]",
+              hint: {
+                html: hint
+              },
+              items: options | mapValuesToSelectOptions(optionText)
+            }) }}
+          {% endcall %}
+        {% endcall %}
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
