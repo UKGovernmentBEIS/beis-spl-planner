@@ -2,6 +2,9 @@
 {% from "tabs/macro.njk" import govukTabs %}
 
 {% extends "layout.njk" %}
+{% block pageTitle -%}
+  {{ "Leave and pay summaries" | pageTitle }}
+{%- endblock %}
 
 {% block beforeContent %}
   {{ super() }}

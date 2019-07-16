@@ -1,6 +1,8 @@
 {% extends "layout.njk" %}
 
-{% block pageTitle %}Page not found - {{ service_name | capitalise }} - GOV.UK{% endblock %}
+{% block pageTitle %}
+  {{ "Page not found" | pageTitle }}
+{% endblock %}
 
 {% block content %}
   <div class="govuk-grid-row">

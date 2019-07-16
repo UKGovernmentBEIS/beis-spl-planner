@@ -7,6 +7,10 @@
 
 {% extends "layout.njk" %}
 
+{% block pageTitle -%}
+  {{ "Create your plan" | pageTitle }}
+{%- endblock %}
+
 {% block beforeContent %}
   {{ super() }}
 

@@ -6,6 +6,10 @@
 
 {% extends "layout.njk" %}
 
+{% block pageTitle -%}
+  {{ "Are you having a child through birth or adoption?" | pageTitle }}
+{%- endblock %}
+
 {% block beforeContent %}
   {{ super() }}
 

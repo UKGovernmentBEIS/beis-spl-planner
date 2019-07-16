@@ -6,6 +6,18 @@
 
 {% extends "layout.njk" %}
 
+{% set questionText %}
+  {% if data | isBirth -%}
+    When is the baby due, or when was the baby born?
+  {%- elif data | isAdoption -%}
+    When will, or when did the child start to live with you?
+  {%- endif %}
+{% endset %}
+
+{% block pageTitle -%}
+  {{ questionText | pageTitle }}
+{%- endblock %}
+
 {% block beforeContent %}
   {{ super() }}
 
@@ -16,13 +28,6 @@
 {% endblock %}
 
 {% block content %}
-  {% set questionText %}
-    {% if data | isBirth %}
-      When is the baby due, or when was the baby born?
-    {% elif data | isAdoption %}
-      When will, or when did the child start to live with you?
-    {% endif %}
-  {% endset %}
 
   {% if errors["start-date"] %}
     {{ govukErrorSummary({
