@@ -67,7 +67,7 @@
         primary: { nonSpl: 0, spl: 0 },
         secondary: { nonSpl: 0, spl: 0 }
       },
-      shppWeeks: 0,
+      shppAndPrimaryInitialPayWeeks: 0,
       paternityPayWeeks: 0
     }),
     props: {
@@ -88,7 +88,7 @@
         return 52 - leaveBalanceUsed
       },
       payUsed: function () {
-        return this.shppWeeks
+        return this.shppAndPrimaryInitialPayWeeks
       },
       payRemaining: function () {
         return 39 - this.payUsed
@@ -163,7 +163,7 @@
           primary: { nonSpl: 0, spl: 0 },
           secondary: { nonSpl: 0, spl: 0 }
         }
-        this.shppWeeks = 0
+        this.shppAndPrimaryInitialPayWeeks = 0
         this.paternityPayWeeks = 0
       },
       updateTotalsForParent: function (parent, week) {
@@ -183,7 +183,7 @@
           if (isPaternity) {
             this.paternityPayWeeks++
           } else {
-            this.shppWeeks++
+            this.shppAndPrimaryInitialPayWeeks++
           }
         }
       }
