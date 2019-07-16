@@ -1,3 +1,5 @@
+/* global Event */
+
 const _ = require('lodash')
 const Vue = require('vue/dist/vue.common')
 const isIexplorer = require('is-iexplorer')
@@ -30,6 +32,7 @@ function init (data, interactive) {
       secondary,
       interactive,
       updateLeaveOrPay,
+      reset,
       eligibility
     },
     mounted: function () {
@@ -56,6 +59,16 @@ function init (data, interactive) {
         planner.updateWeek(parent, property, week, this.checked)
       })
     }
+  }
+
+  function reset () {
+    const parents = ['primary', 'secondary']
+    const weekNumbers = _.range(minimumWeek, 52)
+    parents.forEach(parent => {
+      weekNumbers.forEach(weekNumber => {
+        updateLeaveOrPay(parent, 'leave', weekNumber, false)
+      })
+    })
   }
 }
 
@@ -200,8 +213,7 @@ function toggleCheckbox (parent, property, week, value) {
     return false
   }
   checkbox.checked = value
-  const changeEvent = document.createEvent('HTMLEvents')
-  changeEvent.initEvent('change', false, true)
+  const changeEvent = new Event('change', { cancelable: true })
   checkbox.dispatchEvent(changeEvent)
   return true
 }

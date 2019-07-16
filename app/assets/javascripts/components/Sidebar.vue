@@ -74,6 +74,7 @@
       names: Object,
       weeks: Array,
       primaryLeaveType: String,
+      reset: Function,
       eligibility: Object
     },
     computed: {
