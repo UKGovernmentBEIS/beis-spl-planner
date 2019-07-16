@@ -1,0 +1,65 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "button/macro.njk" import govukButton %}
+{% from "fieldset/macro.njk" import govukFieldset %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "radios/macro.njk" import govukRadios %}
+
+{% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: backPath()
+  }) }}
+{% endblock %}
+
+{% set birthOrPlacement = "birth" if isBirth else "placement" %}
+{% set zeroWeek = (data | zeroWeek) %}
+{% set paternityLeaveStart = (data["leave-blocks"]["secondary"]["initial"]["start"] | int) %}
+{% set oneWeekEnd = paternityLeaveStart %}
+{% set twoWeeksEnd = paternityLeaveStart + 1 %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {% set hint %}
+            <p class="govuk-hint">
+              The partner’s paternity leave starts on {{ zeroWeek | offsetWeeks(paternityLeaveStart) | formatForDisplay }}.
+            </p>
+          {% endset %}
+          {{ govukRadios({
+            idPrefix: "changed-name",
+            name: "leave-blocks[secondary][initial][end]",
+            fieldset: {
+              legend: {
+                text: "How many weeks of paternity leave will the partner take?",
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            hint: {
+              html: hint
+            },
+            items: [
+              {
+                value: oneWeekEnd,
+                text: "1 week of paternity leave",
+                checked: (data["leave-blocks"]["secondary"]["initial"]["end"] | int) === oneWeekEnd
+              },
+              {
+                value: twoWeeksEnd,
+                text: "2 weeks of paternity leave",
+                checked: (data["leave-blocks"]["secondary"]["initial"]["end"] | int) === twoWeeksEnd
+              }
+            ]
+          }) }}
+        {% endcall %}
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

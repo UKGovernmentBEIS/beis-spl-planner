@@ -1,0 +1,75 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "button/macro.njk" import govukButton %}
+{% from "fieldset/macro.njk" import govukFieldset %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "select/macro.njk" import govukSelect %}
+
+{% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: backPath()
+  }) }}
+{% endblock %}
+
+{% set primaryName = (data | primaryName) %}
+{% set primaryLeaveType = (data | primaryLeaveType) %}
+{% set zeroWeek = (data | zeroWeek) %}
+{% set isBirth = (data | isBirth) %}
+{% set birthOrPlacement = "birth" if isBirth else "placement" %}
+
+{% set firstWeekOfLeave = (data["leave-blocks"]["primary"]["initial"]["start"] | int) %}
+{% set options = range(1, firstWeekOfLeave + 52) %}
+
+{% macro optionText(weekNumber) %}
+  {% set totalWeeks = weekNumber - firstWeekOfLeave + 1 %}
+  {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
+  (taking {{ totalWeeks | weeks }} of leave)
+{% endmacro %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {% set hint %}
+            <p class="govuk-hint">
+              {{ primaryLeaveType | capitalise }} leave must be taken in one continuous block and it is compulsory
+              to take {{ primaryLeaveType }} leave in the 2 weeks after {{ birthOrPlacement }}.
+            </p>
+            <p class="govuk-hint">
+              The {{ primaryName }} can take up to a maximum of 52 weeks of {{ primaryLeaveType }} leave.
+            </p>
+            <p class="govuk-hint">
+              Any unused {{ primaryLeaveType }} leave allowance can be taken by either the {{ primaryName }}
+              or their partner as shared parental leave.
+            </p>
+            <p class="govuk-hint">
+              The first week of {{ primaryLeaveType }} leave is {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}.
+            </p>
+          {% endset %}
+          {% call govukFieldset({
+            legend: {
+              text: "Which week will be the " + primaryName + "’s last week of " + primaryLeaveType + " leave?",
+              classes: "govuk-fieldset__legend--xl",
+              isPageHeading: true
+            }
+          })%}
+            {{ govukSelect({
+              id: "primary-leave-end",
+              name: "leave-blocks[primary][initial][end]",
+              hint: {
+                html: hint
+              },
+              items: options | mapValuesToSelectOptions(optionText)
+            }) }}
+          {% endcall %}
+        {% endcall %}
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

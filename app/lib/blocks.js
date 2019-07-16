@@ -1,3 +1,5 @@
+const delve = require('dlv')
+const _ = require('lodash')
 const Weeks = require('./weeks')
 const { parseParentFromPlanner, parseStartDay } = require('../utils')
 const dataUtils = require('../../common/lib/dataUtils')
@@ -115,6 +117,14 @@ function getPayBlocks (weeks) {
 }
 
 function getBlocks (data) {
+  const leaveBlocksDataObject = data['leave-blocks']
+  if (leaveBlocksDataObject) {
+    return {
+      leaveBlocks: parseLeaveBlocks(leaveBlocksDataObject),
+      payBlocks: []
+    }
+  }
+
   const weeks = new Weeks({
     isBirth: dataUtils.isBirth(data),
     startWeek: parseStartDay(data),
@@ -129,6 +139,74 @@ function getBlocks (data) {
     leaveBlocks: getLeaveBlocks(weeks),
     payBlocks: getPayBlocks(weeks)
   }
+}
+
+function parseLeaveBlocks (leaveBlocksDataObject) {
+  const blocks = {
+    primary: {
+      initial: parseInitialLeaveBlock(leaveBlocksDataObject, 'primary'),
+      spl: parseSplLeaveBlocks(leaveBlocksDataObject, 'primary')
+    },
+    secondary: {
+      initial: parseInitialLeaveBlock(leaveBlocksDataObject, 'secondary'),
+      spl: parseSplLeaveBlocks(leaveBlocksDataObject, 'secondary')
+    }
+  }
+  return blocks
+}
+
+function parseInitialLeaveBlock (leaveBlocksDataObject, parent) {
+  const blockDataObject = delve(leaveBlocksDataObject, [parent, 'initial'], null)
+  return parseLeaveBlock(blockDataObject)
+}
+
+function parseSplLeaveBlocks (leaveBlocksDataObject, parent) {
+  const splLeaveBlocksDataObject = delve(leaveBlocksDataObject, [parent, 'spl'], {})
+  const blockDataObjects = []
+
+  // The SPL object in data has the indexes the blocks with keys like "_0", "_1", "_2", etc.
+  let i = 0
+  let block
+  const getBlock = n => splLeaveBlocksDataObject[`_${n}`]
+  while (isBlockDataObject(block = getBlock(i++))) {
+    blockDataObjects.push(block)
+  }
+
+  return blockDataObjects.map(obj => parseLeaveBlock(obj))
+}
+
+function parseLeaveBlock (obj) {
+  if (!isBlockDataObject(obj)) {
+    return null
+  }
+  return {
+    leave: obj.leave,
+    start: parseInt(obj.start),
+    end: parseInt(obj.end)
+  }
+}
+
+function getRemainingLeaveAllowance (leaveBlocks) {
+  const initialPrimaryLeave = delve(leaveBlocks, 'primary.initial', {})
+  const primarySpl = delve(leaveBlocks, 'primary.spl', [])
+  const secondarySpl = delve(leaveBlocks, 'secondary.spl', [])
+  const blocks = [initialPrimaryLeave, ...primarySpl, ...secondarySpl]
+  const totalAllowanceUsed = blocks.reduce((total, block) => total + getBlockLength(block), 0)
+  return 52 - totalAllowanceUsed
+}
+
+function getBlockLength (block) {
+  if (!block || isNaN(block.start) || isNaN(block.end)) {
+    return 0
+  }
+  return parseInt(block.end) - parseInt(block.start) + 1
+}
+
+function isBlockDataObject (obj) {
+  return _.isObject(obj) &&
+    obj.leave !== undefined &&
+    !isNaN(parseInt(obj.start)) &&
+    !isNaN(parseInt(obj.end))
 }
 
 function categorisePayBlocksByType (leaveBlocksSet, payBlocksSet) {
@@ -203,5 +281,8 @@ function getAdjustedPayBlocks (leaveBlocks, payBlocks) {
 
 module.exports = {
   getBlocks,
-  getAdjustedPayBlocks
+  getAdjustedPayBlocks,
+  parseLeaveBlocks,
+  getRemainingLeaveAllowance,
+  getBlockLength
 }

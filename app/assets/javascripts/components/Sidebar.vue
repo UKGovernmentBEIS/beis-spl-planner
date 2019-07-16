@@ -2,10 +2,10 @@
   <div>
     <template v-if="hasAnyMaternityOrSharedLeaveEligibility">
       <h2 class="govuk-heading-m">
-        Your leave balance
+        Your leave weeks
       </h2>
       <p>
-        You can take a total of <span v-html="formatWeeks(52)"></span> as {{ primaryInitialLeaveOrSharedParentalLeave }}.
+        You can split a total of <span v-html="formatWeeks(52)"></span> as {{ primaryInitialLeaveOrSharedParentalLeave }}.
       </p>
       <p>
         You’ve taken <span v-html="weeksOfPrimaryInitialLeaveAndSharedLeaveTaken"></span>.
@@ -14,16 +14,16 @@
       <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
         v-if="sharedLeaveRemaining < 0">
         <div class="govuk-error-summary__body">
-          You’ve taken too many weeks of leave. Unselect <span v-html="formatWeeks(-sharedLeaveRemaining)"></span>.
+          You’ve taken too many leave weeks. Unselect <span v-html="formatWeeks(-sharedLeaveRemaining, 'leave')"></span>.
         </div>
       </div>
     </template>
     <template v-if="hasAnyMaternityOrSharedPayEligibility">
       <h2 class="govuk-heading-m">
-        Your pay balance
+        Your pay weeks
       </h2>
       <p>
-        You can get a total of <span v-html="formatWeeks(39)"></span> of {{ primaryInitialPayOrSharedParentalPay }}.
+        You can split a total of <span v-html="formatWeeks(39)"></span> of {{ primaryInitialPayOrSharedParentalPay }}.
       </p>
       <p>
         You’ve taken <span v-html="formatWeeks(payUsed)"></span> of pay.
@@ -32,28 +32,28 @@
       <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
         v-if="payRemaining < 0">
         <div class="govuk-error-summary__body">
-          You’ve taken too many weeks of pay. Uncheck <span v-html="formatWeeks(-payRemaining)"></span>.
+          You’ve taken too many paid weeks. Untick <span v-html="formatWeeks(-payRemaining, 'paid')"></span>.
         </div>
       </div>
     </template>
     <template v-f="hasPaternityLeaveOrPayEligibility">
       <h2 class="govuk-heading-m">
-        Paternity {{ eligibility.secondary.statutoryLeave ? "leave" : "pay" }}
+        Paternity {{ paternityLeaveAndOrPay }}
       </h2>
       <p>
         The partner has <span v-html="formatWeeks(eligibility.secondary.statutoryLeave ? paternityLeaveRemaining : paternityPayRemaining)"></span> left to take as
-        paternity {{ eligibility.secondary.statutoryLeave ? "leave" : "pay" }}.
+        paternity {{ paternityLeaveAndOrPay }}.
       </p>
       <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
         v-if="paternityLeaveRemaining < 0">
         <div class="govuk-error-summary__body">
-          You’ve taken too many weeks of paternity leave. Unselect <span v-html="formatWeeks(-paternityLeaveRemaining)"></span>.
+          You’ve taken too many weeks of paternity leave. Unselect <span v-html="formatWeeks(-paternityLeaveRemaining, 'paternity leave')"></span>.
         </div>
       </div>
       <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
         v-if="!eligibility.secondary.statutoryLeave && paternityPayRemaining < 0">
         <div class="govuk-error-summary__body">
-          You’ve taken too many weeks of paternity pay. Uncheck <span v-html="formatWeeks(-paternityPayRemaining)"></span>.
+          You’ve taken too many weeks of paternity pay. Untick <span v-html="formatWeeks(-paternityPayRemaining, 'paternity pay')"></span>.
         </div>
       </div>
     </template>
@@ -134,6 +134,11 @@
           `${this.formatWeeks(this.splUsed)} as shared parental leave` :
           undefined
         return [primaryLeave, sharedLeave].filter(leave => leave).join(' and ')
+      },
+      paternityLeaveAndOrPay: function () {
+        const leave = this.eligibility.secondary.statutoryLeave ? "leave" : undefined
+        const pay = this.eligibility.secondary.statutoryPay ? "pay" : undefined
+        return [leave, pay].filter(policy => policy).join(' and ')
       }
     },
     watch: {
@@ -149,9 +154,9 @@
       }
     },
     methods: {
-      formatWeeks: function (number) {
+      formatWeeks: function (number, weekType) {
         number = Math.max(number, 0)
-        return '<strong>' + number + '</strong> ' + (number === 1 ? 'week' : 'weeks')
+        return '<strong>' + number + '</strong> ' + (weekType ? `${weekType} ` : '') + (number === 1 ? 'week' : 'weeks')
       },
       resetTotals: function () {
         this.leaveWeeks = {

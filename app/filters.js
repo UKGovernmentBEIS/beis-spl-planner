@@ -1,6 +1,8 @@
+const dlv = require('dlv')
 const { getWeeksArray, parseWeeksFromData } = require('./utils')
 const Day = require('../common/lib/day')
 const { parseEligibilityFromData } = require('./lib/eligibility')
+const { getBlockLength, getRemainingLeaveAllowance, parseLeaveBlocks } = require('./lib/blocks')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
@@ -29,6 +31,14 @@ module.exports = function (env) {
 
   function startDateName (data) {
     return isBirth(data) ? 'due date' : 'placement date'
+  }
+
+  function hasEitherSalary (data) {
+    return !!dlv(data, ['primary', 'salary-amount']) || !!dlv(data, ['secondary', 'salary-amount'])
+  }
+
+  function zeroWeek (data) {
+    return startOfWeek(startDay(data))
   }
 
   function totalBlockPay (block) {
@@ -102,6 +112,28 @@ module.exports = function (env) {
       .join(' ')
   }
 
+  function blockLength (block) {
+    return getBlockLength(block)
+  }
+
+  function remainingLeaveAllowance (leaveBlocksDataObject) {
+    const leaveBlocks = parseLeaveBlocks(leaveBlocksDataObject)
+    return getRemainingLeaveAllowance(leaveBlocks)
+  }
+
+  function weeks (number) {
+    const weekOrWeeks = Math.abs(number) === 1 ? 'week' : 'weeks'
+    return `${number} ${weekOrWeeks}`
+  }
+
+  function mapValuesToSelectOptions (values, textMacro, selected) {
+    return values.map(value => ({
+      value: value,
+      text: textMacro(value),
+      selected: value === parseInt(selected)
+    }))
+  }
+
   return {
     hasStartDateError,
     isWeekChecked,
@@ -110,6 +142,7 @@ module.exports = function (env) {
     startOfWeek,
     endOfWeek,
     startDateName,
+    hasEitherSalary,
     totalBlockPay,
     displayPayBlockTotal,
     shouldDisplayPrimaryLeaveAndPayForm,
@@ -117,6 +150,11 @@ module.exports = function (env) {
     shouldDisplaySecondaryLeaveAndPayForm,
     countWeeks,
     blocksToDates,
-    htmlAttributesFromObject
+    htmlAttributesFromObject,
+    blockLength,
+    remainingLeaveAllowance,
+    weeks,
+    zeroWeek,
+    mapValuesToSelectOptions
   }
 }

@@ -1,10 +1,10 @@
 <template>
   <div class="govuk-grid-row">
-    <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full" v-if="!useAccessibleLayout">
+    <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full">
       <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :isBirth="isBirth"
         :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" :eligibility="eligibility"/>
     </div>
-    <div id="sidebar" class="govuk-grid-column-full" :class="{ 'govuk-grid-column-one-third-from-desktop': !useAccessibleLayout }">
+    <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full">
       <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :eligibility="eligibility"/>
     </div>
   </div>
