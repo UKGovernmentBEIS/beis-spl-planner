@@ -4,6 +4,9 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds-from-desktop">
+    <h1 class="govuk-heading-xl print-show">
+      Pay summary
+    </h1>
     <p>
       This summary shows your statutory pay entitlements while on leave.
       Your employer may offer some additional pay.
@@ -27,7 +30,7 @@
       {% endset %}
 
       {{ govukTable({
-        classes: "app-table--fixed",
+        classes: "app-table--fixed summary-block-print-margin",
         caption: tableCaption,
         head: [
           {
@@ -92,7 +95,7 @@
       Statutory shared parental pay
     </h4>
     <p>
-      To claim shared parental pay complete the relevant notice form below and submit it to your employer 8 weeks before you want to start receiving it.
+      To claim shared parental pay complete the shared parental leave and pay notice form for the relevant parent and submit it to their employer 8 weeks before you want to start receiving it.
     </p>
 
     {% set noticeDescription %}
@@ -114,6 +117,8 @@
     {{ secondaryNotice({
       data: data
     }) }}
+
+    {% include "../components/print-summary-button.njk" %}
   </div>
 </div>
 

@@ -17,6 +17,9 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds-from-desktop">
+    <h1 class="govuk-heading-xl print-show">
+    Leave summary
+    </h1>
     <p>
       This is a summary of your leave plan.
       It shows your leave dates, when you need to notify your employer and how you can apply.
@@ -223,6 +226,8 @@
         </p>
       {% endif %}
     {% endif %}
+
+    {% include "../components/print-summary-button.njk" %}
   </div>
 </div>
 

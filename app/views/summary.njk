@@ -31,11 +31,12 @@
     </div>
   </div>
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
+    <div id="summary-tabs-container" class="govuk-grid-column-full">
       {{ govukTabs({
         items: [
           {
             label: "Leave summary",
+            class: "print-hide",
             id: "leave-summary",
             panel: {
               html: leaveSummary

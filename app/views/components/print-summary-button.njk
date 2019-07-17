@@ -1,0 +1,13 @@
+{% from "button/macro.njk" import govukButton %}
+
+{{ govukButton({
+  text: "Print this summary",
+  type: "button",
+  classes: "print-hide",
+  attributes: {
+    onClick: "window.print()",
+    "data-ga-hit-type": "print_summary",
+    "data-ga-field-event_category": "summary",
+    "data-ga-field-event_action": "print_page"
+  }
+}) }}
