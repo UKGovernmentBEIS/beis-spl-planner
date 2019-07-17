@@ -1,0 +1,10 @@
+{% from "button/macro.njk" import govukButton %}
+
+{{ govukButton({
+  text: "Print this summary",
+  type: "button",
+  classes: "print-hide",
+  attributes: {
+    onClick: "window.print()"
+  }
+}) }}

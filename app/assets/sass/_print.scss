@@ -49,4 +49,26 @@
   footer {
     page-break-inside: avoid;
   }
+
+  #summary-tabs-container {
+    .govuk-tabs__title {
+      display: none;
+    }
+
+    ul:first-of-type {
+      display: none;
+    }
+
+    .summary-block-print-margin {
+      margin-bottom: 50px;
+    }
+
+    .govuk-summary-list {
+      page-break-inside: avoid;
+    }
+
+    .govuk-table {
+      page-break-inside: avoid;
+    }
+  }
 }
