@@ -169,6 +169,7 @@ function planner (req) {
   let isValid = true
 
   const { data } = req.session
+  const birthOrPlacement = dataUtils.isBirth(data) ? 'birth' : 'placement'
   const startWeek = parseStartDay(req.session.data)
   const inputWeeks = {
     primary: parseParentFromPlanner(data, 'primary'),
@@ -193,7 +194,8 @@ function planner (req) {
     const totalWeeks = inputWeeks.primary[weeksKey].length + inputWeeks.secondary[weeksKey].length - paternityWeeks[weeksKey].length
     if (totalWeeks > allowance) {
       const overspend = totalWeeks - allowance
-      const message = `You’ve taken too many weeks of ${policy}. Deselect ${overspend} week${overspend > 1 ? 's' : ''}.`
+      const unselectOrUntick = (policy === 'leave') ? 'Unselect' : 'Untick'
+      const message = `You’ve taken too many weeks of ${policy}. ${unselectOrUntick} ${overspend} ${policy} week${overspend > 1 ? 's' : ''}.`
       addCalendarError(req, 'shared', `too-many-${policy}-weeks`, message)
       isValid = false
     }
@@ -204,7 +206,7 @@ function planner (req) {
     const payWithoutLeaveWeeks = leaveAndPay.payWeeks.filter(week => !leaveAndPay.leaveWeeks.includes(week))
     if (payWithoutLeaveWeeks.length > 0) {
       const weeks = payWithoutLeaveWeeks.map(week => startWeek.add(week, 'weeks').format('D MMMM')).join(', ')
-      const message = `The ${names[parent]} has taken leave without pay on the following weeks: ${weeks}. Correct these weeks by checking leave or unchecking pay.`
+      const message = `The ${names[parent]} has taken pay without leave on the following weeks: ${weeks}. Correct these weeks by selecting leave or unselecting pay.`
       addCalendarError(req, parent, 'pay-without-leave', message)
       isValid = false
     }
@@ -218,7 +220,7 @@ function planner (req) {
   for (const policy of ['leave', 'pay']) {
     const weeks = inputWeeks.primary[policy + 'Weeks']
     if (hasBreakBeforeEnd(weeks, lastCompulsoryLeaveWeek)) {
-      const message = `The ${names.primary} cannot take a break in their ${policy} before the end of compulsory leave.`
+      const message = `The ${names.primary} cannot have a break in their ${policy} before the end of compulsory leave.`
       addCalendarError(req, 'primary', `${policy}-break-before-end-of-compulsory-leave`, message)
       isValid = false
     }
@@ -226,7 +228,7 @@ function planner (req) {
 
   // Not taking compulsory leave.
   if (compulsoryLeaveWeeks.some(week => !inputWeeks.primary.leaveWeeks.includes(week))) {
-    const message = 'It is cumpolsory to take leave in the first two weeks.'
+    const message = `The ${names.primary} must take 2 weeks of leave when the child is born.`
     addCalendarError(req, 'primary', 'not-taking-compulsory-leave', message)
     isValid = false
   }
@@ -240,13 +242,14 @@ function planner (req) {
     const weeks = [...inputWeeks[parent].leaveWeeks, ...inputWeeks[parent].payWeeks]
     if (_.min(weeks) < earliestWeek) {
       const earliestDate = startWeek.add(earliestWeek, 'weeks').format('D MMMM')
-      const message = `The ${names[parent]} cannot take leave or pay before ${earliestDate}.`
+      const dateExplanation = (earliestWeek === 0) ? `the ${birthOrPlacement} week` : `${Math.abs(earliestWeek)} before ${birthOrPlacement}`
+      const message = `The ${names[parent]} cannot take leave or pay before ${earliestDate} (${dateExplanation}).`
       addCalendarError(req, parent, 'too-early', message)
       isValid = false
     }
     if (_.max(weeks) > 52) {
       const latestDate = startWeek.add(52, 'weeks').format('D MMMM')
-      const message = `The ${names[parent]} cannot take leave or pay after ${latestDate}.`
+      const message = `The ${names[parent]} cannot take leave or pay after ${latestDate} (one year after ${birthOrPlacement}).`
       addCalendarError(req, parent, 'too-late', message)
       isValid = false
     }
