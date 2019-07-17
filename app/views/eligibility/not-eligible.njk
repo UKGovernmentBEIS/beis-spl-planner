@@ -2,6 +2,10 @@
 
 {% extends "layout.njk" %}
 
+{% block pageTitle -%}
+  {{ "Not eligible" | pageTitle }}
+{%- endblock %}
+
 {% block beforeContent %}
   {{ super() }}
 
