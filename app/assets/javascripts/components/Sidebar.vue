@@ -5,11 +5,11 @@
         Your leave weeks
       </h2>
       <p>
-        You can split a total of <span v-html="formatWeeks(52)"></span> as {{ primaryInitialLeaveOrSharedParentalLeave }}.
+        You can {{ hasMaternityAndSharedLeaveEligibility ? "split a total of" : "take" }} <span v-html="formatWeeks(52)"></span> as {{ primaryInitialLeaveOrSharedParentalLeave }}.
       </p>
       <p>
         You’ve taken <span v-html="weeksOfPrimaryInitialLeaveAndSharedLeaveTaken"></span>.
-        You have <span v-html="formatWeeks(sharedLeaveRemaining)"></span> left.
+        You have <span v-html="formatWeeks(sharedLeaveRemaining, 'leave')"></span> left.
       </p>
       <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
         v-if="sharedLeaveRemaining < 0">
@@ -23,7 +23,7 @@
         Your pay weeks
       </h2>
       <p>
-        You can split a total of <span v-html="formatWeeks(39)"></span> of {{ primaryInitialPayOrSharedParentalPay }}.
+        You can {{ hasMaternityAndSharedPayEligibility ? "split a total of" : "take" }} <span v-html="formatWeeks(39)"></span> of {{ primaryInitialPayOrSharedParentalPay }}.
       </p>
       <p>
         You’ve taken <span v-html="formatWeeks(payUsed)"></span> of pay.
@@ -112,8 +112,14 @@
       hasAnyMaternityOrSharedLeaveEligibility: function () {
         return this.eligibility.primary.statutoryLeave || this.hasAnySharedLeaveEligibility
       },
+      hasMaternityAndSharedLeaveEligibility: function () {
+        return this.eligibility.primary.statutoryLeave && this.hasAnySharedLeaveEligibility
+      },
       hasAnyMaternityOrSharedPayEligibility: function () {
         return this.eligibility.primary.statutoryPay || this.hasAnySharedPayEligibility
+      },
+      hasMaternityAndSharedPayEligibility: function () {
+        return this.eligibility.primary.statutoryPay && this.hasAnySharedPayEligibility
       },
       hasPaternityLeaveOrPayEligibility: function () {
         return this.eligibility.secondary.statutoryLeave || this.eligibility.secondary.statutoryPay
