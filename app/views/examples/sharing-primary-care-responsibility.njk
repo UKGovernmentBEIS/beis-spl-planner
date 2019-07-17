@@ -1,5 +1,9 @@
 {% extends "./example.njk" %}
 
+{% block pageTitle -%}
+  {{ "Example of shared parental leave and pay plans" | pageTitle("Sharing primary care responsibility") }}
+{%- endblock %}
+
 {% block exampleTitle %}
   Sharing primary care responsibility
 {% endblock %}

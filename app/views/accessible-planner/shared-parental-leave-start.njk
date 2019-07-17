@@ -32,6 +32,10 @@
   {% endif %}
 {% endmacro %}
 
+{% block pageTitle -%}
+  {{ "Which week will be the " + parentName + "’s first week of shared parental leave in this block? (" + parentName + " block " + (index + 1) +")" | pageTitle }}
+{%- endblock %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">

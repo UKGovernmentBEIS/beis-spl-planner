@@ -6,6 +6,10 @@
 
 {% extends "layout.njk" %}
 
+{% block pageTitle -%}
+  {{ "Do you want to plan a block of shared parental leave?" | pageTitle }}
+{%- endblock %}
+
 {% set primaryName = (data | primaryName) %}
 {% set remainingLeaveAllowance = (data["leave-blocks"] | remainingLeaveAllowance) %}
 

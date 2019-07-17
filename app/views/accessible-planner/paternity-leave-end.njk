@@ -6,6 +6,10 @@
 
 {% extends "layout.njk" %}
 
+{% block pageTitle -%}
+  {{ "How many weeks of paternity leave will the partner take?" | pageTitle }}
+{%- endblock %}
+
 {% block beforeContent %}
   {{ govukBackLink({
     text: "Back",
