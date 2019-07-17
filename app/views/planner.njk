@@ -2,6 +2,7 @@
 {% from "button/macro.njk" import govukButton %}
 {% from "details/macro.njk" import govukDetails %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "input/macro.njk" import govukInput %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "inset-text/macro.njk" import govukInsetText %}
 {% from "components/calendar.njk" import calendar %}
@@ -198,9 +199,33 @@
           print your plan
         </a>
       {% endset %}
+    </div>
+  </div>
+
+  <div class="govuk-grid-row ">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
       <p>
         You can {{ printLink | safe }} if you want to refer to it later.
       </p>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row ">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      {{ govukInput({
+        label: {
+          classes: "govuk-!-font-weight-bold",
+          text: "Link to your plan"
+        },
+        id: "save-share-link",
+        classes: "govuk-!-font-size-14",
+        hint: {
+          text: "Use this link to return to your plan or to share it with someone."
+        },
+        attributes: {
+          readonly: "readonly"
+        }
+      }) }}
     </div>
   </div>
 {% endblock %}
