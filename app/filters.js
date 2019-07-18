@@ -53,9 +53,9 @@ module.exports = function (env) {
 
   function displayPayBlockTotal (data) {
     const eligibility = parseEligibilityFromData(data)
-    return eligibility.primary.statutoryPay &&
-           data.primary['salary-amount'].length > 0 &&
-           data.secondary['salary-amount'].length > 0
+    return eligibility.primary.statutoryPay && // Cannot get exact value for Maternity Allowance.
+           !isNaN(data.primary['salary-amount']) &&
+           !isNaN(data.secondary['salary-amount'])
   }
 
   function shouldDisplayPrimaryLeaveAndPayForm (data) {
