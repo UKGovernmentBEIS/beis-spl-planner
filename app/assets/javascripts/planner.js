@@ -63,7 +63,7 @@ function init (data, interactive) {
 
   function reset () {
     const parents = ['primary', 'secondary']
-    const weekNumbers = _.range(minimumWeek, 52)
+    const weekNumbers = _.range(minimumWeek, 53)
     parents.forEach(parent => {
       weekNumbers.forEach(weekNumber => {
         updateLeaveOrPay(parent, 'leave', weekNumber, false)
