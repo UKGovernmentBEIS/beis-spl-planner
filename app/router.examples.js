@@ -10,6 +10,11 @@ const exampleDateData = {
   'start-date-day': exampleDate.format('DD')
 }
 
+const exampleEligibilityData = {
+  'spl-eligible': 'yes',
+  'shpp-eligible': 'yes'
+}
+
 const examples = {
   'managing-parenting-and-work': {
     primary: {
@@ -77,6 +82,8 @@ const examples = {
 }
 
 for (const [name, data] of Object.entries(examples)) {
+  Object.assign(data.primary, exampleEligibilityData)
+  Object.assign(data.secondary, exampleEligibilityData)
   router.get(`/:birthOrAdoption(birth|adoption)/${name}`, function (req, res) {
     const exampleData = {
       'birth-or-adoption': req.params.birthOrAdoption,
