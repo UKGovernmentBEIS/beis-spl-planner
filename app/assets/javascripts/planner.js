@@ -40,7 +40,7 @@ function init (data, interactive) {
     }
   })
 
-  const minimumWeek = isBirth ? -11 : -2
+  const minimumWeek = dataUtils.earliestPrimaryLeaveWeek(data)
   function updateLeaveOrPay (parent, property, week, value) {
     if (property === 'leave') {
       updateLeave(parent, week, value, minimumWeek, eligibility)

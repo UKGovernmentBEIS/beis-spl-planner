@@ -21,6 +21,10 @@ module.exports = function (env) {
     return dataUtils.isAdoption(data)
   }
 
+  function earliestPrimaryLeaveWeek (data) {
+    return dataUtils.earliestPrimaryLeaveWeek(data)
+  }
+
   function primaryName (data) {
     return dataUtils.primaryName(data)
   }
@@ -86,6 +90,7 @@ module.exports = function (env) {
     isNo,
     isBirth,
     isAdoption,
+    earliestPrimaryLeaveWeek,
     primaryName,
     secondaryName,
     parentName,

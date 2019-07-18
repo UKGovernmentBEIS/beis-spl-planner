@@ -17,6 +17,10 @@ module.exports = function (env) {
     return errors && errors['start-date'] && errors['start-date'].dateParts.includes(partOfDate)
   }
 
+  function hasCalendarError (errors) {
+    return errors && Object.keys(errors).some(key => key.startsWith('calendar.'))
+  }
+
   function startDay (data) {
     return new Day(data['start-date-year'], data['start-date-month'], data['start-date-day'])
   }
@@ -136,6 +140,7 @@ module.exports = function (env) {
 
   return {
     hasStartDateError,
+    hasCalendarError,
     isWeekChecked,
     formTemplate,
     startDay,
