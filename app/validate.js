@@ -9,7 +9,7 @@ const _ = require('lodash')
 const Day = require('../common/lib/day')
 const { isAdoption } = require('../common/lib/dataUtils')
 const skip = require('./skip')
-const { parseParentFromPlanner, parseStartDay } = require('./utils')
+const { parseParentFromPlanner, parseStartDay, parseWeeksFromData } = require('./utils')
 const dataUtils = require('../common/lib/dataUtils')
 const {
   prettyList,
@@ -180,25 +180,12 @@ function planner (req) {
     secondary: dataUtils.parentName(data, 'secondary')
   }
 
+  const weeks = parseWeeksFromData(data).leaveAndPay().weeks
+
   // No interaction.
   if (inputWeeks.primary.leaveWeeks.length === 2 && inputWeeks.secondary.leaveWeeks.length === 0) {
     addCalendarError(req, 'shared', 'no-interaction', 'You have not added any leave to the calendar.')
     isValid = false
-  }
-
-  // Too many leave or pay weeks.
-  const sharedAllowances = { leave: 52, pay: 39 }
-  const paternityWeeks = getPaternityWeeks(inputWeeks.secondary)
-  for (let [policy, allowance] of Object.entries(sharedAllowances)) {
-    const weeksKey = `${policy}Weeks`
-    const totalWeeks = inputWeeks.primary[weeksKey].length + inputWeeks.secondary[weeksKey].length - paternityWeeks[weeksKey].length
-    if (totalWeeks > allowance) {
-      const overspend = totalWeeks - allowance
-      const unselectOrUntick = (policy === 'leave') ? 'Unselect' : 'Untick'
-      const message = `You’ve taken too many weeks of ${policy}. ${unselectOrUntick} ${overspend} ${policy} week${overspend > 1 ? 's' : ''}.`
-      addCalendarError(req, 'shared', `too-many-${policy}-weeks`, message)
-      isValid = false
-    }
   }
 
   // Pay without leave.
@@ -255,23 +242,34 @@ function planner (req) {
     }
   }
 
-  return isValid
-}
-
-function getPaternityWeeks (weeks) {
-  const leaveWeeks = getPaternityLeaveWeeks(weeks)
-  const payWeeks = leaveWeeks.filter(week => weeks.payWeeks.includes(week))
-  return { leaveWeeks, payWeeks }
-}
-
-function getPaternityLeaveWeeks (weeks) {
-  const eligibleLeaveWeeks = weeks.leaveWeeks.filter(week => week >= 0 && week < 8)
-  if (eligibleLeaveWeeks.length < 2) {
-    return eligibleLeaveWeeks
-  } else {
-    const firstTwoWeeksAreConsecutive = eligibleLeaveWeeks[1] - eligibleLeaveWeeks[0] === 1
-    return firstTwoWeeksAreConsecutive ? eligibleLeaveWeeks.slice(0, 2) : eligibleLeaveWeeks.slice(0, 1)
+  // Too many paternity leave weeks.
+  const paternityLeaveAllowanceUsed = getLeaveWeeksCount(weeks, ['paternity'])
+  if (paternityLeaveAllowanceUsed > 2) {
+    const overspend = paternityLeaveAllowanceUsed - 2
+    const message = `You’ve taken too many weeks of paternity leave. Unselect ${overspend} paternity leave week${overspend > 1 ? 's' : ''}.`
+    addCalendarError(req, 'secondary', `too-many-paternity-leave-weeks`, message)
+    isValid = false
   }
+
+  // Too many shared leave weeks.
+  const sharedLeaveAllowanceUsed = getLeaveWeeksCount(weeks, ['shared', 'maternity', 'adoption'])
+  if (sharedLeaveAllowanceUsed > 52) {
+    const overspend = sharedLeaveAllowanceUsed - 52
+    const message = `You’ve taken too many weeks of leave. Unselect ${overspend} leave week${overspend > 1 ? 's' : ''}.`
+    addCalendarError(req, 'shared', `too-many-leave-weeks`, message)
+    isValid = false
+  }
+
+  // Too many shared pay weeks.
+  const sharedPayAllowanceUsed = getPayWeeksCount(weeks, ['shared', 'maternity', 'adoption'])
+  if (sharedPayAllowanceUsed > 39) {
+    const overspend = sharedPayAllowanceUsed - 39
+    const message = `You’ve taken too many weeks of pay. Untick ${overspend} pay week${overspend > 1 ? 's' : ''}.`
+    addCalendarError(req, 'shared', `too-many-pay-weeks`, message)
+    isValid = false
+  }
+
+  return isValid
 }
 
 function hasBreakBeforeEnd (weeks, end) {
@@ -287,6 +285,30 @@ function hasBreakBeforeEnd (weeks, end) {
     previousWeek = week
   }
   return false
+}
+
+function getLeaveWeeksCount (weeks, types) {
+  return weeks.reduce((count, week) => {
+    for (const parent of ['primary', 'secondary']) {
+      const { leave } = week[parent]
+      if (leave.eligible && types.includes(leave.text)) {
+        count++
+      }
+    }
+    return count
+  }, 0)
+}
+
+function getPayWeeksCount (weeks, types) {
+  return weeks.reduce((count, week) => {
+    for (const parent of ['primary', 'secondary']) {
+      const { leave, pay } = week[parent]
+      if (types.includes(leave.text) && pay.eligible && !!pay.text) {
+        count++
+      }
+    }
+    return count
+  }, 0)
 }
 
 function addCalendarError (req, parentOrShared, key, message) {
