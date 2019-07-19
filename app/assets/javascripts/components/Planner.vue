@@ -26,6 +26,11 @@
         <PrintYourPlan />
       </div>
     </div>
+    <div class="govuk-grid-row print-hide">
+      <div class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full">
+        <ShareLink />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -34,13 +39,15 @@
   const Calendar = require('./Calendar.vue')
   const Sidebar = require('./Sidebar.vue')
   const PrintYourPlan = require('./PrintYourPlan.vue')
+  const ShareLink = require('./ShareLink.vue')
   const Weeks = require('../../../lib/weeks')
 
   module.exports = {
     components: {
       Calendar,
       Sidebar,
-      PrintYourPlan
+      PrintYourPlan,
+      ShareLink
     },
     computed: {
       names: function () {
