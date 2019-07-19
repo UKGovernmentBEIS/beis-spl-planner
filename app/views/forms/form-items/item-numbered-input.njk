@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="column" style="width: calc(100% - 27px)">
-      <p> {{ options.text }} </p>
+      <p> {{ options.text | safe }} </p>
 
       {% switch options.type %}
         {% case "TEXT" %}

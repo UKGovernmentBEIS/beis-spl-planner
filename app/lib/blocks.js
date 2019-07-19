@@ -210,8 +210,11 @@ function isBlockDataObject (obj) {
 }
 
 function categorisePayBlocksByType (leaveBlocksSet, payBlocksSet) {
-  if (payBlocksSet.length === 0) {
-    return []
+  if (payBlocksSet.length == 0) {
+    return {
+      initial: null,
+      shared: []
+    }
   }
 
   const sharedPayBlocks = []
@@ -226,7 +229,8 @@ function categorisePayBlocksByType (leaveBlocksSet, payBlocksSet) {
   while (index < payBlocksSet.length) {
     currentBlock = payBlocksSet[index]
     // if current pay block is within maternity/paternity/adoption statutory leave
-    if (currentBlock.start <= leaveBlocksSet.initial.end) {
+    if (leaveBlocksSet.initial && currentBlock.start <= leaveBlocksSet.initial.end) {
+      // if current pay block is within maternity/paternity/adoption statutory leave
       if (currentBlock.end <= leaveBlocksSet.initial.end) {
         // if blocks has all weeks within statutory leave
         initialPayBlock.end = currentBlock.end

@@ -206,8 +206,7 @@
           {% set curtailmentWarningHtml %}
             The {{ data | primaryName }} must end their {{ data | primaryLeaveType }} leave and pay by returning to work or submitting a curtailment notice.
             They must also give consent for the partner to take shared parental leave or pay.
-            {#  TODO fix the href of this link #}
-            They can do both by submitting the <a href="#">{{ data | primaryLeaveType | capitalise}} curtailment and SPL consent form</a>.
+            They can do both by submitting the <a href={{"/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if data | primaryLeaveType == "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf")}}>{{ data | primaryLeaveType | capitalise}} curtailment and SPL consent form</a>.
           {% endset %}
           {{ govukWarningText({
             html: curtailmentWarningHtml,
