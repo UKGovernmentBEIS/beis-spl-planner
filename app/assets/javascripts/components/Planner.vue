@@ -28,7 +28,7 @@
     </div>
     <div class="govuk-grid-row print-hide">
       <div class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full">
-        <ShareLink />
+        <ShareLink :formData="formData" :primary="primary" :secondary="secondary"/>
       </div>
     </div>
   </div>

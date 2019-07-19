@@ -33,7 +33,8 @@ function init (data, interactive) {
       interactive,
       updateLeaveOrPay,
       reset,
-      eligibility
+      eligibility,
+      formData: data
     },
     mounted: function () {
       patchStickyStylingOnInternetExplorer()
