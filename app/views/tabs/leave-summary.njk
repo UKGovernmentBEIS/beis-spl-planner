@@ -4,6 +4,8 @@
 {% from "../components/leave-block-summary.njk" import leaveBlockSummary %}
 {% from "../components/secondary-notice.njk" import secondaryNotice %}
 {% from "../components/primary-notice.njk" import primaryNotice %}
+{% from "../components/summary-tab-footer.njk" import summaryTabFooter %}
+
 
 {% set noticeDescription %}
 {# TODO fix the href of this link #}
@@ -227,7 +229,9 @@
       {% endif %}
     {% endif %}
 
-    {% include "../components/print-summary-button.njk" %}
+    {{ summaryTabFooter({
+      shareLinkId: 'leave-summary-share-link'
+    }) }}
   </div>
 </div>
 
