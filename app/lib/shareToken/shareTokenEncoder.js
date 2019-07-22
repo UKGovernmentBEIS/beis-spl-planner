@@ -25,7 +25,11 @@ class ShareTokenEncoder {
     this.data = data
   }
 
-  encode () {
+  encode (version) {
+    if (version !== 1) {
+      return
+    }
+
     return [
       this._encodeBirthOrAdoption(),
       this._encodeLeaveAndPayEligibility(),

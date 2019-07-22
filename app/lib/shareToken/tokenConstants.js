@@ -8,6 +8,6 @@ const policies = {
 module.exports = {
   parents: ['primary', 'secondary'],
   entitlements: ['leave', 'pay'],
-  separator: '+',
+  separator: '!',
   policies
 }

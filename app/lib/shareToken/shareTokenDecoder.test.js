@@ -4,17 +4,26 @@ const { expect } = require('chai')
 const ShareTokenDecoder = require('./shareTokenDecoder')
 
 describe('ShareTokenDecoder', () => {
-  describe('#decode', () => {
-    it('decodes birth-or-adoption', () => {
-      const encoded = '0+000+Yhkn+0+0+0+0000000000000000000000'
+  describe('#decode, not version 1', () => {
+    it('returns undefined', () => {
+      const encoded = '0!kFx!Yhkn!0!0!0!0000000000000000000000'
       const shareTokenDecoder = new ShareTokenDecoder(encoded)
-      const result = shareTokenDecoder.decode()
+
+      expect(shareTokenDecoder.decode(2)).to.be.undefined
+    })
+  })
+
+  describe('#decode, version 1', () => {
+    it('decodes birth-or-adoption', () => {
+      const encoded = '0!000!Yhkn!0!0!0!0000000000000000000000'
+      const shareTokenDecoder = new ShareTokenDecoder(encoded)
+      const result = shareTokenDecoder.decode(1)
 
       expect(result['birth-or-adoption']).to.deep.equal('birth')
     })
 
     it('decodes eligibility', () => {
-      const encoded = '0+kFx+Yhkn+0+0+0+0000000000000000000000'
+      const encoded = '0!kFx!Yhkn!0!0!0!0000000000000000000000'
       const expected = {
         'birth-or-adoption': 'birth',
         'start-date-day': '09',
@@ -39,17 +48,17 @@ describe('ShareTokenDecoder', () => {
       }
       const shareTokenDecoder = new ShareTokenDecoder(encoded)
 
-      expect(shareTokenDecoder.decode()).to.deep.equal(expected)
+      expect(shareTokenDecoder.decode(1)).to.deep.equal(expected)
     })
 
     it('decodes start date', () => {
-      const encoded = '0+000+Yhkn+0+0+0+0000000000000000000000'
+      const encoded = '0!000!Yhkn!0!0!0!0000000000000000000000'
       const expectedDay = '09'
       const expectedMonth = '09'
       const expectedYear = '2017'
 
       const shareTokenDecoder = new ShareTokenDecoder(encoded)
-      const result = shareTokenDecoder.decode()
+      const result = shareTokenDecoder.decode(1)
 
       expect(result['start-date-day']).to.equal(expectedDay)
       expect(result['start-date-month']).to.equal(expectedMonth)
@@ -57,14 +66,14 @@ describe('ShareTokenDecoder', () => {
     })
 
     it('decodes salary information', () => {
-      const encoded = '0+000+Yhkn+18co+171_+E+0000000000000000000000'
+      const encoded = '0!000!Yhkn!18co!171_!E!0000000000000000000000'
       const expectedPrimarySalary = '35250'
       const expectedSecondarySalary = '28799'
       const expectedPrimaryPeriod = 'year'
       const expectedSecondaryPeriod = 'month'
 
       const shareTokenDecoder = new ShareTokenDecoder(encoded)
-      const result = shareTokenDecoder.decode()
+      const result = shareTokenDecoder.decode(1)
 
       expect(result.primary['salary-amount']).to.equal(expectedPrimarySalary)
       expect(result.primary['salary-period']).to.equal(expectedPrimaryPeriod)
@@ -73,14 +82,14 @@ describe('ShareTokenDecoder', () => {
     })
 
     it('decodes weeks', () => {
-      const encoded = '0+000+Yhkn+0+0+0+o8Y008YBh-_luy_FxN_Stlg8ggxiH4pC2Cp0000000m'
+      const encoded = '0!000!Yhkn!0!0!0!o8Y008YBh-_luy_FxN_Stlg8ggxiH4pC2Cp0000000m'
       const expectedPrimaryLeave = ['-11', '-10', '-9', '-8', '-7', '-3', '-2', '-1', '2', '3', '4', '5', '6', '7', '9', '10', '11', '12', '13', '14', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '34', '35', '36', '38', '39', '40', '41', '52', '0', '1']
       const expectedPrimaryPay = ['-11', '2', '3', '4', '5', '6', '7', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '28', '29', '30', '31', '32', '33', '34', '35', '36', '39', '40', '41', '52']
       const expectedSecondaryLeave = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '10', '12', '13', '15', '16', '20', '21', '22', '25', '26', '27', '28', '29']
       const expectedSecondaryPay = ['0', '2', '4', '6', '8', '10', '12', '14', '15', '16', '17', '19', '21']
 
       const shareTokenDecoder = new ShareTokenDecoder(encoded)
-      const result = shareTokenDecoder.decode()
+      const result = shareTokenDecoder.decode(1)
 
       expect(result.primary.leave).to.have.members(expectedPrimaryLeave)
       expect(result.primary.pay).to.have.members(expectedPrimaryPay)
@@ -89,7 +98,7 @@ describe('ShareTokenDecoder', () => {
     })
 
     it('decodes a complex data object', () => {
-      const encoded = '0+kFx+81C2+14i3pD+1bfwB+E+o8Y8Y8YBh-_luy_lx__y_lxCxkxipCpCpCp0000000y'
+      const encoded = '0!kFx!81C2!14i3pD!1bfwB!E!o8Y8Y8YBh-_luy_lx__y_lxCxkxipCpCpCp0000000y'
       const expected = {
         'birth-or-adoption': 'birth',
         'start-date-day': '02',
@@ -116,7 +125,7 @@ describe('ShareTokenDecoder', () => {
           'salary-period': 'month'
         }
       }
-      const result = new ShareTokenDecoder(encoded).decode()
+      const result = new ShareTokenDecoder(encoded).decode(1)
       expect(result['birth-or-adoption']).to.equal(expected['birth-or-adoption'])
       expect(result['start-date-day']).to.equal(expected['start-date-day'])
       expect(result['start-date-month']).to.equal(expected['start-date-month'])
@@ -136,7 +145,7 @@ describe('ShareTokenDecoder', () => {
     })
 
     it('decodes another complex data object', () => {
-      const encoded = '0+y3m+Yhkp+1vIs+1cz+D+pCpCpCpCm0CpCm0CpCp00pCp000000038Y8iY8Y0030'
+      const encoded = '0!y3m!Yhkp!1vIs!1cz!D!pCpCpCpCm0CpCm0CpCp00pCp000000038Y8iY8Y0030'
       const expected = {
         'birth-or-adoption': 'birth',
         'primary': {
@@ -159,7 +168,7 @@ describe('ShareTokenDecoder', () => {
         'start-date-month': '09',
         'start-date-year': '2019'
       }
-      const result = new ShareTokenDecoder(encoded).decode()
+      const result = new ShareTokenDecoder(encoded).decode(1)
       expect(result['birth-or-adoption']).to.equal(expected['birth-or-adoption'])
       expect(result['start-date-day']).to.equal(expected['start-date-day'])
       expect(result['start-date-month']).to.equal(expected['start-date-month'])

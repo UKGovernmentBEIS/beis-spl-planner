@@ -4,7 +4,29 @@ const { expect } = require('chai')
 const ShareTokenEncoder = require('./shareTokenEncoder')
 
 describe('shareTokenEncoder', () => {
-  describe('#encode', () => {
+  describe('#encode, not version 1', () => {
+    it('returns undefined', () => {
+      const data = {
+        'birth-or-adoption': 'adoption',
+        'start-date-day': '09',
+        'start-date-month': '09',
+        'start-date-year': '2017',
+        'primary': {
+          'leave': [],
+          'pay': []
+        },
+        'secondary': {
+          'leave': [],
+          'pay': []
+        }
+      }
+      const shareTokenEncoder = new ShareTokenEncoder(data)
+
+      expect(shareTokenEncoder.encode(2)).to.be.undefined
+    })
+  })
+
+  describe('#encode, version 1', () => {
     it('encodes birth-or-adoption', () => {
       const data = {
         'birth-or-adoption': 'adoption',
@@ -21,9 +43,9 @@ describe('shareTokenEncoder', () => {
         }
       }
       const shareTokenEncoder = new ShareTokenEncoder(data)
-      const expected = '1+000+Yhkn+0+0+0+0000000000000000000000000000000000000'
+      const expected = '1!000!Yhkn!0!0!0!0000000000000000000000000000000000000'
 
-      expect(shareTokenEncoder.encode(data)).to.equal(expected)
+      expect(shareTokenEncoder.encode(1)).to.equal(expected)
     })
 
     it('encodes eligibility', () => {
@@ -50,9 +72,9 @@ describe('shareTokenEncoder', () => {
         }
       }
       const shareTokenEncoder = new ShareTokenEncoder(data)
-      const expected = '0+kFx+Yhkn+0+0+0+0000000000000000000000000000000000000000000'
+      const expected = '0!kFx!Yhkn!0!0!0!0000000000000000000000000000000000000000000'
 
-      expect(shareTokenEncoder.encode(data)).to.equal(expected)
+      expect(shareTokenEncoder.encode(1)).to.equal(expected)
     })
 
     it('encodes the start date', () => {
@@ -71,9 +93,9 @@ describe('shareTokenEncoder', () => {
         }
       }
       const shareTokenEncoder = new ShareTokenEncoder(data)
-      const expected = '0+000+Yhkn+0+0+0+0000000000000000000000000000000000000000000'
+      const expected = '0!000!Yhkn!0!0!0!0000000000000000000000000000000000000000000'
 
-      expect(shareTokenEncoder.encode(data)).to.equal(expected)
+      expect(shareTokenEncoder.encode(1)).to.equal(expected)
     })
 
     it('encodes salary information', () => {
@@ -96,9 +118,9 @@ describe('shareTokenEncoder', () => {
         }
       }
       const shareTokenEncoder = new ShareTokenEncoder(data)
-      const expected = '0+000+Yhkn+18co+171_+E+0000000000000000000000000000000000000000000'
+      const expected = '0!000!Yhkn!18co!171_!E!0000000000000000000000000000000000000000000'
 
-      expect(shareTokenEncoder.encode(data)).to.equal(expected)
+      expect(shareTokenEncoder.encode(1)).to.equal(expected)
     })
 
     it('encodes weeks', () => {
@@ -117,9 +139,9 @@ describe('shareTokenEncoder', () => {
         }
       }
       const shareTokenEncoder = new ShareTokenEncoder(data)
-      const expected = '0+000+Yhkn+0+0+0+o8Y008YBh-_luy_FxN_Stlg8ggxiH4pC2Cp0000000m'
+      const expected = '0!000!Yhkn!0!0!0!o8Y008YBh-_luy_FxN_Stlg8ggxiH4pC2Cp0000000m'
 
-      expect(shareTokenEncoder.encode(data)).to.equal(expected)
+      expect(shareTokenEncoder.encode(1)).to.equal(expected)
     })
 
     it('encodes a complex data object', () => {
@@ -151,9 +173,9 @@ describe('shareTokenEncoder', () => {
       }
 
       const shareTokenEncoder = new ShareTokenEncoder(data)
-      const expected = '0+kFx+81C2+14i3pD+1bfwB+E+o8Y8Y8YBh-_luy_lx__y_lxCxkxipCpCpCp0000000y'
+      const expected = '0!kFx!81C2!14i3pD!1bfwB!E!o8Y8Y8YBh-_luy_lx__y_lxCxkxipCpCpCp0000000y'
 
-      expect(shareTokenEncoder.encode(data)).to.equal(expected)
+      expect(shareTokenEncoder.encode(1)).to.equal(expected)
     })
 
     it('encodes another complex data object', () => {
@@ -181,9 +203,9 @@ describe('shareTokenEncoder', () => {
       }
 
       const shareTokenEncoder = new ShareTokenEncoder(data)
-      const expected = '0+y3m+Yhkp+1vIs+1cz+D+pCpCpCpCm0CpCm0CpCp00pCp000000038Y8iY8Y0030'
+      const expected = '0!y3m!Yhkp!1vIs!1cz!D!pCpCpCpCm0CpCm0CpCp00pCp000000038Y8iY8Y0030'
 
-      expect(shareTokenEncoder.encode(data)).to.equal(expected)
+      expect(shareTokenEncoder.encode(1)).to.equal(expected)
     })
   })
 })

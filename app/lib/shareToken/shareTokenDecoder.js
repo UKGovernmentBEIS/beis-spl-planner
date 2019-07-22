@@ -14,7 +14,11 @@ class ShareTokenEncoder {
     this.data = {}
   }
 
-  decode () {
+  decode (version) {
+    if (version !== 1) {
+      return
+    }
+
     const [
       birthOrAdoption,
       eligibilities,

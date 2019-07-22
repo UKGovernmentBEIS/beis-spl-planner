@@ -29,7 +29,8 @@
           this.formData[parent].leave = this[parent].leaveWeeks.map(toString)
           this.formData[parent].pay = this[parent].payWeeks.map(toString)
         })
-        return new ShareTokenEncoder(this.formData).encode()
+        const token = new ShareTokenEncoder(this.formData).encode()
+        return window.location.href + '?s1=' + token
       }
     }
   }
