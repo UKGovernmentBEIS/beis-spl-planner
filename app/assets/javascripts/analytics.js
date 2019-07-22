@@ -34,6 +34,29 @@ function sendCalendarHasBeenUsed () {
   gtag('event', 'planner_interaction', gaFields)
 }
 
+function trackShareLinkUsage (category) {
+  document.querySelectorAll('.share-link').forEach(link => {
+    link.addEventListener('copy', function (_) {
+      const gaFields = {
+        event_category: category,
+        event_action: 'share_link_copied',
+        birth_or_adoption: getBirthOrAdoption()
+      }
+      gtag('event', 'share_planner', gaFields)
+    })
+  })
+}
+
+function planner () {
+  trackFirstCalendarUsage()
+  trackShareLinkUsage('planner')
+}
+
+function summary () {
+  trackShareLinkUsage('summary')
+}
+
 window.analytics = {
-  trackFirstCalendarUsage
+  planner,
+  summary
 }

@@ -1,6 +1,6 @@
-const { chunk, isUndefined, range } = require('lodash')
+const { chunk, range } = require('lodash')
 const Day = require('../../../common/lib/day')
-const { isBirth } = require('../../../common/lib/dataUtils')
+const { isBirth, isYes, isNo } = require('../../../common/lib/dataUtils')
 const { getBase64Char, convertBase10ToBase64 } = require('./baseMathsUtils')
 const { policies, separator, parents, entitlements } = require('./tokenConstants')
 
@@ -16,7 +16,7 @@ const { policies, separator, parents, entitlements } = require('./tokenConstants
  * weeks = string of base64 characters where each two characters represents 3 weeks.
  *         information is recorded as 1 bit for each of the following primaryLeave, primaryPay, secondaryLeave, secondaryPay
  *
- * fullString = [birthOrAdoption]+[eligibilities]+[startDate]+[primarySalary]+[secondarySalary]+[salaryPeriods]+[weeks]
+ * fullString = [birthOrAdoption]![eligibilities]![startDate]![primarySalary]![secondarySalary]![salaryPeriods]![weeks]
  *
 */
 
@@ -40,7 +40,7 @@ class ShareTokenEncoder {
   }
 
   _encodeBirthOrAdoption () {
-    return this.data['birth-or-adoption'] === 'birth' ? getBase64Char(0) : getBase64Char(1)
+    return isBirth(this.data) ? getBase64Char(0) : getBase64Char(1)
   }
 
   _encodeLeaveAndPayEligibility () {
@@ -55,18 +55,16 @@ class ShareTokenEncoder {
   }
 
   _encodeLeaveAndPayEligibilityForParent (parent) {
-    const binaryEncoding = policies[parent].map(policy => {
-      const eligibility = policy + '-eligible'
-      let binary = ''
-      if (this.data[parent][eligibility]) {
-        binary += '1'
-        binary += this.data[parent][eligibility] === 'yes' ? '1' : '0'
+    return policies[parent].map(policy => {
+      const eligibility = this.data[parent][`${policy}-eligible`]
+      if (isYes(eligibility)) {
+        return '11'
+      } else if (isNo(eligibility)) {
+        return '10'
       } else {
-        binary += '00'
+        return '00'
       }
-      return binary
     })
-    return binaryEncoding
   }
 
   _encodeStartDate () {
@@ -86,9 +84,11 @@ class ShareTokenEncoder {
 
     const salaryAmountsEncoding = [primaryAmount, secondaryAmount]
       .map(amount => {
-        const existence = isUndefined(amount) ? '0' : '1'
-        const amountEncoding = existence === '1' ? convertBase10ToBase64(parseInt(amount)) : ''
-        return existence.concat(amountEncoding)
+        if (isNaN(amount)) {
+          return '0'
+        } else {
+          return '1' + convertBase10ToBase64(parseInt(amount))
+        }
       })
       .join(separator)
 
@@ -136,7 +136,7 @@ class ShareTokenEncoder {
   }
 
   _convertThreeWeeksToBinaryString (threeWeeks) {
-    return threeWeeks.map(weekNumber => {
+    let threeWeeksBinary = threeWeeks.map(weekNumber => {
       let binary = ''
       parents.forEach(parent => {
         entitlements.forEach(entitlement => {
@@ -149,7 +149,11 @@ class ShareTokenEncoder {
       })
       return binary
     })
-      .join('').padEnd(6, '0')
+      .join('')
+    while (threeWeeksBinary.length < 6) {
+      threeWeeksBinary += '0'
+    }
+    return threeWeeksBinary
   }
 }
 

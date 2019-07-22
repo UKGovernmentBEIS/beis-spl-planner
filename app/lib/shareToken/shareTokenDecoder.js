@@ -6,6 +6,7 @@ const {
   convertBase64ToBase10,
   convertBase64ToBinary
 } = require('./baseMathsUtils')
+const { isBirth } = require('../../../common/lib/dataUtils')
 const { separator, policies, parents, entitlements } = require('./tokenConstants')
 
 class ShareTokenEncoder {
@@ -109,7 +110,7 @@ class ShareTokenEncoder {
       .map(binaryString => binaryString.padStart(6, '0'))
       .join('')
 
-    const weekOffset = this.data['birth-or-adoption'] === 'birth' ? 11 : 2
+    const weekOffset = isBirth(this.data) ? 11 : 2
 
     const bitsPerWeek = 4
     chunk(binaryWeeks, bitsPerWeek).forEach((week, weekIdx) => {
@@ -141,6 +142,8 @@ function getSalaryPeriod (periodBinary) {
       return 'week'
     case '10':
       return 'month'
+    case '11':
+      return 'year'
     default:
       return 'year'
   }

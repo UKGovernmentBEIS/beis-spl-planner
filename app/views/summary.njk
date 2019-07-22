@@ -70,5 +70,6 @@
 
   <script>
     window.summary.init({{ data | dump | safe }})
+    window.analytics.summary()
   </script>
 {% endblock %}

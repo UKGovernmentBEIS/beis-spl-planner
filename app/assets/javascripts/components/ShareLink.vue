@@ -4,13 +4,22 @@
       <label class="govuk-label govuk-!-font-weight-bold" for="event-name">
         Link to your plan
         <span class="govuk-hint">
-          Click this link to copy it and use it to return to your {{ pageType }} or to share it with someone.
+          Copy this link and use it to return to your {{ pageType }} or to share it with someone.
         </span>
       </label>
-      <input class="govuk-input govuk-!-font-size-14" type="text" readonly
-        :value="token"
-        @click="copyToClipboard($event)"
-      />
+      <div class="govuk-grid-column-three-quarters govuk-!-padding-0">
+        <input class="govuk-input govuk-!-font-size-14 share-link" type="text" readonly
+          :value="token"
+          @click="selectToken($event)"
+        />
+      </div>
+      <div class="govuk-grid-column-one-quarter">
+        <button class="govuk-button" type="button"
+          @click.prevent="copyToken()"
+        >
+          Copy link
+        </button>
+      </div>
     </div>
   </span>
 </template>
@@ -43,9 +52,15 @@
       }
     },
     methods: {
-      copyToClipboard: function (event) {
+      selectToken: function (event) {
         event.target.select()
-        document.execCommand('copy')
+      },
+      copyToken: function () {
+        document.querySelector('.share-link').select()
+        const hasCopied = document.execCommand('copy')
+        if (!hasCopied) {
+          window.alert('Copy failed. Please try again using your browser’s controls.')
+        }
       }
     }
   }

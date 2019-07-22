@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="govuk-heading-m">
+    <h2 class="govuk-heading-s">
       Print your plan
     </h2>
     <p>
@@ -12,7 +12,7 @@
             data-ga-field-event_category="planner"
             data-ga-field-event_action="print_page"
           >
-        print your plan</a> if you want to refer to it later.
+      print your plan</a> if you want to refer to it later.
     </p>
   </div>
 </template>
