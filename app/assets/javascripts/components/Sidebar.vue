@@ -64,8 +64,8 @@
   module.exports = {
     data: () => ({
       leaveWeeks: {
-        primary: { nonSpl: 0, spl: 0 },
-        secondary: { nonSpl: 0, spl: 0 }
+        primary: { nonSpl: 0, spl: 0, shppCountedAsSpl: 0 },
+        secondary: { nonSpl: 0, spl: 0, shppCountedAsSpl: 0 }
       },
       shppAndPrimaryInitialPayWeeks: 0,
       paternityPayWeeks: 0
@@ -84,8 +84,11 @@
       splUsed: function () {
         return this.leaveWeeks.primary.spl + this.leaveWeeks.secondary.spl
       },
+      shppCountedAsSpl: function () {
+        return this.leaveWeeks.primary.shppCountedAsSpl + this.leaveWeeks.secondary.shppCountedAsSpl
+      },
       sharedLeaveRemaining: function () {
-        const leaveBalanceUsed = this.primaryLeaveUsed + this.splUsed
+        const leaveBalanceUsed = this.primaryLeaveUsed + this.splUsed + this.shppCountedAsSpl
         return 52 - leaveBalanceUsed
       },
       payUsed: function () {
@@ -167,8 +170,8 @@
       },
       resetTotals: function () {
         this.leaveWeeks = {
-          primary: { nonSpl: 0, spl: 0 },
-          secondary: { nonSpl: 0, spl: 0 }
+          primary: { nonSpl: 0, spl: 0, shppCountedAsSpl: 0 },
+          secondary: { nonSpl: 0, spl: 0, shppCountedAsSpl: 0 }
         }
         this.shppAndPrimaryInitialPayWeeks = 0
         this.paternityPayWeeks = 0
@@ -191,6 +194,10 @@
             this.paternityPayWeeks++
           } else {
             this.shppAndPrimaryInitialPayWeeks++
+
+            if (!week[parent].leave.eligible) {
+              this.leaveWeeks[parent].shppCountedAsSpl++
+            }
           }
         }
       }
