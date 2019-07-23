@@ -6,12 +6,22 @@ function isAdoption (data) {
   return data['birth-or-adoption'] === 'adoption'
 }
 
+function isSurrogacy (data) {
+  return data['birth-or-adoption'] === 'surrogacy'
+}
+
 function parentName (data, currentParent) {
   return currentParent === 'primary' ? primaryName(data) : secondaryName(data)
 }
 
 function primaryName (data) {
-  return isBirth(data) ? 'mother' : 'primary adopter'
+  if (isBirth(data)) {
+    return 'mother'
+  } else if (isAdoption(data)) {
+    return 'primary adopter'
+  } else {
+    return 'parental order parent'
+  }
 }
 
 function secondaryName (data) {
@@ -32,6 +42,7 @@ module.exports = {
   secondaryName,
   isAdoption,
   isBirth,
+  isSurrogacy,
   isYes,
   isNo
 }
