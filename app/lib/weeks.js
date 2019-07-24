@@ -74,22 +74,20 @@ class Weeks {
   _weekEligibleForPrimaryLeave (week) {
     if (this.eligibility.primary.spl) {
       return true
-    } else if (!this.eligibility.primary.statutoryLeave) {
-      return false
+    } else if (this.eligibility.primary.statutoryLeave) {
+      return week.primary.leave.text === 'maternity' || week.primary.leave.text === 'adoption'
     } else {
-      return week.primary.leave.text === 'maternity'
+      return false
     }
   }
 
   _weekEligibleForSecondaryLeave (week) {
     if (this.eligibility.secondary.spl) {
       return true
-    } else if (!this.eligibility.secondary.statutoryLeave) {
-      return false
-    } else if (!this.eligibility.secondary.shpp) {
+    } else if (this.eligibility.secondary.statutoryLeave) {
       return week.number < 8
     } else {
-      return week.secondary.leave.text === 'paternity'
+      return false
     }
   }
 
