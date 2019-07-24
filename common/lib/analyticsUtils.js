@@ -9,13 +9,13 @@ function getGaFields (element) {
   }, {})
 }
 
-function getBirthOrAdoption () {
-  const field = document.querySelector('[name=birth-or-adoption]:checked') ||
-                document.querySelector('[name=birth-or-adoption]')
+function getNatureOfParenthood () {
+  const field = document.querySelector('[name=nature-of-parenthood]:checked') ||
+                document.querySelector('[name=nature-of-parenthood]')
   return field ? field.value : null
 }
 
 module.exports = {
-  getBirthOrAdoption,
+  getNatureOfParenthood,
   getGaFields
 }

@@ -7,7 +7,7 @@ describe('shareTokenEncoder', () => {
   describe('#encode, not version 1', () => {
     it('returns undefined', () => {
       const data = {
-        'birth-or-adoption': 'adoption',
+        'nature-of-parenthood': 'adoption',
         'start-date-day': '09',
         'start-date-month': '09',
         'start-date-year': '2017',
@@ -27,9 +27,9 @@ describe('shareTokenEncoder', () => {
   })
 
   describe('#encode, version 1', () => {
-    it('encodes birth-or-adoption', () => {
+    it('encodes nature-of-parenthood', () => {
       const data = {
-        'birth-or-adoption': 'adoption',
+        'nature-of-parenthood': 'adoption',
         'start-date-day': '09',
         'start-date-month': '09',
         'start-date-year': '2017',
@@ -50,7 +50,7 @@ describe('shareTokenEncoder', () => {
 
     it('encodes eligibility', () => {
       const data = {
-        'birth-or-adoption': 'birth',
+        'nature-of-parenthood': 'birth',
         'start-date-day': '09',
         'start-date-month': '09',
         'start-date-year': '2017',
@@ -79,7 +79,7 @@ describe('shareTokenEncoder', () => {
 
     it('encodes the start date', () => {
       const data = {
-        'birth-or-adoption': 'birth',
+        'nature-of-parenthood': 'birth',
         'start-date-day': '09',
         'start-date-month': '09',
         'start-date-year': '2017',
@@ -100,7 +100,7 @@ describe('shareTokenEncoder', () => {
 
     it('encodes salary information', () => {
       const data = {
-        'birth-or-adoption': 'birth',
+        'nature-of-parenthood': 'birth',
         'start-date-day': '09',
         'start-date-month': '09',
         'start-date-year': '2017',
@@ -125,7 +125,7 @@ describe('shareTokenEncoder', () => {
 
     it('encodes weeks', () => {
       const data = {
-        'birth-or-adoption': 'birth',
+        'nature-of-parenthood': 'birth',
         'start-date-day': '09',
         'start-date-month': '09',
         'start-date-year': '2017',
@@ -146,7 +146,7 @@ describe('shareTokenEncoder', () => {
 
     it('encodes a complex data object', () => {
       const data = {
-        'birth-or-adoption': 'birth',
+        'nature-of-parenthood': 'birth',
         'start-date-day': '2',
         'start-date-month': '10',
         'start-date-year': '18',
@@ -180,7 +180,7 @@ describe('shareTokenEncoder', () => {
 
     it('encodes another complex data object', () => {
       const data = {
-        'birth-or-adoption': 'birth',
+        'nature-of-parenthood': 'birth',
         'primary': {
           'spl-eligible': 'yes',
           'shpp-eligible': 'yes',

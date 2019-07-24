@@ -14,18 +14,18 @@ describe('ShareTokenDecoder', () => {
   })
 
   describe('#decode, version 1', () => {
-    it('decodes birth-or-adoption', () => {
+    it('decodes nature-of-parenthood', () => {
       const encoded = '0!000!Yhkn!0!0!0!0000000000000000000000'
       const shareTokenDecoder = new ShareTokenDecoder(encoded)
       const result = shareTokenDecoder.decode(1)
 
-      expect(result['birth-or-adoption']).to.deep.equal('birth')
+      expect(result['nature-of-parenthood']).to.deep.equal('birth')
     })
 
     it('decodes eligibility', () => {
       const encoded = '0!kFx!Yhkn!0!0!0!0000000000000000000000'
       const expected = {
-        'birth-or-adoption': 'birth',
+        'nature-of-parenthood': 'birth',
         'start-date-day': '09',
         'start-date-month': '09',
         'start-date-year': '2017',
@@ -100,7 +100,7 @@ describe('ShareTokenDecoder', () => {
     it('decodes a complex data object', () => {
       const encoded = '0!kFx!81C2!14i3pD!1bfwB!E!o8Y8Y8YBh-_luy_lx__y_lxCxkxipCpCpCp0000000y'
       const expected = {
-        'birth-or-adoption': 'birth',
+        'nature-of-parenthood': 'birth',
         'start-date-day': '02',
         'start-date-month': '10',
         'start-date-year': '2018',
@@ -126,7 +126,7 @@ describe('ShareTokenDecoder', () => {
         }
       }
       const result = new ShareTokenDecoder(encoded).decode(1)
-      expect(result['birth-or-adoption']).to.equal(expected['birth-or-adoption'])
+      expect(result['nature-of-parenthood']).to.equal(expected['nature-of-parenthood'])
       expect(result['start-date-day']).to.equal(expected['start-date-day'])
       expect(result['start-date-month']).to.equal(expected['start-date-month'])
       expect(result['start-date-year']).to.equal(expected['start-date-year'])
@@ -147,7 +147,7 @@ describe('ShareTokenDecoder', () => {
     it('decodes another complex data object', () => {
       const encoded = '0!y3m!Yhkp!1vIs!1cz!D!pCpCpCpCm0CpCm0CpCp00pCp000000038Y8iY8Y0030'
       const expected = {
-        'birth-or-adoption': 'birth',
+        'nature-of-parenthood': 'birth',
         'primary': {
           'spl-eligible': 'yes',
           'shpp-eligible': 'yes',
@@ -169,7 +169,7 @@ describe('ShareTokenDecoder', () => {
         'start-date-year': '2019'
       }
       const result = new ShareTokenDecoder(encoded).decode(1)
-      expect(result['birth-or-adoption']).to.equal(expected['birth-or-adoption'])
+      expect(result['nature-of-parenthood']).to.equal(expected['nature-of-parenthood'])
       expect(result['start-date-day']).to.equal(expected['start-date-day'])
       expect(result['start-date-month']).to.equal(expected['start-date-month'])
       expect(result['start-date-year']).to.equal(expected['start-date-year'])

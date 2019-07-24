@@ -1,13 +1,13 @@
 /* global gtag */
 
-const { getGaFields, getBirthOrAdoption } = require('../../../common/lib/analyticsUtils')
+const { getGaFields, getNatureOfParenthood } = require('../../../common/lib/analyticsUtils')
 
 window.addEventListener('load', () => {
   document.querySelectorAll('[data-ga-hit-type]').forEach(element => {
     const gaFields = getGaFields(element)
     const gaHitType = element.getAttribute('data-ga-hit-type')
     element.addEventListener('click', function (e) {
-      gaFields['birth_or_adoption'] = gaFields['birth_or_adoption'] || getBirthOrAdoption()
+      gaFields['nature_of_parenthood'] = gaFields['nature_of_parenthood'] || getNatureOfParenthood()
       gtag('event', gaHitType, gaFields)
     })
   })
@@ -29,7 +29,7 @@ function sendCalendarHasBeenUsed () {
   const gaFields = {
     event_category: 'planner',
     event_action: 'planner_interaction',
-    birth_or_adoption: getBirthOrAdoption()
+    nature_of_parenthood: getNatureOfParenthood()
   }
   gtag('event', 'planner_interaction', gaFields)
 }
@@ -40,7 +40,7 @@ function trackShareLinkUsage (category) {
       const gaFields = {
         event_category: category,
         event_action: 'share_link_copied',
-        birth_or_adoption: getBirthOrAdoption()
+        nature_of_parenthood: getNatureOfParenthood()
       }
       gtag('event', 'share_planner', gaFields)
     })

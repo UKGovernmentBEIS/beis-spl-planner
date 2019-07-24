@@ -7,7 +7,7 @@ const { policies, separator, parents, entitlements } = require('./tokenConstants
 /*
  * ENCODES ENTIRE DATA OBJECT:
  *
- * birthOrAdoption = single binary bit for birth-or-adoption
+ * natureOfParenthood = single binary bit for nature-of-parenthood
  * eligibilities = 3 base64 bits for all eligibilities
  * startDate = base64 integer made by concatenating day, month and 4 digit year and converting to base64
  * primarySalary = binary bit for existence of data followed by base64 integer for amount
@@ -16,7 +16,7 @@ const { policies, separator, parents, entitlements } = require('./tokenConstants
  * weeks = string of base64 characters where each two characters represents 3 weeks.
  *         information is recorded as 1 bit for each of the following primaryLeave, primaryPay, secondaryLeave, secondaryPay
  *
- * fullString = [birthOrAdoption]![eligibilities]![startDate]![primarySalary]![secondarySalary]![salaryPeriods]![weeks]
+ * fullString = [natureOfParenthood]![eligibilities]![startDate]![primarySalary]![secondarySalary]![salaryPeriods]![weeks]
  *
 */
 
@@ -31,7 +31,7 @@ class ShareTokenEncoder {
     }
 
     return [
-      this._encodeBirthOrAdoption(),
+      this._encodeNatureOfParenthood(),
       this._encodeLeaveAndPayEligibility(),
       this._encodeStartDate(),
       this._encodeSalary(),
@@ -39,7 +39,7 @@ class ShareTokenEncoder {
     ].join(separator)
   }
 
-  _encodeBirthOrAdoption () {
+  _encodeNatureOfParenthood () {
     return isBirth(this.data) ? getBase64Char(0) : getBase64Char(1)
   }
 

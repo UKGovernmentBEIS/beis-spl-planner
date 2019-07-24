@@ -1,13 +1,17 @@
 function isBirth (data) {
-  return data['birth-or-adoption'] === 'birth'
+  return data['nature-of-parenthood'] === 'birth'
 }
 
 function isAdoption (data) {
-  return data['birth-or-adoption'] === 'adoption'
+  return data['nature-of-parenthood'] === 'adoption'
 }
 
 function earliestPrimaryLeaveWeek (data) {
   return isBirth(data) ? -11 : -2
+}
+
+function isSurrogacy (data) {
+  return data['nature-of-parenthood'] === 'surrogacy'
 }
 
 function parentName (data, currentParent) {
@@ -15,7 +19,13 @@ function parentName (data, currentParent) {
 }
 
 function primaryName (data) {
-  return isBirth(data) ? 'mother' : 'primary adopter'
+  if (isBirth(data)) {
+    return 'mother'
+  } else if (isAdoption(data)) {
+    return 'primary adopter'
+  } else {
+    return 'parental order parent'
+  }
 }
 
 function secondaryName (data) {
@@ -37,6 +47,7 @@ module.exports = {
   isAdoption,
   isBirth,
   earliestPrimaryLeaveWeek,
+  isSurrogacy,
   isYes,
   isNo
 }

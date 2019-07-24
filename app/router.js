@@ -27,15 +27,15 @@ router.route(paths.getPath('root'))
     res.render('index')
   })
   .post(function (req, res) {
-    res.redirect(paths.getPath('birthOrAdoption'))
+    res.redirect(paths.getPath('natureOfParenthood'))
   })
 
-router.route(paths.getPath('birthOrAdoption'))
+router.route(paths.getPath('natureOfParenthood'))
   .get(function (req, res) {
-    res.render('birth-or-adoption')
+    res.render('nature-of-parenthood')
   })
   .post(function (req, res) {
-    if (!validate.birthOrAdoption(req)) {
+    if (!validate.natureOfParenthood(req)) {
       return res.redirect('back')
     }
     const primaryParent = isBirth(req.session.data) ? 'mother' : 'primary-adopter'
