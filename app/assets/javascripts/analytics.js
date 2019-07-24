@@ -1,4 +1,4 @@
-const { getGaFields, getBirthOrAdoption } = require('../../../common/lib/analyticsUtils')
+const { getGaFields, getNatureOfParenthood } = require('../../../common/lib/analyticsUtils')
 
 window.analytics = {
 }
