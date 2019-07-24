@@ -9,6 +9,7 @@
       </label>
       <div class="govuk-grid-column-three-quarters govuk-!-padding-0">
         <input class="govuk-input govuk-!-font-size-14 share-link" type="text" readonly
+          :ref="'share-link'"
           :value="token"
           @click="selectToken($event)"
         />
@@ -43,12 +44,14 @@
       token: function () {
         const currentState = cloneDeep(this.formData)
         const parents = ['primary', 'secondary']
+        // in the planner we need to override data[parent][pay|leave] to keep the token up to date with the current state
+        // leaveWeeks and payWeeks are integer arrays but the data object expects string arrays.
         parents.forEach(parent => {
           currentState[parent].leave = this[parent].leaveWeeks.map(toString)
           currentState[parent].pay = this[parent].payWeeks.map(toString)
         })
         const token = new ShareTokenEncoder(currentState).encode(1)
-        return window.location.href + '?s1=' + token
+        return location.protocol + '//' + location.host + location.pathname + '?s1=' + token
       }
     },
     methods: {
@@ -56,7 +59,7 @@
         event.target.select()
       },
       copyToken: function () {
-        document.querySelector('.share-link').select()
+        this.$refs['share-link'].select()
         const hasCopied = document.execCommand('copy')
         if (!hasCopied) {
           window.alert('Copy failed. Please try again using your browser’s controls.')
