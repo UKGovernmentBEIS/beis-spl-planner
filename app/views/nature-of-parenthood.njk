@@ -20,11 +20,11 @@
 {% endblock %}
 
 {% block content %}
-  {% if errors["birth-or-adoption"] %}
+  {% if errors["nature-of-parenthood"] %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
-        errors["birth-or-adoption"]
+        errors["nature-of-parenthood"]
       ]
     }) }}
   {% endif %}
@@ -35,8 +35,8 @@
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
             classes: "govuk-radios",
-            idPrefix: "birth-or-adoption",
-            name: "birth-or-adoption",
+            idPrefix: "nature-of-parenthood",
+            name: "nature-of-parenthood",
             fieldset: {
               legend: {
                 text: "Are you having a child through birth or adoption?",
@@ -48,8 +48,8 @@
               text: "Shared parental leave and statutory shared parental pay are available for birth and adoptive parents."
             },
             errorMessage: {
-              text: errors["birth-or-adoption"].text
-            } if errors["birth-or-adoption"],
+              text: errors["nature-of-parenthood"].text
+            } if errors["nature-of-parenthood"],
             items: [
               {
                 value: "birth",
@@ -67,9 +67,9 @@
         {{ govukButton({
           text: "Continue",
           attributes: {
-            "data-ga-hit-type": "parent_type",
+            "data-ga-hit-type": "nature_of_parenthood",
             "data-ga-field-event_category": "eligibility_questions",
-            "data-ga-field-event_action": "parent_type"
+            "data-ga-field-event_action": "nature_of_parenthood"
           }
         }) }}
       </form>

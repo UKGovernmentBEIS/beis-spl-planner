@@ -18,9 +18,9 @@ const {
   isYesOrNo
 } = require('./lib/validationUtils')
 
-function birthOrAdoption (req) {
-  if (!['birth', 'adoption'].includes(req.session.data['birth-or-adoption'])) {
-    addError(req, 'birth-or-adoption', 'Select either birth or adoption', '#birth-or-adoption-1')
+function natureOfParenthood (req) {
+  if (!['birth', 'adoption'].includes(req.session.data['nature-of-parenthood'])) {
+    addError(req, 'nature-of-parenthood', 'Select either birth or adoption', '#nature-of-parenthood-1')
     return false
   }
   return true
@@ -316,7 +316,7 @@ function addCalendarError (req, parentOrShared, key, message) {
 }
 
 module.exports = {
-  birthOrAdoption,
+  natureOfParenthood,
   primarySharedParentalLeaveAndPay,
   initialLeaveAndPay,
   maternityAllowance,

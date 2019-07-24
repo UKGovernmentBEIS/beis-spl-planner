@@ -41,16 +41,16 @@ class Paths {
       root: {
         url: '/'
       },
-      birthOrAdoption: {
-        url: '/birth-or-adoption',
+      natureOfParenthood: {
+        url: '/nature-of-parenthood',
         workflowParentPath: '/',
-        validator: validate.birthOrAdoption
+        validator: validate.natureOfParenthood
       },
       eligibility: {
         mother: {
           sharedParentalLeaveAndPay: {
             url: '/eligibility/mother/shared-parental-leave-and-pay',
-            workflowParentPath: '/birth-or-adoption',
+            workflowParentPath: '/nature-of-parenthood',
             validator: validate.primarySharedParentalLeaveAndPay
           },
           initialLeaveAndPay: {
@@ -67,7 +67,7 @@ class Paths {
         'primary-adopter': {
           sharedParentalLeaveAndPay: {
             url: '/eligibility/primary-adopter/shared-parental-leave-and-pay',
-            workflowParentPath: '/birth-or-adoption',
+            workflowParentPath: '/nature-of-parenthood',
             validator: validate.primarySharedParentalLeaveAndPay
           },
           initialLeaveAndPay: {

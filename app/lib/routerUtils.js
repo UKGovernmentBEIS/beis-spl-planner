@@ -49,7 +49,7 @@ function parseExternalQueryString (req) {
       }
     })
   })
-  req.session.data['birth-or-adoption'] = req.query['birth-or-adoption']
+  req.session.data['nature-of-parenthood'] = req.query['nature-of-parenthood']
   const dueDate = new Day(req.query['due-date'])
   if (dueDate.isValid()) {
     req.session.data['start-date-day'] = dueDate.date()

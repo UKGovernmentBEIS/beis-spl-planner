@@ -21,7 +21,7 @@ class ShareTokenEncoder {
     }
 
     const [
-      birthOrAdoption,
+      natureOfParenthood,
       eligibilities,
       startDate,
       primarySalary,
@@ -29,7 +29,7 @@ class ShareTokenEncoder {
       salaryPeriods,
       weeks
     ] = this.encoded.split(separator)
-    this._decodeBirthOrAdoption(birthOrAdoption)
+    this._decodeNatureOfParenthood(natureOfParenthood)
     this._decodeEligibility(eligibilities)
     this._decodeStartDate(startDate)
     this._decodeSalaryInformation(primarySalary, secondarySalary, salaryPeriods)
@@ -37,8 +37,8 @@ class ShareTokenEncoder {
     return this.data
   }
 
-  _decodeBirthOrAdoption (birthOrAdoption) {
-    this.data['birth-or-adoption'] = birthOrAdoption === '0' ? 'birth' : 'adoption'
+  _decodeNatureOfParenthood (natureOfParenthood) {
+    this.data['nature-of-parenthood'] = natureOfParenthood === '0' ? 'birth' : 'adoption'
   }
 
   _decodeEligibility (eligibilities) {

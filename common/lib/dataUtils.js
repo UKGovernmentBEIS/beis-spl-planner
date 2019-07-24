@@ -1,9 +1,9 @@
 function isBirth (data) {
-  return data['birth-or-adoption'] === 'birth'
+  return data['nature-of-parenthood'] === 'birth'
 }
 
 function isAdoption (data) {
-  return data['birth-or-adoption'] === 'adoption'
+  return data['nature-of-parenthood'] === 'adoption'
 }
 
 function earliestPrimaryLeaveWeek (data) {
@@ -11,7 +11,7 @@ function earliestPrimaryLeaveWeek (data) {
 }
 
 function isSurrogacy (data) {
-  return data['birth-or-adoption'] === 'surrogacy'
+  return data['nature-of-parenthood'] === 'surrogacy'
 }
 
 function parentName (data, currentParent) {
