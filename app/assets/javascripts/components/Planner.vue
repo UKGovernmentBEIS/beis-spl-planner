@@ -1,23 +1,35 @@
 <template>
-  <div class="govuk-grid-row">
-    <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full print-full-width">
-      <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :isBirth="isBirth"
-        :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" :eligibility="eligibility"/>
-    </div>
-    <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full print-hide">
-      <div id="sidebar-information">
-        <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :reset="resetIfChanged" :eligibility="eligibility"/>
+  <div>
+    <div class="govuk-grid-row">
+      <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full print-full-width">
+        <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :isBirth="isBirth"
+          :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" :eligibility="eligibility"/>
       </div>
-      <button
-        class="govuk-button"
-        type="button"
-        @click="resetIfChanged()"
-        data-ga-hit-type="planner_reset"
-        data-ga-field-event_category="planner"
-        data-ga-field-event_action="reset"
-      >
-        Reset
-      </button>
+      <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full print-hide">
+        <div id="sidebar-information">
+          <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :reset="resetIfChanged" :eligibility="eligibility"/>
+        </div>
+        <button
+          class="govuk-button"
+          type="button"
+          @click="resetIfChanged()"
+          data-ga-hit-type="planner_reset"
+          data-ga-field-event_category="planner"
+          data-ga-field-event_action="reset"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+    <div class="govuk-grid-row print-hide">
+      <div class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full">
+        <ShareLink :formData="formData" :primary="primary" :secondary="secondary"/>
+      </div>
+    </div>
+    <div class="govuk-grid-row print-hide">
+      <div class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full">
+        <PrintYourPlan />
+      </div>
     </div>
   </div>
 </template>
@@ -26,12 +38,16 @@
   const { isEqual } = require('lodash')
   const Calendar = require('./Calendar.vue')
   const Sidebar = require('./Sidebar.vue')
+  const PrintYourPlan = require('./PrintYourPlan.vue')
+  const ShareLink = require('./ShareLink.vue')
   const Weeks = require('../../../lib/weeks')
 
   module.exports = {
     components: {
       Calendar,
-      Sidebar
+      Sidebar,
+      PrintYourPlan,
+      ShareLink
     },
     computed: {
       names: function () {

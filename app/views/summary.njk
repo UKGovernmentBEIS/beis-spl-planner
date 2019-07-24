@@ -64,3 +64,12 @@
     </div>
   </div>
 {% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+
+  <script>
+    window.summary.init({{ data | dump | safe }})
+    window.analytics.summary()
+  </script>
+{% endblock %}

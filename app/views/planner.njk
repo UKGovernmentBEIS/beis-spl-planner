@@ -2,6 +2,7 @@
 {% from "button/macro.njk" import govukButton %}
 {% from "details/macro.njk" import govukDetails %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "input/macro.njk" import govukInput %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "inset-text/macro.njk" import govukInsetText %}
 {% from "components/calendar.njk" import calendar %}
@@ -181,34 +182,12 @@
       </div>
     </div>
   </form>
-  <div class="govuk-grid-row print-hide">
-    <div class="govuk-grid-column-two-thirds-from-desktop">
-      <h2 class="govuk-heading-m">
-        Print your plan
-      </h2>
-      {% set printLink %}
-        <a
-          onclick="window.print()"
-          class="govuk-link--no-visited-state govuk-body print-hide"
-          href="#"
-          data-ga-hit-type="print_planner"
-          data-ga-field-event_category="planner"
-          data-ga-field-event_action="print_page"
-        >
-          print your plan
-        </a>
-      {% endset %}
-      <p>
-        You can {{ printLink | safe }} if you want to refer to it later.
-      </p>
-    </div>
-  </div>
 {% endblock %}
 
 {% block bodyEnd %}
   {{ super() }}
   <script>
     window.planner.init({{ data | dump | safe }}, true)
-    window.analytics.trackFirstCalendarUsage()
+    window.analytics.planner()
   </script>
 {% endblock %}

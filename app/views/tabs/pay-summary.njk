@@ -1,6 +1,7 @@
 {% from "table/macro.njk" import govukTable %}
 {% from "../components/primary-notice.njk" import primaryNotice %}
 {% from "../components/secondary-notice.njk" import secondaryNotice %}
+{% from "../components/summary-tab-footer.njk" import summaryTabFooter %}
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds-from-desktop">
@@ -118,7 +119,9 @@
       data: data
     }) }}
 
-    {% include "../components/print-summary-button.njk" %}
+    {{ summaryTabFooter({
+      shareLinkId: 'pay-summary-share-link'
+    }) }}
   </div>
 </div>
 

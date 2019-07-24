@@ -1,6 +1,7 @@
 const qs = require('qs')
 const url = require('url')
 const paths = require('../../app/paths')
+const ShareTokenDecoder = require('../../app/lib/shareToken/shareTokenDecoder')
 
 module.exports = function (req, res, next) {
   if (req.method === 'GET' && req.query['data-in-query']) {
@@ -10,6 +11,12 @@ module.exports = function (req, res, next) {
     req.session.data = data
     res.redirect(req.path)
     return
+  }
+
+  if (req.query.s1) {
+    const token = req.query.s1
+    req.session.data = new ShareTokenDecoder(token).decode(1)
+    return res.redirect(req.path)
   }
 
   if (req.method === 'POST') {

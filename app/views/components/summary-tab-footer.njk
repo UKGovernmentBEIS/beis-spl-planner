@@ -1,0 +1,19 @@
+{% from "button/macro.njk" import govukButton %}
+
+{% macro summaryTabFooter(options) %}
+  {{ govukButton({
+    text: "Print this summary",
+    type: "button",
+    classes: "print-hide",
+    attributes: {
+      onClick: "window.print()",
+      "data-ga-hit-type": "print_summary",
+      "data-ga-field-event_category": "summary",
+      "data-ga-field-event_action": "print_page"
+    }
+  }) }}
+
+  <div id="{{ options.shareLinkId }}">
+  {# JavaScript enhanced share link component. See /app/assets/javascripts/summary.js and associated Vue components. #}
+  </div>
+{% endmacro %}

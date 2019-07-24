@@ -14,6 +14,7 @@ const {
   parseExternalQueryString
 } = require('./lib/routerUtils')
 const { isBirth, isYes } = require('../common/lib/dataUtils')
+const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
 
 router.use('/planner/examples', require('./router.examples'))
 router.use('/forms', require('./router.forms'))
@@ -277,7 +278,8 @@ router.route(paths.getPath('planner.shared-parental-leave.end'))
 router.route(paths.getPath('summary'))
   .get(function (req, res) {
     const { leaveBlocks, payBlocks } = getBlocks(req.session.data)
-    res.render('summary', { leaveBlocks, payBlocks })
+    const shareToken = new ShareTokenEncoder(req.session.data).encode(1)
+    res.render('summary', { leaveBlocks, payBlocks, shareToken })
   })
 
 router.route(paths.getPath('feedback'))
