@@ -1,17 +1,31 @@
+const isString = require('lodash')
+
 function isBirth (data) {
-  return data['nature-of-parenthood'] === 'birth'
+  if (isString(data)) {
+    return data === 'birth'
+  } else {
+    return data['nature-of-parenthood'] === 'birth'
+  }
 }
 
 function isAdoption (data) {
-  return data['nature-of-parenthood'] === 'adoption'
+  if (isString(data)) {
+    return data === 'adoption'
+  } else {
+    return data['nature-of-parenthood'] === 'adoption'
+  }
+}
+
+function isSurrogacy (data) {
+  if (isString(data)) {
+    return data === 'surrogacy'
+  } else {
+    return data['nature-of-parenthood'] === 'surrogacy'
+  }
 }
 
 function earliestPrimaryLeaveWeek (data) {
   return isBirth(data) ? -11 : -2
-}
-
-function isSurrogacy (data) {
-  return data['nature-of-parenthood'] === 'surrogacy'
 }
 
 function parentName (data, currentParent) {
@@ -46,8 +60,8 @@ module.exports = {
   secondaryName,
   isAdoption,
   isBirth,
-  earliestPrimaryLeaveWeek,
   isSurrogacy,
+  earliestPrimaryLeaveWeek,
   isYes,
   isNo
 }
