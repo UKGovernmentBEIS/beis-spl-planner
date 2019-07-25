@@ -53,6 +53,14 @@ module.exports = function (env) {
     return isBirth(data) ? 'maternity' : 'adoption'
   }
 
+  function parentInitialLeaveType (data, parent) {
+    if (parent === 'primary') {
+      return primaryLeaveType(data)
+    } else {
+      return 'paternity'
+    }
+  }
+
   function capitalise (string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
@@ -103,6 +111,7 @@ module.exports = function (env) {
     otherParentName,
     parentNameForUrl,
     primaryLeaveType,
+    parentInitialLeaveType,
     capitalise,
     startDateName,
     offsetWeeks,
