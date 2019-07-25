@@ -227,7 +227,12 @@ router.route(paths.getPath('planner.paternity-leave.end'))
 
 router.route(paths.getPath('planner.shared-parental-leave'))
   .get(function (req, res) {
-    res.render('accessible-planner/shared-parental-leave')
+    const leaveBlocks = parseLeaveBlocks(req.session.data['leave-blocks'])
+    if (getRemainingLeaveAllowance(leaveBlocks) === 0) {
+      res.redirect(paths.getPath('summary'))
+    } else {
+      res.render('accessible-planner/shared-parental-leave')
+    }
   })
   .post(function (req, res) {
     const { data } = req.session
@@ -267,12 +272,7 @@ router.route(paths.getPath('planner.shared-parental-leave.end'))
     res.render('accessible-planner/shared-parental-leave-end')
   })
   .post(function (req, res) {
-    const leaveBlocks = parseLeaveBlocks(req.session.data['leave-blocks'])
-    if (getRemainingLeaveAllowance(leaveBlocks) > 0) {
-      res.redirect(paths.getPath('planner.shared-parental-leave'))
-    } else {
-      res.redirect(paths.getPath('summary'))
-    }
+    res.redirect(paths.getPath('planner.shared-parental-leave'))
   })
 
 router.route(paths.getPath('summary'))
