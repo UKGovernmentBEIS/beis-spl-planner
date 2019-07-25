@@ -21,6 +21,10 @@ module.exports = function (env) {
     return dataUtils.isAdoption(data)
   }
 
+  function earliestPrimaryLeaveWeek (data) {
+    return dataUtils.earliestPrimaryLeaveWeek(data)
+  }
+
   function isSurrogacy (data) {
     return dataUtils.isSurrogacy(data)
   }
@@ -98,6 +102,7 @@ module.exports = function (env) {
     isNo,
     isBirth,
     isAdoption,
+    earliestPrimaryLeaveWeek,
     isSurrogacy,
     primaryName,
     secondaryName,

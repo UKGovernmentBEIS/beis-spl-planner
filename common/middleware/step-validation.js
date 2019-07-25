@@ -1,7 +1,8 @@
 const paths = require('../../app/paths')
 
 module.exports = function (req, res, next) {
-  const earliestPathWithValidationErrors = getEarliestPathWithValidationErrors(paths.getPreviousWorkFlowPath(req.path), req)
+  const previousWorkflowPath = paths.getPreviousWorkflowPath(req.path, req.session.data)
+  const earliestPathWithValidationErrors = getEarliestPathWithValidationErrors(previousWorkflowPath, req)
   if (earliestPathWithValidationErrors) {
     res.redirect(earliestPathWithValidationErrors)
   } else {
@@ -14,7 +15,7 @@ function getEarliestPathWithValidationErrors (path, req) {
     return null
   }
 
-  const previousPath = paths.getPreviousWorkFlowPath(path)
+  const previousPath = paths.getPreviousWorkflowPath(path, req.session.data)
   const earliestPathWithValidationErrors = getEarliestPathWithValidationErrors(previousPath, req)
   if (earliestPathWithValidationErrors) {
     return earliestPathWithValidationErrors

@@ -16,6 +16,10 @@ function isAdoption (data) {
   }
 }
 
+function earliestPrimaryLeaveWeek (data) {
+  return isBirth(data) ? -11 : -2
+}
+
 function isSurrogacy (data) {
   if (isString(data)) {
     return data === 'surrogacy'
@@ -56,6 +60,7 @@ module.exports = {
   secondaryName,
   isAdoption,
   isBirth,
+  earliestPrimaryLeaveWeek,
   isSurrogacy,
   isYes,
   isNo
