@@ -13,6 +13,8 @@
 {% set zeroWeek = (data | zeroWeek) %}
 {% set isBirth = (data | isBirth) %}
 {% set birthOrPlacement = "birth" if isBirth else "placement" %}
+{% set hasTakenSpl = (data["leave-blocks"] | hasTakenSpl(parent)) %}
+{% set initialLeaveType = (data | parentInitialLeaveType(parent)) %}
 
 {% set endOfInitialLeave = (data["leave-blocks"][parent]["initial"]["end"] | int) %}
 {% set endOfLastSplBlock = (data["leave-blocks"][parent]["spl"]["_" + (index - 1)]["end"] | int) %}
@@ -28,7 +30,7 @@
       ({{ weekNumber | weeks }} after {{ birthOrPlacement }})
     {% endif %}
   {% else %}
-    ({{ (weekNumber - endOfLastBlock) | weeks }} after the {{ parentName }}’s last leave block)
+    ({{ (weekNumber - endOfLastBlock) | weeks }} after the {{ parentName }}’s {{ "previous leave block" if hasTakenSpl else (initialLeaveType + " leave") }})
   {% endif %}
 {% endmacro %}
 
@@ -46,7 +48,13 @@
               {% if endOfLastBlock === -1 %}
                 The {{ parentName }} has not yet taken any leave.
               {% else %}
-                The {{ parentName }}’s last block of leave ended with the week of {{ zeroWeek | offsetWeeks(endOfLastBlock) | formatForDisplay }}.
+                The {{ parentName }}’s
+                {% if hasTakenSpl %}
+                  last block of shared parental leave
+                {% else %}
+                  {{ initialLeaveType }} leave
+                {% endif %}
+                ended with the week of {{ zeroWeek | offsetWeeks(endOfLastBlock) | formatForDisplay }}.
               {% endif %}
             </p>
           {% endset %}

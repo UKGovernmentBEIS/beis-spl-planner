@@ -48,7 +48,7 @@
               The {{ primaryName }} can take up to a maximum of 52 weeks of {{ primaryLeaveType }} leave.
             </p>
             <p class="govuk-hint">
-              Any unused {{ primaryLeaveType }} leave allowance can be taken by either the {{ primaryName }}
+              Any unused {{ primaryLeaveType }} leave can be taken by either the {{ primaryName }}
               or their partner as shared parental leave.
             </p>
             <p class="govuk-hint">
@@ -57,7 +57,7 @@
           {% endset %}
           {% call govukFieldset({
             legend: {
-              text: "Which week will be the " + primaryName + "’s last week of " + primaryLeaveType + " leave?",
+              text: "Which week was or will be the " + primaryName + "’s last week of " + primaryLeaveType + " leave?",
               classes: "govuk-fieldset__legend--xl",
               isPageHeading: true
             }

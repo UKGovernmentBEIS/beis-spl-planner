@@ -44,8 +44,8 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              The partner can take up to 2 weeks of paternity leave during the first 8 weeks after placement.
-              The leave must be taken in one block.
+              The partner can take up to 2 weeks of paternity leave during the first 8 weeks after {{ birthOrPlacement }}.
+              This leave must be taken in one go.
             </p>
             <p class="govuk-hint">
               That means that if your first week of paternity leave is {{ zeroWeek | offsetWeeks(7) | formatForDisplay }},

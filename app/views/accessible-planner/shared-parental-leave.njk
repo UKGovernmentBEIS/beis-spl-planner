@@ -11,7 +11,10 @@
 {%- endblock %}
 
 {% set primaryName = (data | primaryName) %}
-{% set remainingLeaveAllowance = (data["leave-blocks"] | remainingLeaveAllowance) %}
+{% set primaryLeaveType = (data | primaryLeaveType) %}
+{% set leaveBlocks = data["leave-blocks"] %}
+{% set remainingLeaveAllowance = (leaveBlocks | remainingLeaveAllowance) %}
+{% set eitherParentHasTakenSpl = (leaveBlocks | hasTakenSpl("primary")) or (leaveBlocks | hasTakenSpl("secondary")) %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -20,10 +23,19 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              You have {{ remainingLeaveAllowance | weeks }} of shared parental leave left to take.
+              You have {{ remainingLeaveAllowance | weeks }} of unused
+              {% if eitherParentHasTakenSpl %}
+                shared parental leave left to take.
+              {% else %}
+                {{ primaryLeaveType }} leave that can be taken as shared parental leave.
+              {% endif %}
             </p>
             <p class="govuk-hint">
-              Shared parental leave can be taken by either the {{ primaryName }} or the partner.
+              Shared parental leave can be taken by the {{ primaryName }} and the partner, either at the same
+              time, or one after the other.
+            </p>
+            <p class="govuk-hint">
+              You can plan more blocks of shared parental leave later, if you still have unused weeks remaining.
             </p>
           {% endset %}
           {{ govukRadios({

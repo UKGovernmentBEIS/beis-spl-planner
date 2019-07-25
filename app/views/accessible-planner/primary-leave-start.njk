@@ -45,12 +45,12 @@
           {% set hint %}
             <p class="govuk-hint">
               {{ primaryLeaveType | capitalize }} leave can start up to {{ (options | last) | abs }} weeks before
-              {{ "the baby is born" if isBirth else "the first week the child lives with you" }}.
+              {{ "the baby is due" if isBirth else "the first week the child lives with you" }}.
             </p>
           {% endset %}
           {% call govukFieldset({
             legend: {
-              text: "Which week will be the " + primaryName + "’s first week of " + primaryLeaveType + " leave?",
+              text: "Which week was or will be the " + primaryName + "’s first week of " + primaryLeaveType + " leave?",
               classes: "govuk-fieldset__legend--xl",
               isPageHeading: true
             }
