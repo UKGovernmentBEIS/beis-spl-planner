@@ -1,4 +1,5 @@
-const { chunk, range } = require('lodash')
+const delve = require('dlv')
+const _ = require('lodash')
 const Day = require('../../../common/lib/day')
 const { isBirth, isYes, isNo } = require('../../../common/lib/dataUtils')
 const { getBase64Char, convertBase10ToBase64 } = require('./baseMathsUtils')
@@ -47,7 +48,7 @@ class ShareTokenEncoder {
     const binaryEligibility = this._encodeLeaveAndPayEligibilityForParent('primary')
       .concat(this._encodeLeaveAndPayEligibilityForParent('secondary'))
     const eligibilitiesEncodedByOneCharacter = 3
-    return chunk(binaryEligibility, eligibilitiesEncodedByOneCharacter)
+    return _.chunk(binaryEligibility, eligibilitiesEncodedByOneCharacter)
       .map(binaryArrayForOneChar => {
         return getBase64Char(parseInt(binaryArrayForOneChar.join(''), 2))
       })
@@ -120,10 +121,11 @@ class ShareTokenEncoder {
   }
 
   _encodeWeeks () {
-    const calendarRange = (isBirth(this.data) ? range(-11, 53) : range(-2, 53)).map(n => n.toString())
+    const calendarRange = (isBirth(this.data) ? _.range(-11, 53) : _.range(-2, 53)).map(n => n.toString())
     // each week is 4 bits, but each character is 6, so we encode every 3 weeks as two characters
     const weeksEncodedByTwoCharacters = 3
-    return chunk(calendarRange, weeksEncodedByTwoCharacters)
+    return _(calendarRange)
+      .chunk(weeksEncodedByTwoCharacters)
       .map(threeWeekBlock => this._convertThreeWeeksToBinaryString(threeWeekBlock))
       .flatMap(binaryThreeWeekBlock => {
         const firstChar = binaryThreeWeekBlock.substring(0, 6)
@@ -132,6 +134,7 @@ class ShareTokenEncoder {
         return secondChar.length === 0 ? [firstChar] : [firstChar, secondChar]
       })
       .map(binaryCharString => getBase64Char(parseInt(binaryCharString, 2)))
+      .value()
       .join('')
   }
 
@@ -140,7 +143,8 @@ class ShareTokenEncoder {
       let binary = ''
       parents.forEach(parent => {
         entitlements.forEach(entitlement => {
-          if (this.data[parent][entitlement].includes(weekNumber)) {
+          const parentEntitlementWeeks = delve(this.data, [parent, entitlement], [])
+          if (parentEntitlementWeeks.includes(weekNumber)) {
             binary += '1'
           } else {
             binary += '0'
