@@ -1,17 +1,17 @@
 const LeaveTracker = require('./leaveTracker')
+const { earliestPrimaryLeaveWeek } = require('../../common/lib/dataUtils')
 const { STATUTORY_MAXIMUM_PAY } = require('../constants')
 const dset = require('dset')
 
 class Weeks {
-  constructor ({ isBirth, startWeek, primary, secondary, eligibility }) {
-    this.isBirth = isBirth
+  constructor ({ natureOfParenthood, startWeek, primary, secondary, eligibility }) {
     this.startWeek = startWeek
     this.primary = primary
     this.secondary = secondary
-    this.primaryLeaveType = isBirth ? 'maternity' : 'adoption'
+    this.primaryLeaveType = natureOfParenthood === 'birth' ? 'maternity' : 'adoption'
     this.eligibility = eligibility
     this.payRates = this._getPayRates()
-    this.minimumWeek = this._getMinimumWeek()
+    this.minimumWeek = earliestPrimaryLeaveWeek(natureOfParenthood)
   }
 
   leaveAndPay () {
@@ -131,10 +131,6 @@ class Weeks {
     return weeks.some(week => {
       return week[parent].leave.text === 'shared'
     })
-  }
-
-  _getMinimumWeek () {
-    return this.isBirth ? -11 : -2
   }
 
   _getBaseWeek (idx) {

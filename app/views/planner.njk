@@ -86,7 +86,7 @@
       </h2>
       <p class="print-hide">
         The {{ primaryName }} can start {{ primaryLeaveType }} leave
-        {% if isSurrogacy %} from {% else %} up to {{ data | primaryMinimumWeek | abs }} weeks before {% endif %}
+        {% if isSurrogacy %} from {% else %} up to {{ data | earliestPossibleWeek | abs }} weeks before {% endif %}
         the week of {{ "placement" if isAdoption else "birth" }}.
         The partner can only take leave after the child is {{ "placed with you" if isAdoption else "born" }}.
       </p>

@@ -6,7 +6,7 @@ const Day = require('../../common/lib/day')
 const { isYesOrNo } = require('./validationUtils')
 
 function registerEligibilityRouteForPrimaryParents (router, endpoint, handlers) {
-  registerRoutes(router, 'eligibility', ['mother', 'primary-adopter'], endpoint, handlers)
+  registerRoutes(router, 'eligibility', ['mother', 'primary-adopter', 'parental-order-parent'], endpoint, handlers)
 }
 
 function registerPlannerRouteForPrimaryLeaveTypes (router, endpoint, handlers) {

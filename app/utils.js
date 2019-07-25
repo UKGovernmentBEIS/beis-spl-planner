@@ -2,7 +2,7 @@ const dlv = require('dlv')
 const _ = require('lodash')
 const Weeks = require('./lib/weeks')
 const Day = require('../common/lib/day')
-const { isBirth } = require('../common/lib/dataUtils')
+const { isBirth, natureOfParenthood } = require('../common/lib/dataUtils')
 const { parseEligibilityFromData } = require('./lib/eligibility')
 
 const MOTHER = Object.freeze({
@@ -53,7 +53,7 @@ function parseStartDay (data) {
 
 function parseWeeksFromData (data) {
   return new Weeks({
-    isBirth: isBirth(data),
+    natureOfParenthood: natureOfParenthood(data),
     startWeek: parseStartDay(data),
     primary: parseParentFromPlanner(data, 'primary'),
     secondary: parseParentFromPlanner(data, 'secondary'),

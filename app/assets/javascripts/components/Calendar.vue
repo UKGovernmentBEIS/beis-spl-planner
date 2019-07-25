@@ -39,7 +39,7 @@
         </tr>
         <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner" aria-hidden="true">
           <th colspan="5">
-            {{ isBirth ? 'Birth week' : 'First week the child lives with you' }}
+            {{ natureOfParenthood === 'adoption' ? 'First week the child lives with you' : 'Birth week' }}
           </th>
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week)">
@@ -148,7 +148,7 @@
       hideFocus: false
     }),
     props: {
-      isBirth: Boolean,
+      natureOfParenthood: String,
       primaryLeaveType: String,
       names: Object,
       weeks: Array,
