@@ -1,13 +1,27 @@
+const isString = require('lodash')
+
 function isBirth (data) {
-  return data['nature-of-parenthood'] === 'birth'
+  if (isString(data)) {
+    return data === 'birth'
+  } else {
+    return data['nature-of-parenthood'] === 'birth'
+  }
 }
 
 function isAdoption (data) {
-  return data['nature-of-parenthood'] === 'adoption'
+  if (isString(data)) {
+    return data === 'adoption'
+  } else {
+    return data['nature-of-parenthood'] === 'adoption'
+  }
 }
 
 function isSurrogacy (data) {
-  return data['nature-of-parenthood'] === 'surrogacy'
+  if (isString(data)) {
+    return data === 'surrogacy'
+  } else {
+    return data['nature-of-parenthood'] === 'surrogacy'
+  }
 }
 
 function parentName (data, currentParent) {
