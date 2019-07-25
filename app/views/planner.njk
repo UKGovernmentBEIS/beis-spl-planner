@@ -23,6 +23,8 @@
 {% endblock %}
 
 {% set isBirth = (data | isBirth) %}
+{% set isAdoption = (data | isAdoption) %}
+{% set isSurrogacy = (data | isSurrogacy) %}
 {% set primaryName = (data | primaryName) %}
 {% set primaryLeaveType = (data | primaryLeaveType) %}
 {% set STATUTORY_MAXIMUM_PAY = "£" + STATUTORY_MAXIMUM_PAY %}
@@ -55,14 +57,14 @@
       </h1>
       <p class="print-hide">
         Use the calendar below to plan shared parental leave and pay alongside {{ primaryLeaveType }} and paternity leave and pay.
-        The calendar is based on {{ "your child’s birth week" if isBirth else "the week your child starts living with you"}}.
+        The calendar is based on {{ "the week your child starts living with you" if isAdoption else "your child’s birth week" }}.
       </p>
       <p class="print-hide">
         You can click the cells to select the weeks each parent wants to take as leave. You have 52 week of leave to split between you.
       </p>
       <p class="print-hide">
-        The {{ primaryName }} must take 2 weeks of {{ primaryLeaveType }} when the child is {{ "born" if isBirth else "placed with you" }}.
-        The partner can take an additional 2 weeks as paternity leave in the first 8 weeks after the child is {{ "born" if isBirth else "placed with you" }}.
+        The {{ primaryName }} must take 2 weeks of {{ primaryLeaveType }} leave when the child is {{ "placed with you" if isAdoption else "born" }}.
+        The partner can take an additional 2 weeks as paternity leave in the first 8 weeks after the child is {{ "placed with you" if isAdoption else "born" }}.
       </p>
       <p class="print-hide">
         If you're taking more than 39 weeks in total, you can also select which leave weeks are paid and unpaid.
@@ -83,9 +85,10 @@
         When you can start
       </h2>
       <p class="print-hide">
-        The {{ primaryName }} can start {{ primaryLeaveType }} leave up to {{ "11" if isBirth else "2" }}
-        weeks before the week of {{ "birth" if isBirth else "placement"}}.
-        The partner can only take leave after the child is {{ "born" if isBirth else "placed with you" }}.
+        The {{ primaryName }} can start {{ primaryLeaveType }} leave
+        {% if isSurrogacy %} from {% else %} up to {{ data | primaryMinimumWeek | abs }} weeks before {% endif %}
+        the week of {{ "placement" if isAdoption else "birth" }}.
+        The partner can only take leave after the child is {{ "placed with you" if isAdoption else "born" }}.
       </p>
       <p class="print-hide">
         The {{ primaryName }} and the partner can take leave at the same time, or one after the other.
@@ -116,7 +119,7 @@
           </li>
           <li>
             <a class="govuk-link" target="_blank" href="{{ examplePath }}/extending-time-as-a-family">
-              Extending time as a family after {{ "birth" if isBirth else "your child is placed" }}
+              Extending time as a family after {{ "your child is placed" if isAdoption else "birth" }}
             </a>
           </li>
           <li>

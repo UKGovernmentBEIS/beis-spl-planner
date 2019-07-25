@@ -3,6 +3,7 @@ const { getWeeksArray, parseWeeksFromData } = require('./utils')
 const Day = require('../common/lib/day')
 const { parseEligibilityFromData } = require('./lib/eligibility')
 const { getBlockLength, getRemainingLeaveAllowance, parseLeaveBlocks } = require('./lib/blocks')
+const { primaryMinimumWeek: primaryMinimumWeekUtil } = require('./lib/natureOfParenthoodUtils')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
@@ -39,6 +40,10 @@ module.exports = function (env) {
 
   function hasEitherSalary (data) {
     return !!dlv(data, ['primary', 'salary-amount']) || !!dlv(data, ['secondary', 'salary-amount'])
+  }
+
+  function primaryMinimumWeek (data) {
+    return primaryMinimumWeekUtil(data['nature-of-parenthood'])
   }
 
   function zeroWeek (data) {
@@ -148,6 +153,7 @@ module.exports = function (env) {
     endOfWeek,
     startDateName,
     hasEitherSalary,
+    primaryMinimumWeek,
     totalBlockPay,
     displayPayBlockTotal,
     shouldDisplayPrimaryLeaveAndPayForm,

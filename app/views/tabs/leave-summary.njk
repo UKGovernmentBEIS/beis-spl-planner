@@ -31,7 +31,7 @@
       rows: [
         {
           key: {
-            text: "Baby is due" if data | isBirth else "Placement date"
+            text: "Placement date" if data | isAdoption else "Baby is due"
           },
           value: {
             text: data | startDay | formatForDisplay
@@ -61,7 +61,7 @@
       How to give notice
     </h4>
     <p>
-      Tell your employer when the {{"baby is due" if data | isBirth else "child will be placed with you"}} and when you want to start your {{ data | primaryLeaveType }} leave.
+      Tell your employer when the {{ "child will be placed with you" if data | isAdoption else "baby is due" }} and when you want to start your {{ data | primaryLeaveType }} leave.
       Your employer can ask for this in writing.
       Your employer must write to you within 28 days confirming your start and end dates.
     </p>

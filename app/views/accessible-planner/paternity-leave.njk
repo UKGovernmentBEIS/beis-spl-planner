@@ -19,7 +19,7 @@
   }) }}
 {% endblock %}
 
-{% set birthOrPlacement = "birth" if isBirth else "placement" %}
+{% set birthOrPlacement = "placement" if data | isAdoption else "birth" %}
 {% set remainingLeaveAllowance = (data["leave-blocks"] | remainingLeaveAllowance) %}
 
 {% block content %}

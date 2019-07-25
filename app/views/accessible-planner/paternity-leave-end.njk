@@ -17,7 +17,7 @@
   }) }}
 {% endblock %}
 
-{% set birthOrPlacement = "birth" if isBirth else "placement" %}
+{% set birthOrPlacement = "placement" if data | isAdoption else "birth" %}
 {% set zeroWeek = (data | zeroWeek) %}
 {% set paternityLeaveStart = (data["leave-blocks"]["secondary"]["initial"]["start"] | int) %}
 {% set oneWeekEnd = paternityLeaveStart %}

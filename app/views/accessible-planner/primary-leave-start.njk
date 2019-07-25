@@ -23,9 +23,11 @@
 {% set primaryLeaveType = (data | primaryLeaveType) %}
 {% set zeroWeek = (data | zeroWeek) %}
 {% set isBirth = (data | isBirth) %}
-{% set birthOrPlacement = "birth" if isBirth else "placement" %}
+{% set isAdoption = (data | isAdoption) %}
+{% set isSurrogacy = (data | isSurrogacy) %}
+{% set birthOrPlacement = "placement" if isAdoption else "birth" %}
 
-{% set minWeek = -11 if isBirth else -2 %}
+{% set minWeek = data | primaryMinimumWeek %}
 {% set options = range(0, minWeek - 1, -1) %}
 
 {% macro optionText(weekNumber) %}
@@ -44,8 +46,8 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              {{ primaryLeaveType | capitalize }} leave can start up to {{ (options | last) | abs }} weeks before
-              {{ "the baby is born" if isBirth else "the first week the child lives with you" }}.
+              {{ primaryLeaveType | capitalize }} leave can start {% if isSurrogacy %} from the week{% else %} up to {{ (options | last) | abs }} weeks before {% endif %}
+              {{ "the first week the child lives with you" if isAdoption else "the baby is born"  }}.
             </p>
           {% endset %}
           {% call govukFieldset({
