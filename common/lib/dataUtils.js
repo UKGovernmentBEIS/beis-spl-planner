@@ -1,4 +1,4 @@
-const isString = require('lodash')
+const { isString } = require('lodash')
 
 function isBirth (data) {
   if (isString(data)) {
