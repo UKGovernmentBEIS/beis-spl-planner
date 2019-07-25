@@ -28,10 +28,6 @@ function isSurrogacy (data) {
   }
 }
 
-function earliestPrimaryLeaveWeek (data) {
-  return isBirth(data) ? -11 : -2
-}
-
 function parentName (data, currentParent) {
   return currentParent === 'primary' ? primaryName(data) : secondaryName(data)
 }
@@ -66,7 +62,6 @@ module.exports = {
   isBirth,
   earliestPrimaryLeaveWeek,
   isSurrogacy,
-  earliestPrimaryLeaveWeek,
   isYes,
   isNo
 }
