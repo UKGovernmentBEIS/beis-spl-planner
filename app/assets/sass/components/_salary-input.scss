@@ -3,6 +3,7 @@
   margin-right: 30px;
 }
 
-.app-salary-input {
-  min-width: 230px;
+.salary-value-input {
+  // ensure that salary value input is the same width for both parents
+  min-width: 271px;
 }
