@@ -148,7 +148,9 @@ function initialiseRoutes (app) {
 
 function handleErrors (app) {
   app.use(handle404)
-  app.use(handle500)
+  if (process.env.NODE_ENV !== 'development') {
+    app.use(handle500)
+  }
 }
 
 function listen () {
