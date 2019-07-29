@@ -20,7 +20,7 @@ module.exports = function (req, res, next) {
     return `${path}?${qs.stringify(queryData)}`
   }
   res.locals.backPath = function () {
-    return res.locals.withData(paths.getPreviousWorkFlowPath(req.path))
+    return res.locals.withData(paths.getPreviousWorkFlowPath(req.path, req.session.data))
   }
   next()
 }
