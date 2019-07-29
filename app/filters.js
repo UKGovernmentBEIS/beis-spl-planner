@@ -165,6 +165,7 @@ module.exports = function (env) {
     hasTakenSpl,
     weeks,
     zeroWeek,
-    mapValuesToSelectOptions
+    mapValuesToSelectOptions,
+    ...require('./views/accessible-planner/answers-so-far/filters')(env)
   }
 }

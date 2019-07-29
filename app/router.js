@@ -11,7 +11,8 @@ const {
   registerEligibilityRouteForPrimaryParents,
   registerPlannerRouteForPrimaryLeaveTypes,
   bothParentsAreIneligible,
-  parseExternalQueryString
+  parseExternalQueryString,
+  clearLaterLeaveBlockAnswers
 } = require('./lib/routerUtils')
 const { isBirth, isYes } = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
@@ -169,6 +170,7 @@ router.route(paths.getPath('planner'))
 
 registerPlannerRouteForPrimaryLeaveTypes(router, 'start', {
   get: function (req, res) {
+    clearLaterLeaveBlockAnswers(req, 'primary.initial.start')
     res.render('accessible-planner/primary-leave-start')
   },
   post: function (parentUrlPart, req, res) {
@@ -179,6 +181,7 @@ registerPlannerRouteForPrimaryLeaveTypes(router, 'start', {
 
 registerPlannerRouteForPrimaryLeaveTypes(router, 'end', {
   get: function (req, res) {
+    clearLaterLeaveBlockAnswers(req, 'primary.initial.end')
     res.render('accessible-planner/primary-leave-end')
   },
   post: function (parentUrlPart, req, res) {
@@ -190,6 +193,7 @@ registerPlannerRouteForPrimaryLeaveTypes(router, 'end', {
 
 router.route(paths.getPath('planner.paternity-leave'))
   .get(function (req, res) {
+    clearLaterLeaveBlockAnswers(req, 'secondary.is-taking-paternity-leave')
     res.render('accessible-planner/paternity-leave')
   })
   .post(function (req, res) {
@@ -203,6 +207,7 @@ router.route(paths.getPath('planner.paternity-leave'))
 
 router.route(paths.getPath('planner.paternity-leave.start'))
   .get(function (req, res) {
+    clearLaterLeaveBlockAnswers(req, 'secondary.initial.start')
     res.render('accessible-planner/paternity-leave-start')
   })
   .post(function (req, res) {
@@ -218,6 +223,7 @@ router.route(paths.getPath('planner.paternity-leave.start'))
 
 router.route(paths.getPath('planner.paternity-leave.end'))
   .get(function (req, res) {
+    clearLaterLeaveBlockAnswers(req, 'secondary.initial.end')
     res.render('accessible-planner/paternity-leave-end')
   })
   .post(function (req, res) {

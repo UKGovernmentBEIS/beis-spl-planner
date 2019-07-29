@@ -58,10 +58,34 @@ function parseExternalQueryString (req) {
   }
 }
 
+const nonSplLeaveBlockFieldOrder = [
+  'primary.initial.start',
+  'primary.initial.leave',
+  'primary.initial.end',
+  'secondary.is-taking-paternity-leave',
+  'secondary.initial.start',
+  'secondary.initial.leave',
+  'secondary.initial.end'
+]
+
+function clearLaterLeaveBlockAnswers (req, currentStep) {
+  const { data } = req.session
+  let hasReachedStep = false
+  for (const field of nonSplLeaveBlockFieldOrder) {
+    if (hasReachedStep) {
+      dset(data, ['leave-blocks', ...field.split('.')], null)
+    }
+    if (field === currentStep) {
+      hasReachedStep = true
+    }
+  }
+}
+
 module.exports = {
   registerEligibilityRouteForPrimaryParents,
   registerPlannerRouteForPrimaryLeaveTypes,
   getParent,
   bothParentsAreIneligible,
-  parseExternalQueryString
+  parseExternalQueryString,
+  clearLaterLeaveBlockAnswers
 }

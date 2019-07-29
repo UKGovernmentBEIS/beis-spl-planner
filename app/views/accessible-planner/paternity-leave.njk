@@ -4,6 +4,8 @@
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "radios/macro.njk" import govukRadios %}
 
+{% from "./answers-so-far/macro.njk" import answersSoFar %}
+
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
@@ -70,6 +72,9 @@
           text: "Continue"
         }) }}
       </form>
+    </div>
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      {{ answersSoFar(data) }}
     </div>
   </div>
 {% endblock %}
