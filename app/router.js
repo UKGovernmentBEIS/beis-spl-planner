@@ -21,7 +21,7 @@ router.use('/forms', require('./router.forms'))
 
 router.route(paths.getPath('root'))
   .get(function (req, res) {
-    if (req.query) {
+    if (Object.entries(req.query).length !== 0) {
       parseExternalQueryString(req)
     }
     res.render('index')
