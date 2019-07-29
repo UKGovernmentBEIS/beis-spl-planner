@@ -6,7 +6,7 @@ const {
   convertBase64ToBase10,
   convertBase64ToBinary
 } = require('./baseMathsUtils')
-const { isBirth } = require('../../../common/lib/dataUtils')
+const { isBirth, earliestPrimaryLeaveWeek } = require('../../../common/lib/dataUtils')
 const { separator, policies, parents, entitlements } = require('./tokenConstants')
 
 class ShareTokenEncoder {
@@ -38,7 +38,19 @@ class ShareTokenEncoder {
   }
 
   _decodeNatureOfParenthood (natureOfParenthood) {
-    this.data['nature-of-parenthood'] = natureOfParenthood === '0' ? 'birth' : 'adoption'
+    let value
+    switch (natureOfParenthood) {
+      case '0':
+        value = 'birth'
+        break
+      case '1':
+        value = 'adoption'
+        break
+      case '2':
+        value = 'surrogacy'
+        break
+    }
+    this.data['nature-of-parenthood'] = value
   }
 
   _decodeEligibility (eligibilities) {
@@ -110,12 +122,12 @@ class ShareTokenEncoder {
       .map(binaryString => binaryString.padStart(6, '0'))
       .join('')
 
-    const weekOffset = isBirth(this.data) ? 11 : 2
+    const weekOffset = earliestPrimaryLeaveWeek(this.data)
 
     const bitsPerWeek = 4
     chunk(binaryWeeks, bitsPerWeek).forEach((week, weekIdx) => {
       const [primaryLeave, primaryPay, secondaryLeave, secondaryPay] = week
-      const weekNumber = (weekIdx - weekOffset).toString()
+      const weekNumber = (weekIdx + weekOffset).toString()
       if (primaryLeave === '1') {
         this.data.primary.leave.push(weekNumber)
       }

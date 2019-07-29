@@ -22,8 +22,8 @@
 {% set primaryName = (data | primaryName) %}
 {% set primaryLeaveType = (data | primaryLeaveType) %}
 {% set zeroWeek = (data | zeroWeek) %}
-{% set isBirth = (data | isBirth) %}
-{% set birthOrPlacement = "birth" if isBirth else "placement" %}
+{% set isAdoption = (data | isAdoption) %}
+{% set birthOrPlacement = "placement" if isAdoption else "birth" %}
 {% set primaryLeaveEnd = data["leave-blocks"]["primary"]["initial"]["end"] %}
 
 {% set options = range(0, 8) %}

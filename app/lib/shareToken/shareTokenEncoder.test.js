@@ -22,7 +22,7 @@ describe('shareTokenEncoder', () => {
       }
       const shareTokenEncoder = new ShareTokenEncoder(data)
 
-      expect(shareTokenEncoder.encode(2)).to.be.undefined
+      expect(shareTokenEncoder.encode(2)).to.be.undefined // eslint-disable-line no-unused-expressions
     })
   })
 

@@ -7,7 +7,7 @@
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
-  {{ "Are you having a child through birth or adoption?" | pageTitle }}
+  {{ "Are you having a child through birth, adoption or surrogacy?" | pageTitle }}
 {%- endblock %}
 
 {% block beforeContent %}
@@ -39,13 +39,13 @@
             name: "nature-of-parenthood",
             fieldset: {
               legend: {
-                text: "Are you having a child through birth or adoption?",
+                text: "Are you having a child through birth, adoption or surrogacy?",
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }
             },
             hint: {
-              text: "Shared parental leave and statutory shared parental pay are available for birth and adoptive parents."
+              text: "Shared parental leave and statutory shared parental pay are available for birth, adoptive and surrogate parents."
             },
             errorMessage: {
               text: errors["nature-of-parenthood"].text
@@ -60,6 +60,11 @@
                 value: "adoption",
                 text: "Adoption",
                 checked: data | isAdoption
+              },
+              {
+                value: "surrogacy",
+                text: "Surrogacy",
+                checked: data | isSurrogacy
               }
             ]
           }) }}

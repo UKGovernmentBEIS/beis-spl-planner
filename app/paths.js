@@ -81,6 +81,22 @@ class Paths {
             workflowParentPath: '/eligibility/primary-adopter/initial-leave-and-pay'
           }
         },
+        'parental-order-parent': {
+          sharedParentalLeaveAndPay: {
+            url: '/eligibility/parental-order-parent/shared-parental-leave-and-pay',
+            workflowParentPath: '/nature-of-parenthood',
+            validator: validate.primarySharedParentalLeaveAndPay
+          },
+          initialLeaveAndPay: {
+            url: '/eligibility/parental-order-parent/initial-leave-and-pay',
+            workflowParentPath: '/eligibility/parental-order-parent/shared-parental-leave-and-pay',
+            validator: validate.initialLeaveAndPay
+          },
+          maternityAllowance: {
+            url: '/eligibility/parental-order-parent/maternity-allowance',
+            workflowParentPath: '/eligibility/parental-order-parent/initial-leave-and-pay'
+          }
+        },
         partner: {
           sharedParentalLeaveAndPay: {
             url: '/eligibility/partner/shared-parental-leave-and-pay',

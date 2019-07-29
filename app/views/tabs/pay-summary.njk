@@ -89,7 +89,7 @@
     </h4>
     <p>
       Use <a href="https://public-online.hmrc.gov.uk/lc/content/xfaforms/profiles/forms.html?contentRoot=repository:///Applications/PersonalTax_iForms/1.0/SC3&template=SC3.xdp" target="_blank">form SC3</a>
-      to claim for statutory paternity pay 15 weeks before your {{ "baby’s due date" if data | isBirth else "child’s match date" }}.
+      to claim for statutory paternity pay 15 weeks before your {{ "child’s match date" if data | isAdoption else "baby’s due date" }}.
     </p>
 
     <h4>

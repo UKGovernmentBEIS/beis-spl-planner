@@ -9,7 +9,7 @@ describe('ShareTokenDecoder', () => {
       const encoded = '0!kFx!Yhkn!0!0!0!0000000000000000000000'
       const shareTokenDecoder = new ShareTokenDecoder(encoded)
 
-      expect(shareTokenDecoder.decode(2)).to.be.undefined
+      expect(shareTokenDecoder.decode(2)).to.be.undefined // eslint-disable-line no-unused-expressions
     })
   })
 

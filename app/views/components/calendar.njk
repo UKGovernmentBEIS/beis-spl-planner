@@ -1,11 +1,12 @@
 {% from "fieldset/macro.njk" import govukFieldset %}
 
 {% macro leaveAndPayCheckboxes(data, parent) %}
-  {% set minWeek = -11 if (data | isBirth) else -2 %}
+  {% set minWeek = data | earliestPossibleWeek %}
   {% set maxWeek = 52 %}
   {% set zeroWeekDate = (data | startDay | startOfWeek) %}
   {% set isBirth = (data | isBirth) %}
-  {% set weekZeroName = "birth" if isBirth else "placement" %}
+  {% set isAdoption = (data | isAdoption) %}
+  {% set weekZeroName = "placement" if isAdoption else "birth" %}
   <div class="govuk-form-group">
     {% call govukFieldset({
       legend: {
@@ -16,7 +17,7 @@
       <div id="calendar-checkboxes" class="govuk-checkboxes" data-module="checkboxes">
         <div class="govuk-checkboxes" data-module="checkboxes">
           {% for i in range(minWeek, maxWeek + 1) %}
-            {% set cumplsoryLeave = (parent === 'primary' and (i === 0 or i === 1)) %}
+            {% set compulsoryLeave = (parent === 'primary' and (i === 0 or i === 1)) %}
             {% set outOfRange = (parent === 'secondary' and i < 0) %}
             {% set leaveId = parent + '-leave_' + i %}
             {% set leaveName = parent + '[leave]' %}
@@ -48,7 +49,7 @@
                 <input class="govuk-checkboxes__input" id="{{ leaveId }}" name="{{ leaveName }}" type="checkbox" value="{{ i }}"
                   data-parent="{{ parent }}" data-property="leave"
                   {{ 'checked' if (data | isWeekChecked(parent, 'leave', i)) }}
-                  {{ 'disabled' if (cumplsoryLeave or outOfRange) }}>
+                  {{ 'disabled' if (compulsoryLeave or outOfRange) }}>
                 <label class="govuk-label govuk-checkboxes__label" for="{{ leaveId }}">
                   Taking leave
                 </label>

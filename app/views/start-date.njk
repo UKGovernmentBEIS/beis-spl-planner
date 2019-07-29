@@ -7,7 +7,7 @@
 {% extends "layout.njk" %}
 
 {% set questionText %}
-  {% if data | isBirth -%}
+  {% if data | isBirth or data | isSurrogacy -%}
     When is the baby due, or when was the baby born?
   {%- elif data | isAdoption -%}
     When will, or when did the child start to live with you?

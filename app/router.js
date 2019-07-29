@@ -13,7 +13,7 @@ const {
   bothParentsAreIneligible,
   parseExternalQueryString
 } = require('./lib/routerUtils')
-const { isBirth, isYes } = require('../common/lib/dataUtils')
+const { isBirth, isYes, isAdoption } = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
 
 router.use('/planner/examples', require('./router.examples'))
@@ -38,7 +38,14 @@ router.route(paths.getPath('natureOfParenthood'))
     if (!validate.natureOfParenthood(req)) {
       return res.redirect('back')
     }
-    const primaryParent = isBirth(req.session.data) ? 'mother' : 'primary-adopter'
+    let primaryParent
+    if (isBirth(req.session.data)) {
+      primaryParent = 'mother'
+    } else if (isAdoption(req.session.data)) {
+      primaryParent = 'primary-adopter'
+    } else {
+      primaryParent = 'parental-order-parent'
+    }
     res.redirect(paths.getPath(`eligibility.${primaryParent}.sharedParentalLeaveAndPay`))
   })
 
