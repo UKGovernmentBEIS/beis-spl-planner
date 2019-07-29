@@ -66,7 +66,6 @@ function initialiseGlobalMiddleware (app) {
   app.use(session({
     secret: 'beis-spl-planner',
     name: 'application',
-    cookie: { maxAge },
     store: new MemoryStore({
       checkPeriod: maxAge
     }),
