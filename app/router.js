@@ -12,7 +12,8 @@ const {
   registerPlannerRouteForPrimaryLeaveTypes,
   bothParentsAreIneligible,
   parseExternalQueryString,
-  clearLaterLeaveBlockAnswers
+  clearLaterLeaveBlockAnswers,
+  clearLaterSplBlockAnswers
 } = require('./lib/routerUtils')
 const { isBirth, isYes } = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
@@ -186,7 +187,6 @@ registerPlannerRouteForPrimaryLeaveTypes(router, 'end', {
   },
   post: function (parentUrlPart, req, res) {
     // TODO: validate
-    dset(req.session.data, 'leave-blocks.primary.spl', undefined)
     res.redirect(paths.getPath('planner.paternity-leave'))
   }
 })
@@ -227,7 +227,6 @@ router.route(paths.getPath('planner.paternity-leave.end'))
     res.render('accessible-planner/paternity-leave-end')
   })
   .post(function (req, res) {
-    dset(req.session.data, 'leave-blocks.secondary.spl', undefined)
     res.redirect(paths.getPath('planner.shared-parental-leave'))
   })
 
@@ -267,6 +266,7 @@ router.route(paths.getPath('planner.shared-parental-leave'))
 
 router.route(paths.getPath('planner.shared-parental-leave.start'))
   .get(function (req, res) {
+    // clearLaterSplBlockAnswers(req, req.query.block)
     res.render('accessible-planner/shared-parental-leave-start')
   })
   .post(function (req, res) {
@@ -275,6 +275,7 @@ router.route(paths.getPath('planner.shared-parental-leave.start'))
 
 router.route(paths.getPath('planner.shared-parental-leave.end'))
   .get(function (req, res) {
+    // clearLaterSplBlockAnswers(req, req.query.block)
     res.render('accessible-planner/shared-parental-leave-end')
   })
   .post(function (req, res) {

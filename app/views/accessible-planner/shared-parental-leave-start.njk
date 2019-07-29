@@ -59,6 +59,9 @@
                 ended with the week of {{ zeroWeek | offsetWeeks(endOfLastBlock) | formatForDisplay }}.
               {% endif %}
             </p>
+            <p>
+              Your previous answers are at the bottom of the page.
+            </p>
           {% endset %}
           {% call govukFieldset({
             legend: {

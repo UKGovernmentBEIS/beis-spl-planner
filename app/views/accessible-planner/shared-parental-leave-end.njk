@@ -39,6 +39,9 @@
             <p class="govuk-hint">
               The first week in this block of leave is {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}.
             </p>
+            <p>
+              Your previous answers are at the bottom of the page.
+            </p>
           {% endset %}
           {% call govukFieldset({
             legend: {
