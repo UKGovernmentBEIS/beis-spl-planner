@@ -1,5 +1,5 @@
 const delve = require('dlv')
-const isString = require('lodash/isString')
+const _ = require('lodash')
 
 /*
  * This class is used to manage all paths in the app.
@@ -31,6 +31,8 @@ const isString = require('lodash/isString')
  * paths.getAllPaths('secondPage.firstCategory') returns '/secondPage/first-category
  *
  * A path object can be accessed by passing the url to getPathObjectFromUrl
+ *
+ * The workflowParentPath property can take a function, which is called with the data object.
 */
 
 class Paths {
@@ -49,7 +51,7 @@ class Paths {
     function findObjectByUrl (obj, url) {
       for (let key in obj) {
         const subObject = obj[key]
-        if (isString(subObject)) {
+        if (_.isString(subObject)) {
           continue
         }
 
@@ -67,9 +69,10 @@ class Paths {
     return findObjectByUrl(this.pathObjects, url)
   }
 
-  getPreviousWorkFlowPath (url) {
+  getPreviousWorkflowPath (url, data) {
     const pathObject = this.getPathObjectFromUrl(url)
-    return pathObject ? pathObject.workflowParentPath : undefined
+    const workflowParentPath = delve(pathObject, 'workflowParentPath', undefined)
+    return _.isFunction(workflowParentPath) ? workflowParentPath(data) : workflowParentPath
   }
 
   getPath (location) {
@@ -83,7 +86,7 @@ class Paths {
       for (let key in obj) {
         const subObj = obj[key]
 
-        if (isString(subObj)) {
+        if (_.isString(subObj)) {
           continue
         }
 
