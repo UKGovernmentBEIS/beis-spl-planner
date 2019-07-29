@@ -9,6 +9,10 @@ function registerEligibilityRouteForPrimaryParents (router, endpoint, handlers) 
   registerRoutes(router, 'eligibility', ['mother', 'primary-adopter', 'parental-order-parent'], endpoint, handlers)
 }
 
+function registerEligibilityRouteForBirthMother (router, endpoint, handlers) {
+  registerRoutes(router, 'eligibility', ['mother'], endpoint, handlers)
+}
+
 function registerPlannerRouteForPrimaryLeaveTypes (router, endpoint, handlers) {
   registerRoutes(router, 'planner', ['maternity-leave', 'adoption-leave'], endpoint, handlers)
 }
@@ -60,6 +64,7 @@ function parseExternalQueryString (req) {
 
 module.exports = {
   registerEligibilityRouteForPrimaryParents,
+  registerEligibilityRouteForBirthMother,
   registerPlannerRouteForPrimaryLeaveTypes,
   getParent,
   bothParentsAreIneligible,

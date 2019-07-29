@@ -9,6 +9,7 @@ const { getBlocks, getRemainingLeaveAllowance, parseLeaveBlocks } = require('./l
 const { getWeeksArray } = require('./utils')
 const {
   registerEligibilityRouteForPrimaryParents,
+  registerEligibilityRouteForBirthMother,
   registerPlannerRouteForPrimaryLeaveTypes,
   bothParentsAreIneligible,
   parseExternalQueryString
@@ -86,7 +87,7 @@ registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
   }
 })
 
-registerEligibilityRouteForPrimaryParents(router, 'maternityAllowance', {
+registerEligibilityRouteForBirthMother(router, 'maternityAllowance', {
   get: function (req, res) {
     if (skip.maternityAllowance(req)) {
       return res.redirect(paths.getPreviousWorkflowPath(req.url, req.session.data))
