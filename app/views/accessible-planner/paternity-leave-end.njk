@@ -36,6 +36,9 @@
             <p class="govuk-hint">
               The partner’s paternity leave starts on {{ zeroWeek | offsetWeeks(paternityLeaveStart) | formatForDisplay }}.
             </p>
+            <p>
+              Your previous answers are at the bottom of the page.
+            </p>
           {% endset %}
           {{ govukRadios({
             idPrefix: "changed-name",

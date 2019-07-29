@@ -62,6 +62,9 @@
                 The {{ primaryName }}’s last week of {{ primaryLeaveType }} leave is {{ zeroWeek | offsetWeeks(primaryLeaveEnd) | formatForDisplay }}.
               </p>
             {% endif %}
+            <p>
+              Your previous answers are at the bottom of the page.
+            </p>
           {% endset %}
           {% call govukFieldset({
             legend: {
