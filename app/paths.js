@@ -1,6 +1,10 @@
 const delve = require('dlv')
 const _ = require('lodash')
 const validate = require('./validate')
+const {
+  isBirth,
+  isAdoption
+} = require('../common/lib/dataUtils')
 
 /*
  * This class is used to manage all paths in the app.
@@ -75,10 +79,6 @@ class Paths {
             url: '/eligibility/primary-adopter/initial-leave-and-pay',
             workflowParentPath: '/eligibility/primary-adopter/shared-parental-leave-and-pay',
             validator: validate.initialLeaveAndPay
-          },
-          maternityAllowance: {
-            url: '/eligibility/primary-adopter/maternity-allowance',
-            workflowParentPath: '/eligibility/primary-adopter/initial-leave-and-pay'
           }
         },
         'parental-order-parent': {
@@ -91,16 +91,20 @@ class Paths {
             url: '/eligibility/parental-order-parent/initial-leave-and-pay',
             workflowParentPath: '/eligibility/parental-order-parent/shared-parental-leave-and-pay',
             validator: validate.initialLeaveAndPay
-          },
-          maternityAllowance: {
-            url: '/eligibility/parental-order-parent/maternity-allowance',
-            workflowParentPath: '/eligibility/parental-order-parent/initial-leave-and-pay'
           }
         },
         partner: {
           sharedParentalLeaveAndPay: {
             url: '/eligibility/partner/shared-parental-leave-and-pay',
-            workflowParentPath: '/eligibility/mother/maternity-allowance',
+            workflowParentPath: data => {
+              if (isBirth(data)) {
+                return '/eligibility/mother/maternity-allowance'
+              } else if (isAdoption(data)) {
+                return '/eligibility/primary-adopter/initial-leave-and-pay'
+              } else {
+                return '/eligibility/parental-order-parent/initial-leave-and-pay'
+              }
+            },
             validator: validate.secondarySharedParentalLeaveAndPay
           },
           paternityLeaveAndPay: {
@@ -150,9 +154,12 @@ class Paths {
         },
         'paternity-leave': {
           url: '/planner/paternity-leave',
-          workflowParentPath: {
-            birth: '/planner/maternity-leave/end',
-            adoption: '/planner/adoption-leave/end'
+          workflowParentPath: data => {
+            if (isBirth(data)) {
+              return '/planner/maternity-leave/end'
+            } else {
+              return '/planner/adoption-leave/end'
+            }
           },
           start: {
             url: '/planner/paternity-leave/start',
