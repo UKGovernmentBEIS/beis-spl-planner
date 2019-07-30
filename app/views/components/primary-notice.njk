@@ -21,10 +21,9 @@
       }
     }) }}
   {% elif data | shouldDisplayPrimaryCurtailmentForm %}
-    {# TODO fix the href of this fileDownload #}
     {{ fileDownload({
       name: data | primaryLeaveType | capitalise + " curtailment and SPL consent form",
-      href:"#",
+      href:"/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if data | primaryLeaveType == "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf"),
       attributes: {
         ga_fileDownloaded: {
           "data-ga-hit-type": "primary_notice_clicked",
