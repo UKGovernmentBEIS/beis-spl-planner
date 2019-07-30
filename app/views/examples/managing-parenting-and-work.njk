@@ -10,7 +10,7 @@
 
 {% block background %}
   <p>
-    {{ "A mother" if isBirth else "An adopter" }} wants to return to work for a project in the middle of {{ primaryLeaveType }} leave.
+    {{ "A mother" if isBirth else ("An adopter" if isAdoption else "A surrogate parent") }} wants to return to work for a project in the middle of {{ primaryLeaveType }} leave.
     The {{ primaryName }} gives notice to end their {{ primaryLeaveType }} leave early to create shared parental leave.
   </p>
   <p>

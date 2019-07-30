@@ -10,7 +10,7 @@
 
 {% block background %}
   <p>
-    A {{ "mother and her partner" if isBirth else "couple who are adopting" }} want to have equal time as primary carer for their child.
+    A {{ "mother and her partner" if isBirth else ("couple who are adopting" if isAdoption else "couple who are having a child through surrogacy") }} want to have equal time as primary carer for their child.
     The {{ primaryName }} ends their {{ primaryLeaveType }} leave after 3 months to create 9 months of shared parental leave.
   </p>
   <p>
