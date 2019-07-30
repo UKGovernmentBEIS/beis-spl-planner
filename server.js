@@ -68,7 +68,6 @@ function initialiseGlobalMiddleware (app) {
   app.use(session({
     secret: 'beis-spl-planner',
     name: 'application',
-    cookie: { maxAge },
     store: new MemoryStore({
       checkPeriod: maxAge
     }),
@@ -157,7 +156,9 @@ function initialiseRoutes (app) {
 
 function handleErrors (app) {
   app.use(handle404)
-  app.use(handle500)
+  if (process.env.NODE_ENV !== 'development') {
+    app.use(handle500)
+  }
 }
 
 function listen () {

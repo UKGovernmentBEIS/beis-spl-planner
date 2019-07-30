@@ -5,7 +5,8 @@ const envify = require('envify/custom')
 module.exports = function (grunt) {
   const env = {
     dev: {
-      GOOGLE_ANALYTICS_ID: 'UA-142639139-4'
+      GOOGLE_ANALYTICS_ID: 'UA-142639139-4',
+      NODE_ENV: 'development'
     }
   }
 
@@ -53,6 +54,18 @@ module.exports = function (grunt) {
     }
   }
 
+  const postcss = {
+    prefix: {
+      options: {
+        map: true,
+        processors: [
+          require('autoprefixer')()
+        ]
+      },
+      src: 'public/stylesheets/application.css'
+    }
+  }
+
   const cssmin = {
     target: {
       files: {
@@ -69,7 +82,7 @@ module.exports = function (grunt) {
         'app/assets/sass/**/*.scss',
         'common/assets/sass/**/*.scss'
       ],
-      tasks: ['sass', 'cssmin'],
+      tasks: ['sass', 'postcss:prefix', 'cssmin'],
       options: {
         spawn: false,
         livereload: true
@@ -204,6 +217,7 @@ module.exports = function (grunt) {
     babel,
     nodemon,
     concurrent,
+    postcss,
     cssmin,
     concat,
     rewrite,
@@ -223,7 +237,8 @@ module.exports = function (grunt) {
     'grunt-browserify',
     'grunt-contrib-concat',
     'grunt-rewrite',
-    'grunt-babel'
+    'grunt-babel',
+    'grunt-postcss'
   ].forEach(task => {
     grunt.loadNpmTasks(task)
   })
@@ -238,6 +253,7 @@ module.exports = function (grunt) {
     'concat',
     'rewrite',
     'compress',
+    'postcss',
     'cssmin'
   ])
 
