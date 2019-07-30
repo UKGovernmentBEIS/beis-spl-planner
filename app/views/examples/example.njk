@@ -3,8 +3,10 @@
 
 {% extends "layout.njk" %}
 
-{% set isBirth = (exampleData | isBirth) %}
-{% set primaryName = "mother" if isBirth else "adopter" %}
+{% set isBirth = exampleData | isBirth %}
+{% set isAdoption = exampleData | isAdoption %}
+{% set isSurrogacy = exampleData | isSurrogacy %}
+{% set primaryName = exampleData | primaryName %}
 {% set primaryLeaveType = "maternity" if isBirth else "adoption" %}
 
 {% block content %}

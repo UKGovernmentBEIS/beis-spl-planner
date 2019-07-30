@@ -84,7 +84,7 @@ const examples = {
 for (const [name, data] of Object.entries(examples)) {
   Object.assign(data.primary, exampleEligibilityData)
   Object.assign(data.secondary, exampleEligibilityData)
-  router.get(`/:natureOfParenthood(birth|adoption)/${name}`, function (req, res) {
+  router.get(`/:natureOfParenthood(birth|adoption|surrogacy)/${name}`, function (req, res) {
     const exampleData = {
       'nature-of-parenthood': req.params.natureOfParenthood,
       ...exampleDateData,
