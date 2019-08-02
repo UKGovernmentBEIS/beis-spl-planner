@@ -9,7 +9,7 @@ const { parseParentFromPlanner, parseStartDay } = require('../../utils')
 const dataUtils = require('../../../common/lib/dataUtils')
 const { parseEligibilityFromData } = require('../../lib/eligibility')
 
-Vue.filter('capitalise', function (value) {
+Vue.filter('capitalize', function (value) {
   if (!value) {
     return ''
   }

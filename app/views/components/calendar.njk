@@ -34,7 +34,7 @@
                 {{ date | formatDate("D MMMM") }}
               </strong>
               {% if (i === 0) %}
-                ({{ weekZeroName | capitalise }} week)
+                ({{ weekZeroName | capitalize }} week)
               {% else %}
                 ({{ i | abs }} week{{ "s" if (i | abs) !== 1 }} {{ "before" if i < 0 else "after" }} {{ weekZeroName }})
               {% endif %}

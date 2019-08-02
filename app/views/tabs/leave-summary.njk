@@ -44,14 +44,14 @@
     }) }}
 
     <h2 class="govuk-heading-l">
-      {{ data | primaryName | capitalise }}’s leave dates
+      {{ data | primaryName | capitalize }}’s leave dates
     </h2>
     <h3 class="govuk-heading-m">
-      {{ data | primaryLeaveType | capitalise }} leave
+      {{ data | primaryLeaveType | capitalize }} leave
     </h3>
 
     {{ leaveBlockSummary({
-      name: data | primaryLeaveType | capitalise + " leave",
+      name: data | primaryLeaveType | capitalize + " leave",
       block: leaveBlocks.primary.initial,
       data: data,
       notify: {
@@ -142,7 +142,7 @@
 
     {% if leaveBlocks.secondary.initial or leaveBlocks.secondary.spl.length %}
       <h2 class="govuk-heading-l">
-        {{ data | secondaryName | capitalise }}’s leave dates
+        {{ data | secondaryName | capitalize }}’s leave dates
       </h2>
       {% if leaveBlocks.secondary.initial %}
         <h3 class="govuk-heading-m">
@@ -211,7 +211,7 @@
           {% set curtailmentWarningHtml %}
             The {{ data | primaryName }} must end their {{ data | primaryLeaveType }} leave and pay by returning to work or submitting a curtailment notice.
             They must also give consent for the partner to take shared parental leave or pay.
-            They can do both by submitting the <a href={{"/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if data | primaryLeaveType == "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf")}}>{{ data | primaryLeaveType | capitalise}} curtailment and SPL consent form</a>.
+            They can do both by submitting the <a href={{"/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if data | primaryLeaveType == "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf")}}>{{ data | primaryLeaveType | capitalize}} curtailment and SPL consent form</a>.
           {% endset %}
           {{ govukWarningText({
             html: curtailmentWarningHtml,
