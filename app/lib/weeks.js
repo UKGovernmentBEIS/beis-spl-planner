@@ -85,7 +85,7 @@ class Weeks {
     if (this.eligibility.secondary.spl) {
       return true
     } else if (this.eligibility.secondary.statutoryLeave) {
-      return week.number < 8
+      return week.secondary.leave.text === 'paternity' && week.number < 8
     } else {
       return false
     }
