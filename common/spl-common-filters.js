@@ -5,6 +5,8 @@ const { SERVICE_NAME } = require('../app/constants')
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
 module.exports = function (env) {
+  const capitalize = env.getFilter('capitalize')
+
   function isYes (dataField) {
     return dataUtils.isYes(dataField)
   }
@@ -61,10 +63,6 @@ module.exports = function (env) {
     }
   }
 
-  function capitalise (string) {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-  }
-
   function startDateName (data) {
     return isBirth(data) ? 'due date' : 'match date'
   }
@@ -94,7 +92,7 @@ module.exports = function (env) {
   }
 
   function pageTitle (...pageSpecificParts) {
-    return [...pageSpecificParts, capitalise(SERVICE_NAME), 'GOV.UK'].filter(string => string).join(' - ')
+    return [...pageSpecificParts, capitalize(SERVICE_NAME), 'GOV.UK'].filter(string => string).join(' - ')
   }
 
   return {
@@ -112,7 +110,6 @@ module.exports = function (env) {
     parentNameForUrl,
     primaryLeaveType,
     parentInitialLeaveType,
-    capitalise,
     startDateName,
     offsetWeeks,
     exampleDate,
