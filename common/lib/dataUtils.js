@@ -56,6 +56,16 @@ function secondaryName (data) {
   return 'partner'
 }
 
+function primaryUrlName (data) {
+  if (isBirth(data)) {
+    return 'mother'
+  } else if (isAdoption(data)) {
+    return 'primary-adopter'
+  } else {
+    return 'parental-order-parent'
+  }
+}
+
 function isYes (dataField) {
   return dataField === 'yes'
 }
@@ -68,6 +78,7 @@ module.exports = {
   natureOfParenthood,
   parentName,
   primaryName,
+  primaryUrlName,
   secondaryName,
   isAdoption,
   isBirth,
