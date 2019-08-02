@@ -27,11 +27,11 @@ module.exports = function (env) {
   }
 
   function startOfWeek (day) {
-    return day.startOfWeek()
+    return day.mondayStartOfWeek()
   }
 
   function endOfWeek (day) {
-    return day.endOfWeek()
+    return day.sundayEndOfWeek()
   }
 
   function startDateName (data) {
