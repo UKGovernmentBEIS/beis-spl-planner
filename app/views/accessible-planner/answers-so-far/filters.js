@@ -41,7 +41,7 @@ module.exports = function (env) {
               {
                 href: `/planner/shared-parental-leave/start?block=${i + 1}`,
                 text: 'Change',
-                visuallyHiddenText: 'shared parental leave start'
+                visuallyHiddenText: 'Shared Parental Leave start'
               }
             ]
           }
@@ -60,7 +60,7 @@ module.exports = function (env) {
               {
                 href: `/planner/shared-parental-leave/end?block=${i + 1}`,
                 text: 'Change',
-                visuallyHiddenText: 'shared parental leave end'
+                visuallyHiddenText: 'Shared Parental Leave end'
               }
             ]
           }

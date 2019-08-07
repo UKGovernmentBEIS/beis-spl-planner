@@ -135,7 +135,7 @@
     'maternity': 'maternity leave',
     'adoption': 'adoption leave',
     'paternity': 'paternity leave',
-    'shared': 'shared parental leave'
+    'shared': 'Shared Parental Leave'
   })
 
   module.exports = {

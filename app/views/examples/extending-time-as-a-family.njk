@@ -2,7 +2,7 @@
 
 {% block pageTitle -%}
   {%- set bornOrPlaced = "placed" if exampleData | isAdoption else "born" -%}
-  {{ "Example of shared parental leave and pay plans" | pageTitle("Extending time as a family after the child is " + bornOrPlaced) }}
+  {{ "Example of Shared Parental Leave and Pay plans" | pageTitle("Extending time as a family after the child is " + bornOrPlaced) }}
 {%- endblock %}
 
 {% block exampleTitle %}
@@ -16,7 +16,7 @@
   </p>
   <p>
     The {{ primaryName }} planned to take a full 52 weeks of {{ primaryLeaveType }} leave but decides to reduce it by 4 weeks to
-    create 4 weeks of shared parental leave for her partner to take. The partner can now stay at home with the {{ primaryName }}
+    create 4 weeks of Shared Parental Leave for her partner to take. The partner can now stay at home with the {{ primaryName }}
     and the child for a total of 6 weeks as soon as the child is {{ "placed" if isAdoption else "born" }}.
   </p>
 {% endblock %}
@@ -26,5 +26,5 @@
 {% endblock %}
 
 {% block secondaryLeavePlan %}
-  2 weeks of paternity leave and statutory paternity pay and 4 weeks of shared parental leave.
+  2 weeks of paternity leave and statutory paternity pay and 4 weeks of Shared Parental Leave.
 {% endblock %}

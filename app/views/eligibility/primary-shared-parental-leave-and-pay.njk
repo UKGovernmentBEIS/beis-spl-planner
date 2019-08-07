@@ -7,7 +7,7 @@
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
-  {{ "Is the " + (data | primaryName) + " eligible for shared parental leave and pay?" | pageTitle }}
+  {{ "Is the " + (data | primaryName) + " eligible for Shared Parental Leave and Pay?" | pageTitle }}
 {%- endblock %}
 
 {% block beforeContent %}
@@ -43,7 +43,7 @@
             name: "primary[spl-eligible]",
             fieldset: {
               legend: {
-                text: "Is the " + data | primaryName + " eligible for shared parental leave?",
+                text: "Is the " + data | primaryName + " eligible for Shared Parental Leave?",
                 classes: "govuk-fieldset__legend--m"
               }
             },
@@ -70,7 +70,7 @@
             name: "primary[shpp-eligible]",
             fieldset: {
               legend: {
-                text: "Is the " + data | primaryName + " eligible for statutory shared parental pay?",
+                text: "Is the " + data | primaryName + " eligible for Statutory Shared Parental Pay?",
                 classes: "govuk-fieldset__legend--m"
               }
             },
@@ -93,7 +93,7 @@
         {% endcall %}
 
         <p class="govuk-hint">
-          If you’re not sure, <a href="{{ eligibility_tool_root_path }}">check if you can get shared parental leave or pay</a>.
+          If you’re not sure, <a href="{{ eligibility_tool_root_path }}">check if you can get Shared Parental Leave or Pay</a>.
         </p>
 
         {{ govukButton({

@@ -9,7 +9,7 @@
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
-  {{ "Do you want to plan a block of shared parental leave?" | pageTitle }}
+  {{ "Do you want to plan a block of Shared Parental Leave?" | pageTitle }}
 {%- endblock %}
 
 {% set primaryName = (data | primaryName) %}
@@ -27,17 +27,17 @@
             <p class="govuk-hint">
               You have {{ remainingLeaveAllowance | weeks }} of unused
               {% if eitherParentHasTakenSpl %}
-                shared parental leave left to take.
+                Shared Parental Leave left to take.
               {% else %}
-                {{ primaryLeaveType }} leave that can be taken as shared parental leave.
+                {{ primaryLeaveType }} leave that can be taken as Shared Parental Leave.
               {% endif %}
             </p>
             <p class="govuk-hint">
-              Shared parental leave can be taken by the {{ primaryName }} and the partner, either at the same
+              Shared Parental Leave can be taken by the {{ primaryName }} and the partner, either at the same
               time, or one after the other.
             </p>
             <p class="govuk-hint">
-              You can plan more blocks of shared parental leave later, if you still have unused weeks remaining.
+              You can plan more blocks of Shared Parental Leave later, if you still have unused weeks remaining.
             </p>
             <p class="govuk-hint">
               Your previous answers are at the bottom of the page.
@@ -48,7 +48,7 @@
             name: "leave-blocks[spl-block-planning-order][]",
             fieldset: {
               legend: {
-                text: "Do you want to plan a block of shared parental leave?",
+                text: "Do you want to plan a block of Shared Parental Leave?",
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }
@@ -59,11 +59,11 @@
             items: [
               {
                 value: "primary",
-                text: "Yes, plan a block of shared parental leave for the " + primaryName
+                text: "Yes, plan a block of Shared Parental Leave for the " + primaryName
               },
               {
                 value: "secondary",
-                text: "Yes, plan a block of shared parental leave for the partner"
+                text: "Yes, plan a block of Shared Parental Leave for the partner"
               },
               {
                 value: "done",

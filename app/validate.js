@@ -29,8 +29,8 @@ function natureOfParenthood (req) {
 
 function primarySharedParentalLeaveAndPay (req) {
   return validateParentYesNoFields(req, 'primary', {
-    'spl-eligible': 'Select whether you are eligible for shared parental leave',
-    'shpp-eligible': 'Select whether you are eligible for shared parental pay'
+    'spl-eligible': 'Select whether you are eligible for Shared Parental Leave',
+    'shpp-eligible': 'Select whether you are eligible for Shared Parental Pay'
   })
 }
 
@@ -64,8 +64,8 @@ function maternityAllowance (req) {
 
 function secondarySharedParentalLeaveAndPay (req) {
   return validateParentYesNoFields(req, 'secondary', {
-    'spl-eligible': 'Select whether you are eligible for shared parental leave',
-    'shpp-eligible': 'Select whether you are eligible for shared parental pay'
+    'spl-eligible': 'Select whether you are eligible for Shared Parental Leave',
+    'shpp-eligible': 'Select whether you are eligible for Shared Parental Pay'
   })
 }
 

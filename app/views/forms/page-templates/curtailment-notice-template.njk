@@ -28,17 +28,17 @@
       Instructions
     </h1>
     <p>
-      The {{options.parent | capitalize}} should complete this form in the case where the <strong>Partner is taking</strong> Shared Parental Leave and / or Pay and the <strong>{{options.parent | capitalize}} is not.</strong> 
+      The {{options.parent | capitalize}} should complete this form in the case where the <strong>Partner is taking</strong> Shared Parental Leave and / or Pay and the <strong>{{options.parent | capitalize}} is not.</strong>
     </p>
     <p>
-      This form must be submitted  to the {{options.parent | capitalize}}’s employer at least 8 weeks before the partner intends to take Shared Parental Leave and / or Pay. 
+      This form must be submitted  to the {{options.parent | capitalize}}’s employer at least 8 weeks before the partner intends to take Shared Parental Leave and / or Pay.
     </p>
     <p>
       <strong>If the {{options.parent | capitalize}} has returned to work, they can skip section 1 and complete section 2.</strong>
     </p>
-    
+
     {{ sectionTitle({text: "Section 1 of 2: $Parent’s notice to curtail $State entitlement" | formTemplate(options) }) }}
-  
+
     <p><strong>{{options.parent | capitalize}}'s name</strong></p>
     <div class="field-large">{{ fieldTextbox() }}</div>
 
@@ -69,10 +69,10 @@
 
     <div class="empty-line"></div>
     {{ itemCheckbox({text: "I am either not entitled to Shared Parental Leave (or Statutory Shared Parental Pay where relevant), or I do not intend to take Shared Parental Leave (or claim Statutory Shared Parental Pay where relevant)", passdown: ""}) }}
-    
+
     <div class="empty-line"></div>
     {{ itemCheckbox({text: "I declare that my partner has given notice to their employer to take Shared Parental Leave and/or Statutory Shared Parental Pay.", passdown: ""}) }}
-    
+
     <div class="empty-line"></div>
     {{ itemCheckbox({text: "I consent to my partner’s intended claim for Shared Parental Leave and/or Statutory Shared Parental Pay.", passdown: ""}) }}
 

@@ -1,7 +1,7 @@
 {% extends "./example.njk" %}
 
 {% block pageTitle -%}
-  {{ "Example of shared parental leave and pay plans" | pageTitle("Sharing primary care responsibility") }}
+  {{ "Example of Shared Parental Leave and Pay plans" | pageTitle("Sharing primary care responsibility") }}
 {%- endblock %}
 
 {% block exampleTitle %}
@@ -11,19 +11,19 @@
 {% block background %}
   <p>
     A {{ "mother and her partner" if isBirth else ("couple who are adopting" if isAdoption else "couple who are having a child through surrogacy") }} want to have equal time as primary carer for their child.
-    The {{ primaryName }} ends their {{ primaryLeaveType }} leave after 3 months to create 9 months of shared parental leave.
+    The {{ primaryName }} ends their {{ primaryLeaveType }} leave after 3 months to create 9 months of Shared Parental Leave.
   </p>
   <p>
-    The couple spend the first 3 months at home together, leaving 6 months of shared parental leave for them to split between them.
-    They alternate being at home with the child every 6 weeks for the remaining 6 months of shared parental leave.
+    The couple spend the first 3 months at home together, leaving 6 months of Shared Parental Leave for them to split between them.
+    They alternate being at home with the child every 6 weeks for the remaining 6 months of Shared Parental Leave.
   </p>
 {% endblock %}
 
 {% block primaryLeavePlan %}
-  13 weeks of {{ primaryLeaveType }} leave and statutory {{ primaryLeaveType }} pay, two 6-week blocks of shared parental leave and pay.
+  13 weeks of {{ primaryLeaveType }} leave and statutory {{ primaryLeaveType }} pay, two 6-week blocks of Shared Parental Leave and Pay.
 {% endblock %}
 
 {% block secondaryLeavePlan %}
-  2 weeks of paternity leave and statutory shared paternity pay. An initial 15-week block of shared parental leave and 14 weeks of statutory
-  shared parental pay, followed by two 6-week blocks of unpaid shared parental leave.
+  2 weeks of paternity leave and statutory shared paternity pay. An initial 15-week block of Shared Parental Leave and 14 weeks of statutory
+  Shared Parental Pay, followed by two 6-week blocks of unpaid Shared Parental Leave.
 {% endblock %}

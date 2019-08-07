@@ -37,7 +37,7 @@
 {% endmacro %}
 
 {% block pageTitle -%}
-  {{ "Which week will be the " + parentName + "’s first week of shared parental leave in this block? (" + parentName + " block " + (index + 1) +")" | pageTitle }}
+  {{ "Which week will be the " + parentName + "’s first week of Shared Parental Leave in this block? (" + parentName + " block " + (index + 1) +")" | pageTitle }}
 {%- endblock %}
 
 {% block content %}
@@ -52,7 +52,7 @@
               {% else %}
                 The {{ parentName }}’s
                 {% if hasTakenSpl %}
-                  last block of shared parental leave
+                  last block of Shared Parental Leave
                 {% else %}
                   {{ initialLeaveType }} leave
                 {% endif %}
@@ -65,7 +65,7 @@
           {% endset %}
           {% call govukFieldset({
             legend: {
-              text: "Which week will be the " + parentName + "’s first week of shared parental leave in this block?",
+              text: "Which week will be the " + parentName + "’s first week of Shared Parental Leave in this block?",
               classes: "govuk-fieldset__legend--xl",
               isPageHeading: true
             }
