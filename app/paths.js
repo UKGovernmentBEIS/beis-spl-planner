@@ -1,7 +1,10 @@
 const delve = require('dlv')
-const isString = require('lodash/isString')
+const _ = require('lodash')
 const validate = require('./validate')
-const dataUtils = require('../common/lib/dataUtils')
+const {
+  isBirth,
+  isAdoption
+} = require('../common/lib/dataUtils')
 
 /*
  * This class is used to manage all paths in the app.
@@ -33,6 +36,8 @@ const dataUtils = require('../common/lib/dataUtils')
  * paths.getAllPaths('secondPage.firstCategory') returns '/secondPage/first-category
  *
  * A path object can be accessed by passing the url to getPathObjectFromUrl
+ *
+ * The workflowParentPath property can take a function, which is called with the data object.
 */
 
 class Paths {
@@ -74,16 +79,32 @@ class Paths {
             url: '/eligibility/primary-adopter/initial-leave-and-pay',
             workflowParentPath: '/eligibility/primary-adopter/shared-parental-leave-and-pay',
             validator: validate.initialLeaveAndPay
+          }
+        },
+        'parental-order-parent': {
+          sharedParentalLeaveAndPay: {
+            url: '/eligibility/parental-order-parent/shared-parental-leave-and-pay',
+            workflowParentPath: '/nature-of-parenthood',
+            validator: validate.primarySharedParentalLeaveAndPay
           },
-          maternityAllowance: {
-            url: '/eligibility/primary-adopter/maternity-allowance',
-            workflowParentPath: '/eligibility/primary-adopter/initial-leave-and-pay'
+          initialLeaveAndPay: {
+            url: '/eligibility/parental-order-parent/initial-leave-and-pay',
+            workflowParentPath: '/eligibility/parental-order-parent/shared-parental-leave-and-pay',
+            validator: validate.initialLeaveAndPay
           }
         },
         partner: {
           sharedParentalLeaveAndPay: {
             url: '/eligibility/partner/shared-parental-leave-and-pay',
-            workflowParentPath: '/eligibility/mother/maternity-allowance',
+            workflowParentPath: data => {
+              if (isBirth(data)) {
+                return '/eligibility/mother/maternity-allowance'
+              } else if (isAdoption(data)) {
+                return '/eligibility/primary-adopter/initial-leave-and-pay'
+              } else {
+                return '/eligibility/parental-order-parent/initial-leave-and-pay'
+              }
+            },
             validator: validate.secondarySharedParentalLeaveAndPay
           },
           paternityLeaveAndPay: {
@@ -133,9 +154,12 @@ class Paths {
         },
         'paternity-leave': {
           url: '/planner/paternity-leave',
-          workflowParentPath: {
-            birth: '/planner/maternity-leave/end',
-            adoption: '/planner/adoption-leave/end'
+          workflowParentPath: data => {
+            if (isBirth(data)) {
+              return '/planner/maternity-leave/end'
+            } else {
+              return '/planner/adoption-leave/end'
+            }
           },
           start: {
             url: '/planner/paternity-leave/start',
@@ -176,7 +200,7 @@ class Paths {
     function findObjectByUrl (obj, url) {
       for (let key in obj) {
         const subObject = obj[key]
-        if (isString(subObject)) {
+        if (_.isString(subObject)) {
           continue
         }
 
@@ -197,15 +221,7 @@ class Paths {
   getPreviousWorkflowPath (url, data) {
     const pathObject = this.getPathObjectFromUrl(url)
     const workflowParentPath = delve(pathObject, 'workflowParentPath', undefined)
-    if (!workflowParentPath) {
-      return undefined
-    } else if (typeof workflowParentPath === 'string') {
-      return workflowParentPath
-    } else if (workflowParentPath.birth && workflowParentPath.adoption) {
-      return dataUtils.isBirth(data) ? workflowParentPath.birth : workflowParentPath.adoption
-    } else {
-      return undefined
-    }
+    return _.isFunction(workflowParentPath) ? workflowParentPath(data) : workflowParentPath
   }
 
   getPath (location) {
@@ -219,7 +235,7 @@ class Paths {
       for (let key in obj) {
         const subObj = obj[key]
 
-        if (isString(subObj)) {
+        if (_.isString(subObj)) {
           continue
         }
 

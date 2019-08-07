@@ -1,23 +1,23 @@
 {% extends "./example.njk" %}
 
 {% block pageTitle -%}
-  {%- set bornOrPlaced = "born" if exampleData | isBirth else "placed" -%}
+  {%- set bornOrPlaced = "placed" if exampleData | isAdoption else "born" -%}
   {{ "Example of shared parental leave and pay plans" | pageTitle("Extending time as a family after the child is " + bornOrPlaced) }}
 {%- endblock %}
 
 {% block exampleTitle %}
-  Extending time as a family after {{ "birth" if isBirth else "the child is placed" }}
+  Extending time as a family after {{ "the child is placed" if isAdoption else "birth" }}
 {% endblock %}
 
 {% block background %}
   <p>
-    A couple is {{ "having" if isBirth else "adopting" }} their first child.
+    A couple is {{ "adopting" if isAdoption else "having" }} their first child{{ " through surrogacy" if isSurrogacy }}.
     The partner plans to take 2 weeks of paternity leave but wants to extend this.
   </p>
   <p>
     The {{ primaryName }} planned to take a full 52 weeks of {{ primaryLeaveType }} leave but decides to reduce it by 4 weeks to
     create 4 weeks of shared parental leave for her partner to take. The partner can now stay at home with the {{ primaryName }}
-    and the child for a total of 6 weeks as soon as the child is {{ "born" if isBirth else "placed" }}.
+    and the child for a total of 6 weeks as soon as the child is {{ "placed" if isAdoption else "born" }}.
   </p>
 {% endblock %}
 

@@ -14,8 +14,8 @@
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
         <th class="govuk-table__header" scope="col"></th>
-        <th class="govuk-table__header" scope="col" colspan="2" id="primary-name">{{ names.primary | capitalise }}</th>
-        <th class="govuk-table__header" scope="col" colspan="2" id="secondary-name">{{ names.secondary | capitalise }}</th>
+        <th class="govuk-table__header" scope="col" colspan="2" id="primary-name">{{ names.primary | capitalize }}</th>
+        <th class="govuk-table__header" scope="col" colspan="2" id="secondary-name">{{ names.secondary | capitalize }}</th>
       </tr>
       <tr class="govuk-table__row">
         <th class="govuk-table__header" scope="col"></th>
@@ -34,12 +34,12 @@
         </tr>
         <tr :key="'earliest-leave-week-' + week.id" v-if="i === 0" class="row-banner" aria-hidden="true">
           <th colspan="5">
-            {{ primaryLeaveType | capitalise }} leave can start in this week
+            {{ primaryLeaveType | capitalize }} leave can start in this week
           </th>
         </tr>
         <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner" aria-hidden="true">
           <th colspan="5">
-            {{ isBirth ? 'Birth week' : 'First week the child lives with you' }}
+            {{ natureOfParenthood === 'adoption' ? 'First week the child lives with you' : 'Birth week' }}
           </th>
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week)">
@@ -83,7 +83,7 @@
                     {{ week[parent].pay.text | leaveCellPayLabel(cellIsEligible(week, parent, 'pay')) }}
                   </div>
                   <div class="govuk-body-s no-margin">
-                    {{ week[parent].leave.text | leaveCellLeaveLabel(week[parent].compulsory, cellIsEligible(week, parent, 'leave')) | capitalise }}
+                    {{ week[parent].leave.text | leaveCellLeaveLabel(week[parent].compulsory, cellIsEligible(week, parent, 'leave')) | capitalize }}
                   </div>
                 </div>
                 <div v-else-if="week.number > leaveBoundaries[parent].firstWeek && week.number < leaveBoundaries[parent].lastWeek"
@@ -148,7 +148,7 @@
       hideFocus: false
     }),
     props: {
-      isBirth: Boolean,
+      natureOfParenthood: String,
       primaryLeaveType: String,
       names: Object,
       weeks: Array,

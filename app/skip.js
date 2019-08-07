@@ -1,4 +1,4 @@
-const { isYes, isAdoption } = require('../common/lib/dataUtils')
+const { isYes, isAdoption, isSurrogacy } = require('../common/lib/dataUtils')
 const delve = require('dlv')
 
 function initialLeaveAndPay (req) {
@@ -9,6 +9,9 @@ function initialLeaveAndPay (req) {
 
 function maternityAllowance (req) {
   if (isAdoption(req.session.data)) {
+    return true
+  }
+  if (isSurrogacy(req.session.data)) {
     return true
   }
   if (initialLeaveAndPay(req)) {

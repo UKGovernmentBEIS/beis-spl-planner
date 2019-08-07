@@ -24,14 +24,17 @@
     </h1>
     <p>
       This is a summary of your leave plan.
-      It shows your leave dates, when you need to notify your employer and how you can apply.
+      It shows your leave weeks, when you need to notify your employer and how you can apply.
+    </p>
+    <p>
+      All start dates are on a Monday and end dates are a Sunday. You can choose a different day of the week to start your leave when you give notice.
     </p>
 
     {{ govukSummaryList({
       rows: [
         {
           key: {
-            text: "Baby is due" if data | isBirth else "Placement date"
+            text: "Placement date" if data | isAdoption else "Baby is due"
           },
           value: {
             text: data | startDay | formatForDisplay
@@ -41,14 +44,14 @@
     }) }}
 
     <h2 class="govuk-heading-l">
-      {{ data | primaryName | capitalise }}’s leave dates
+      {{ data | primaryName | capitalize }}’s leave dates
     </h2>
     <h3 class="govuk-heading-m">
-      {{ data | primaryLeaveType | capitalise }} leave
+      {{ data | primaryLeaveType | capitalize }} leave
     </h3>
 
     {{ leaveBlockSummary({
-      name: data | primaryLeaveType | capitalise + " leave",
+      name: data | primaryLeaveType | capitalize + " leave",
       block: leaveBlocks.primary.initial,
       data: data,
       notify: {
@@ -61,7 +64,7 @@
       How to give notice
     </h4>
     <p>
-      Tell your employer when the {{"baby is due" if data | isBirth else "child will be placed with you"}} and when you want to start your {{ data | primaryLeaveType }} leave.
+      Tell your employer when the {{ "child will be placed with you" if data | isAdoption else "baby is due" }} and when you want to start your {{ data | primaryLeaveType }} leave.
       Your employer can ask for this in writing.
       Your employer must write to you within 28 days confirming your start and end dates.
     </p>
@@ -139,7 +142,7 @@
 
     {% if leaveBlocks.secondary.initial or leaveBlocks.secondary.spl.length %}
       <h2 class="govuk-heading-l">
-        {{ data | secondaryName | capitalise }}’s leave dates
+        {{ data | secondaryName | capitalize }}’s leave dates
       </h2>
       {% if leaveBlocks.secondary.initial %}
         <h3 class="govuk-heading-m">
@@ -208,7 +211,7 @@
           {% set curtailmentWarningHtml %}
             The {{ data | primaryName }} must end their {{ data | primaryLeaveType }} leave and pay by returning to work or submitting a curtailment notice.
             They must also give consent for the partner to take shared parental leave or pay.
-            They can do both by submitting the <a href={{"/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if data | primaryLeaveType == "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf")}}>{{ data | primaryLeaveType | capitalise}} curtailment and SPL consent form</a>.
+            They can do both by submitting the <a href={{"/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if data | primaryLeaveType == "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf")}}>{{ data | primaryLeaveType | capitalize}} curtailment and SPL consent form</a>.
           {% endset %}
           {{ govukWarningText({
             html: curtailmentWarningHtml,

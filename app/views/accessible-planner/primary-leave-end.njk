@@ -24,8 +24,8 @@
 {% set primaryName = (data | primaryName) %}
 {% set primaryLeaveType = (data | primaryLeaveType) %}
 {% set zeroWeek = (data | zeroWeek) %}
-{% set isBirth = (data | isBirth) %}
-{% set birthOrPlacement = "birth" if isBirth else "placement" %}
+{% set isAdoption = (data | isAdoption) %}
+{% set birthOrPlacement = "placement" if isAdoption else "birth" %}
 
 {% set firstWeekOfLeave = (data["leave-blocks"]["primary"]["initial"]["start"] | int) %}
 {% set options = range(1, firstWeekOfLeave + 52) %}
@@ -43,7 +43,7 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              {{ primaryLeaveType | capitalise }} leave must be taken in one continuous block and it is compulsory
+              {{ primaryLeaveType | capitalize }} leave must be taken in one continuous block and it is compulsory
               to take {{ primaryLeaveType }} leave in the 2 weeks after {{ birthOrPlacement }}.
             </p>
             <p class="govuk-hint">

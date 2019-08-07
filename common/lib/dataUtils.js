@@ -1,10 +1,14 @@
 const { isString } = require('lodash')
 
+function natureOfParenthood (data) {
+  return data['nature-of-parenthood']
+}
+
 function isBirth (data) {
   if (isString(data)) {
     return data === 'birth'
   } else {
-    return data['nature-of-parenthood'] === 'birth'
+    return natureOfParenthood(data) === 'birth'
   }
 }
 
@@ -12,19 +16,25 @@ function isAdoption (data) {
   if (isString(data)) {
     return data === 'adoption'
   } else {
-    return data['nature-of-parenthood'] === 'adoption'
+    return natureOfParenthood(data) === 'adoption'
   }
-}
-
-function earliestPrimaryLeaveWeek (data) {
-  return isBirth(data) ? -11 : -2
 }
 
 function isSurrogacy (data) {
   if (isString(data)) {
     return data === 'surrogacy'
   } else {
-    return data['nature-of-parenthood'] === 'surrogacy'
+    return natureOfParenthood(data) === 'surrogacy'
+  }
+}
+
+function earliestPrimaryLeaveWeek (data) {
+  if (isBirth(data)) {
+    return -11
+  } else if (isAdoption(data)) {
+    return -2
+  } else {
+    return 0
   }
 }
 
@@ -46,6 +56,16 @@ function secondaryName (data) {
   return 'partner'
 }
 
+function primaryUrlName (data) {
+  if (isBirth(data)) {
+    return 'mother'
+  } else if (isAdoption(data)) {
+    return 'primary-adopter'
+  } else {
+    return 'parental-order-parent'
+  }
+}
+
 function isYes (dataField) {
   return dataField === 'yes'
 }
@@ -55,13 +75,15 @@ function isNo (dataField) {
 }
 
 module.exports = {
+  natureOfParenthood,
   parentName,
   primaryName,
+  primaryUrlName,
   secondaryName,
   isAdoption,
   isBirth,
-  earliestPrimaryLeaveWeek,
   isSurrogacy,
+  earliestPrimaryLeaveWeek,
   isYes,
   isNo
 }

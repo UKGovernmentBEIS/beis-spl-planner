@@ -9,8 +9,7 @@
       Pay summary
     </h1>
     <p>
-      This summary shows your statutory pay entitlements while on leave.
-      Your employer may offer some additional pay.
+      This summary shows the amount of statutory pay you could get while on leave. These amounts are indicative only. Your employer can confirm your exact pay amount.
     </p>
     <p>
 {# TODO check href for this link #}
@@ -38,17 +37,17 @@
             text: "Parent"
           },
           {
-            text: "What you’ll be paid",
+            text: "Statutory pay (indicative)",
             classes: "govuk-!-width-two-thirds"
           }
         ],
         rows: [
           [
-            { text: data | primaryName | capitalise },
+            { text: data | primaryName | capitalize },
             { text: primaryPay }
           ],
           [
-            { text: data | secondaryName | capitalise },
+            { text: data | secondaryName | capitalize },
             { text: secondaryPay }
           ],
           [
@@ -89,7 +88,7 @@
     </h4>
     <p>
       Use <a href="https://public-online.hmrc.gov.uk/lc/content/xfaforms/profiles/forms.html?contentRoot=repository:///Applications/PersonalTax_iForms/1.0/SC3&template=SC3.xdp" target="_blank">form SC3</a>
-      to claim for statutory paternity pay 15 weeks before your {{ "baby’s due date" if data | isBirth else "child’s match date" }}.
+      to claim for statutory paternity pay 15 weeks before your {{ "child’s match date" if data | isAdoption else "baby’s due date" }}.
     </p>
 
     <h4>

@@ -9,13 +9,14 @@ const { getBlocks, getRemainingLeaveAllowance, parseLeaveBlocks } = require('./l
 const { getWeeksArray } = require('./utils')
 const {
   registerEligibilityRouteForPrimaryParents,
+  registerEligibilityRouteForBirthMother,
   registerPlannerRouteForPrimaryLeaveTypes,
   bothParentsAreIneligible,
   parseExternalQueryString,
   clearLaterLeaveBlockAnswers,
   clearLaterSplBlockAnswers
 } = require('./lib/routerUtils')
-const { isBirth, isYes } = require('../common/lib/dataUtils')
+const { isBirth, isYes, isAdoption } = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
 
 router.use('/planner/examples', require('./router.examples'))
@@ -23,7 +24,7 @@ router.use('/forms', require('./router.forms'))
 
 router.route(paths.getPath('root'))
   .get(function (req, res) {
-    if (req.query) {
+    if (Object.entries(req.query).length !== 0) {
       parseExternalQueryString(req)
     }
     res.render('index')
@@ -40,7 +41,14 @@ router.route(paths.getPath('natureOfParenthood'))
     if (!validate.natureOfParenthood(req)) {
       return res.redirect('back')
     }
-    const primaryParent = isBirth(req.session.data) ? 'mother' : 'primary-adopter'
+    let primaryParent
+    if (isBirth(req.session.data)) {
+      primaryParent = 'mother'
+    } else if (isAdoption(req.session.data)) {
+      primaryParent = 'primary-adopter'
+    } else {
+      primaryParent = 'parental-order-parent'
+    }
     res.redirect(paths.getPath(`eligibility.${primaryParent}.sharedParentalLeaveAndPay`))
   })
 
@@ -81,7 +89,7 @@ registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
   }
 })
 
-registerEligibilityRouteForPrimaryParents(router, 'maternityAllowance', {
+registerEligibilityRouteForBirthMother(router, 'maternityAllowance', {
   get: function (req, res) {
     if (skip.maternityAllowance(req)) {
       return res.redirect(paths.getPreviousWorkflowPath(req.url, req.session.data))

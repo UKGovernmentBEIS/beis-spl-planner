@@ -19,8 +19,9 @@ const {
 } = require('./lib/validationUtils')
 
 function natureOfParenthood (req) {
-  if (!['birth', 'adoption'].includes(req.session.data['nature-of-parenthood'])) {
-    addError(req, 'nature-of-parenthood', 'Select either birth or adoption', '#nature-of-parenthood-1')
+  const acceptedValues = ['birth', 'adoption', 'surrogacy']
+  if (!acceptedValues.includes(req.session.data['nature-of-parenthood'])) {
+    addError(req, 'nature-of-parenthood', 'Select either birth, adoption or surrogacy', '#nature-of-parenthood-1')
     return false
   }
   return true

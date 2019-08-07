@@ -2,7 +2,7 @@
   <div>
     <div class="govuk-grid-row">
       <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full print-full-width">
-        <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :isBirth="isBirth"
+        <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :natureOfParenthood="natureOfParenthood"
           :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" :eligibility="eligibility"/>
       </div>
       <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full print-hide">
@@ -41,6 +41,7 @@
   const PrintYourPlan = require('./PrintYourPlan.vue')
   const ShareLink = require('./ShareLink.vue')
   const Weeks = require('../../../lib/weeks')
+  const { primaryName, isBirth } = require('../../../../common/lib/dataUtils')
 
   module.exports = {
     components: {
@@ -52,16 +53,16 @@
     computed: {
       names: function () {
         return {
-          primary: this.isBirth ? 'mother' : 'primary adopter',
+          primary: primaryName(this.natureOfParenthood),
           secondary: 'partner'
         }
       },
       primaryLeaveType: function () {
-        return this.isBirth ? 'maternity' : 'adoption'
+        return isBirth(this.natureOfParenthood) ? 'maternity' : 'adoption'
       },
       leaveAndPay: function () {
         const weeks = new Weeks({
-          isBirth: this.isBirth,
+          natureOfParenthood: this.natureOfParenthood,
           startWeek: this.startWeek,
           primary: this.primary,
           secondary: this.secondary,

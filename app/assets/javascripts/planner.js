@@ -9,7 +9,7 @@ const { parseParentFromPlanner, parseStartDay } = require('../../utils')
 const dataUtils = require('../../../common/lib/dataUtils')
 const { parseEligibilityFromData } = require('../../lib/eligibility')
 
-Vue.filter('capitalise', function (value) {
+Vue.filter('capitalize', function (value) {
   if (!value) {
     return ''
   }
@@ -18,15 +18,15 @@ Vue.filter('capitalise', function (value) {
 })
 
 function init (data, interactive) {
-  const isBirth = dataUtils.isBirth(data)
-  const startWeek = parseStartDay(data).startOfWeek()
+  const natureOfParenthood = dataUtils.natureOfParenthood(data)
+  const startWeek = parseStartDay(data).mondayStartOfWeek()
   const primary = parseParentFromPlanner(data, 'primary')
   const secondary = parseParentFromPlanner(data, 'secondary')
   const eligibility = parseEligibilityFromData(data)
   const planner = new (Vue.extend(Planner))({
     el: '#planner',
     data: {
-      isBirth,
+      natureOfParenthood,
       startWeek,
       primary,
       secondary,
