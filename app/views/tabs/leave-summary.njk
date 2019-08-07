@@ -74,15 +74,15 @@
         Ending your {{ data | primaryLeaveType }} leave or pay
       </h4>
       <p>
-        You must end your {{ data | primaryLeaveType }} leave or pay to create shared parental leave or pay.
+        You must end your {{ data | primaryLeaveType }} leave or pay to create Shared Parental Leave or Pay.
         You can do this by returning to work or curtailing it (committing to end it before you return to work).
       </p>
       <p>
-        You must also confirm that you’re not taking shared parental leave and pay and consent to your partner taking it.
+        You must also confirm that you’re not taking Shared Parental Leave and Pay and consent to your partner taking it.
       </p>
       <p>
-        You can do all of this by submitting the {{ data | primaryLeaveType }} leave curtailment and shared parental leave consent form
-        to your employer at least 8 weeks before your partner wants to start shared parental leave.
+        You can do all of this by submitting the {{ data | primaryLeaveType }} leave curtailment and Shared Parental Leave consent form
+        to your employer at least 8 weeks before your partner wants to start Shared Parental Leave.
       </p>
       {{ primaryNotice ({
         data: data
@@ -98,7 +98,7 @@
 
     {% if leaveBlocks.primary.spl.length > 0 %}
       <h3 class="govuk-heading-m">
-        Shared parental leave ({{ data | primaryName }})
+        Shared Parental Leave ({{ data | primaryName }})
       </h3>
       {% for block in leaveBlocks.primary.spl %}
         {{ leaveBlockSummary({
@@ -114,7 +114,7 @@
       {% endfor %}
       {% if leaveBlocks.primary.spl.length > 1 %}
         <p>
-          *You can notify your employer of multiple blocks of shared parental leave at the same time if your employer agrees.
+          *You can notify your employer of multiple blocks of Shared Parental Leave at the same time if your employer agrees.
         </p>
       {% endif %}
 
@@ -122,7 +122,7 @@
         How to give notice
       </h4>
       <p>
-        Complete the {{ data | primaryName }}’s shared parental leave and pay notice form and submit it to the {{ data | primaryName }}’s employer 8 weeks before the they want to start shared parental leave.
+        Complete the {{ data | primaryName }}’s Shared Parental Leave and Pay notice form and submit it to the {{ data | primaryName }}’s employer 8 weeks before the they want to start Shared Parental Leave.
       </p>
 
       {{ primaryNotice ({
@@ -133,10 +133,10 @@
         Changing your plans
       </h4>
       <p>
-        After you give notice you have two weeks to agree your shared parental leave dates with your employer.
+        After you give notice you have two weeks to agree your Shared Parental Leave dates with your employer.
       </p>
       <p>
-        To change your dates after this you must give notice again 8 weeks before your first block of shared parental leave starts.
+        To change your dates after this you must give notice again 8 weeks before your first block of Shared Parental Leave starts.
       </p>
     {% endif %}
 
@@ -176,7 +176,7 @@
 
       {% if leaveBlocks.secondary.spl.length %}
         <h3 class="govuk-heading-m">
-          Shared parental leave ({{ data | secondaryName }})
+          Shared Parental Leave ({{ data | secondaryName }})
         </h3>
         {% for block in leaveBlocks.secondary.spl %}
           {{ leaveBlockSummary({
@@ -192,7 +192,7 @@
         {% endfor %}
         {% if leaveBlocks.primary.spl.length > 1 %}
           <p>
-            *You can notify your employer of multiple blocks of shared parental leave at the same time if your employer agrees.
+            *You can notify your employer of multiple blocks of Shared Parental Leave at the same time if your employer agrees.
           </p>
         {% endif %}
 
@@ -200,7 +200,7 @@
           How to give notice
         </h4>
         <p>
-          Complete the {{ data | secondaryName }}’s shared parental leave and pay notice form and submit it to the {{ data | secondaryName }}’s employer 8 weeks before they want to start shared parental leave.
+          Complete the {{ data | secondaryName }}’s Shared Parental Leave and Pay notice form and submit it to the {{ data | secondaryName }}’s employer 8 weeks before they want to start Shared Parental Leave.
         </p>
 
         {{ secondaryNotice ({
@@ -210,7 +210,7 @@
         {% if leaveBlocks.primary.spl | length === 0 and leaveBlocks.secondary.spl | length > 0 %}
           {% set curtailmentWarningHtml %}
             The {{ data | primaryName }} must end their {{ data | primaryLeaveType }} leave and pay by returning to work or submitting a curtailment notice.
-            They must also give consent for the partner to take shared parental leave or pay.
+            They must also give consent for the partner to take Shared Parental Leave or Pay.
             They can do both by submitting the <a href={{"/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if data | primaryLeaveType == "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf")}}>{{ data | primaryLeaveType | capitalize}} curtailment and SPL consent form</a>.
           {% endset %}
           {{ govukWarningText({
@@ -223,10 +223,10 @@
           Changing your plans
         </h4>
         <p>
-          After you give notice you have two weeks to agree your shared parental leave dates with your employer.
+          After you give notice you have two weeks to agree your Shared Parental Leave dates with your employer.
         </p>
         <p>
-          To change you dates after this you must give notice again 8 weeks before your first block of shared parental leave starts.
+          To change you dates after this you must give notice again 8 weeks before your first block of Shared Parental Leave starts.
         </p>
       {% endif %}
     {% endif %}

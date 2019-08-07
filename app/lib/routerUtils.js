@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const delve = require('dlv')
 const dset = require('dset')
 const paths = require('../paths')
@@ -62,11 +63,72 @@ function parseExternalQueryString (req) {
   }
 }
 
+const nonSplLeaveBlockFieldOrder = [
+  'primary.initial.start',
+  'primary.initial.leave',
+  'primary.initial.end',
+  'secondary.is-taking-paternity-leave',
+  'secondary.initial.start',
+  'secondary.initial.leave',
+  'secondary.initial.end'
+]
+
+function clearLaterLeaveBlockAnswers (req, currentStep) {
+  const { data } = req.session
+  let hasReachedStep = false
+  for (const field of nonSplLeaveBlockFieldOrder) {
+    if (field === currentStep) {
+      hasReachedStep = true
+    }
+    if (hasReachedStep) {
+      safeDeleteKey(data, ['leave-blocks', ...field.split('.')])
+    }
+  }
+  safeDeleteKey(data, 'leave-blocks.primary.spl')
+  safeDeleteKey(data, 'leave-blocks.secondary.spl')
+}
+
+function clearLaterSplBlockAnswers (req, blockNumber) {
+  blockNumber = parseInt(blockNumber)
+  if (isNaN(blockNumber)) {
+    return
+  }
+  const { data } = req.session
+  const leaveBlocks = data['leave-blocks']
+  const splPlanningOrder = _.castArray(delve(leaveBlocks, 'spl-block-planning-order', []))
+  if (splPlanningOrder.length === 0) {
+    return
+  }
+
+  while (splPlanningOrder.length > blockNumber) {
+    const parent = splPlanningOrder.pop()
+    if (!leaveBlocks[parent] || !leaveBlocks[parent].spl) {
+      continue
+    }
+    const indexes = Object.keys(leaveBlocks[parent].spl).filter(key => /_\d+/.test(key)).map(key => parseInt(key.substring(1)))
+    const maxIndex = Math.max(...indexes)
+    safeDeleteKey(data, ['leave-blocks', parent, 'spl', `_${maxIndex}`])
+  }
+
+  dset(data, 'leave-blocks.spl-block-planning-order', splPlanningOrder)
+}
+
+function safeDeleteKey (object, path) {
+  path = _.isArray(path) ? path : path.split('.')
+  const keyToDelete = path.pop()
+  const containingObject = delve(object, path)
+  if (containingObject) {
+    delete containingObject[keyToDelete]
+  }
+}
+
 module.exports = {
   registerEligibilityRouteForPrimaryParents,
   registerEligibilityRouteForBirthMother,
   registerPlannerRouteForPrimaryLeaveTypes,
   getParent,
   bothParentsAreIneligible,
-  parseExternalQueryString
+  parseExternalQueryString,
+  clearLaterLeaveBlockAnswers,
+  clearLaterSplBlockAnswers
 }

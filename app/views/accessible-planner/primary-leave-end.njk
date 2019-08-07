@@ -4,6 +4,8 @@
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "select/macro.njk" import govukSelect %}
 
+{% from "./answers-so-far/macro.njk" import answersSoFar %}
+
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
@@ -48,16 +50,19 @@
               The {{ primaryName }} can take up to a maximum of 52 weeks of {{ primaryLeaveType }} leave.
             </p>
             <p class="govuk-hint">
-              Any unused {{ primaryLeaveType }} leave allowance can be taken by either the {{ primaryName }}
-              or their partner as shared parental leave.
+              Any unused {{ primaryLeaveType }} leave can be taken by either the {{ primaryName }}
+              or their partner as Shared Parental Leave.
             </p>
             <p class="govuk-hint">
               The first week of {{ primaryLeaveType }} leave is {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}.
             </p>
+            <p class="govuk-hint">
+              Your previous answers are at the bottom of the page.
+            </p>
           {% endset %}
           {% call govukFieldset({
             legend: {
-              text: "Which week will be the " + primaryName + "’s last week of " + primaryLeaveType + " leave?",
+              text: "Which week was or will be the " + primaryName + "’s last week of " + primaryLeaveType + " leave?",
               classes: "govuk-fieldset__legend--xl",
               isPageHeading: true
             }
@@ -76,6 +81,9 @@
           text: "Continue"
         }) }}
       </form>
+    </div>
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      {{ answersSoFar(data) }}
     </div>
   </div>
 {% endblock %}

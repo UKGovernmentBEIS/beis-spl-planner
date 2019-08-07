@@ -4,6 +4,8 @@
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "select/macro.njk" import govukSelect %}
 
+{% from "./answers-so-far/macro.njk" import answersSoFar %}
+
 {% extends "layout.njk" %}
 
 {% set parent = (data["leave-blocks"]["spl-block-planning-order"] | castArray | last) %}
@@ -25,7 +27,7 @@
 {% endmacro %}
 
 {% block pageTitle -%}
-  {{ "Which week will be the " + parentName + "’s last week of shared parental leave in this block (" + parentName + " block " + (index + 1) +")"  | pageTitle }}
+  {{ "Which week will be the " + parentName + "’s last week of Shared Parental Leave in this block (" + parentName + " block " + (index + 1) +")"  | pageTitle }}
 {%- endblock %}
 
 {% block content %}
@@ -37,10 +39,13 @@
             <p class="govuk-hint">
               The first week in this block of leave is {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}.
             </p>
+            <p class="govuk-hint">
+              Your previous answers are at the bottom of the page.
+            </p>
           {% endset %}
           {% call govukFieldset({
             legend: {
-              text: "Which week will be the " + parentName + "’s last week of shared parental leave in this block?",
+              text: "Which week will be the " + parentName + "’s last week of Shared Parental Leave in this block?",
               classes: "govuk-fieldset__legend--xl",
               isPageHeading: true
             }
@@ -59,6 +64,9 @@
           text: "Continue"
         }) }}
       </form>
+    </div>
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      {{ answersSoFar(data) }}
     </div>
   </div>
 {% endblock %}

@@ -281,6 +281,7 @@ function getAdjustedPayBlocks (leaveBlocks, payBlocks) {
 module.exports = {
   getBlocks,
   getAdjustedPayBlocks,
+  parseSplLeaveBlocks,
   parseLeaveBlocks,
   getRemainingLeaveAllowance,
   getBlockLength

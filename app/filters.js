@@ -2,7 +2,7 @@ const dlv = require('dlv')
 const { getWeeksArray, parseWeeksFromData } = require('./utils')
 const Day = require('../common/lib/day')
 const { parseEligibilityFromData } = require('./lib/eligibility')
-const { getBlockLength, getRemainingLeaveAllowance, parseLeaveBlocks } = require('./lib/blocks')
+const { getBlockLength, getRemainingLeaveAllowance, parseLeaveBlocks, parseSplLeaveBlocks } = require('./lib/blocks')
 const { earliestPrimaryLeaveWeek } = require('../common/lib/dataUtils')
 
 // Existing filters can be imported from env using env.getFilter(name)
@@ -130,6 +130,10 @@ module.exports = function (env) {
     return getRemainingLeaveAllowance(leaveBlocks)
   }
 
+  function hasTakenSpl (leaveBlocksDataObject, parent) {
+    return parseSplLeaveBlocks(leaveBlocksDataObject, parent).length > 0
+  }
+
   function weeks (number) {
     const weekOrWeeks = Math.abs(number) === 1 ? 'week' : 'weeks'
     return `${number} ${weekOrWeeks}`
@@ -164,8 +168,10 @@ module.exports = function (env) {
     htmlAttributesFromObject,
     blockLength,
     remainingLeaveAllowance,
+    hasTakenSpl,
     weeks,
     zeroWeek,
-    mapValuesToSelectOptions
+    mapValuesToSelectOptions,
+    ...require('./views/accessible-planner/answers-so-far/filters')(env)
   }
 }

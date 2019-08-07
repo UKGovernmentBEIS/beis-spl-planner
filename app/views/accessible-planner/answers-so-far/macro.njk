@@ -1,0 +1,106 @@
+{% from "summary-list/macro.njk" import govukSummaryList %}
+
+{% macro answersSoFar (data) %}
+  {% set primaryLeaveType = (data | primaryLeaveType) %}
+  {% set leaveBlocks = data["leave-blocks"] %}
+
+  {% macro date(data, weekNumber) %}
+    {% set zeroWeek = (data | zeroWeek) %}
+    {% if weekNumber %}
+      {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
+    {% endif %}
+  {% endmacro %}
+
+  <h2 class="govuk-heading-m">
+    Your answers so far
+  </h2>
+  {{ govukSummaryList({
+    rows: [
+      {
+        key: {
+          text: (primaryLeaveType | capitalize) + " leave start"
+        },
+        value: {
+          text: date(data, leaveBlocks["primary"]["initial"]["start"])
+        },
+        actions: {
+          items: [
+            {
+              href: "/planner/" + primaryLeaveType + "-leave/start",
+              text: "Change",
+              visuallyHiddenText: primaryLeaveType + " leave start"
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: (primaryLeaveType | capitalize) + " leave end"
+        },
+        value: {
+          text: date(data, leaveBlocks["primary"]["initial"]["end"])
+        },
+        actions: {
+          items: [
+            {
+              href: "/planner/" + primaryLeaveType + "-leave/end",
+              text: "Change",
+              visuallyHiddenText: primaryLeaveType + " leave end"
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: "Taking paternity leave"
+        },
+        value: {
+          text: leaveBlocks["secondary"]["is-taking-paternity-leave"] | capitalize
+        },
+        actions: {
+          items: [
+            {
+              href: "/planner/paternity-leave",
+              text: "Change",
+              visuallyHiddenText: "paternity leave start"
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: "Paternity leave start"
+        },
+        value: {
+          text: date(data, leaveBlocks["secondary"]["initial"]["start"])
+        },
+        actions: {
+          items: [
+            {
+              href: "/planner/paternity-leave/start",
+              text: "Change",
+              visuallyHiddenText: "paternity leave start"
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: "Paternity leave end"
+        },
+        value: {
+          text: date(data, leaveBlocks["secondary"]["initial"]["end"])
+        },
+        actions: {
+          items: [
+            {
+              href: "/planner/paternity-leave/end",
+              text: "Change",
+              visuallyHiddenText: "paternity leave end"
+            }
+          ]
+        }
+      }
+    ] | appendSplAnswerRows(data, date) | removeRowsWithEmptyValues
+  }) }}
+{% endmacro %}

@@ -130,18 +130,18 @@
       primaryInitialLeaveOrSharedParentalLeave: function () {
         const primaryLeave = this.eligibility.primary.statutoryLeave ?
           `${this.primaryLeaveType} leave` : undefined
-        const sharedLeave = this.hasAnySharedLeaveEligibility ? `shared parental leave` : undefined
+        const sharedLeave = this.hasAnySharedLeaveEligibility ? `Shared Parental Leave` : undefined
         return [primaryLeave, sharedLeave].filter(leave => leave).join(' or ')
       },
       primaryInitialPayOrSharedParentalPay: function () {
-        return [`statutory ${this.primaryLeaveType} pay`, 'shared parental pay'].join(' or ')
+        return [`statutory ${this.primaryLeaveType} pay`, 'Shared Parental Pay'].join(' or ')
       },
       weeksOfPrimaryInitialLeaveAndSharedLeaveTaken: function () {
         const primaryLeave = this.eligibility.primary.statutoryLeave ?
           `${this.formatWeeks(this.primaryLeaveUsed)} as ${this.primaryLeaveType} leave` :
           undefined
         const sharedLeave = this.hasAnySharedLeaveEligibility ?
-          `${this.formatWeeks(this.splUsed)} as shared parental leave` :
+          `${this.formatWeeks(this.splUsed)} as Shared Parental Leave` :
           undefined
         return [primaryLeave, sharedLeave].filter(leave => leave).join(' and ')
       },

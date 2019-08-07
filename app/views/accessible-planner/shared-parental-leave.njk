@@ -4,14 +4,19 @@
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "radios/macro.njk" import govukRadios %}
 
+{% from "./answers-so-far/macro.njk" import answersSoFar %}
+
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
-  {{ "Do you want to plan a block of shared parental leave?" | pageTitle }}
+  {{ "Do you want to plan a block of Shared Parental Leave?" | pageTitle }}
 {%- endblock %}
 
 {% set primaryName = (data | primaryName) %}
-{% set remainingLeaveAllowance = (data["leave-blocks"] | remainingLeaveAllowance) %}
+{% set primaryLeaveType = (data | primaryLeaveType) %}
+{% set leaveBlocks = data["leave-blocks"] %}
+{% set remainingLeaveAllowance = (leaveBlocks | remainingLeaveAllowance) %}
+{% set eitherParentHasTakenSpl = (leaveBlocks | hasTakenSpl("primary")) or (leaveBlocks | hasTakenSpl("secondary")) %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -20,10 +25,22 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              You have {{ remainingLeaveAllowance | weeks }} of shared parental leave left to take.
+              You have {{ remainingLeaveAllowance | weeks }} of unused
+              {% if eitherParentHasTakenSpl %}
+                Shared Parental Leave left to take.
+              {% else %}
+                {{ primaryLeaveType }} leave that can be taken as Shared Parental Leave.
+              {% endif %}
             </p>
             <p class="govuk-hint">
-              Shared parental leave can be taken by either the {{ primaryName }} or the partner.
+              Shared Parental Leave can be taken by the {{ primaryName }} and the partner, either at the same
+              time, or one after the other.
+            </p>
+            <p class="govuk-hint">
+              You can plan more blocks of Shared Parental Leave later, if you still have unused weeks remaining.
+            </p>
+            <p class="govuk-hint">
+              Your previous answers are at the bottom of the page.
             </p>
           {% endset %}
           {{ govukRadios({
@@ -31,7 +48,7 @@
             name: "leave-blocks[spl-block-planning-order][]",
             fieldset: {
               legend: {
-                text: "Do you want to plan a block of shared parental leave?",
+                text: "Do you want to plan a block of Shared Parental Leave?",
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }
@@ -42,11 +59,11 @@
             items: [
               {
                 value: "primary",
-                text: "Yes, plan a block of shared parental leave for the " + primaryName
+                text: "Yes, plan a block of Shared Parental Leave for the " + primaryName
               },
               {
                 value: "secondary",
-                text: "Yes, plan a block of shared parental leave for the partner"
+                text: "Yes, plan a block of Shared Parental Leave for the partner"
               },
               {
                 value: "done",
@@ -59,6 +76,9 @@
           text: "Continue"
         }) }}
       </form>
+    </div>
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      {{ answersSoFar(data) }}
     </div>
   </div>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "./example.njk" %}
 
 {% block pageTitle -%}
-  {{ "Example of shared parental leave and pay plans" | pageTitle("Managing parenting and work") }}
+  {{ "Example of Shared Parental Leave and Pay plans" | pageTitle("Managing parenting and work") }}
 {%- endblock %}
 
 {% block exampleTitle %}
@@ -11,22 +11,22 @@
 {% block background %}
   <p>
     {{ "A mother" if isBirth else ("An adopter" if isAdoption else "A surrogate parent") }} wants to return to work for a project in the middle of {{ primaryLeaveType }} leave.
-    The {{ primaryName }} gives notice to end their {{ primaryLeaveType }} leave early to create shared parental leave.
+    The {{ primaryName }} gives notice to end their {{ primaryLeaveType }} leave early to create Shared Parental Leave.
   </p>
   <p>
-    The {{ primaryName }}’s partner takes 3 months of shared parental leave and 1 month of shared parental pay while the {{ primaryName }} goes to work.
+    The {{ primaryName }}’s partner takes 3 months of Shared Parental Leave and 1 month of Shared Parental Pay while the {{ primaryName }} goes to work.
     The {{ primaryName }} resumes their time at home with the child after the project is over and the partner has returned to work.
   </p>
   <p>
-    They would like to take some leave together. The partner’s first month of shared parental leave will overlap with the
+    They would like to take some leave together. The partner’s first month of Shared Parental Leave will overlap with the
     {{ primaryName }}’s last month of {{ primaryLeaveType }} leave.
   </p>
 {% endblock %}
 
 {% block primaryLeavePlan %}
-  35 weeks of {{ primaryLeaveType }} leave and statutory {{ primaryLeaveType }} pay, 4 weeks of unpaid shared parental leave.
+  35 weeks of {{ primaryLeaveType }} leave and statutory {{ primaryLeaveType }} pay, 4 weeks of unpaid Shared Parental Leave.
 {% endblock %}
 
 {% block secondaryLeavePlan %}
-  2 weeks of paternity leave and statutory paternity pay, 9 weeks of unpaid shared parental leave and 4 weeks of shared parental leave with statutory shared parental pay.
+  2 weeks of paternity leave and statutory paternity pay, 9 weeks of unpaid Shared Parental Leave and 4 weeks of Shared Parental Leave with Statutory Shared Parental Pay.
 {% endblock %}

@@ -4,6 +4,8 @@
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "radios/macro.njk" import govukRadios %}
 
+{% from "./answers-so-far/macro.njk" import answersSoFar %}
+
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
@@ -30,14 +32,17 @@
           {% set hint %}
             <p class="govuk-hint">
               The partner can take up to 2 weeks of paternity leave during the first 8 weeks after {{ birthOrPlacement }}.
-              The leave must be taken in one block.
+              The leave must be taken in one go.
             </p>
             {% if (remainingLeaveAllowance > 0) %}
               <p class="govuk-hint">
-                The paternity leave allowance is separate from the shared parental leave allowance.
-                The partner’s shared parental leave can be planned later.
+                The paternity leave allowance is separate from the Shared Parental Leave allowance.
+                The partner’s Shared Parental Leave can be planned later.
               </p>
             {% endif %}
+            <p class="govuk-hint">
+              Your previous answers are at the bottom of the page.
+            </p>
           {% endset %}
           {{ govukRadios({
             idPrefix: "changed-name",
@@ -70,6 +75,9 @@
           text: "Continue"
         }) }}
       </form>
+    </div>
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      {{ answersSoFar(data) }}
     </div>
   </div>
 {% endblock %}

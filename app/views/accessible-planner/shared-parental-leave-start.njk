@@ -4,6 +4,8 @@
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "select/macro.njk" import govukSelect %}
 
+{% from "./answers-so-far/macro.njk" import answersSoFar %}
+
 {% extends "layout.njk" %}
 
 {% set parent = (data["leave-blocks"]["spl-block-planning-order"] | castArray | last) %}
@@ -13,6 +15,8 @@
 {% set zeroWeek = (data | zeroWeek) %}
 {% set isBirth = (data | isBirth) %}
 {% set birthOrPlacement = "birth" if isBirth else "placement" %}
+{% set hasTakenSpl = (data["leave-blocks"] | hasTakenSpl(parent)) %}
+{% set initialLeaveType = (data | parentInitialLeaveType(parent)) %}
 
 {% set endOfInitialLeave = (data["leave-blocks"][parent]["initial"]["end"] | int) %}
 {% set endOfLastSplBlock = (data["leave-blocks"][parent]["spl"]["_" + (index - 1)]["end"] | int) %}
@@ -28,12 +32,12 @@
       ({{ weekNumber | weeks }} after {{ birthOrPlacement }})
     {% endif %}
   {% else %}
-    ({{ (weekNumber - endOfLastBlock) | weeks }} after the {{ parentName }}’s last leave block)
+    ({{ (weekNumber - endOfLastBlock) | weeks }} after the {{ parentName }}’s {{ "previous leave block" if hasTakenSpl else (initialLeaveType + " leave") }})
   {% endif %}
 {% endmacro %}
 
 {% block pageTitle -%}
-  {{ "Which week will be the " + parentName + "’s first week of shared parental leave in this block? (" + parentName + " block " + (index + 1) +")" | pageTitle }}
+  {{ "Which week will be the " + parentName + "’s first week of Shared Parental Leave in this block? (" + parentName + " block " + (index + 1) +")" | pageTitle }}
 {%- endblock %}
 
 {% block content %}
@@ -46,13 +50,22 @@
               {% if endOfLastBlock === -1 %}
                 The {{ parentName }} has not yet taken any leave.
               {% else %}
-                The {{ parentName }}’s last block of leave ended with the week of {{ zeroWeek | offsetWeeks(endOfLastBlock) | formatForDisplay }}.
+                The {{ parentName }}’s
+                {% if hasTakenSpl %}
+                  last block of Shared Parental Leave
+                {% else %}
+                  {{ initialLeaveType }} leave
+                {% endif %}
+                ended with the week of {{ zeroWeek | offsetWeeks(endOfLastBlock) | formatForDisplay }}.
               {% endif %}
+            </p>
+            <p class="govuk-hint">
+              Your previous answers are at the bottom of the page.
             </p>
           {% endset %}
           {% call govukFieldset({
             legend: {
-              text: "Which week will be the " + parentName + "’s first week of shared parental leave in this block?",
+              text: "Which week will be the " + parentName + "’s first week of Shared Parental Leave in this block?",
               classes: "govuk-fieldset__legend--xl",
               isPageHeading: true
             }
@@ -71,6 +84,9 @@
           text: "Continue"
         }) }}
       </form>
+    </div>
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      {{ answersSoFar(data) }}
     </div>
   </div>
 {% endblock %}

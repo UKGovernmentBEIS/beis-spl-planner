@@ -53,10 +53,10 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
-        Plan shared parental leave and pay
+        Plan Shared Parental Leave and Pay
       </h1>
       <p class="print-hide">
-        Use the calendar below to plan shared parental leave and pay alongside {{ primaryLeaveType }} and paternity leave and pay.
+        Use the calendar below to plan Shared Parental Leave and Pay alongside {{ primaryLeaveType }} and paternity leave and pay.
         The calendar is based on {{ "the week your child starts living with you" if isAdoption else "your child’s birth week" }}.
       </p>
       <p class="print-hide">
@@ -106,11 +106,11 @@
       </h2>
       <p class="print-hide">
         {{ primaryLeaveType | capitalize }} leave and pay must be taken in one continuous block.
-        Shared parental leave can be taken in blocks separated by work or other leave.
+        Shared Parental Leave can be taken in blocks separated by work or other leave.
       </p>
 
       <p class="print-hide">
-        You’re entitled to three blocks of shared parental leave, more if your employer allows.
+        You’re entitled to three blocks of Shared Parental Leave, more if your employer allows.
       </p>
 
       {% set examples %}
@@ -138,7 +138,7 @@
       {% endset %}
 
       {{ govukDetails({
-        summaryText: "Examples of shared parental leave and pay plans",
+        summaryText: "Examples of Shared Parental Leave and Pay plans",
         html: examples,
         classes: "print-hide"
       }) }}
@@ -152,17 +152,17 @@
         </h2>
         {% set accessibleViewInsetHtml %}
           <p class="govuk-body-s">
-            Below is the interactive calendar layout of the leave planner.
+            Below is an interactive calendar to plan your leave.
           </p>
           <p class="govuk-body-s">
-            If you prefer, you can instead answer questions about your leave to build your plan.
+            If you prefer, you can plan your leave by answering questions.
           </p>
           <p class="govuk-body-s">
             This is particularly recommended for users of assistive technology.
           </p>
           <p class="govuk-body-s">
             <a href="/planner/maternity-leave/start" class="govuk-body-s">
-              Use question based planner
+              Plan leave by answering questions
             </a>
           </p>
         {% endset %}

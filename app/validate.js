@@ -29,8 +29,8 @@ function natureOfParenthood (req) {
 
 function primarySharedParentalLeaveAndPay (req) {
   return validateParentYesNoFields(req, 'primary', {
-    'spl-eligible': 'Select whether you are eligible for shared parental leave',
-    'shpp-eligible': 'Select whether you are eligible for shared parental pay'
+    'spl-eligible': 'Select whether you are eligible for Shared Parental Leave',
+    'shpp-eligible': 'Select whether you are eligible for Shared Parental Pay'
   })
 }
 
@@ -64,8 +64,8 @@ function maternityAllowance (req) {
 
 function secondarySharedParentalLeaveAndPay (req) {
   return validateParentYesNoFields(req, 'secondary', {
-    'spl-eligible': 'Select whether you are eligible for shared parental leave',
-    'shpp-eligible': 'Select whether you are eligible for shared parental pay'
+    'spl-eligible': 'Select whether you are eligible for Shared Parental Leave',
+    'shpp-eligible': 'Select whether you are eligible for Shared Parental Pay'
   })
 }
 
@@ -182,12 +182,6 @@ function planner (req) {
   }
 
   const weeks = parseWeeksFromData(data).leaveAndPay().weeks
-
-  // No interaction.
-  if (inputWeeks.primary.leaveWeeks.length === 2 && inputWeeks.secondary.leaveWeeks.length === 0) {
-    addCalendarError(req, 'shared', 'no-interaction', 'You have not added any leave to the calendar.')
-    isValid = false
-  }
 
   // Pay without leave.
   for (const [parent, leaveAndPay] of Object.entries(inputWeeks)) {
