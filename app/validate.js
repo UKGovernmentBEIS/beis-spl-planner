@@ -84,22 +84,17 @@ function paternityLeaveAndPay (req) {
 }
 
 function startDate (req) {
-  req.session.errors = {}
-
   const date = {
     year: req.session.data['start-date-year'],
     month: req.session.data['start-date-month'],
     day: req.session.data['start-date-day']
   }
 
-  if (Object.values(date).every(value => value === '')) {
-    addStartDateError(req, 'Enter a date', ['day', 'month', 'year'])
-    return false
-  }
+  const allParts = ['day', 'month', 'year']
 
-  if (Object.values(date).some(value => value === '')) {
-    const errorParts = ['day', 'month', 'year'].filter(datePart => date[datePart] === '')
-    addStartDateError(req, `Date must include a ${prettyList(errorParts)}`, errorParts)
+  const emptyParts = allParts.filter(datePart => date[datePart] === '')
+  if (emptyParts.length > 0) {
+    addStartDateError(req, `Enter a valid ${prettyList(emptyParts)}`, emptyParts)
     return false
   }
 
@@ -107,16 +102,21 @@ function startDate (req) {
   if (!startDate.isValid()) {
     const invalidIndex = startDate.invalidAt()
     const invalidPart = ['year', 'month', 'day'][invalidIndex]
-    addStartDateError(req, 'Enter a valid date', [invalidPart])
+    if (invalidPart) {
+      addStartDateError(req, `Enter a valid ${invalidPart}`, [invalidPart])
+    } else {
+      addStartDateError(req, 'Enter a valid date', allParts)
+    }
     return false
   }
 
   const earliestPermitted = new Day().subtract(1, 'year')
   const latestPermitted = new Day().add(1, 'year')
   if (!startDate.isBetween(earliestPermitted, latestPermitted)) {
-    addStartDateError(req, 'Date must be within one year of today', ['day', 'month', 'year'])
+    addStartDateError(req, 'Enter a date within one year of today', allParts)
     return false
   }
+
   return true
 }
 
