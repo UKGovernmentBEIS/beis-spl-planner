@@ -75,7 +75,17 @@
 {% endmacro %}
 
 {% macro calendar(data) %}
-  <div class="govuk-grid-row js-hide">
+  {#
+    These hidden checkboxes hold the state for the selected leave and pay weeks in the visual calendar.
+    The Vue.js component manipulates the checkboxes and in turn updates its display when they are updated.
+    The original intent was that the checkboxes would be visible in the no-JS case, but user testing
+    showed this not to be a viable alternative.
+    The result is that the checkbox backing is definitely a little convoluted, but at least now you
+    know the reason that they exist!
+
+    TODO: Refactor visual planner to POST the calendar data without use of the checkboxes.
+  #}
+  <div class="govuk-grid-row" style="display: none;">
     <div class="govuk-grid-column-one-half">
       {{ leaveAndPayCheckboxes(data, "primary") }}
       {# Compulsory leave weeks are disabled checkboxes, so we need to include the values manually. #}
