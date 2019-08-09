@@ -13,10 +13,9 @@ const {
   registerPlannerRouteForPrimaryLeaveTypes,
   bothParentsAreIneligible,
   parseExternalQueryString,
-  clearLaterLeaveBlockAnswers,
-  clearLaterSplBlockAnswers
+  clearLaterLeaveBlockAnswers
 } = require('./lib/routerUtils')
-const { isBirth, isYes, isAdoption } = require('../common/lib/dataUtils')
+const { isBirth, isYes, isAdoption, parentNameForUrl } = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
 
 router.use('/planner/examples', require('./router.examples'))
@@ -41,15 +40,26 @@ router.route(paths.getPath('natureOfParenthood'))
     if (!validate.natureOfParenthood(req)) {
       return res.redirect('back')
     }
-    let primaryParent
-    if (isBirth(req.session.data)) {
-      primaryParent = 'mother'
-    } else if (isAdoption(req.session.data)) {
-      primaryParent = 'primary-adopter'
+    if (skip.typeOfAdoption(req)) {
+      const parentName = parentNameForUrl(req.session.data, 'primary')
+      res.redirect(paths.getPath(`eligibility.${parentName}.sharedParentalLeaveAndPay`))
     } else {
-      primaryParent = 'parental-order-parent'
+      res.redirect(paths.getPath('typeOfAdoption'))
     }
-    res.redirect(paths.getPath(`eligibility.${primaryParent}.sharedParentalLeaveAndPay`))
+  })
+
+router.route(paths.getPath('typeOfAdoption'))
+  .get(function (req, res) {
+    if (skip.typeOfAdoption(req)) {
+      return res.redirect('back')
+    }
+    res.render('type-of-adoption')
+  })
+  .post(function (req, res) {
+    if (!validate.typeOfAdoption(req)) {
+      return res.redirect('back')
+    }
+    res.redirect(paths.getPath(`eligibility.primary-adopter.sharedParentalLeaveAndPay`))
   })
 
 registerEligibilityRouteForPrimaryParents(router, 'sharedParentalLeaveAndPay', {

@@ -44,9 +44,13 @@ class ShareTokenEncoder {
     if (isBirth(this.data)) {
       return getBase64Char(0)
     } else if (isAdoption(this.data)) {
-      return getBase64Char(1)
+      if (this.data['type-of-adoption'] === 'uk') {
+        return getBase64Char(1)
+      } else {
+        return getBase64Char(2)
+      }
     } else {
-      return getBase64Char(2)
+      return getBase64Char(3)
     }
   }
 

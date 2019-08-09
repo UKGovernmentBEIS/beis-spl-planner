@@ -19,7 +19,16 @@ describe('ShareTokenDecoder', () => {
       const shareTokenDecoder = new ShareTokenDecoder(encoded)
       const result = shareTokenDecoder.decode(1)
 
-      expect(result['nature-of-parenthood']).to.deep.equal('birth')
+      expect(result['nature-of-parenthood']).to.equal('birth')
+    })
+
+    it('decodes type-of-adoption', () => {
+      const encoded = '2!000!Yhkn!0!0!0!0000000000000000000000'
+      const shareTokenDecoder = new ShareTokenDecoder(encoded)
+      const result = shareTokenDecoder.decode(1)
+
+      expect(result['nature-of-parenthood']).to.equal('adoption')
+      expect(result['type-of-adoption']).to.equal('overseas')
     })
 
     it('decodes eligibility', () => {

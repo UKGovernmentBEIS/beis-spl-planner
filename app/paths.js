@@ -51,6 +51,11 @@ class Paths {
         workflowParentPath: '/',
         validator: validate.natureOfParenthood
       },
+      typeOfAdoption: {
+        url: '/type-of-adoption',
+        workflowParentPath: '/nature-of-parenthood',
+        validator: validate.typeOfAdoption
+      },
       eligibility: {
         mother: {
           sharedParentalLeaveAndPay: {
@@ -72,7 +77,7 @@ class Paths {
         'primary-adopter': {
           sharedParentalLeaveAndPay: {
             url: '/eligibility/primary-adopter/shared-parental-leave-and-pay',
-            workflowParentPath: '/nature-of-parenthood',
+            workflowParentPath: '/type-of-adoption',
             validator: validate.primarySharedParentalLeaveAndPay
           },
           initialLeaveAndPay: {

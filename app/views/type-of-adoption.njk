@@ -1,0 +1,78 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "radios/macro.njk" import govukRadios %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "button/macro.njk" import govukButton %}
+
+{% extends "layout.njk" %}
+
+{% block pageTitle -%}
+  {{ "Are you adopting the child from the UK or from overseas?" | pageTitle }}
+{%- endblock %}
+
+{% block beforeContent %}
+  {{ super() }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: backPath()
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {% if errors["type-of-adoption"] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        errors["type-of-adoption"]
+      ]
+    }) }}
+  {% endif %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: "type-of-adoption",
+            name: "type-of-adoption",
+            fieldset: {
+              legend: {
+                text: "Are you adopting the child from the UK or from overseas?",
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            hint: {
+              text: "There are different rules about when leave and pay can be taken for overseas adoption."
+            },
+            errorMessage: {
+              text: errors["type-of-adoption"].text
+            } if errors["type-of-adoption"],
+            items: [
+              {
+                value: "uk",
+                text: "UK adoption",
+                checked: data["type-of-adoption"] === "uk"
+              },
+              {
+                value: "overseas",
+                text: "Overseas adotion",
+                checked: data["type-of-adoption"] === "overseas"
+              }
+            ]
+          }) }}
+        {% endcall %}
+        {{ govukButton({
+          text: "Continue",
+          attributes: {
+            "data-ga-hit-type": "type_of_adoption",
+            "data-ga-field-event_category": "eligibility_questions",
+            "data-ga-field-event_action": "type_of_adoption"
+          }
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -38,19 +38,22 @@ class ShareTokenEncoder {
   }
 
   _decodeNatureOfParenthood (natureOfParenthood) {
-    let value
     switch (natureOfParenthood) {
       case '0':
-        value = 'birth'
+        this.data['nature-of-parenthood'] = 'birth'
         break
       case '1':
-        value = 'adoption'
+        this.data['nature-of-parenthood'] = 'adoption'
+        this.data['type-of-adoption'] = 'uk'
         break
       case '2':
-        value = 'surrogacy'
+        this.data['nature-of-parenthood'] = 'adoption'
+        this.data['type-of-adoption'] = 'overseas'
+        break
+      case '3':
+        this.data['nature-of-parenthood'] = 'surrogacy'
         break
     }
-    this.data['nature-of-parenthood'] = value
   }
 
   _decodeEligibility (eligibilities) {

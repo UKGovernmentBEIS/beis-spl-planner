@@ -27,9 +27,10 @@ describe('shareTokenEncoder', () => {
   })
 
   describe('#encode, version 1', () => {
-    it('encodes nature-of-parenthood', () => {
+    it('encodes nature-of-parenthood and type-of-adoption', () => {
       const data = {
         'nature-of-parenthood': 'adoption',
+        'type-of-adoption': 'uk',
         'start-date-day': '09',
         'start-date-month': '09',
         'start-date-year': '2017',

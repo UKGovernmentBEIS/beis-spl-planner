@@ -7,7 +7,6 @@
 const delve = require('dlv')
 const _ = require('lodash')
 const Day = require('../common/lib/day')
-const { isAdoption } = require('../common/lib/dataUtils')
 const skip = require('./skip')
 const { parseParentFromPlanner, parseStartDay, parseWeeksFromData } = require('./utils')
 const dataUtils = require('../common/lib/dataUtils')
@@ -22,6 +21,18 @@ function natureOfParenthood (req) {
   const acceptedValues = ['birth', 'adoption', 'surrogacy']
   if (!acceptedValues.includes(req.session.data['nature-of-parenthood'])) {
     addError(req, 'nature-of-parenthood', 'Select either birth, adoption or surrogacy', '#nature-of-parenthood-1')
+    return false
+  }
+  return true
+}
+
+function typeOfAdoption (req) {
+  if (skip.typeOfAdoption(req)) {
+    return true
+  }
+  const acceptedValues = ['uk', 'overseas']
+  if (!acceptedValues.includes(req.session.data['type-of-adoption'])) {
+    addError(req, 'type-of-adoption', 'Select either UK or overseas adoption', '#type-of-adoption-1')
     return false
   }
   return true
@@ -50,9 +61,6 @@ function initialLeaveAndPay (req) {
 
 function maternityAllowance (req) {
   if (skip.maternityAllowance(req)) {
-    return true
-  }
-  if (isAdoption(req.session.data)) {
     return true
   }
   if (!isYesOrNo(delve(req.session.data, ['primary', 'maternity-allowance-eligible']))) {
@@ -312,6 +320,7 @@ function addCalendarError (req, parentOrShared, key, message) {
 
 module.exports = {
   natureOfParenthood,
+  typeOfAdoption,
   primarySharedParentalLeaveAndPay,
   initialLeaveAndPay,
   maternityAllowance,
