@@ -42,6 +42,10 @@ function parentName (data, currentParent) {
   return currentParent === 'primary' ? primaryName(data) : secondaryName(data)
 }
 
+function parentNameForUrl (data, parent) {
+  return parentName(data, parent).split(' ').join('-')
+}
+
 function primaryName (data) {
   if (isBirth(data)) {
     return 'mother'
@@ -77,6 +81,7 @@ function isNo (dataField) {
 module.exports = {
   natureOfParenthood,
   parentName,
+  parentNameForUrl,
   primaryName,
   primaryUrlName,
   secondaryName,

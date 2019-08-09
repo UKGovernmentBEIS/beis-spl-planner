@@ -47,10 +47,6 @@ module.exports = function (env) {
     return currentParent === 'primary' ? secondaryName(data) : primaryName(data)
   }
 
-  function parentNameForUrl (data, parent) {
-    return parentName(data, parent).split(' ').join('-')
-  }
-
   function primaryLeaveType (data) {
     return isBirth(data) ? 'maternity' : 'adoption'
   }
@@ -107,7 +103,6 @@ module.exports = function (env) {
     parentName,
     currentParentName: parentName, // Alias.
     otherParentName,
-    parentNameForUrl,
     primaryLeaveType,
     parentInitialLeaveType,
     startDateName,
