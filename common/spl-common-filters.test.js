@@ -8,7 +8,11 @@ const Day = require('../common/lib/day')
 describe('filters', () => {
   let filters, environment
   beforeEach(() => {
-    environment = {}
+    environment = {
+      getFilter: function (name) {
+        return args => {}
+      }
+    }
     filters = require('./spl-common-filters')(environment)
   })
 
