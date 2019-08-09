@@ -1,4 +1,4 @@
-const dlv = require('dlv')
+const delve = require('dlv')
 const _ = require('lodash')
 const Weeks = require('./lib/weeks')
 const Day = require('../common/lib/day')
@@ -21,7 +21,7 @@ const PARTNER = Object.freeze({
 })
 
 function getWeeksArray (data, parent, property) {
-  return _.castArray(dlv(data, [parent, property], [])).map(i => parseInt(i))
+  return _.castArray(delve(data, [parent, property], [])).map(i => parseInt(i))
 }
 
 function nameAndNonSharedLeaveType (data, parent) {
@@ -70,11 +70,11 @@ module.exports = {
 }
 
 function weeklyPay (data, parent) {
-  const providedSalary = parseFloat(dlv(data, [parent, 'salary-amount']))
+  const providedSalary = parseFloat(delve(data, [parent, 'salary-amount']))
   if (isNaN(providedSalary)) {
     return null
   }
-  const period = dlv(data, [parent, 'salary-period'])
+  const period = delve(data, [parent, 'salary-period'])
   switch (period) {
     case 'week':
       return providedSalary

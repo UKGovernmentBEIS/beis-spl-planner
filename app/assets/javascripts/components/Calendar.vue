@@ -127,7 +127,6 @@
 
 <script>
   const _ = require('lodash')
-  const dlv = require('dlv')
   const isIexplorer = require('is-iexplorer')
   const { getWeekByNumber } = require('../../../lib/weekUtils')
 

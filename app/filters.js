@@ -1,4 +1,4 @@
-const dlv = require('dlv')
+const delve = require('dlv')
 const { getWeeksArray, parseWeeksFromData } = require('./utils')
 const Day = require('../common/lib/day')
 const { parseEligibilityFromData } = require('./lib/eligibility')
@@ -39,7 +39,7 @@ module.exports = function (env) {
   }
 
   function hasEitherSalary (data) {
-    return !!dlv(data, ['primary', 'salary-amount']) || !!dlv(data, ['secondary', 'salary-amount'])
+    return !!delve(data, ['primary', 'salary-amount']) || !!delve(data, ['secondary', 'salary-amount'])
   }
 
   function earliestPossibleWeek (data) {
