@@ -93,7 +93,7 @@
         </p>
       {% else %}
         <p class="print-hide">
-          The {{ primaryName }} can start {{ primaryLeaveType }} leave up to {{ data | earliestPossibleWeek | abs }} weeks before the week of {{ "placement" if isAdoption else "birth" }}.
+          The {{ primaryName }} can start {{ primaryLeaveType }} leave up to {{ data | earliestPrimaryLeaveWeek | abs }} weeks before the week of {{ "placement" if isAdoption else "birth" }}.
           The partner can only take leave after the child is {{ "placed with you" if isAdoption else "born" }}.
         </p>
         <p class="print-hide">

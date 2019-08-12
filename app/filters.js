@@ -42,10 +42,6 @@ module.exports = function (env) {
     return !!delve(data, ['primary', 'salary-amount']) || !!delve(data, ['secondary', 'salary-amount'])
   }
 
-  function earliestPossibleWeek (data) {
-    return earliestPrimaryLeaveWeek(data['nature-of-parenthood'])
-  }
-
   function zeroWeek (data) {
     return startOfWeek(startDay(data))
   }
@@ -157,7 +153,6 @@ module.exports = function (env) {
     endOfWeek,
     startDateName,
     hasEitherSalary,
-    earliestPossibleWeek,
     totalBlockPay,
     displayPayBlockTotal,
     shouldDisplayPrimaryLeaveAndPayForm,

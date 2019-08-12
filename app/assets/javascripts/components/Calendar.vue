@@ -148,6 +148,7 @@
     }),
     props: {
       natureOfParenthood: String,
+      typeOfAdoption: String,
       primaryLeaveType: String,
       names: Object,
       weeks: Array,

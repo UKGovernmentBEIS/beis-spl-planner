@@ -19,6 +19,7 @@ Vue.filter('capitalize', function (value) {
 
 function init (data, interactive) {
   const natureOfParenthood = dataUtils.natureOfParenthood(data)
+  const typeOfAdoption = dataUtils.typeOfAdoption(data)
   const startWeek = parseStartDay(data).mondayStartOfWeek()
   const primary = parseParentFromPlanner(data, 'primary')
   const secondary = parseParentFromPlanner(data, 'secondary')
@@ -27,6 +28,7 @@ function init (data, interactive) {
     el: '#planner',
     data: {
       natureOfParenthood,
+      typeOfAdoption,
       startWeek,
       primary,
       secondary,

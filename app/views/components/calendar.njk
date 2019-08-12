@@ -1,7 +1,7 @@
 {% from "fieldset/macro.njk" import govukFieldset %}
 
 {% macro leaveAndPayCheckboxes(data, parent) %}
-  {% set minWeek = data | earliestPossibleWeek %}
+  {% set minWeek = data | earliestPrimaryLeaveWeek %}
   {% set maxWeek = 52 %}
   {% set zeroWeekDate = (data | startDay | startOfWeek) %}
   {% set isBirth = (data | isBirth) %}

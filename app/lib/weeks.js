@@ -4,14 +4,17 @@ const { STATUTORY_MAXIMUM_PAY } = require('../constants')
 const dset = require('dset')
 
 class Weeks {
-  constructor ({ natureOfParenthood, startWeek, primary, secondary, eligibility }) {
+  constructor ({ natureOfParenthood, typeOfAdoption, startWeek, primary, secondary, eligibility }) {
     this.startWeek = startWeek
     this.primary = primary
     this.secondary = secondary
     this.primaryLeaveType = natureOfParenthood === 'birth' ? 'maternity' : 'adoption'
     this.eligibility = eligibility
     this.payRates = this._getPayRates()
-    this.minimumWeek = earliestPrimaryLeaveWeek(natureOfParenthood)
+    this.minimumWeek = earliestPrimaryLeaveWeek({
+      'nature-of-parenthood': natureOfParenthood,
+      'type-of-adoption': typeOfAdoption
+    })
   }
 
   leaveAndPay () {

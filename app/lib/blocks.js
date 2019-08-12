@@ -127,6 +127,7 @@ function getBlocks (data) {
 
   const weeks = new Weeks({
     natureOfParenthood: dataUtils.natureOfParenthood(data),
+    typeOfAdoption: dataUtils.typeOfAdoption(data),
     startWeek: parseStartDay(data),
     primary: parseParentFromPlanner(data, 'primary'),
     secondary: parseParentFromPlanner(data, 'secondary'),

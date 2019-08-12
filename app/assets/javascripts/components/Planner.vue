@@ -2,8 +2,10 @@
   <div>
     <div class="govuk-grid-row">
       <div id="calendar" class="govuk-grid-column-two-thirds-from-desktop govuk-grid-column-full print-full-width">
-        <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries" :natureOfParenthood="natureOfParenthood"
-          :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay" :interactive="interactive" :eligibility="eligibility"/>
+        <Calendar :weeks="leaveAndPay.weeks" :leaveBoundaries="leaveAndPay.leaveBoundaries"
+          :natureOfParenthood="natureOfParenthood" :typeOfAdoption="typeOfAdoption"
+          :primaryLeaveType="primaryLeaveType" :names="names" :updateLeaveOrPay="updateLeaveOrPay"
+          :interactive="interactive" :eligibility="eligibility"/>
       </div>
       <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full print-hide">
         <div id="sidebar-information">
@@ -63,6 +65,7 @@
       leaveAndPay: function () {
         const weeks = new Weeks({
           natureOfParenthood: this.natureOfParenthood,
+          typeOfAdoption: this.typeOfAdoption,
           startWeek: this.startWeek,
           primary: this.primary,
           secondary: this.secondary,

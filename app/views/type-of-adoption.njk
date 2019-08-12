@@ -54,12 +54,12 @@
               {
                 value: "uk",
                 text: "UK adoption",
-                checked: data["type-of-adoption"] === "uk"
+                checked: data | isUkAdoption
               },
               {
                 value: "overseas",
                 text: "Overseas adoption",
-                checked: data["type-of-adoption"] === "overseas"
+                checked: data | isOverseasAdoption
               }
             ]
           }) }}

@@ -1,7 +1,7 @@
 const delve = require('dlv')
 const _ = require('lodash')
 const Day = require('../../../common/lib/day')
-const { isBirth, isAdoption, isYes, isNo, earliestPrimaryLeaveWeek } = require('../../../common/lib/dataUtils')
+const { isBirth, isUkAdoption, isOverseasAdoption, isYes, isNo, earliestPrimaryLeaveWeek } = require('../../../common/lib/dataUtils')
 const { getBase64Char, convertBase10ToBase64 } = require('./baseMathsUtils')
 const { policies, separator, parents, entitlements } = require('./tokenConstants')
 
@@ -43,12 +43,10 @@ class ShareTokenEncoder {
   _encodeNatureOfParenthood () {
     if (isBirth(this.data)) {
       return getBase64Char(0)
-    } else if (isAdoption(this.data)) {
-      if (this.data['type-of-adoption'] === 'uk') {
-        return getBase64Char(1)
-      } else {
-        return getBase64Char(2)
-      }
+    } else if (isUkAdoption(this.data)) {
+      return getBase64Char(1)
+    } else if (isOverseasAdoption(this.data)) {
+      return getBase64Char(2)
     } else {
       return getBase64Char(3)
     }
@@ -131,8 +129,7 @@ class ShareTokenEncoder {
   }
 
   _encodeWeeks () {
-    const earliestPossibleWeek = earliestPrimaryLeaveWeek(this.data)
-    const calendarRange = _.range(earliestPossibleWeek, 53).map(n => n.toString())
+    const calendarRange = _.range(earliestPrimaryLeaveWeek(this.data), 53).map(n => n.toString())
     // each week is 4 bits, but each character is 6, so we encode every 3 weeks as two characters
     const weeksEncodedByTwoCharacters = 3
     return _(calendarRange)
