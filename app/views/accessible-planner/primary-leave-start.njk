@@ -46,7 +46,7 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              {{ primaryLeaveType | capitalize }} leave can start
+              {{ primaryLeaveType | capitalize }} Leave can start
               {% if isSurrogacy %}
                 from the week the baby is born
               {% else %}
@@ -57,7 +57,7 @@
           {% endset %}
           {% call govukFieldset({
             legend: {
-              text: "Which week was or will be the " + primaryName + "’s first week of " + primaryLeaveType + " leave?",
+              text: "Which week was or will be the " + primaryName + "’s first week of " + (primaryLeaveType | capitalize) + " Leave?",
               classes: "govuk-fieldset__legend--xl",
               isPageHeading: true
             }

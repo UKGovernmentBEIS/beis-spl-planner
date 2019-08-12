@@ -9,7 +9,7 @@
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
-  {{ "Which week will be the partner’s first week of paternity leave?" | pageTitle }}
+  {{ "Which week will be the partner’s first week of Paternity Leave?" | pageTitle }}
 {%- endblock %}
 
 {% block beforeContent %}
@@ -46,20 +46,20 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              The partner can take up to 2 weeks of paternity leave during the first 8 weeks after {{ birthOrPlacement }}.
+              The partner can take up to 2 weeks of Paternity Leave during the first 8 weeks after {{ birthOrPlacement }}.
               This leave must be taken in one go.
             </p>
             <p class="govuk-hint">
-              That means that if your first week of paternity leave is {{ zeroWeek | offsetWeeks(7) | formatForDisplay }},
-              you will only be able to take 1 week of paternity leave.
+              That means that if your first week of Paternity Leave is {{ zeroWeek | offsetWeeks(7) | formatForDisplay }},
+              you will only be able to take 1 week of Paternity Leave.
             </p>
             {% if (primaryLeaveEnd >= 7) %}
               <p class="govuk-hint">
-                The {{ primaryName }} is on {{ primaryLeaveType }} leave during the entire 8 week period.
+                The {{ primaryName }} is on {{ primaryLeaveType | capitalize }} Leave during the entire 8 week period.
               </p>
             {% else %}
               <p class="govuk-hint">
-                The {{ primaryName }}’s last week of {{ primaryLeaveType }} leave is {{ zeroWeek | offsetWeeks(primaryLeaveEnd) | formatForDisplay }}.
+                The {{ primaryName }}’s last week of {{ primaryLeaveType | capitalize }} Leave is {{ zeroWeek | offsetWeeks(primaryLeaveEnd) | formatForDisplay }}.
               </p>
             {% endif %}
             <p class="govuk-hint">
@@ -68,7 +68,7 @@
           {% endset %}
           {% call govukFieldset({
             legend: {
-              text: "Which week will be the partner’s first week of paternity leave?",
+              text: "Which week will be the partner’s first week of Paternity Leave?",
               classes: "govuk-fieldset__legend--xl",
               isPageHeading: true
             }

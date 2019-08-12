@@ -6,6 +6,7 @@
 {% from "../components/primary-notice.njk" import primaryNotice %}
 {% from "../components/summary-tab-footer.njk" import summaryTabFooter %}
 
+{% set primaryLeaveType = (data | primaryLeaveType) %}
 
 {% set noticeDescription %}
 {# TODO fix the href of this link #}
@@ -47,11 +48,11 @@
       {{ data | primaryName | capitalize }}’s leave dates
     </h2>
     <h3 class="govuk-heading-m">
-      {{ data | primaryLeaveType | capitalize }} leave
+      {{ primaryLeaveType | capitalize }} Leave
     </h3>
 
     {{ leaveBlockSummary({
-      name: data | primaryLeaveType | capitalize + " leave",
+      name: (primaryLeaveType | capitalize) + " Leave",
       block: leaveBlocks.primary.initial,
       data: data,
       notify: {
@@ -64,24 +65,24 @@
       How to give notice
     </h4>
     <p>
-      Tell your employer when the {{ "child will be placed with you" if data | isAdoption else "baby is due" }} and when you want to start your {{ data | primaryLeaveType }} leave.
+      Tell your employer when the {{ "child will be placed with you" if data | isAdoption else "baby is due" }} and when you want to start your {{ primaryLeaveType | capitalize }} leave.
       Your employer can ask for this in writing.
       Your employer must write to you within 28 days confirming your start and end dates.
     </p>
 
     {% if leaveBlocks.primary.spl | length === 0 and leaveBlocks.secondary.spl | length > 0 %}
       <h4 class="govuk-heading-s">
-        Ending your {{ data | primaryLeaveType }} leave or pay
+        Ending your {{ primaryLeaveType | capitalize }} leave or pay
       </h4>
       <p>
-        You must end your {{ data | primaryLeaveType }} leave or pay to create Shared Parental Leave or Pay.
+        You must end your {{ primaryLeaveType | capitalize }} leave or pay to create Shared Parental Leave or Pay.
         You can do this by returning to work or curtailing it (committing to end it before you return to work).
       </p>
       <p>
         You must also confirm that you’re not taking Shared Parental Leave and Pay and consent to your partner taking it.
       </p>
       <p>
-        You can do all of this by submitting the {{ data | primaryLeaveType }} leave curtailment and Shared Parental Leave consent form
+        You can do all of this by submitting the {{ primaryLeaveType | capitalize }} leave curtailment and Shared Parental Leave consent form
         to your employer at least 8 weeks before your partner wants to start Shared Parental Leave.
       </p>
       {{ primaryNotice ({
@@ -93,7 +94,7 @@
       Changing your plans
     </h4>
     <p>
-      You must give 28 days’ notice to your employer if you want to change your {{ data | primaryLeaveType }} leave dates.
+      You must give 28 days’ notice to your employer if you want to change your {{ primaryLeaveType | capitalize }} leave dates.
     </p>
 
     {% if leaveBlocks.primary.spl.length > 0 %}
@@ -146,11 +147,11 @@
       </h2>
       {% if leaveBlocks.secondary.initial %}
         <h3 class="govuk-heading-m">
-          Paternity leave
+          Paternity Leave
         </h3>
 
         {{ leaveBlockSummary({
-          name: "Paternity leave",
+          name: "Paternity Leave",
           block: leaveBlocks.secondary.initial,
           data: data,
           notify: {
@@ -163,14 +164,14 @@
           How to give notice
         </h4>
         <p>
-          Use <a href="https://public-online.hmrc.gov.uk/lc/content/xfaforms/profiles/forms.html?contentRoot=repository:///Applications/PersonalTax_iForms/1.0/SC3&template=SC3.xdp" target="_blank">form SC3</a> to apply to your employer for statutory paternity pay (SPP) and leave.
+          Use <a href="https://public-online.hmrc.gov.uk/lc/content/xfaforms/profiles/forms.html?contentRoot=repository:///Applications/PersonalTax_iForms/1.0/SC3&template=SC3.xdp" target="_blank">form SC3</a> to apply to your employer for Statutory Paternity Pay (SPP) and leave.
         </p>
 
         <h4 class="govuk-heading-s">
           Changing your plans
         </h4>
         <p>
-          You must give 28 days’ notice to your employer if you want to change your paternity leave dates.
+          You must give 28 days’ notice to your employer if you want to change your Paternity Leave dates.
         </p>
       {% endif %}
 
@@ -209,9 +210,10 @@
 
         {% if leaveBlocks.primary.spl | length === 0 and leaveBlocks.secondary.spl | length > 0 %}
           {% set curtailmentWarningHtml %}
-            The {{ data | primaryName }} must end their {{ data | primaryLeaveType }} leave and pay by returning to work or submitting a curtailment notice.
+            The {{ data | primaryName }} must end their {{ primaryLeaveType | capitalize }} leave and pay by returning to work or submitting a curtailment notice.
             They must also give consent for the partner to take Shared Parental Leave or Pay.
-            They can do both by submitting the <a href={{"/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if data | primaryLeaveType == "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf")}}>{{ data | primaryLeaveType | capitalize}} curtailment and SPL consent form</a>.
+            {% set href = "/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if primaryLeaveType === "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf") %}
+            They can do both by submitting the <a href="{{ href }}">{{ primaryLeaveType | capitalize }} curtailment and SPL consent form</a>.
           {% endset %}
           {{ govukWarningText({
             html: curtailmentWarningHtml,

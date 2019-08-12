@@ -30,6 +30,8 @@
     }) }}
   {% endif %}
 
+  {% set primaryLeaveType = (data | primaryLeaveType) %}
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
@@ -44,7 +46,7 @@
               name: "primary[initial-leave-eligible]",
               fieldset: {
                 legend: {
-                  text: "Is the " + data | primaryName + " eligible for " + data | primaryLeaveType + " leave?",
+                  text: "Is the " + data | primaryName + " eligible for " + (primaryLeaveType | capitalize) + " Leave?",
                   classes: "govuk-fieldset__legend--m"
                 }
               },
@@ -73,7 +75,7 @@
               name: "primary[initial-pay-eligible]",
               fieldset: {
                 legend: {
-                  text: "Is the " + data | primaryName + " eligible for statutory " + data | primaryLeaveType + "  pay?",
+                  text: "Is the " + data | primaryName + " eligible for Statutory " + (primaryLeaveType| capitalize)  + " Pay?",
                   classes: "govuk-fieldset__legend--m"
                 }
               },

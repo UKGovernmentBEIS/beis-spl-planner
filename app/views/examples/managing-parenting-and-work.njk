@@ -10,8 +10,8 @@
 
 {% block background %}
   <p>
-    {{ "A mother" if isBirth else ("An adopter" if isAdoption else "A surrogate parent") }} wants to return to work for a project in the middle of {{ primaryLeaveType }} leave.
-    The {{ primaryName }} gives notice to end their {{ primaryLeaveType }} leave early to create Shared Parental Leave.
+    {{ "A mother" if isBirth else ("An adopter" if isAdoption else "A surrogate parent") }} wants to return to work for a project in the middle of {{ primaryLeaveType | capitalize }} Leave.
+    The {{ primaryName }} gives notice to end their {{ primaryLeaveType | capitalize }} Leave early to create Shared Parental Leave.
   </p>
   <p>
     The {{ primaryName }}’s partner takes 3 months of Shared Parental Leave and 1 month of Shared Parental Pay while the {{ primaryName }} goes to work.
@@ -19,14 +19,14 @@
   </p>
   <p>
     They would like to take some leave together. The partner’s first month of Shared Parental Leave will overlap with the
-    {{ primaryName }}’s last month of {{ primaryLeaveType }} leave.
+    {{ primaryName }}’s last month of {{ primaryLeaveType | capitalize }} Leave.
   </p>
 {% endblock %}
 
 {% block primaryLeavePlan %}
-  35 weeks of {{ primaryLeaveType }} leave and statutory {{ primaryLeaveType }} pay, 4 weeks of unpaid Shared Parental Leave.
+  35 weeks of {{ primaryLeaveType | capitalize }} Leave and Statutory {{ primaryLeaveType | capitalize }} Pay, 4 weeks of unpaid Shared Parental Leave.
 {% endblock %}
 
 {% block secondaryLeavePlan %}
-  2 weeks of paternity leave and statutory paternity pay, 9 weeks of unpaid Shared Parental Leave and 4 weeks of Shared Parental Leave with Statutory Shared Parental Pay.
+  2 weeks of Paternity Leave and Statutory Paternity Pay, 9 weeks of unpaid Shared Parental Leave and 4 weeks of Shared Parental Leave with Statutory Shared Parental Pay.
 {% endblock %}

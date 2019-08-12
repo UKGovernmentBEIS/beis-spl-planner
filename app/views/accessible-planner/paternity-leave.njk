@@ -9,7 +9,7 @@
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
-  {{ "Will the partner take any paternity leave?" | pageTitle }}
+  {{ "Will the partner take any Paternity Leave?" | pageTitle }}
 {%- endblock %}
 
 {% block beforeContent %}
@@ -31,12 +31,12 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              The partner can take up to 2 weeks of paternity leave during the first 8 weeks after {{ birthOrPlacement }}.
+              The partner can take up to 2 weeks of Paternity Leave during the first 8 weeks after {{ birthOrPlacement }}.
               The leave must be taken in one go.
             </p>
             {% if (remainingLeaveAllowance > 0) %}
               <p class="govuk-hint">
-                The paternity leave allowance is separate from the Shared Parental Leave allowance.
+                The Paternity Leave allowance is separate from the Shared Parental Leave allowance.
                 The partner’s Shared Parental Leave can be planned later.
               </p>
             {% endif %}
@@ -49,7 +49,7 @@
             name: "leave-blocks[secondary][is-taking-paternity-leave]",
             fieldset: {
               legend: {
-                text: "Will the partner take any paternity leave?",
+                text: "Will the partner take any Paternity Leave?",
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }
@@ -60,12 +60,12 @@
             items: [
               {
                 value: "yes",
-                text: "Yes, the partner will take paternity leave",
+                text: "Yes, the partner will take Paternity Leave",
                 checked: data["leave-blocks"]["secondary"]["is-taking-paternity-leave"] | isYes
               },
               {
                 value: "no",
-                text: "No, the partner will not take paternity leave",
+                text: "No, the partner will not take Paternity Leave",
                 checked: data["leave-blocks"]["secondary"]["is-taking-paternity-leave"] | isNo
               }
             ]

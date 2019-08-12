@@ -29,7 +29,7 @@
               {% if eitherParentHasTakenSpl %}
                 Shared Parental Leave left to take.
               {% else %}
-                {{ primaryLeaveType }} leave that can be taken as Shared Parental Leave.
+                {{ primaryLeaveType | capitalize }} Leave that can be taken as Shared Parental Leave.
               {% endif %}
             </p>
             <p class="govuk-hint">

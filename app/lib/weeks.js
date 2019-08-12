@@ -189,7 +189,7 @@ class Weeks {
     } = this.eligibility.primary
     const maternityAllowanceOnly = !shppEligible && !statutoryPayEligible && maternityAllowanceEligible
     if (maternityAllowanceOnly) {
-      // when maternity allowance only, we only know the upper bound of the mother’s pay
+      // When Maternity Allowance only, we only know the upper bound of the mother’s pay.
       return this._getStatutoryPay()
     } else if (period === 'initial') {
       return this.primary.weeklyPay ? this._formatPay(0.9 * this.primary.weeklyPay) : '90% of weekly pay'

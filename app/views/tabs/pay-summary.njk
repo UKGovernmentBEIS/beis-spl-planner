@@ -67,28 +67,28 @@
     </h3>
     {% if data | isBirth %}
       <p>
-        To apply for <a href="https://www.gov.uk/maternity-pay-leave">statutory maternity pay</a> tell your employer you want to stop work to have a baby and the day you want your statutory maternity pay to start.
+        To apply for <a href="https://www.gov.uk/maternity-pay-leave">Statutory Maternity Pay</a> tell your employer you want to stop work to have a baby and the day you want your Statutory Maternity Pay to start.
         You must give them at least 28 days’ notice (in writing if they ask for it) and proof that you’re pregnant.
       </p>
     {% else %}
       <p>
-        To apply for <a href="https://www.gov.uk/adoption-pay-leave">statutory adoption pay</a> tell your employer you want to stop work to adopt a child and the day you want your statutory adoption pay to start.
+        To apply for <a href="https://www.gov.uk/adoption-pay-leave">Statutory Adoption Pay</a> tell your employer you want to stop work to adopt a child and the day you want your Statutory Adoption Pay to start.
         You must give them at least 28 days’ notice. They can ask for this in writing and for proof of the adoption.
       </p>
     {% endif %}
     <p>
-      Your employer must confirm within 28 days how much {{ "statutory maternity pay" if data | isBirth else "statutory adoption pay" }} you’ll get and when it will start and stop.
+      Your employer must confirm within 28 days how much Statutory {{ data | primaryLeaveType | capitalize }} Pay you’ll get and when it will start and stop.
     </p>
     <p>
       If they decide you’re not eligible, they must give you form {{ "SMP1" if data | isBirth else "SAP1 "}} within 7 days of making their decision and explain why.
     </p>
 
     <h4 class="govuk-heading-s">
-      Statutory paternity pay
+      Statutory Paternity Pay
     </h4>
     <p>
       Use <a href="https://public-online.hmrc.gov.uk/lc/content/xfaforms/profiles/forms.html?contentRoot=repository:///Applications/PersonalTax_iForms/1.0/SC3&template=SC3.xdp" target="_blank">form SC3</a>
-      to claim for statutory paternity pay 15 weeks before your {{ "child’s match date" if data | isAdoption else "baby’s due date" }}.
+      to claim for Statutory Paternity Pay 15 weeks before your {{ "child’s match date" if data | isAdoption else "baby’s due date" }}.
     </p>
 
     <h4>

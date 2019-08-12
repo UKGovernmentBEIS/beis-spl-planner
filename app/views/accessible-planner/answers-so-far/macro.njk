@@ -18,7 +18,7 @@
     rows: [
       {
         key: {
-          text: (primaryLeaveType | capitalize) + " leave start"
+          text: (primaryLeaveType | capitalize) + " Leave start"
         },
         value: {
           text: date(data, leaveBlocks["primary"]["initial"]["start"])
@@ -28,14 +28,14 @@
             {
               href: "/planner/" + primaryLeaveType + "-leave/start",
               text: "Change",
-              visuallyHiddenText: primaryLeaveType + " leave start"
+              visuallyHiddenText: (primaryLeaveType | capitalize) + " Leave start"
             }
           ]
         }
       },
       {
         key: {
-          text: (primaryLeaveType | capitalize) + " leave end"
+          text: (primaryLeaveType | capitalize) + " Leave end"
         },
         value: {
           text: date(data, leaveBlocks["primary"]["initial"]["end"])
@@ -45,14 +45,14 @@
             {
               href: "/planner/" + primaryLeaveType + "-leave/end",
               text: "Change",
-              visuallyHiddenText: primaryLeaveType + " leave end"
+              visuallyHiddenText: (primaryLeaveType | capitalize) + " Leave end"
             }
           ]
         }
       },
       {
         key: {
-          text: "Taking paternity leave"
+          text: "Taking Paternity Leave"
         },
         value: {
           text: leaveBlocks["secondary"]["is-taking-paternity-leave"] | capitalize
@@ -62,14 +62,14 @@
             {
               href: "/planner/paternity-leave",
               text: "Change",
-              visuallyHiddenText: "paternity leave start"
+              visuallyHiddenText: "Paternity Leave start"
             }
           ]
         }
       },
       {
         key: {
-          text: "Paternity leave start"
+          text: "Paternity Leave start"
         },
         value: {
           text: date(data, leaveBlocks["secondary"]["initial"]["start"])
@@ -79,14 +79,14 @@
             {
               href: "/planner/paternity-leave/start",
               text: "Change",
-              visuallyHiddenText: "paternity leave start"
+              visuallyHiddenText: "Paternity Leave start"
             }
           ]
         }
       },
       {
         key: {
-          text: "Paternity leave end"
+          text: "Paternity Leave end"
         },
         value: {
           text: date(data, leaveBlocks["secondary"]["initial"]["end"])
@@ -96,7 +96,7 @@
             {
               href: "/planner/paternity-leave/end",
               text: "Change",
-              visuallyHiddenText: "paternity leave end"
+              visuallyHiddenText: "Paternity Leave end"
             }
           ]
         }

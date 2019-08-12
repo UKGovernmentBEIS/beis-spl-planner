@@ -64,7 +64,7 @@ function maternityAllowance (req) {
     return true
   }
   if (!isYesOrNo(delve(req.session.data, ['primary', 'maternity-allowance-eligible']))) {
-    addError(req, 'maternity-allowance-eligible', 'Select whether you are eligible for maternity allowance', '#maternity-allowance-eligible-1')
+    addError(req, 'maternity-allowance-eligible', 'Select whether you are eligible for Maternity Allowance', '#maternity-allowance-eligible-1')
     return false
   }
   return true
@@ -245,11 +245,11 @@ function planner (req) {
     }
   }
 
-  // Too many paternity leave weeks.
+  // Too many Paternity Leave weeks.
   const paternityLeaveAllowanceUsed = getLeaveWeeksCount(weeks, ['paternity'])
   if (paternityLeaveAllowanceUsed > 2) {
     const overspend = paternityLeaveAllowanceUsed - 2
-    const message = `You’ve taken too many weeks of paternity leave. Unselect ${overspend} paternity leave week${overspend > 1 ? 's' : ''}.`
+    const message = `You’ve taken too many weeks of Paternity Leave. Unselect ${overspend} Paternity Leave week${overspend > 1 ? 's' : ''}.`
     addCalendarError(req, 'secondary', `too-many-paternity-leave-weeks`, message)
     isValid = false
   }

@@ -7,7 +7,7 @@
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
-  {{ "Is the " + (data | secondaryName) + " eligible for paternity leave and pay?" | pageTitle }}
+  {{ "Is the " + (data | secondaryName) + " eligible for Paternity Leave and Pay?" | pageTitle }}
 {%- endblock %}
 
 {% block beforeContent %}
@@ -44,7 +44,7 @@
               name: "secondary[initial-leave-eligible]",
               fieldset: {
                 legend: {
-                  text: "Is the " + data | secondaryName + " eligible for paternity leave?",
+                  text: "Is the " + data | secondaryName + " eligible for Paternity Leave?",
                   classes: "govuk-fieldset__legend--m"
                 }
               },
@@ -73,7 +73,7 @@
               name: "secondary[initial-pay-eligible]",
               fieldset: {
                 legend: {
-                  text: "Is the " + data | secondaryName + " eligible for statutory paternity pay?",
+                  text: "Is the " + data | secondaryName + " eligible for Statutory Paternity Pay?",
                   classes: "govuk-fieldset__legend--m"
                 }
               },

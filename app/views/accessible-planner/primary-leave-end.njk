@@ -43,18 +43,18 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              {{ primaryLeaveType | capitalize }} leave must be taken in one continuous block and it is compulsory
-              to take {{ primaryLeaveType }} leave in the 2 weeks after {{ birthOrPlacement }}.
+              {{ primaryLeaveType | capitalize }} Leave must be taken in one continuous block and it is compulsory
+              to take {{ primaryLeaveType | capitalize }} Leave in the 2 weeks after {{ birthOrPlacement }}.
             </p>
             <p class="govuk-hint">
-              The {{ primaryName }} can take up to a maximum of 52 weeks of {{ primaryLeaveType }} leave.
+              The {{ primaryName }} can take up to a maximum of 52 weeks of {{ primaryLeaveType | capitalize }} Leave.
             </p>
             <p class="govuk-hint">
-              Any unused {{ primaryLeaveType }} leave can be taken by either the {{ primaryName }}
+              Any unused {{ primaryLeaveType | capitalize }} Leave can be taken by either the {{ primaryName }}
               or their partner as Shared Parental Leave.
             </p>
             <p class="govuk-hint">
-              The first week of {{ primaryLeaveType }} leave is {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}.
+              The first week of {{ primaryLeaveType | capitalize }} Leave is {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}.
             </p>
             <p class="govuk-hint">
               Your previous answers are at the bottom of the page.
@@ -62,7 +62,7 @@
           {% endset %}
           {% call govukFieldset({
             legend: {
-              text: "Which week was or will be the " + primaryName + "’s last week of " + primaryLeaveType + " leave?",
+              text: "Which week was or will be the " + primaryName + "’s last week of " + (primaryLeaveType | capitalize) + " Leave?",
               classes: "govuk-fieldset__legend--xl",
               isPageHeading: true
             }

@@ -9,7 +9,7 @@
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
-  {{ "How many weeks of paternity leave will the partner take?" | pageTitle }}
+  {{ "How many weeks of Paternity Leave will the partner take?" | pageTitle }}
 {%- endblock %}
 
 {% block beforeContent %}
@@ -34,7 +34,7 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              The partner’s paternity leave starts on {{ zeroWeek | offsetWeeks(paternityLeaveStart) | formatForDisplay }}.
+              The partner’s Paternity Leave starts on {{ zeroWeek | offsetWeeks(paternityLeaveStart) | formatForDisplay }}.
             </p>
             <p class="govuk-hint">
               Your previous answers are at the bottom of the page.
@@ -45,7 +45,7 @@
             name: "leave-blocks[secondary][initial][end]",
             fieldset: {
               legend: {
-                text: "How many weeks of paternity leave will the partner take?",
+                text: "How many weeks of Paternity Leave will the partner take?",
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }
@@ -56,12 +56,12 @@
             items: [
               {
                 value: oneWeekEnd,
-                text: "1 week of paternity leave",
+                text: "1 week of Paternity Leave",
                 checked: (data["leave-blocks"]["secondary"]["initial"]["end"] | int) === oneWeekEnd
               },
               {
                 value: twoWeeksEnd,
-                text: "2 weeks of paternity leave",
+                text: "2 weeks of Paternity Leave",
                 checked: (data["leave-blocks"]["secondary"]["initial"]["end"] | int) === twoWeeksEnd
               }
             ]

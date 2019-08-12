@@ -34,7 +34,7 @@
         </tr>
         <tr :key="'earliest-leave-week-' + week.id" v-if="(i === 0) && (week.number !== 0)" class="row-banner" aria-hidden="true">
           <th colspan="5">
-            {{ primaryLeaveType | capitalize }} leave can start in this week
+            {{ primaryLeaveType | capitalize }} Leave can start in this week
           </th>
         </tr>
         <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner" aria-hidden="true">
@@ -137,9 +137,9 @@
   const { getWeekByNumber } = require('../../../lib/weekUtils')
 
   const LEAVE_LABELS = Object.freeze({
-    'maternity': 'maternity leave',
-    'adoption': 'adoption leave',
-    'paternity': 'paternity leave',
+    'maternity': 'Maternity Leave',
+    'adoption': 'Adoption Leave',
+    'paternity': 'Paternity Leave',
     'shared': 'Shared Parental Leave'
   })
 

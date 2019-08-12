@@ -56,15 +56,15 @@
         Plan Shared Parental Leave and Pay
       </h1>
       <p class="print-hide">
-        Use the calendar below to plan Shared Parental Leave and Pay alongside {{ primaryLeaveType }} and paternity leave and pay.
+        Use the calendar below to plan Shared Parental Leave and Pay alongside {{ primaryLeaveType | capitalize }} and Paternity Leave and Pay.
         The calendar is based on {{ "the week your child starts living with you" if isAdoption else "your child’s birth week" }}.
       </p>
       <p class="print-hide">
         You can click the cells to select the weeks each parent wants to take as leave. You have 52 week of leave to split between you.
       </p>
       <p class="print-hide">
-        The {{ primaryName }} must take 2 weeks of {{ primaryLeaveType }} leave when the child is {{ "placed with you" if isAdoption else "born" }}.
-        The partner can take an additional 2 weeks as paternity leave in the first 8 weeks after the child is {{ "placed with you" if isAdoption else "born" }}.
+        The {{ primaryName }} must take 2 weeks of {{ primaryLeaveType | capitalize }} Leave when the child is {{ "placed with you" if isAdoption else "born" }}.
+        The partner can take an additional 2 weeks as Paternity Leave in the first 8 weeks after the child is {{ "placed with you" if isAdoption else "born" }}.
       </p>
       <p class="print-hide">
         If you're taking more than 39 weeks in total, you can also select which leave weeks are paid and unpaid.
@@ -75,7 +75,7 @@
         How much pay you can get
       </h2>
       <p class="print-hide">
-        The {{ primaryName }} gets 90% of their average weekly earnings for the first 6 weeks of statutory {{ primaryLeaveType }} pay.
+        The {{ primaryName }} gets 90% of their average weekly earnings for the first 6 weeks of Statutory {{ primaryLeaveType | capitalize }} Pay.
       </p>
       <p class="print-hide">
         For the remaining 33 paid weeks, each parent can get the statutory pay rate of {{ STATUTORY_MAXIMUM_PAY }} per week,
@@ -93,7 +93,7 @@
         </p>
       {% else %}
         <p class="print-hide">
-          The {{ primaryName }} can start {{ primaryLeaveType }} leave up to {{ data | earliestPrimaryLeaveWeek | abs }} weeks before the week of {{ "placement" if isAdoption else "birth" }}.
+          The {{ primaryName }} can start {{ primaryLeaveType | capitalize }} Leave up to {{ data | earliestPrimaryLeaveWeek | abs }} weeks before the week of {{ "placement" if isAdoption else "birth" }}.
           The partner can only take leave after the child is {{ "placed with you" if isAdoption else "born" }}.
         </p>
         <p class="print-hide">
@@ -105,7 +105,7 @@
         Blocks of leave
       </h2>
       <p class="print-hide">
-        {{ primaryLeaveType | capitalize }} leave and pay must be taken in one continuous block.
+        {{ primaryLeaveType | capitalize }} Leave and pay must be taken in one continuous block.
         Shared Parental Leave can be taken in blocks separated by work or other leave.
       </p>
 

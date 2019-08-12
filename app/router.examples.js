@@ -22,7 +22,7 @@ function examples (offset) {
   }
 
   return {
-    // don't offset leave/pay where it is connected to the partner taking paternity leave in the start week
+    // don't offset leave/pay where it is connected to the partner taking Paternity Leave in the start week
     'managing-parenting-and-work': {
       primary: {
         leave: [

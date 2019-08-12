@@ -42,18 +42,18 @@
       </h2>
       <p>
         The partner has <span v-html="formatWeeks(eligibility.secondary.statutoryLeave ? paternityLeaveRemaining : paternityPayRemaining)"></span> left to take as
-        paternity {{ paternityLeaveAndOrPay }}.
+        Paternity {{ paternityLeaveAndOrPay }}.
       </p>
       <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
         v-if="paternityLeaveRemaining < 0">
         <div class="govuk-error-summary__body">
-          You’ve taken too many weeks of paternity leave. Unselect <span v-html="formatWeeks(-paternityLeaveRemaining, 'paternity leave')"></span>.
+          You’ve taken too many weeks of Paternity Leave. Unselect <span v-html="formatWeeks(-paternityLeaveRemaining, 'Paternity Leave')"></span>.
         </div>
       </div>
       <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
         v-if="!eligibility.secondary.statutoryLeave && paternityPayRemaining < 0">
         <div class="govuk-error-summary__body">
-          You’ve taken too many weeks of paternity pay. Untick <span v-html="formatWeeks(-paternityPayRemaining, 'paternity pay')"></span>.
+          You’ve taken too many weeks of Paternity Pay. Untick <span v-html="formatWeeks(-paternityPayRemaining, 'Paternity Pay')"></span>.
         </div>
       </div>
     </template>
@@ -129,26 +129,26 @@
       },
       primaryInitialLeaveOrSharedParentalLeave: function () {
         const primaryLeave = this.eligibility.primary.statutoryLeave ?
-          `${this.primaryLeaveType} leave` : undefined
+          `${this.capitalize(this.primaryLeaveType)} Leave` : undefined
         const sharedLeave = this.hasAnySharedLeaveEligibility ? `Shared Parental Leave` : undefined
-        return [primaryLeave, sharedLeave].filter(leave => leave).join(' or ')
+        return [primaryLeave, sharedLeave].filter(leave => !!leave).join(' or ')
       },
       primaryInitialPayOrSharedParentalPay: function () {
-        return [`statutory ${this.primaryLeaveType} pay`, 'Shared Parental Pay'].join(' or ')
+        return [`Statutory ${this.capitalize(this.primaryLeaveType)} Pay`, 'Shared Parental Pay'].join(' or ')
       },
       weeksOfPrimaryInitialLeaveAndSharedLeaveTaken: function () {
         const primaryLeave = this.eligibility.primary.statutoryLeave ?
-          `${this.formatWeeks(this.primaryLeaveUsed)} as ${this.primaryLeaveType} leave` :
+          `${this.formatWeeks(this.primaryLeaveUsed)} as ${this.capitalize(this.primaryLeaveType)} Leave` :
           undefined
         const sharedLeave = this.hasAnySharedLeaveEligibility ?
           `${this.formatWeeks(this.splUsed)} as Shared Parental Leave` :
           undefined
-        return [primaryLeave, sharedLeave].filter(leave => leave).join(' and ')
+        return [primaryLeave, sharedLeave].filter(leave => !!leave).join(' and ')
       },
       paternityLeaveAndOrPay: function () {
-        const leave = this.eligibility.secondary.statutoryLeave ? "leave" : undefined
-        const pay = this.eligibility.secondary.statutoryPay ? "pay" : undefined
-        return [leave, pay].filter(policy => policy).join(' and ')
+        const leave = this.eligibility.secondary.statutoryLeave ? "Leave" : null
+        const pay = this.eligibility.secondary.statutoryPay ? "Pay" : false
+        return [leave, pay].filter(policy => !!policy).join(' and ')
       }
     },
     watch: {
@@ -164,6 +164,9 @@
       }
     },
     methods: {
+      capitalize: function (value) {
+        return this.$options.filters.capitalize(value)
+      },
       formatWeeks: function (number, weekType) {
         number = Math.max(number, 0)
         return '<strong>' + number + '</strong> ' + (weekType ? `${weekType} ` : '') + (number === 1 ? 'week' : 'weeks')

@@ -11,7 +11,7 @@
 {% block background %}
   <p>
     A {{ "mother and her partner" if isBirth else ("couple who are adopting" if isAdoption else "couple who are having a child through surrogacy") }} want to have equal time as primary carer for their child.
-    The {{ primaryName }} ends their {{ primaryLeaveType }} leave after 3 months to create 9 months of Shared Parental Leave.
+    The {{ primaryName }} ends their {{ primaryLeaveType | capitalize }} Leave after 3 months to create 9 months of Shared Parental Leave.
   </p>
   <p>
     The couple spend the first 3 months at home together, leaving 6 months of Shared Parental Leave for them to split between them.
@@ -20,10 +20,10 @@
 {% endblock %}
 
 {% block primaryLeavePlan %}
-  13 weeks of {{ primaryLeaveType }} leave and statutory {{ primaryLeaveType }} pay, two 6-week blocks of Shared Parental Leave and Pay.
+  13 weeks of {{ primaryLeaveType | capitalize }} Leave and Statutory {{ primaryLeaveType | capitalize }} Pay, two 6-week blocks of Shared Parental Leave and Pay.
 {% endblock %}
 
 {% block secondaryLeavePlan %}
-  2 weeks of paternity leave and statutory shared paternity pay. An initial 15-week block of Shared Parental Leave and 14 weeks of statutory
+  2 weeks of Paternity Leave and Statutory Paternity Pay. An initial 15-week block of Shared Parental Leave and 14 weeks of Statutory
   Shared Parental Pay, followed by two 6-week blocks of unpaid Shared Parental Leave.
 {% endblock %}
