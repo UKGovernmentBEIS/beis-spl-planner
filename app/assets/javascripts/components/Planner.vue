@@ -9,7 +9,7 @@
         <div id="sidebar-information">
           <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :reset="resetIfChanged" :eligibility="eligibility"/>
         </div>
-        <button
+        <button v-if="interactive"
           class="govuk-button"
           type="button"
           @click="resetIfChanged()"
