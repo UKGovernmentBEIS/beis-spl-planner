@@ -4,6 +4,10 @@ function natureOfParenthood (data) {
   return data['nature-of-parenthood']
 }
 
+function typeOfAdoption (data) {
+  return data['type-of-adoption']
+}
+
 function isBirth (data) {
   if (isString(data)) {
     return data === 'birth'
@@ -20,6 +24,14 @@ function isAdoption (data) {
   }
 }
 
+function isUkAdoption (data) {
+  return isAdoption(data) && (typeOfAdoption(data) === 'uk')
+}
+
+function isOverseasAdoption (data) {
+  return isAdoption(data) && (typeOfAdoption(data) === 'overseas')
+}
+
 function isSurrogacy (data) {
   if (isString(data)) {
     return data === 'surrogacy'
@@ -31,7 +43,7 @@ function isSurrogacy (data) {
 function earliestPrimaryLeaveWeek (data) {
   if (isBirth(data)) {
     return -11
-  } else if (isAdoption(data)) {
+  } else if (isUkAdoption(data)) {
     return -2
   } else {
     return 0
@@ -80,12 +92,16 @@ function isNo (dataField) {
 
 module.exports = {
   natureOfParenthood,
+  typeOfAdoption,
   parentName,
+  currentParentName: parentName, // Alias
   parentNameForUrl,
   primaryName,
   primaryUrlName,
   secondaryName,
   isAdoption,
+  isUkAdoption,
+  isOverseasAdoption,
   isBirth,
   isSurrogacy,
   earliestPrimaryLeaveWeek,
