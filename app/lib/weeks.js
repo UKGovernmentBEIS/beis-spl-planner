@@ -140,7 +140,7 @@ class Weeks {
       day: this.startWeek.add(idx, 'weeks'),
       primary: {
         disabled: false,
-        compulsory: idx === 0 || idx === 1,
+        compulsory: (this.primaryLeaveType === 'maternity') && (idx === 0 || idx === 1),
         leave: {},
         pay: {}
       },
@@ -154,10 +154,9 @@ class Weeks {
   }
 
   _getWeekLeaveAndPay (idx) {
-    const isCompulsoryPrimaryWeek = (idx === 0 || idx === 1)
     return {
       primary: {
-        leave: this.primary.leaveWeeks.includes(idx) || isCompulsoryPrimaryWeek,
+        leave: this.primary.leaveWeeks.includes(idx),
         pay: this.primary.payWeeks.includes(idx)
       },
       secondary: {

@@ -17,7 +17,7 @@
       <div id="calendar-checkboxes" class="govuk-checkboxes" data-module="checkboxes">
         <div class="govuk-checkboxes" data-module="checkboxes">
           {% for i in range(minWeek, maxWeek + 1) %}
-            {% set compulsoryLeave = (parent === 'primary' and (i === 0 or i === 1)) %}
+            {% set compulsoryLeave = (parent === 'primary' and isBirth and (i === 0 or i === 1)) %}
             {% set outOfRange = (parent === 'secondary' and i < 0) %}
             {% set leaveId = parent + '-leave_' + i %}
             {% set leaveName = parent + '[leave]' %}
@@ -50,6 +50,10 @@
                   data-parent="{{ parent }}" data-property="leave"
                   {{ 'checked' if (data | isWeekChecked(parent, 'leave', i)) }}
                   {{ 'disabled' if (compulsoryLeave or outOfRange) }}>
+                {% if compulsoryLeave %}
+                  {# Compulsory leave checkboxes are disabled, so we need to explicitly send the value. #}
+                  <input type="hidden" name="primary[leave]" value="{{ i }}" />
+                {% endif %}
                 <label class="govuk-label govuk-checkboxes__label" for="{{ leaveId }}">
                   Taking leave
                 </label>
@@ -88,9 +92,6 @@
   <div class="govuk-grid-row" style="display: none;">
     <div class="govuk-grid-column-one-half">
       {{ leaveAndPayCheckboxes(data, "primary") }}
-      {# Compulsory leave weeks are disabled checkboxes, so we need to include the values manually. #}
-      <input type="hidden" name="primary[leave]" value="0" />
-      <input type="hidden" name="primary[leave]" value="1" />
     </div>
     <div class="govuk-grid-column-one-half">
       {{ leaveAndPayCheckboxes(data, "secondary") }}

@@ -176,9 +176,8 @@ router.route(paths.getPath('planner'))
   .get(function (req, res) {
     const primaryLeaveWeeks = getWeeksArray(res.locals.data, 'primary', 'leave')
     if (primaryLeaveWeeks.length === 0) {
-      // Add compulsory leave weeks to session on initial load.
+      // Add first two weeks after birth or placement to session on initial load.
       dset(res.locals.data, 'primary.leave', ['0', '1'])
-      // Note that pay during compulsory leave weeks can later be unset, but it should default to set on initial load.
       dset(res.locals.data, 'primary.pay', ['0', '1'])
     }
     res.render('planner')

@@ -199,8 +199,9 @@
         }
       },
       updateCell: function (week, parent, property, value) {
-        if (!week[parent].leave.eligible) {
-          // when not eligible for leave, clicking in leave or pay toggles both
+        // Explicitly check for false to avoid problems with empty leave object.
+        if (week[parent].leave.eligible === false) {
+          // When not eligible for leave, clicking in leave or pay toggles both.
           this.updateLeaveOrPay(parent, 'leave', week.number, value)
           this.updateLeaveOrPay(parent, 'pay', week.number, value)
         } else {
