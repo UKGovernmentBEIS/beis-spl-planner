@@ -27,7 +27,6 @@
 {% set isSurrogacy = (data | isSurrogacy) %}
 {% set primaryName = (data | primaryName) %}
 {% set primaryLeaveType = (data | primaryLeaveType) %}
-{% set STATUTORY_MAXIMUM_PAY = "£" + STATUTORY_MAXIMUM_PAY %}
 
 {% block content %}
   {% if (errors | hasCalendarError) %}
@@ -78,7 +77,7 @@
         The {{ primaryName }} gets 90% of their average weekly earnings for the first 6 weeks of Statutory {{ primaryLeaveType | capitalize }} Pay.
       </p>
       <p class="print-hide">
-        For the remaining 33 paid weeks, each parent can get the statutory pay rate of {{ STATUTORY_MAXIMUM_PAY }} per week,
+        For the remaining 33 paid weeks, each parent can get the statutory pay rate of £{{ statutory_maximum_pay }} per week,
         or 90% of their average weekly salary, whichever is lower.
       </p>
       <h2 class="govuk-heading-s print-hide">

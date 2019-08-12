@@ -1,4 +1,4 @@
 module.exports = {
-  STATUTORY_MAXIMUM_PAY: 148.68,
-  SERVICE_NAME: 'plan Shared Parental Leave and Pay'
+  SERVICE_NAME: 'Plan Shared Parental Leave and Pay',
+  STATUTORY_MAXIMUM_PAY: 148.68
 }
