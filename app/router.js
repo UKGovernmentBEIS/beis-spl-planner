@@ -15,7 +15,7 @@ const {
   parseExternalQueryString,
   clearLaterLeaveBlockAnswers
 } = require('./lib/routerUtils')
-const { isBirth, isYes, isAdoption, parentNameForUrl } = require('../common/lib/dataUtils')
+const { isYes, parentNameForUrl } = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
 
 router.use('/planner/examples', require('./router.examples'))

@@ -7,6 +7,7 @@ function init (data) {
   const secondary = parseParentFromPlanner(data, 'secondary')
   const summaryTabs = ['leave', 'pay']
   summaryTabs.forEach(summaryTab => {
+    // eslint-disable-next-line no-new
     new (Vue.extend(ShareLink))({
       el: `#${summaryTab}-summary-share-link`,
       data: {

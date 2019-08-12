@@ -6,7 +6,7 @@ const {
   convertBase64ToBase10,
   convertBase64ToBinary
 } = require('./baseMathsUtils')
-const { isBirth, earliestPrimaryLeaveWeek } = require('../../../common/lib/dataUtils')
+const { earliestPrimaryLeaveWeek } = require('../../../common/lib/dataUtils')
 const { separator, policies, parents, entitlements } = require('./tokenConstants')
 
 class ShareTokenEncoder {
