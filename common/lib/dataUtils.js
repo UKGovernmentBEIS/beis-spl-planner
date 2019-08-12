@@ -4,6 +4,10 @@ function natureOfParenthood (data) {
   return data['nature-of-parenthood']
 }
 
+function typeOfAdoption (data) {
+  return data['type-of-adoption']
+}
+
 function isBirth (data) {
   if (isString(data)) {
     return data === 'birth'
@@ -26,10 +30,6 @@ function isUkAdoption (data) {
 
 function isOverseasAdoption (data) {
   return isAdoption(data) && (typeOfAdoption(data) === 'overseas')
-}
-
-function typeOfAdoption (data) {
-  return data['type-of-adoption']
 }
 
 function isSurrogacy (data) {
@@ -92,6 +92,7 @@ function isNo (dataField) {
 
 module.exports = {
   natureOfParenthood,
+  typeOfAdoption,
   parentName,
   currentParentName: parentName, // Alias
   parentNameForUrl,
