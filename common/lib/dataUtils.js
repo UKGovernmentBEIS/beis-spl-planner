@@ -20,6 +20,18 @@ function isAdoption (data) {
   }
 }
 
+function isUkAdoption (data) {
+  return isAdoption(data) && (typeOfAdoption(data) === 'uk')
+}
+
+function isOverseasAdoption (data) {
+  return isAdoption(data) && (typeOfAdoption(data) === 'overseas')
+}
+
+function typeOfAdoption (data) {
+  return data['type-of-adoption']
+}
+
 function isSurrogacy (data) {
   if (isString(data)) {
     return data === 'surrogacy'
@@ -31,7 +43,7 @@ function isSurrogacy (data) {
 function earliestPrimaryLeaveWeek (data) {
   if (isBirth(data)) {
     return -11
-  } else if (isAdoption(data)) {
+  } else if (isUkAdoption(data)) {
     return -2
   } else {
     return 0
@@ -87,6 +99,8 @@ module.exports = {
   primaryUrlName,
   secondaryName,
   isAdoption,
+  isUkAdoption,
+  isOverseasAdoption,
   isBirth,
   isSurrogacy,
   earliestPrimaryLeaveWeek,
