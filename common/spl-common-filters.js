@@ -24,7 +24,7 @@ module.exports = function (env) {
   }
 
   function startDateName (data) {
-    return dataUtils.isBirth(data) ? 'due date' : 'match date'
+    return dataUtils.isAdoption(data) ? 'match date' : 'due date'
   }
 
   function offsetWeeks (baseDay, numberOfWeeks) {
