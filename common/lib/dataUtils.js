@@ -81,6 +81,7 @@ function isNo (dataField) {
 module.exports = {
   natureOfParenthood,
   parentName,
+  currentParentName: parentName, // Alias
   parentNameForUrl,
   primaryName,
   primaryUrlName,
