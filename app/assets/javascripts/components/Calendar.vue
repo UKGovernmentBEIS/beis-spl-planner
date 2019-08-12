@@ -32,14 +32,20 @@
             {{ week.day.format('MMMM YYYY') }}
           </th>
         </tr>
-        <tr :key="'earliest-leave-week-' + week.id" v-if="i === 0" class="row-banner" aria-hidden="true">
+        <tr :key="'earliest-leave-week-' + week.id" v-if="(i === 0) && (week.number !== 0)" class="row-banner" aria-hidden="true">
           <th colspan="5">
             {{ primaryLeaveType | capitalize }} leave can start in this week
           </th>
         </tr>
         <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner" aria-hidden="true">
-          <th colspan="5">
-            {{ natureOfParenthood === 'adoption' ? 'First week the child lives with you' : 'Birth week' }}
+          <th colspan="5" v-if="natureOfParenthood !== 'adoption'">
+            Birth week
+          </th>
+          <th colspan="5" v-else-if="typeOfAdoption === 'uk'">
+            First week the child lives with you
+          </th>
+          <th colspan="5" v-else>
+            Week the child arrives in the UK
           </th>
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week)">
