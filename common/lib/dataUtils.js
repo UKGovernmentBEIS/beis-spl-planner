@@ -8,6 +8,10 @@ function typeOfAdoption (data) {
   return data['type-of-adoption']
 }
 
+function birthOrPlacement (data) {
+  return isAdoption(data) ? 'placement' : 'birth'
+}
+
 function isBirth (data) {
   if (isString(data)) {
     return data === 'birth'
@@ -93,6 +97,7 @@ function isNo (dataField) {
 module.exports = {
   natureOfParenthood,
   typeOfAdoption,
+  birthOrPlacement,
   parentName,
   currentParentName: parentName, // Alias
   parentNameForUrl,
