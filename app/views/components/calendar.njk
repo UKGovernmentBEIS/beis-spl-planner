@@ -6,7 +6,7 @@
   {% set zeroWeekDate = (data | startDay | startOfWeek) %}
   {% set isBirth = (data | isBirth) %}
   {% set isAdoption = (data | isAdoption) %}
-  {% set weekZeroName = "placement" if isAdoption else "birth" %}
+  {% set weekZeroName= (data | birthOrPlacement) %}
   <div class="govuk-form-group">
     {% call govukFieldset({
       legend: {

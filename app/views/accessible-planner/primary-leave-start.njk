@@ -25,7 +25,7 @@
 {% set isBirth = (data | isBirth) %}
 {% set isAdoption = (data | isAdoption) %}
 {% set isSurrogacy = (data | isSurrogacy) %}
-{% set birthOrPlacement = "placement" if isAdoption else "birth" %}
+{% set birthOrPlacement= (data | birthOrPlacement) %}
 
 {% set minWeek = data | earliestPrimaryLeaveWeek %}
 {% set options = range(0, minWeek - 1, -1) %}

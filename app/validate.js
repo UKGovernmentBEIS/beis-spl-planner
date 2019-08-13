@@ -178,7 +178,7 @@ function planner (req) {
   let isValid = true
 
   const { data } = req.session
-  const birthOrPlacement = dataUtils.isBirth(data) ? 'birth' : 'placement'
+  const birthOrPlacement = dataUtils.birthOrPlacement(data)
   const startWeek = parseStartDay(req.session.data)
   const inputWeeks = {
     primary: parseParentFromPlanner(data, 'primary'),
