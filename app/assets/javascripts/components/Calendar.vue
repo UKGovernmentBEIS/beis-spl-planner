@@ -166,7 +166,7 @@
     filters: {
       leaveCellLeaveLabel: function (type, compulsory, isEligible) {
         if (!isEligible) {
-          return 'Not eligible for leave'
+          return 'Not working'
         }
         return compulsory ? 'compulsory leave' : LEAVE_LABELS[type]
       },

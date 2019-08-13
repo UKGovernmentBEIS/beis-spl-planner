@@ -224,7 +224,7 @@ function planner (req) {
 
     // Not taking compulsory leave.
     if (compulsoryLeaveWeeks.some(week => !inputWeeks.primary.leaveWeeks.includes(week))) {
-      const message = `The ${names.primary} must take 2 weeks of Maternity Leave when the child is born.`
+      const message = `The ${names.primary} must take 2 weeks of Maternity Leave or Pay when the child is born.`
       addCalendarError(req, 'primary', 'not-taking-compulsory-leave', message)
       isValid = false
     }
@@ -235,18 +235,18 @@ function planner (req) {
 
     // Not taking 2 weeks of Adoption Leave.
     if (secondPrimaryLeaveWeek - firstPrimaryLeaveWeek !== 1) {
-      const message = `The ${names.primary} must take 2 weeks of Adoption Leave to create SPL eligiblity.`
+      const message = `The ${names.primary} must take 2 weeks of Adoption Leave or Pay to create SPL eligiblity.`
       addCalendarError(req, 'primary', 'not-taking-enough-adoption-leave', message)
       isValid = false
     }
 
     // Not taking Adoption Leave at the correct time.
     if ((isUkAdoption || isSurrogacy) && !inputWeeks.primary.leaveWeeks.includes(0)) {
-      const message = `The ${names.primary} must take the first week after ${birthOrPlacement} as Adoption Leave.`
+      const message = `The ${names.primary} must take the first week after ${birthOrPlacement} as Adoption Leave or Pay.`
       addCalendarError(req, 'primary', 'not-taking-first-week-of-adoption-leave', message)
       isValid = false
     } else if (isOverseasAdoption && (firstPrimaryLeaveWeek > 3)) {
-      const message = `The ${names.primary} must take their first week of Adoption Leave within 28 days of the child arriving in the UK.`
+      const message = `The ${names.primary} must take their first week of Adoption Leave or Pay within 28 days of the child arriving in the UK.`
       addCalendarError(req, 'primary', 'not-taking-overseas-adoption-leave-in-first-28-days', message)
       isValid = false
     }

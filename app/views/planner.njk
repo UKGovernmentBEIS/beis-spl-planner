@@ -24,6 +24,8 @@
 
 {% set isBirth = (data | isBirth) %}
 {% set isAdoption = (data | isAdoption) %}
+{% set isUkAdoption = (data | isUkAdoption) %}
+{% set isOverseasAdoption = (data | isOverseasAdoption) %}
 {% set isSurrogacy = (data | isSurrogacy) %}
 {% set primaryName = (data | primaryName) %}
 {% set primaryLeaveType = (data | primaryLeaveType) %}
@@ -59,18 +61,24 @@
       </h1>
       <p class="print-hide">
         Use the calendar below to plan Shared Parental Leave and Pay alongside {{ primaryLeaveType | capitalize }} and Paternity Leave and Pay.
-        The calendar is based on {{ "the week your child starts living with you" if isAdoption else "your child’s birth week" }}.
+        Alternatively, you can plan your leave by answering questions.
       </p>
       <p class="print-hide">
-        You can click the cells to select the weeks each parent wants to take as leave. You have 52 week of leave to split between you.
+        You have 52 week of leave to split between you.
+        The {{ primaryName }} must take at least 2 weeks of {{ primaryLeaveType | capitalize }} Leave
+        {% if (isBirth or isSurrogacy) %}
+          when the chid is born.
+        {% elif isUkAdoption %}
+          when the child is placed with you.
+        {% elif isOverseasAdoption %}
+          starting within the first 28 days that the child arrives in the UK.
+        {% endif %}
       </p>
-      <p class="print-hide">
-        The {{ primaryName }} must take 2 weeks of {{ primaryLeaveType | capitalize }} Leave when the child is {{ "placed with you" if isAdoption else "born" }}.
+      <p>
         The partner can take an additional 2 weeks as Paternity Leave in the first 8 weeks after the child is {{ "placed with you" if isAdoption else "born" }}.
       </p>
       <p class="print-hide">
-        If you're taking more than 39 weeks in total, you can also select which leave weeks are paid and unpaid.
-        The statutory pay amount is {% if data | hasEitherSalary %} based on your salary and is {% endif %} indicative only.
+        The dates shown are based on {{ "the week your child starts living with you" if isAdoption else "your child’s birth week" }}.
       </p>
 
       <h2 class="govuk-heading-s print-hide">
@@ -172,14 +180,21 @@
           html: accessibleViewInsetHtml
         }) }}
         <p>
-          Click in the calendar to create your leave plan. There are separate columns for the {{ primaryName }} and the partner and for leave and pay.
+          Click in the calendar to select the weeks each parent wants to take as leave.
+          There are separate columns for the {{ primaryName }} and the partner, and for leave and pay.
         </p>
         <p>
-          All leave weeks in the calendar start on a Monday. You can choose a different day to start your leave when you give notice to your employer.
-          Pay amounts are indicative only, your employer can confirm your exact pay amount.
+          You can also select which leave weeks are paid and unpaid.
+          The statutory pay amount is {% if data | hasEitherSalary %} based on your salary and is {% endif %} indicative only.
+          Your employer can confirm your exact pay amount.
         </p>
         <p>
-          After you’ve selected leave and pay for each parent, continue for a summary of key dates and how to give notice.
+          All leave weeks in the calendar start on a Monday.
+          You can choose a different day to start your leave when you give notice to your employer.
+        </p>
+        <p>
+          After you’ve selected leave and pay for each parent, continue for a summary of key dates and guidance on
+          how to notify your employer.
         </p>
       </div>
     </div>

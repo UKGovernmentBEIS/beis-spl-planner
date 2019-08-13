@@ -1,11 +1,11 @@
 <template>
   <div>
-    <template v-if="hasAnyMaternityOrSharedLeaveEligibility">
+    <template v-if="hasAnyPrimaryLeaveOrSharedLeaveEligibility">
       <h2 class="govuk-heading-m">
         Your leave weeks
       </h2>
       <p>
-        You can {{ hasMaternityAndSharedLeaveEligibility ? "split a total of" : "take" }} <span v-html="formatWeeks(52)"></span> as {{ primaryInitialLeaveOrSharedParentalLeave }}.
+        You can {{ hasPrimaryLeaveAndSharedLeaveEligibility ? "split a total of" : "take" }} <span v-html="formatWeeks(52)"></span> as {{ primaryInitialLeaveOrSharedParentalLeave }}.
       </p>
       <p>
         You’ve taken <span v-html="weeksOfPrimaryInitialLeaveAndSharedLeaveTaken"></span>.
@@ -20,19 +20,20 @@
       <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
         v-if="hasAdoptionLeaveError">
         <div class="govuk-error-summary__body" v-if="isOverseasAdoption">
-          You must take at least 2 weeks of Adoption Leave and it must start within the first 28 days of the child arriving in the UK.
+          You must take at least 2 weeks of Adoption Leave and
+          it must start within the first 28 days of the child arriving in the UK.
         </div>
         <div class="govuk-error-summary__body" v-else>
           You must take at least 2 weeks of Adoption Leave and it must include the first week the child lives with you.
         </div>
       </div>
     </template>
-    <template v-if="hasAnyMaternityOrSharedPayEligibility">
+    <template v-if="hasAnyPrimaryLeaveOrSharedPayEligibility">
       <h2 class="govuk-heading-m">
         Your pay weeks
       </h2>
       <p>
-        You can {{ hasMaternityAndSharedPayEligibility ? "split a total of" : "take" }} <span v-html="formatWeeks(39)"></span> of {{ primaryInitialPayOrSharedParentalPay }}.
+        You can {{ hasPrimaryLeaveAndSharedPayEligibility ? "split a total of" : "take" }} <span v-html="formatWeeks(39)"></span> of {{ primaryInitialPayOrSharedParentalPay }}.
       </p>
       <p>
         You’ve taken <span v-html="formatWeeks(payUsed)"></span> of pay.
@@ -141,16 +142,16 @@
       hasAnySharedPayEligibility: function () {
         return this.eligibility.primary.shpp || this.eligibility.secondary.shpp
       },
-      hasAnyMaternityOrSharedLeaveEligibility: function () {
+      hasAnyPrimaryLeaveOrSharedLeaveEligibility: function () {
         return this.eligibility.primary.statutoryLeave || this.hasAnySharedLeaveEligibility
       },
-      hasMaternityAndSharedLeaveEligibility: function () {
+      hasPrimaryLeaveAndSharedLeaveEligibility: function () {
         return this.eligibility.primary.statutoryLeave && this.hasAnySharedLeaveEligibility
       },
-      hasAnyMaternityOrSharedPayEligibility: function () {
+      hasAnyPrimaryLeaveOrSharedPayEligibility: function () {
         return this.eligibility.primary.statutoryPay || this.hasAnySharedPayEligibility
       },
-      hasMaternityAndSharedPayEligibility: function () {
+      hasPrimaryLeaveAndSharedPayEligibility: function () {
         return this.eligibility.primary.statutoryPay && this.hasAnySharedPayEligibility
       },
       hasPaternityLeaveOrPayEligibility: function () {
