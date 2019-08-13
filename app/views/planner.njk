@@ -27,6 +27,7 @@
 {% set isUkAdoption = (data | isUkAdoption) %}
 {% set isOverseasAdoption = (data | isOverseasAdoption) %}
 {% set isSurrogacy = (data | isSurrogacy) %}
+{% set birthOrPlacement = (data | birthOrPlacement) %}
 {% set primaryName = (data | primaryName) %}
 {% set primaryLeaveType = (data | primaryLeaveType) %}
 
@@ -64,46 +65,55 @@
         Alternatively, you can plan your leave by answering questions.
       </p>
       <p class="print-hide">
-        You have 52 week of leave to split between you.
-        The {{ primaryName }} must take at least 2 weeks of {{ primaryLeaveType | capitalize }} Leave
+        The dates shown are based on {{ "the week your child starts living with you" if isAdoption else "your child’s birth week" }}.
+      </p>
+
+      <h2 class="govuk-heading-s print-hide">
+        How much leave you can get
+      </h2>
+      <p class="print-hide">
+        You have 52 weeks of leave to split between you.
+      </p>
+      <p class="print-hide">
+        The {{ primaryName }} must take at least 2 of these weeks of leave
         {% if (isBirth or isSurrogacy) %}
-          when the chid is born.
+          when the child is born.
         {% elif isUkAdoption %}
           when the child is placed with you.
         {% elif isOverseasAdoption %}
           starting within the first 28 days that the child arrives in the UK.
         {% endif %}
       </p>
-      <p>
-        The partner can take an additional 2 weeks as Paternity Leave in the first 8 weeks after the child is {{ "placed with you" if isAdoption else "born" }}.
-      </p>
       <p class="print-hide">
-        The dates shown are based on {{ "the week your child starts living with you" if isAdoption else "your child’s birth week" }}.
+        The partner can take an additional 2 weeks as Paternity Leave in the first 8 weeks after the child is {{ "placed with you" if isAdoption else "born" }}, if they are eligible.
       </p>
 
       <h2 class="govuk-heading-s print-hide">
         How much pay you can get
       </h2>
       <p class="print-hide">
-        The {{ primaryName }} gets 90% of their average weekly earnings for the first 6 weeks of Statutory {{ primaryLeaveType | capitalize }} Pay.
+        You have 39 weeks of pay to split between you.
       </p>
       <p class="print-hide">
-        For the remaining 33 paid weeks, each parent can get the statutory pay rate of £{{ statutory_maximum_pay }} per week,
+        If the {{ primaryName }} is eligible for Statutory {{ primaryLeaveType | capitalize }} Pay, they get 90% of their average weekly earnings for the first 6 weeks.
+      </p>
+      <p class="print-hide">
+        For the remaining paid weeks, each eligible parent can get the statutory pay rate of £{{ statutory_maximum_pay }} per week,
         or 90% of their average weekly salary, whichever is lower.
       </p>
       <h2 class="govuk-heading-s print-hide">
         When you can start
       </h2>
-      {% if isSurrogacy %}
+      {% if (isSurrogacy or isOverseasAdoption) %}
         <p class="print-hide">
-          The {{ primaryName }} and the partner can take leave from the week of birth.
+          The {{ primaryName }} and the partner can take leave from the {{ birthOrPlacement }} date.
         </p>
         <p class="print-hide">
           Parents can take leave at the same time, or one after the other.
         </p>
       {% else %}
         <p class="print-hide">
-          The {{ primaryName }} can start {{ primaryLeaveType | capitalize }} Leave up to {{ data | earliestPrimaryLeaveWeek | abs }} weeks before the week of {{ data | birthOrPlacement }}.
+          The {{ primaryName }} can start their leave up to {{ data | earliestPrimaryLeaveWeek | abs }} weeks before the {{ birthOrPlacement }}.
           The partner can only take leave after the child is {{ "placed with you" if isAdoption else "born" }}.
         </p>
         <p class="print-hide">
@@ -115,12 +125,12 @@
         Blocks of leave
       </h2>
       <p class="print-hide">
-        {{ primaryLeaveType | capitalize }} Leave and pay must be taken in one continuous block.
+        {{ primaryLeaveType | capitalize }} Leave and Pay must be taken in one continuous block.
         Shared Parental Leave can be taken in blocks separated by work or other leave.
       </p>
 
       <p class="print-hide">
-        You’re entitled to three blocks of Shared Parental Leave, more if your employer allows.
+        You’re entitled to three blocks of Shared Parental Leave, or more if your employer allows.
       </p>
 
       {% set examples %}
