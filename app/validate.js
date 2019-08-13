@@ -178,6 +178,10 @@ function planner (req) {
   let isValid = true
 
   const { data } = req.session
+  const isBirth = dataUtils.isBirth(data)
+  const isUkAdoption = dataUtils.isUkAdoption(data)
+  const isOverseasAdoption = dataUtils.isOverseasAdoption(data)
+  const isSurrogacy = dataUtils.isSurrogacy(data)
   const birthOrPlacement = dataUtils.birthOrPlacement(data)
   const startWeek = parseStartDay(req.session.data)
   const inputWeeks = {
@@ -202,25 +206,50 @@ function planner (req) {
     }
   }
 
-  // Initial maternity / adoption rules.
-  const lastCompulsoryLeaveWeek = 1
-  const compulsoryLeaveWeeks = _.range(0, lastCompulsoryLeaveWeek + 1)
+  // Initial leave rules.
+  if (isBirth) {
+    // Maternity Leave rules.
+    const lastCompulsoryLeaveWeek = 1
+    const compulsoryLeaveWeeks = _.range(0, lastCompulsoryLeaveWeek + 1)
 
-  // Leave or pay break before end of compulsory leave.
-  for (const policy of ['leave', 'pay']) {
-    const weeks = inputWeeks.primary[policy + 'Weeks']
-    if (hasBreakBeforeEnd(weeks, lastCompulsoryLeaveWeek)) {
-      const message = `The ${names.primary} cannot have a break in their ${policy} before the end of compulsory leave.`
-      addCalendarError(req, 'primary', `${policy}-break-before-end-of-compulsory-leave`, message)
+    // Leave or pay break before end of compulsory leave.
+    for (const policy of ['leave', 'pay']) {
+      const weeks = inputWeeks.primary[policy + 'Weeks']
+      if (hasBreakBeforeEnd(weeks, lastCompulsoryLeaveWeek)) {
+        const message = `The ${names.primary} cannot have a break in their ${policy} before the end of compulsory leave.`
+        addCalendarError(req, 'primary', `${policy}-break-before-end-of-compulsory-leave`, message)
+        isValid = false
+      }
+    }
+
+    // Not taking compulsory leave.
+    if (compulsoryLeaveWeeks.some(week => !inputWeeks.primary.leaveWeeks.includes(week))) {
+      const message = `The ${names.primary} must take 2 weeks of Maternity Leave when the child is born.`
+      addCalendarError(req, 'primary', 'not-taking-compulsory-leave', message)
       isValid = false
     }
-  }
+  } else {
+    // Adoption Leave rules.
+    const firstPrimaryLeaveWeek = inputWeeks.primary.leaveWeeks[0]
+    const secondPrimaryLeaveWeek = inputWeeks.primary.leaveWeeks[1]
 
-  // Not taking compulsory leave.
-  if (compulsoryLeaveWeeks.some(week => !inputWeeks.primary.leaveWeeks.includes(week))) {
-    const message = `The ${names.primary} must take 2 weeks of leave when the child is born.`
-    addCalendarError(req, 'primary', 'not-taking-compulsory-leave', message)
-    isValid = false
+    // Not taking 2 weeks of Adoption Leave.
+    if (secondPrimaryLeaveWeek - firstPrimaryLeaveWeek !== 1) {
+      const message = `The ${names.primary} must take 2 weeks of Adoption Leave to create SPL eligiblity.`
+      addCalendarError(req, 'primary', 'not-taking-enough-adoption-leave', message)
+      isValid = false
+    }
+
+    // Not taking Adoption Leave at the correct time.
+    if ((isUkAdoption || isSurrogacy) && !inputWeeks.primary.leaveWeeks.includes(0)) {
+      const message = `The ${names.primary} must take the first week after ${birthOrPlacement} as Adoption Leave.`
+      addCalendarError(req, 'primary', 'not-taking-first-week-of-adoption-leave', message)
+      isValid = false
+    } else if (isOverseasAdoption && (firstPrimaryLeaveWeek > 3)) {
+      const message = `The ${names.primary} must take their first week of Adoption Leave within 28 days of the child arriving in the UK.`
+      addCalendarError(req, 'primary', 'not-taking-overseas-adoption-leave-in-first-28-days', message)
+      isValid = false
+    }
   }
 
   // Too early or late.
