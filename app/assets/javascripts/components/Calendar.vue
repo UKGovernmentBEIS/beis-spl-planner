@@ -60,12 +60,9 @@
             </template>
             <template v-else>
               <td v-if="disableCell(week, parent)" :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`${parent}-name ${parent}-leave week-${i}-date`">
-                <div class="govuk-body no-margin">
-                    Not eligible for pay
-                  </div>
-                  <div class="govuk-body-s no-margin">
-                    Not eligible for leave
-                  </div>
+                <div class="govuk-body-s no-margin">
+                  Not eligible for leave or pay
+                </div>
               </td>
               <td v-else :key="parent + '-leave'" class="govuk-table__cell leave"
                   :headers="`${parent}-name ${parent}-leave week-${i}-date`"
