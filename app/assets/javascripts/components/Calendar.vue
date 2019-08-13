@@ -160,6 +160,9 @@
       interactive: Boolean,
       eligibility: Object
     },
+    created: function () {
+      window.addEventListener('keydown', this.onWindowMouseDown)
+    },
     filters: {
       leaveCellLeaveLabel: function (type, compulsory, isEligible) {
         if (!isEligible) {
@@ -192,9 +195,6 @@
           return 'Unpaid'
         }
       },
-      created: function () {
-        window.addEventListener('keydown', this.onWindowMouseDown)
-      }
     },
     methods: {
       onWindowKeydown: function (event) {
