@@ -165,7 +165,20 @@
     </div>
   </div>
   <form id="leave-and-pay" method="POST">
-    <div class="govuk-grid-row print-hide">
+    <div class="govuk-grid-row print-hide js-hide">
+      <div class="govuk-grid-column-two-thirds-from-desktop">
+        <h2 class="govuk-heading-l">
+          Your plan
+        </h2>
+        <p>
+          You must have JavaScript enabled to use the interactive leave and pay calendar, but you can still
+          <a href="/planner/maternity-leave/start">
+            plan your leave by answering questions
+          </a>.
+        </p>
+      </div>
+    </div>
+    <div class="govuk-grid-row print-hide js-show">
       <div class="govuk-grid-column-two-thirds-from-desktop">
         <h2 class="govuk-heading-l">
           Your plan
@@ -211,7 +224,7 @@
     {% call appendHiddenFields(data) %}
       {{ calendar(data) }}
     {% endcall %}
-    <div class="govuk-grid-row print-hide">
+    <div class="govuk-grid-row print-hide js-show">
       <div class="govuk-grid-column-two-thirds-from-desktop">
         <p>
           If your plan is complete, continue for a summary of key dates and guidance on

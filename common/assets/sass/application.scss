@@ -6,6 +6,10 @@ $govuk-global-styles: true;
 @import "components/button-link";
 @import "../../../app/assets/sass/application";
 
-.js-enabled .js-hide {
-  display: none;
+body.js-enabled .js-hide {
+  display: none !important;
+}
+
+body:not(.js-enabled) .js-show {
+  display: none !important;
 }
