@@ -210,7 +210,6 @@
         if (week[parent].leave.eligible === false) {
           // When not eligible for leave, clicking in leave or pay toggles both.
           this.updateLeaveOrPay(parent, 'leave', week.number, value)
-          this.updateLeaveOrPay(parent, 'pay', week.number, value)
         } else {
           this.updateLeaveOrPay(parent, property, week.number, value)
         }
