@@ -9,7 +9,10 @@
       </div>
       <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full print-hide">
         <div id="sidebar-information">
-          <Sidebar :weeks="leaveAndPay.weeks" :names="names" :primaryLeaveType="primaryLeaveType" :reset="resetIfChanged" :eligibility="eligibility"/>
+          <Sidebar :weeks="leaveAndPay.weeks"
+            :natureOfParenthood="natureOfParenthood" :typeOfAdoption="typeOfAdoption"
+            :primaryLeaveType="primaryLeaveType" :names="names"
+            :eligibility="eligibility" :reset="resetIfChanged"/>
         </div>
         <button v-if="interactive"
           class="govuk-button"

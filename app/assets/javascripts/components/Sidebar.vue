@@ -17,6 +17,15 @@
           You’ve taken too many leave weeks. Unselect <span v-html="formatWeeks(-sharedLeaveRemaining, 'leave')"></span>.
         </div>
       </div>
+      <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
+        v-if="hasAdoptionLeaveError">
+        <div class="govuk-error-summary__body" v-if="isOverseasAdoption">
+          You must take at least 2 weeks of Adoption Leave and it must start within the first 28 days of the child arriving in the UK.
+        </div>
+        <div class="govuk-error-summary__body" v-else>
+          You must take at least 2 weeks of Adoption Leave and it must include the first week the child lives with you.
+        </div>
+      </div>
     </template>
     <template v-if="hasAnyMaternityOrSharedPayEligibility">
       <h2 class="govuk-heading-m">
@@ -71,11 +80,13 @@
       paternityPayWeeks: 0
     }),
     props: {
-      names: Object,
       weeks: Array,
+      natureOfParenthood: String,
+      typeOfAdoption: String,
       primaryLeaveType: String,
-      reset: Function,
-      eligibility: Object
+      names: Object,
+      eligibility: Object,
+      reset: Function
     },
     computed: {
       primaryLeaveUsed: function () {
@@ -105,6 +116,24 @@
       },
       paternityPayRemaining: function () {
         return 2 - this.paternityPayWeeks
+      },
+      hasAdoptionLeaveError: function () {
+        if (this.primaryLeaveType !== 'adoption') {
+          return false
+        }
+        if (this.primaryLeaveUsed < 2) {
+          return true
+        }
+        if (this.isOverseasAdoption) {
+          const firstAdoptionLeaveWeek = this.weeks.find(week => week.primary.leave.text === this.primaryLeaveType)
+          return !firstAdoptionLeaveWeek || firstAdoptionLeaveWeek.number > 3
+        } else {
+          const zeroWeek = this.weeks.find(week => week.number === 0)
+          return zeroWeek.primary.leave.text !== this.primaryLeaveType
+        }
+      },
+      isOverseasAdoption: function () {
+        return (this.natureOfParenthood === 'adoption') && (this.typeOfAdoption === 'overseas')
       },
       hasAnySharedLeaveEligibility: function () {
         return this.eligibility.primary.spl || this.eligibility.secondary.spl
