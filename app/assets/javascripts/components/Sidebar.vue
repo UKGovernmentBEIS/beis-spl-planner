@@ -4,8 +4,8 @@
       <h2 class="govuk-heading-m">
         Your leave weeks
       </h2>
-      <p>
-        You can {{ hasPrimaryLeaveAndSharedLeaveEligibility ? "split a total of" : "take" }} <span v-html="formatWeeks(52)"></span> as {{ primaryInitialLeaveOrSharedParentalLeave }}.
+      <p v-if="hasPrimaryLeaveAndSharedLeaveEligibility">
+        You can split a total of <span v-html="formatWeeks(52)"></span> as {{ primaryInitialLeaveOrSharedParentalLeave }}.
       </p>
       <p>
         You’ve taken <span v-html="weeksOfPrimaryInitialLeaveAndSharedLeaveTaken"></span>.
@@ -20,11 +20,11 @@
       <div class="govuk-error-summary govuk-!-padding-2 govuk-!-margin-bottom-4" role="alert" tabindex="-1"
         v-if="hasAdoptionLeaveError">
         <div class="govuk-error-summary__body" v-if="isOverseasAdoption">
-          You must take at least 2 weeks of Adoption Leave and
+          You must take at least 2 weeks of Adoption Leave or Pay and
           it must start within the first 28 days of the child arriving in the UK.
         </div>
         <div class="govuk-error-summary__body" v-else>
-          You must take at least 2 weeks of Adoption Leave and it must include the first week the child lives with you.
+          You must take at least 2 weeks of Adoption Leave or Pay and it must include the first week the child lives with you.
         </div>
       </div>
     </template>
@@ -122,7 +122,7 @@
         if (this.primaryLeaveType !== 'adoption') {
           return false
         }
-        if (this.primaryLeaveUsed < 2) {
+        if (this.primaryLeaveUsed + this.leaveWeeks.primary.shppCountedAsSpl < 2) {
           return true
         }
         if (this.isOverseasAdoption) {
