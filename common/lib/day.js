@@ -34,8 +34,18 @@ class Day {
     return new Day(newMoment)
   }
 
+  mondayStartOfWeek () {
+    const newMoment = this.moment.clone().startOf('isoweek')
+    return new Day(newMoment)
+  }
+
   endOfWeek () {
     const newMoment = this.moment.clone().endOf('week')
+    return new Day(newMoment)
+  }
+
+  sundayEndOfWeek () {
+    const newMoment = this.moment.clone().endOf('isoweek')
     return new Day(newMoment)
   }
 
