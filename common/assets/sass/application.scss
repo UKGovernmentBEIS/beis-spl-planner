@@ -1,15 +1,6 @@
 $govuk-global-styles: true;
 @import "govuk-frontend/all";
-@import "@hmcts/frontend/all";
 
 @import "components/cookie-message";
 @import "components/button-link";
 @import "../../../app/assets/sass/application";
-
-body.js-enabled .js-hide {
-  display: none !important;
-}
-
-body:not(.js-enabled) .js-show {
-  display: none !important;
-}
