@@ -19,7 +19,8 @@ const { isYes, parentNameForUrl } = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
 
 router.use('/planner/examples', require('./router.examples'))
-router.use('/forms', require('./router.forms'))
+// router.use('/forms', require('./router.forms'))
+router.use('/forms', express.static('./app/forms'))
 
 router.route(paths.getPath('root'))
   .get(function (req, res) {

@@ -6,7 +6,7 @@
   {% if data | shouldDisplaySecondaryLeaveAndPayForm %}
     {{ fileDownload({
       name: data | secondaryName | capitalize + "’s Shared Parental Leave and Pay notice form",
-      href: "/forms/" + ("SPL_FatherOrPartner_Birth.pdf" if data | primaryLeaveType == "maternity" else "SPL_Primary_Adopters_Partner.pdf"),
+      href: "/forms/" + ("SPL_Partner_Birth.pdf" if data | primaryLeaveType == "maternity" else "SPL_Primary_Adopters_Partner.pdf"),
       description: {
         html: noticeDescription
       },

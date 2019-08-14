@@ -41,7 +41,7 @@ router.get('/SPL_Mother_Birth.pdf', function (req, res) {
   generateFormAndReturn(req, res, 'forms/pages/declaration-maternity-primary.njk', 'primary')
 })
 
-router.get('/SPL_FatherOrPartner_Birth.pdf', function (req, res) {
+router.get('/SPL_Partner_Birth.pdf', function (req, res) {
   generateFormAndReturn(req, res, 'forms/pages/declaration-maternity-secondary.njk', 'secondary')
 })
 
