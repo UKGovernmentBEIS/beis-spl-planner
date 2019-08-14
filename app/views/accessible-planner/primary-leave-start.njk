@@ -24,6 +24,7 @@
 {% set zeroWeek = (data | zeroWeek) %}
 {% set isBirth = (data | isBirth) %}
 {% set isAdoption = (data | isAdoption) %}
+{% set isOverseasAdoption = (data | isOverseasAdoption) %}
 {% set isSurrogacy = (data | isSurrogacy) %}
 {% set birthOrPlacement= (data | birthOrPlacement) %}
 
@@ -49,10 +50,12 @@
               {{ primaryLeaveType | capitalize }} Leave can start
               {% if isSurrogacy %}
                 from the week the baby is born
+              {% elif isOverseas %}
+                within the first 28 days that the child arrives in the UK.
               {% else %}
                 up to {{ (options | last) | abs }} weeks before
-                {{ "the first week the child lives with you" if isAdoption else "the baby is born"  }}
-              {% endif %}.
+                {{ "the first week the child lives with you." if isAdoption else "the baby is born." }}
+              {% endif %}
             </p>
           {% endset %}
           {% call govukFieldset({
