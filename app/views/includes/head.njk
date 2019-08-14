@@ -1,4 +1,12 @@
 <link href="{{ css_path }}" media="screen" rel="stylesheet" type="text/css" />
+<style>
+  body.js-enabled .js-hide {
+    display: none !important;
+  }
+  body:not(.js-enabled) .js-show {
+    display: none !important;
+  }
+</style>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTICS_ID }}"></script>
