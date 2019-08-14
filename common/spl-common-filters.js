@@ -43,6 +43,10 @@ module.exports = function (env) {
     return day.format('D MMMM YYYY')
   }
 
+  function endOfWeek (day) {
+    return day.endOfWeek()
+  }
+
   function isInPast (day) {
     return day.isInPast()
   }
@@ -65,6 +69,7 @@ module.exports = function (env) {
     exampleDate,
     formatDate,
     formatForDisplay,
+    endOfWeek,
     isInPast,
     removeEmpty,
     pageTitle,
