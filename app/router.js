@@ -195,7 +195,6 @@ registerPlannerRouteForPrimaryLeaveTypes(router, 'start', {
     res.render('accessible-planner/primary-leave-start')
   },
   post: function (parentUrlPart, req, res) {
-    // TODO: validate
     res.redirect(paths.getPath(`planner.${parentUrlPart}.end`))
   }
 })
@@ -206,7 +205,6 @@ registerPlannerRouteForPrimaryLeaveTypes(router, 'end', {
     res.render('accessible-planner/primary-leave-end')
   },
   post: function (parentUrlPart, req, res) {
-    // TODO: validate
     res.redirect(paths.getPath('planner.paternity-leave'))
   }
 })
