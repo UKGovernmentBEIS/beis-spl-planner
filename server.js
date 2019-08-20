@@ -120,7 +120,6 @@ function initialiseTemplateEngine (app) {
   // if it's not production we want to re-evaluate the assets on each file change
   nunjucksEnvironment.addGlobal('css_path', NODE_ENV === 'production' ? CSS_PATH : staticify.getVersionedPath('/stylesheets/application.min.css'))
   nunjucksEnvironment.addGlobal('js_path', NODE_ENV === 'production' ? JAVASCRIPT_PATH : staticify.getVersionedPath('/javascripts/application.js'))
-  // TODO add value for service name
   nunjucksEnvironment.addGlobal('service_name', SERVICE_NAME)
   nunjucksEnvironment.addGlobal('statutory_maximum_pay', STATUTORY_MAXIMUM_PAY)
 
