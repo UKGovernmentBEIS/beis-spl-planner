@@ -315,10 +315,10 @@
   @import "node_modules/govuk-frontend/helpers/media-queries";
   @import "node_modules/govuk-frontend/settings/colours-applied";
 
-  $header-colour: govuk-colour('grey-3');
-  $cell-border: 1px solid govuk-colour('grey-3');
+  $header-colour: govuk-colour("grey-3");
+  $cell-border: 1px solid govuk-colour("grey-3");
 
-  $row-banner-colour: govuk-colour('yellow');
+  $row-banner-colour: govuk-colour("yellow");
 
   .hide-focus .govuk-table__cell:focus {
     outline: none;
@@ -465,13 +465,13 @@
   }
 
   $cell-colours: (
-    "adoption": lighten(govuk-colour('blue'), 50%),
-    "maternity": lighten(govuk-colour('blue'), 50%),
-    "paternity": lighten(govuk-colour('red'), 50%),
-    "shared": lighten(govuk-colour('light-green'), 25%),
-    "compulsory": lighten(govuk-colour('blue'), 25%),
-    "disabled": govuk-colour('grey-2'),
-    "unpaid": lighten(govuk-colour('yellow'), 25%)
+    "adoption": lighten(govuk-colour("blue"), 50%),
+    "maternity": lighten(govuk-colour("blue"), 50%),
+    "paternity": lighten(govuk-colour("red"), 50%),
+    "shared": lighten(govuk-colour("light-green"), 25%),
+    "compulsory": lighten(govuk-colour("blue"), 25%),
+    "disabled": govuk-colour("grey-2"),
+    "unpaid": lighten(govuk-colour("yellow"), 25%)
   );
 
   @each $class, $colour in $cell-colours {
@@ -486,14 +486,14 @@
   }
 
   .ineligible {
-    background-color: map-get($cell-colours, 'disabled') !important;
+    background-color: map-get($cell-colours, "disabled") !important;
       &.leave:hover:not(.disabled) {
-        background-color: hoverify(map-get($cell-colours, 'disabled')) !important;
+        background-color: hoverify(map-get($cell-colours, "disabled")) !important;
       }
   }
 
   @mixin cellHoverRules() {
-    $empty-cell-background-colour: govuk-colour('white');
+    $empty-cell-background-colour: govuk-colour("white");
     .leave:not(.compulsory):not(.disabled), .pay:not(.disabled) {
       &:hover {
         background-color: hoverify($empty-cell-background-colour);
@@ -514,7 +514,7 @@
         }
         &:not(.compulsory):not(.disabled):hover + .pay:not(.disabled) {
           &.unpaid {
-            background-color: hoverify(map-get($cell-colours, 'unpaid'))
+            background-color: hoverify(map-get($cell-colours, "unpaid"))
           }
           &:not(.unpaid) {
             background-color: hoverify($colour);

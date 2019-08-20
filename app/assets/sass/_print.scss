@@ -6,7 +6,7 @@
 
 @include govuk-media-query($media-type: print) {
   html {
-    background-color: govuk-colour('white') !important;
+    background-color: govuk-colour("white") !important;
   }
 
   .govuk-back-link {
