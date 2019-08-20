@@ -1,10 +1,7 @@
 const delve = require('dlv')
 const _ = require('lodash')
 const validate = require('./validate')
-const {
-  isBirth,
-  isAdoption
-} = require('../common/lib/dataUtils')
+const dataUtils = require('../common/lib/dataUtils')
 
 /*
  * This class is used to manage all paths in the app.
@@ -102,9 +99,9 @@ class Paths {
           sharedParentalLeaveAndPay: {
             url: '/eligibility/partner/shared-parental-leave-and-pay',
             workflowParentPath: data => {
-              if (isBirth(data)) {
+              if (dataUtils.isBirth(data)) {
                 return '/eligibility/mother/maternity-allowance'
-              } else if (isAdoption(data)) {
+              } else if (dataUtils.isAdoption(data)) {
                 return '/eligibility/primary-adopter/initial-leave-and-pay'
               } else {
                 return '/eligibility/parental-order-parent/initial-leave-and-pay'
@@ -160,7 +157,7 @@ class Paths {
         'paternity-leave': {
           url: '/planner/paternity-leave',
           workflowParentPath: data => {
-            if (isBirth(data)) {
+            if (dataUtils.isBirth(data)) {
               return '/planner/maternity-leave/end'
             } else {
               return '/planner/adoption-leave/end'
@@ -177,7 +174,14 @@ class Paths {
         },
         'shared-parental-leave': {
           url: '/planner/shared-parental-leave',
-          workflowParentPath: '/planner/paternity-leave/end',
+          workflowParentPath: (data, isForValidator) => {
+            if (isForValidator) {
+              // Prevent circular reference when validating page history.
+              return '/planner/paternity-leave/end'
+            }
+            const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
+            return splBlockPlanningOrder.length > 0 ? '/planner/shared-parental-leave/end' : '/planner/paternity-leave/end'
+          },
           start: {
             url: '/planner/shared-parental-leave/start',
             workflowParentPath: '/planner/shared-parental-leave'
@@ -190,7 +194,21 @@ class Paths {
       },
       summary: {
         url: '/summary',
-        workflowParentPath: '/planner'
+        workflowParentPath: data => {
+          if (!data['leave-blocks']) {
+            return '/planner'
+          }
+          const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
+          if (splBlockPlanningOrder[splBlockPlanningOrder.length - 1] === 'done') {
+            return '/planner/shared-parental-leave'
+          } else if (splBlockPlanningOrder.includes('primary') || splBlockPlanningOrder.includes('secondary')) {
+            return '/planner/shared-parental-leave/end'
+          } else if (delve(data, 'leave-blocks.secondary.is-taking-paternity-leave', false)) {
+            return '/planner/paternity-leave/end'
+          } else {
+            return '/planner/paternity-leave'
+          }
+        }
       },
       feedback: {
         url: '/feedback'
@@ -223,10 +241,10 @@ class Paths {
     return findObjectByUrl(this.pathObjects, url)
   }
 
-  getPreviousWorkflowPath (url, data) {
+  getPreviousWorkflowPath (url, data, isForValidator) {
     const pathObject = this.getPathObjectFromUrl(url)
     const workflowParentPath = delve(pathObject, 'workflowParentPath', undefined)
-    return _.isFunction(workflowParentPath) ? workflowParentPath(data) : workflowParentPath
+    return _.isFunction(workflowParentPath) ? workflowParentPath(data, isForValidator) : workflowParentPath
   }
 
   getPath (location) {

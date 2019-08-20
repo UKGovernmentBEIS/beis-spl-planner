@@ -15,7 +15,7 @@ function getEarliestPathWithValidationErrors (path, req) {
     return null
   }
 
-  const previousPath = paths.getPreviousWorkflowPath(path, req.session.data)
+  const previousPath = paths.getPreviousWorkflowPath(path, req.session.data, true)
   const earliestPathWithValidationErrors = getEarliestPathWithValidationErrors(previousPath, req)
   if (earliestPathWithValidationErrors) {
     return earliestPathWithValidationErrors

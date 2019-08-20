@@ -2,7 +2,7 @@ const _ = require('lodash')
 const delve = require('dlv')
 const dset = require('dset')
 const paths = require('../paths')
-const { isNo } = require('../../common/lib/dataUtils')
+const dataUtils = require('../../common/lib/dataUtils')
 const Day = require('../../common/lib/day')
 const { isYesOrNo } = require('./validationUtils')
 
@@ -39,10 +39,10 @@ function bothParentsAreIneligible (data) {
   const primaryShppEligible = delve(data, ['primary', 'shpp-eligible'])
   const secondarySplEligible = delve(data, ['secondary', 'spl-eligible'])
   const secondaryShppEligible = delve(data, ['secondary', 'shpp-eligible'])
-  return isNo(primarySplEligible) &&
-         isNo(primaryShppEligible) &&
-         isNo(secondarySplEligible) &&
-         isNo(secondaryShppEligible)
+  return dataUtils.isNo(primarySplEligible) &&
+         dataUtils.isNo(primaryShppEligible) &&
+         dataUtils.isNo(secondarySplEligible) &&
+         dataUtils.isNo(secondaryShppEligible)
 }
 
 function parseExternalQueryString (req) {
@@ -84,33 +84,66 @@ function clearLaterLeaveBlockAnswers (req, currentStep) {
       safeDeleteKey(data, ['leave-blocks', ...field.split('.')])
     }
   }
+  safeDeleteKey(data, 'leave-blocks.spl-block-planning-order')
   safeDeleteKey(data, 'leave-blocks.primary.spl')
   safeDeleteKey(data, 'leave-blocks.secondary.spl')
 }
 
-function clearLaterSplBlockAnswers (req, blockNumber) {
-  blockNumber = parseInt(blockNumber)
-  if (isNaN(blockNumber)) {
-    return
-  }
+function clearCurrenttSplBlockIfIncomplete (req) {
+  clearDoneFromSplPlanningOrder(req)
   const { data } = req.session
-  const leaveBlocks = data['leave-blocks']
-  const splPlanningOrder = _.castArray(delve(leaveBlocks, 'spl-block-planning-order', []))
-  if (splPlanningOrder.length === 0) {
+  const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
+  const currentPlanned = splBlockPlanningOrder[splBlockPlanningOrder.length - 1]
+  if (!currentPlanned) {
     return
   }
-
-  while (splPlanningOrder.length > blockNumber) {
-    const parent = splPlanningOrder.pop()
-    if (!leaveBlocks[parent] || !leaveBlocks[parent].spl) {
-      continue
-    }
-    const indexes = Object.keys(leaveBlocks[parent].spl).filter(key => /_\d+/.test(key)).map(key => parseInt(key.substring(1)))
-    const maxIndex = Math.max(...indexes)
-    safeDeleteKey(data, ['leave-blocks', parent, 'spl', `_${maxIndex}`])
+  const currentParent = currentPlanned
+  const parentSplBlocks = delve(data, ['leave-blocks', currentParent, 'spl'], {})
+  const numberOfBlocks = Object.keys(parentSplBlocks).length
+  if (numberOfBlocks === 0) {
+    return
   }
+  const currentBlockIndex = `_${numberOfBlocks - 1}`
+  const currentBlock = parentSplBlocks[currentBlockIndex]
+  if (!currentBlock.start || !currentBlock.end) {
+    // Remove incomplete block.
+    splBlockPlanningOrder.pop()
+    dset(data, 'leave-blocks.spl-block-planning-order', splBlockPlanningOrder)
+    safeDeleteKey(data, ['leave-blocks', currentParent, 'spl', currentBlockIndex])
+  }
+}
 
-  dset(data, 'leave-blocks.spl-block-planning-order', splPlanningOrder)
+function clearCurrentSplBlockStart (req) {
+  clearDoneFromSplPlanningOrder(req)
+  const currentBlock = getCurrentSplBlock(req.session.data)
+  safeDeleteKey(currentBlock, 'start')
+}
+
+function clearCurrentSplBlockEnd (req) {
+  clearDoneFromSplPlanningOrder(req)
+  const currentBlock = getCurrentSplBlock(req.session.data)
+  safeDeleteKey(currentBlock, 'end')
+}
+
+function clearDoneFromSplPlanningOrder (req) {
+  const { data } = req.session
+  const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
+  if (splBlockPlanningOrder[splBlockPlanningOrder.length - 1] === 'done') {
+    splBlockPlanningOrder.pop()
+    dset(data, 'leave-blocks.spl-block-planning-order', splBlockPlanningOrder)
+  }
+}
+
+function getCurrentSplBlock (data) {
+  const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
+  const currentParent = splBlockPlanningOrder[splBlockPlanningOrder.length - 1]
+  const parentSplBlocks = delve(data, ['leave-blocks', currentParent, 'spl'], {})
+  const numberOfBlocks = Object.keys(parentSplBlocks).length
+  if (numberOfBlocks === 0) {
+    return null
+  }
+  const currentBlockIndex = `_${numberOfBlocks - 1}`
+  return parentSplBlocks[currentBlockIndex]
 }
 
 function safeDeleteKey (object, path) {
@@ -130,5 +163,7 @@ module.exports = {
   bothParentsAreIneligible,
   parseExternalQueryString,
   clearLaterLeaveBlockAnswers,
-  clearLaterSplBlockAnswers
+  clearCurrenttSplBlockIfIncomplete,
+  clearCurrentSplBlockStart,
+  clearCurrentSplBlockEnd
 }

@@ -1,4 +1,5 @@
-const { isString } = require('lodash')
+const _ = require('lodash')
+const delve = require('dlv')
 
 function natureOfParenthood (data) {
   return data['nature-of-parenthood']
@@ -13,7 +14,7 @@ function birthOrPlacement (data) {
 }
 
 function isBirth (data) {
-  if (isString(data)) {
+  if (_.isString(data)) {
     return data === 'birth'
   } else {
     return natureOfParenthood(data) === 'birth'
@@ -21,7 +22,7 @@ function isBirth (data) {
 }
 
 function isAdoption (data) {
-  if (isString(data)) {
+  if (_.isString(data)) {
     return data === 'adoption'
   } else {
     return natureOfParenthood(data) === 'adoption'
@@ -37,7 +38,7 @@ function isOverseasAdoption (data) {
 }
 
 function isSurrogacy (data) {
-  if (isString(data)) {
+  if (_.isString(data)) {
     return data === 'surrogacy'
   } else {
     return natureOfParenthood(data) === 'surrogacy'
@@ -94,6 +95,10 @@ function isNo (dataField) {
   return dataField === 'no'
 }
 
+function splBlockPlanningOrder (data) {
+  return _.castArray(delve(data, 'leave-blocks.spl-block-planning-order', []))
+}
+
 module.exports = {
   natureOfParenthood,
   typeOfAdoption,
@@ -111,5 +116,6 @@ module.exports = {
   isSurrogacy,
   earliestPrimaryLeaveWeek,
   isYes,
-  isNo
+  isNo,
+  splBlockPlanningOrder
 }

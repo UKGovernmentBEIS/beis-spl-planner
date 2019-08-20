@@ -12,6 +12,15 @@
   {{ "Do you want to plan a block of Shared Parental Leave?" | pageTitle }}
 {%- endblock %}
 
+{% block beforeContent %}
+  {{ super() }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: backPath()
+  }) }}
+{% endblock %}
+
 {% set primaryName = (data | primaryName) %}
 {% set primaryLeaveType = (data | primaryLeaveType) %}
 {% set leaveBlocks = data["leave-blocks"] %}

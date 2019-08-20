@@ -8,7 +8,20 @@
 
 {% extends "layout.njk" %}
 
-{% set parent = (data["leave-blocks"]["spl-block-planning-order"] | castArray | last) %}
+{% block pageTitle -%}
+  {{ "Which week will be the " + parentName + "’s first week of Shared Parental Leave in this block? (" + parentName + " block " + (index + 1) +")" | pageTitle }}
+{%- endblock %}
+
+{% block beforeContent %}
+  {{ super() }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: backPath()
+  }) }}
+{% endblock %}
+
+{% set parent = (data | splBlockPlanningOrder | last) %}
 {% set index = (data["leave-blocks"][parent]["spl"] | length) - 1 %}
 
 {% set parentName = (data | parentName(parent)) %}
@@ -35,10 +48,6 @@
     ({{ (weekNumber - endOfLastBlock) | weeks }} after the {{ parentName }}’s {{ "previous leave block" if hasTakenSpl else (initialLeaveType + " leave") }})
   {% endif %}
 {% endmacro %}
-
-{% block pageTitle -%}
-  {{ "Which week will be the " + parentName + "’s first week of Shared Parental Leave in this block? (" + parentName + " block " + (index + 1) +")" | pageTitle }}
-{%- endblock %}
 
 {% block content %}
   <div class="govuk-grid-row">
