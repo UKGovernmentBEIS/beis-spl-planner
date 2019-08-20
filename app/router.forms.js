@@ -25,15 +25,14 @@ function generateFormAndReturn (req, res, templateName, parent) {
     }
     nunjucks.render(templateName, formdata, function (e, html) {
       if (e) {
-        console.log(e)
-        res.send('error')
+        throw e
       } else {
         pdf.create(html, config).toStream((e, stream) => stream.pipe(res))
       }
     })
   } catch (e) {
-    console.log(e)
-    res.send('error')
+    console.error(e)
+    throw e
   }
 }
 
