@@ -6,12 +6,6 @@
     {{ fileDownload({
       name: (data | primaryName | capitalize) + "’s Shared Parental Leave and Pay notice form",
       href: "/forms/" + ("SPL_Mother_Birth.pdf" if data | primaryLeaveType == "maternity" else "SPL_Primary_Adopter.pdf"),
-      description: {
-        html: noticeDescription
-      },
-      details: {
-        html: noticeDetails
-      },
       attributes: {
         ga_fileDownloaded: {
             "data-ga-hit-type": "primary_notice_clicked",
