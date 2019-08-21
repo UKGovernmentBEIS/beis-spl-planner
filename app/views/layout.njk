@@ -1,10 +1,17 @@
-{% from "phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "footer/macro.njk" import govukFooter %}
+{% from "header/macro.njk" import govukHeader %}
+{% from "phase-banner/macro.njk" import govukPhaseBanner %}
 
 {% extends "template.njk" %}
 
 {% block head %}
   {% include "./includes/head.njk" %}
+{% endblock %}
+
+{% block header %}
+  {{ govukHeader({
+    serviceName: service_name
+  }) }}
 {% endblock %}
 
 {% block beforeContent %}
@@ -13,7 +20,7 @@
       text: "beta"
     },
     classes: "print-hide",
-    html: 'This is a new service – your <a class="govuk-link" href="/feedback">feedback</a> will help us to improve it.'
+    html: "This is a new service – your <a class=\"govuk-link\" href=\"/feedback\">feedback</a> will help us to improve it."
   }) }}
 {% endblock %}
 
