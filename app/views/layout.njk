@@ -1,5 +1,6 @@
 {% from "phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "footer/macro.njk" import govukFooter %}
+{% from "header/macro.njk" import govukHeader %}
 
 {% extends "template.njk" %}
 
@@ -7,6 +8,12 @@
 
 {% block head %}
   {% include "./includes/head.njk" %}
+{% endblock %}
+
+{% block header %}
+  {{ govukHeader({
+    serviceName: service_name
+  }) }}
 {% endblock %}
 
 {% block beforeContent %}
