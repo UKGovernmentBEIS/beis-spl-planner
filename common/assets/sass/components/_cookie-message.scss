@@ -5,7 +5,7 @@
   padding: govuk-spacing(3);
   background-color: govuk-colour("white");
 
-  /* This is overriden in JavaScript if the banner should be shown. */
+  // This is overriden in JavaScript if the banner should be shown.
   display: none;
 
   @include govuk-media-query($media-type: print) {
