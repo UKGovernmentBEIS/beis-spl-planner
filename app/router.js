@@ -235,14 +235,7 @@ router.route(paths.getPath('planner.paternity-leave.start'))
     res.render('accessible-planner/paternity-leave-start')
   })
   .post(function (req, res) {
-    const paternityLeaveStart = delve(req.session.data, 'leave-blocks.secondary.initial.start')
-    if (parseInt(paternityLeaveStart) === 7) {
-      // Week 7 is the last week that is eligible for Paternity Leave, so leave must also end in this week.
-      dset(req.session.data, 'leave-blocks.secondary.initial.end', 7)
-      res.redirect(paths.getPath('planner.shared-parental-leave'))
-    } else {
-      res.redirect(paths.getPath('planner.paternity-leave.end'))
-    }
+    res.redirect(paths.getPath('planner.paternity-leave.end'))
   })
 
 router.route(paths.getPath('planner.paternity-leave.end'))

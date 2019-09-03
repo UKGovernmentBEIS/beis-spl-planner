@@ -49,10 +49,6 @@
               The partner can take up to 2 weeks of Paternity Leave during the first 8 weeks after {{ birthOrPlacement }}.
               This leave must be taken in one go.
             </p>
-            <p class="govuk-hint">
-              That means that if your first week of Paternity Leave is {{ zeroWeek | offsetWeeks(7) | formatForDisplay }},
-              you will only be able to take 1 week of Paternity Leave.
-            </p>
             {% if (primaryLeaveEnd >= 7) %}
               <p class="govuk-hint">
                 The {{ primaryName }} is on {{ primaryLeaveType | capitalize }} Leave during the entire 8 week period.

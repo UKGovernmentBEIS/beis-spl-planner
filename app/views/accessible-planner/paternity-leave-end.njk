@@ -3,6 +3,7 @@
 {% from "fieldset/macro.njk" import govukFieldset %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "radios/macro.njk" import govukRadios %}
+{% from "select/macro.njk" import govukSelect %}
 
 {% from "./answers-so-far/macro.njk" import answersSoFar %}
 
@@ -21,11 +22,16 @@
   }) }}
 {% endblock %}
 
-{% set birthOrPlacement = (data | birthOrPlacement) %}
+{% set isOverseasAdoption = (data | isOverseasAdoption) %}
 {% set zeroWeek = (data | zeroWeek) %}
-{% set paternityLeaveStart = (data["leave-blocks"]["secondary"]["initial"]["start"] | int) %}
-{% set oneWeekEnd = paternityLeaveStart %}
-{% set twoWeeksEnd = paternityLeaveStart + 1 %}
+{% set firstWeekOfLeave = (data["leave-blocks"]["secondary"]["initial"]["start"] | int) %}
+{% set options = range(firstWeekOfLeave, firstWeekOfLeave + 2 if firstWeekOfLeave < 7 else 8) %}
+
+{% macro optionText(weekNumber) %}
+  {% set totalWeeks = weekNumber - firstWeekOfLeave + 1 %}
+  {{ totalWeeks | weeks }} of leave
+  (ending in the week of {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }})
+{% endmacro %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -34,38 +40,37 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              The partner’s Paternity Leave starts on {{ zeroWeek | offsetWeeks(paternityLeaveStart) | formatForDisplay }}.
+              The partner’s Paternity Leave starts on {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}
+              and can be a maximum of 2 weeks.
+            </p>
+            <p class="govuk-hint">
+              Paternity Leave must be taken within the first 8 weeks of
+              {% if isOverseasAdoption %}
+                the child arriving in the UK
+              {% else %}
+                {{ data | birthOrPlacement }}
+              {% endif %}.
             </p>
             <p class="govuk-hint">
               Your previous answers are at the bottom of the page.
             </p>
           {% endset %}
-          {{ govukRadios({
-            idPrefix: "changed-name",
-            name: "leave-blocks[secondary][initial][end]",
-            fieldset: {
-              legend: {
-                text: "How many weeks of Paternity Leave will the partner take?",
-                isPageHeading: true,
-                classes: "govuk-fieldset__legend--xl"
-              }
-            },
-            hint: {
-              html: hint
-            },
-            items: [
-              {
-                value: oneWeekEnd,
-                text: "1 week of Paternity Leave",
-                checked: (data["leave-blocks"]["secondary"]["initial"]["end"] | int) === oneWeekEnd
+          {% call govukFieldset({
+            legend: {
+              text: "How many weeks of Paternity Leave will the partner take?",
+              classes: "govuk-fieldset__legend--xl",
+              isPageHeading: true
+            }
+          })%}
+            {{ govukSelect({
+              id: "primary-leave-end",
+              name: "leave-blocks[secondary][initial][end]",
+              hint: {
+                html: hint
               },
-              {
-                value: twoWeeksEnd,
-                text: "2 weeks of Paternity Leave",
-                checked: (data["leave-blocks"]["secondary"]["initial"]["end"] | int) === twoWeeksEnd
-              }
-            ]
-          }) }}
+              items: options | mapValuesToSelectOptions(optionText)
+            }) }}
+          {% endcall %}
         {% endcall %}
         {{ govukButton({
           text: "Continue"
