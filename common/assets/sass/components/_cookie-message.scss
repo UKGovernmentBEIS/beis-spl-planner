@@ -3,15 +3,10 @@
   width: 100%;
 
   padding: govuk-spacing(3);
-  background-color: lighten(desaturate(govuk-colour("light-blue"), 8.46), 42.55);
+  background-color: govuk-colour("white");
 
-  &--hide {
-    display: none;
-  }
-
-  p {
-    margin: 0;
-  }
+  // This is overriden in JavaScript if the banner should be shown.
+  display: none;
 
   @include govuk-media-query($media-type: print) {
     display: none !important;
