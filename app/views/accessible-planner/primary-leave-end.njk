@@ -9,7 +9,7 @@
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
-  {{ "Which week will be the " + (data | primaryName) + "’s last week of " + (data | primaryLeaveType) + " leave?" | pageTitle }}
+  {{ "How many weeks of " + (data | primaryLeaveType | capitalize) + " Leave will the " + (data | primaryName) + " take?" | pageTitle }}
 {%- endblock %}
 
 {% block beforeContent %}
@@ -28,12 +28,12 @@
 {% set birthOrPlacement= (data | birthOrPlacement) %}
 
 {% set firstWeekOfLeave = (data["leave-blocks"]["primary"]["initial"]["start"] | int) %}
-{% set options = range(1, firstWeekOfLeave + 52) %}
+{% set options = range(firstWeekOfLeave, (52 if (firstWeekOfLeave > 0) else (firstWeekOfLeave + 52))) %}
 
 {% macro optionText(weekNumber) %}
   {% set totalWeeks = weekNumber - firstWeekOfLeave + 1 %}
-  {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
-  (taking {{ totalWeeks | weeks }} of leave)
+  {{ totalWeeks | weeks }} of leave
+  (ending in the week of {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }})
 {% endmacro %}
 
 {% block content %}
@@ -62,7 +62,7 @@
           {% endset %}
           {% call govukFieldset({
             legend: {
-              text: "Which week was or will be the " + primaryName + "’s last week of " + (primaryLeaveType | capitalize) + " Leave?",
+              text: "How many weeks of " + (data | primaryLeaveType | capitalize) + " Leave will the " + (data | primaryName) + " take?",
               classes: "govuk-fieldset__legend--xl",
               isPageHeading: true
             }

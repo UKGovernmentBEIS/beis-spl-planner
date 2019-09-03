@@ -5,8 +5,6 @@ const { SERVICE_NAME } = require('../app/constants')
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
 module.exports = function (env) {
-  const capitalize = env.getFilter('capitalize')
-
   function otherParentName (data, currentParent) {
     return currentParent === 'primary' ? dataUtils.secondaryName(data) : dataUtils.primaryName(data)
   }
@@ -56,7 +54,7 @@ module.exports = function (env) {
   }
 
   function pageTitle (...pageSpecificParts) {
-    return [...pageSpecificParts, capitalize(SERVICE_NAME), 'GOV.UK'].filter(string => string).join(' - ')
+    return [...pageSpecificParts, SERVICE_NAME, 'GOV.UK'].filter(string => string).join(' - ')
   }
 
   return {

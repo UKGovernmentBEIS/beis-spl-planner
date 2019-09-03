@@ -165,7 +165,7 @@ function parseSplLeaveBlocks (leaveBlocksDataObject, parent) {
   const splLeaveBlocksDataObject = delve(leaveBlocksDataObject, [parent, 'spl'], {})
   const blockDataObjects = []
 
-  // The SPL object in data has the indexes the blocks with keys like "_0", "_1", "_2", etc.
+  // The SPL object in data indexes the blocks with keys like "_0", "_1", "_2", etc.
   let i = 0
   let block
   const getBlock = n => splLeaveBlocksDataObject[`_${n}`]

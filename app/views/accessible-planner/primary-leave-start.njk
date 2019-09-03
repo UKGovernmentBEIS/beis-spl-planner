@@ -26,17 +26,25 @@
 {% set isAdoption = (data | isAdoption) %}
 {% set isOverseasAdoption = (data | isOverseasAdoption) %}
 {% set isSurrogacy = (data | isSurrogacy) %}
-{% set birthOrPlacement= (data | birthOrPlacement) %}
+{% set birthOrPlacement = (data | birthOrPlacement) %}
 
 {% set minWeek = data | earliestPrimaryLeaveWeek %}
-{% set options = range(0, minWeek - 1, -1) %}
+{% set options = range(0, 4) if isOverseasAdoption else range(0, minWeek - 1, -1) %}
 
 {% macro optionText(weekNumber) %}
   {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
-  {% if weekNumber === 0 %}
-    (the {{ birthOrPlacement }} week)
+  {% if (weekNumber === 0) %}
+    {% if isOverseasAdoption %}
+      (the first week the child arrives in the UK)
+    {% else %}
+      (the {{ birthOrPlacement }} week)
+    {% endif %}
   {% else %}
-    ({{ weekNumber | abs | weeks }} before {{ birthOrPlacement }})
+    {% if isOverseasAdoption %}
+      ({{ weekNumber | weeks }} after the child arrives in the UK)
+    {% else %}
+      ({{ weekNumber | abs | weeks }} before {{ birthOrPlacement }})
+    {% endif %}
   {% endif %}
 {% endmacro %}
 
@@ -50,7 +58,7 @@
               {{ primaryLeaveType | capitalize }} Leave can start
               {% if isSurrogacy %}
                 from the week the baby is born
-              {% elif isOverseas %}
+              {% elif isOverseasAdoption %}
                 within the first 28 days that the child arrives in the UK.
               {% else %}
                 up to {{ (options | last) | abs }} weeks before

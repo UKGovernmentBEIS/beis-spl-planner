@@ -13,9 +13,13 @@ const {
   registerPlannerRouteForPrimaryLeaveTypes,
   bothParentsAreIneligible,
   parseExternalQueryString,
-  clearLaterLeaveBlockAnswers
+  clearLaterLeaveBlockAnswers,
+  clearLaterSplBlocks,
+  clearCurrenttSplBlockIfIncomplete,
+  clearCurrentSplBlockStart,
+  clearCurrentSplBlockEnd
 } = require('./lib/routerUtils')
-const { isYes, parentNameForUrl } = require('../common/lib/dataUtils')
+const dataUtils = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
 
 router.use('/planner/examples', require('./router.examples'))
@@ -44,7 +48,7 @@ router.route(paths.getPath('natureOfParenthood'))
       return res.redirect('back')
     }
     if (skip.typeOfAdoption(req)) {
-      const parentName = parentNameForUrl(req.session.data, 'primary')
+      const parentName = dataUtils.parentNameForUrl(req.session.data, 'primary')
       res.redirect(paths.getPath(`eligibility.${parentName}.sharedParentalLeaveAndPay`))
     } else {
       res.redirect(paths.getPath('typeOfAdoption'))
@@ -177,12 +181,15 @@ router.route(paths.getPath('parentSalaries'))
 
 router.route(paths.getPath('planner'))
   .get(function (req, res) {
-    const primaryLeaveWeeks = getWeeksArray(res.locals.data, 'primary', 'leave')
+    const { data } = req.session
+    const primaryLeaveWeeks = getWeeksArray(data, 'primary', 'leave')
     if (primaryLeaveWeeks.length === 0) {
       // Add first two weeks after birth or placement to session on initial load.
-      dset(res.locals.data, 'primary.leave', ['0', '1'])
-      dset(res.locals.data, 'primary.pay', ['0', '1'])
+      dset(data, 'primary.leave', ['0', '1'])
+      dset(data, 'primary.pay', ['0', '1'])
     }
+    // Remove any data from the question based planner.
+    delete data['leave-blocks']
     res.render('planner')
   })
   .post(function (req, res) {
@@ -216,7 +223,7 @@ router.route(paths.getPath('planner.paternity-leave'))
   })
   .post(function (req, res) {
     const isTakingPaternityLeave = delve(req.session.data, 'leave-blocks.secondary.is-taking-paternity-leave')
-    if (isYes(isTakingPaternityLeave)) {
+    if (dataUtils.isYes(isTakingPaternityLeave)) {
       res.redirect(paths.getPath('planner.paternity-leave.start'))
     } else {
       res.redirect(paths.getPath('planner.shared-parental-leave'))
@@ -229,14 +236,7 @@ router.route(paths.getPath('planner.paternity-leave.start'))
     res.render('accessible-planner/paternity-leave-start')
   })
   .post(function (req, res) {
-    const paternityLeaveStart = delve(req.session.data, 'leave-blocks.secondary.initial.start')
-    if (parseInt(paternityLeaveStart) === 7) {
-      // Week 7 is the last week that is eligible for Paternity Leave, so leave must also end in this week.
-      dset(req.session.data, 'leave-blocks.secondary.initial.end', 7)
-      res.redirect(paths.getPath('planner.shared-parental-leave'))
-    } else {
-      res.redirect(paths.getPath('planner.paternity-leave.end'))
-    }
+    res.redirect(paths.getPath('planner.paternity-leave.end'))
   })
 
 router.route(paths.getPath('planner.paternity-leave.end'))
@@ -254,37 +254,30 @@ router.route(paths.getPath('planner.shared-parental-leave'))
     if (getRemainingLeaveAllowance(leaveBlocks) === 0) {
       res.redirect(paths.getPath('summary'))
     } else {
+      clearCurrenttSplBlockIfIncomplete(req)
       res.render('accessible-planner/shared-parental-leave')
     }
   })
   .post(function (req, res) {
     const { data } = req.session
-    const blockHistory = delve(data, 'leave-blocks.spl-block-planning-order', [])
-    const nextBlock = blockHistory[blockHistory.length - 1]
-    if (nextBlock === 'done') {
+    const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
+    const next = splBlockPlanningOrder[splBlockPlanningOrder.length - 1]
+    if (next === 'done') {
       res.redirect(paths.getPath('summary'))
     } else {
-      const parent = nextBlock
+      const parent = next
       const splBlockDataObject = delve(data, ['leave-blocks', parent, 'spl'], {})
-      const blocksLength = Object.keys(splBlockDataObject).length
-
-      let blockIndex
-      if (blocksLength === 0) {
-        blockIndex = 0
-      } else {
-        const lastBlockIndex = blocksLength - 1
-        const lastBlock = splBlockDataObject[`_${lastBlockIndex}`]
-        // If the last block is complete, we are starting a new one.
-        blockIndex = (lastBlock.start && lastBlock.end) ? lastBlockIndex + 1 : lastBlockIndex
-      }
-      dset(data, ['leave-blocks', parent, 'spl', `_${blockIndex}`, 'leave'], 'shared')
+      const nextIndex = Object.keys(splBlockDataObject).length
+      dset(data, ['leave-blocks', parent, 'spl', `_${nextIndex}`, 'leave'], 'shared')
       res.redirect(paths.getPath('planner.shared-parental-leave.start'))
     }
   })
 
 router.route(paths.getPath('planner.shared-parental-leave.start'))
   .get(function (req, res) {
-    // clearLaterSplBlockAnswers(req, req.query.block)
+    clearLaterSplBlocks(req)
+    clearCurrentSplBlockStart(req)
+    clearCurrentSplBlockEnd(req)
     res.render('accessible-planner/shared-parental-leave-start')
   })
   .post(function (req, res) {
@@ -293,7 +286,8 @@ router.route(paths.getPath('planner.shared-parental-leave.start'))
 
 router.route(paths.getPath('planner.shared-parental-leave.end'))
   .get(function (req, res) {
-    // clearLaterSplBlockAnswers(req, req.query.block)
+    clearLaterSplBlocks(req)
+    clearCurrentSplBlockEnd(req)
     res.render('accessible-planner/shared-parental-leave-end')
   })
   .post(function (req, res) {
