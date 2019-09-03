@@ -8,10 +8,6 @@
 
 {% extends "layout.njk" %}
 
-{% block pageTitle -%}
-  {{ "Do you want to plan a block of Shared Parental Leave?" | pageTitle }}
-{%- endblock %}
-
 {% block beforeContent %}
   {{ super() }}
 
@@ -26,6 +22,10 @@
 {% set leaveBlocks = data["leave-blocks"] %}
 {% set remainingLeaveAllowance = (leaveBlocks | remainingLeaveAllowance) %}
 {% set eitherParentHasTakenSpl = (leaveBlocks | hasTakenSpl("primary")) or (leaveBlocks | hasTakenSpl("secondary")) %}
+
+{% block pageTitle -%}
+  {{ "Do you want to plan " + ("another" if eitherParentHasTakenSpl else "a") + " block of Shared Parental Leave?" | pageTitle }}
+{%- endblock %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -57,7 +57,7 @@
             name: "leave-blocks[spl-block-planning-order][]",
             fieldset: {
               legend: {
-                text: "Do you want to plan a block of Shared Parental Leave?",
+                text: "Do you want to plan " + ("another" if eitherParentHasTakenSpl else "a") + " block of Shared Parental Leave?",
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }
