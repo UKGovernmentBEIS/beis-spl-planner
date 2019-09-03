@@ -89,6 +89,22 @@ function clearLaterLeaveBlockAnswers (req, currentStep) {
   safeDeleteKey(data, 'leave-blocks.secondary.spl')
 }
 
+function clearLaterSplBlocks (req) {
+  const blockNumber = parseInt(req.query.block)
+  if (!blockNumber) {
+    return
+  }
+  const { data } = req.session
+  const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
+  while (splBlockPlanningOrder.length > blockNumber) {
+    const parent = splBlockPlanningOrder.pop()
+    const parentSplBlocks = delve(data, ['leave-blocks', parent, 'spl'])
+    const numberOfBlocks = Object.keys(parentSplBlocks).length
+    const currentBlockIndex = `_${numberOfBlocks - 1}`
+    safeDeleteKey(parentSplBlocks, currentBlockIndex)
+  }
+}
+
 function clearCurrenttSplBlockIfIncomplete (req) {
   clearDoneFromSplPlanningOrder(req)
   const { data } = req.session
@@ -163,6 +179,7 @@ module.exports = {
   bothParentsAreIneligible,
   parseExternalQueryString,
   clearLaterLeaveBlockAnswers,
+  clearLaterSplBlocks,
   clearCurrenttSplBlockIfIncomplete,
   clearCurrentSplBlockStart,
   clearCurrentSplBlockEnd

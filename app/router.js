@@ -14,6 +14,7 @@ const {
   bothParentsAreIneligible,
   parseExternalQueryString,
   clearLaterLeaveBlockAnswers,
+  clearLaterSplBlocks,
   clearCurrenttSplBlockIfIncomplete,
   clearCurrentSplBlockStart,
   clearCurrentSplBlockEnd
@@ -274,6 +275,7 @@ router.route(paths.getPath('planner.shared-parental-leave'))
 
 router.route(paths.getPath('planner.shared-parental-leave.start'))
   .get(function (req, res) {
+    clearLaterSplBlocks(req)
     clearCurrentSplBlockStart(req)
     clearCurrentSplBlockEnd(req)
     res.render('accessible-planner/shared-parental-leave-start')
@@ -284,6 +286,7 @@ router.route(paths.getPath('planner.shared-parental-leave.start'))
 
 router.route(paths.getPath('planner.shared-parental-leave.end'))
   .get(function (req, res) {
+    clearLaterSplBlocks(req)
     clearCurrentSplBlockEnd(req)
     res.render('accessible-planner/shared-parental-leave-end')
   })
