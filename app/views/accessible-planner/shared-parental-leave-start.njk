@@ -45,7 +45,7 @@
       ({{ weekNumber | weeks }} after {{ birthOrPlacement }})
     {% endif %}
   {% else %}
-    ({{ (weekNumber - endOfLastBlock) | weeks }} after the {{ parentName }}’s {{ "previous leave block" if hasTakenSpl else (initialLeaveType + " leave") }})
+    ({{ (weekNumber - endOfLastBlock) | weeks }} after the {{ parentName }}’s {{ "previous leave block" if hasTakenSpl else ((initialLeaveType | capitalize) + " Leave") }})
   {% endif %}
 {% endmacro %}
 
@@ -63,7 +63,7 @@
                 {% if hasTakenSpl %}
                   last block of Shared Parental Leave
                 {% else %}
-                  {{ initialLeaveType }} leave
+                  {{ initialLeaveType | capitalize }} Leave
                 {% endif %}
                 ended with the week of {{ zeroWeek | offsetWeeks(endOfLastBlock) | formatForDisplay }}.
               {% endif %}
