@@ -2,12 +2,6 @@
 
 {% macro fileDownload(options) %}
   {% set ga_fileDownloadedAttributes = options.attributes.ga_fileDownloaded | htmlAttributesFromObject %}
-  {% set noticeDescription %}
-    <p>
-      This form has been prefilled with your chosen leave dates.
-      If you prefer you can <a href="{{ options.href }}?blank=true" {{ ga_fileDownloadedAttributes | safe }}>download a blank version</a>.
-    </p>
-  {% endset %}
   {% set body %}
     <div class="document-card-container govuk-body govuk-!-margin-bottom-2" {{ ga_fileDownloadedAttributes | safe }}>
       <a class="document" href="{{ options.href }}" {{ ga_fileDownloadedAttributes | safe }}>
