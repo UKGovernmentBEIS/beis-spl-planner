@@ -63,3 +63,6 @@ public/
 
 
 .DS_Store
+
+# IDE
+.idea
