@@ -1,6 +1,7 @@
 const delve = require('dlv')
 const dset = require('dset')
 const express = require('express')
+const nodeMail = require('./node-email')
 const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
@@ -305,6 +306,12 @@ router.route(paths.getPath('feedback'))
   .get(function (req, res) {
     const referrer = req.header('Referrer')
     res.render('feedback/feedback', { referrer })
+  })
+  .post(function (req, res) {
+    const experience = req.body.feedback
+    const moreDetail = req.body['feedback-more-detail']
+    nodeMail(experience, moreDetail)
+      .then(() => res.redirect('/'))
   })
 
 router.route(paths.getPath('cookies'))
