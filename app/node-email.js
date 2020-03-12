@@ -14,7 +14,7 @@ const sendMail = async (experience, moreDetails) => {
 
   // send mail with defined transport object
   await transporter.sendMail({
-    from: '"SPL Feedback" <splfeedbackform@gmail.com>', // sender address
+    from: `SPL Feedback <${process.env.GMAIL_AUTH_USER}>`, // sender address
     to: process.env.GMAIL_SENDER, // list of receivers
     subject: 'SPL Feedback', // Subject line
     text:
