@@ -73,3 +73,6 @@ typings/
 .env
 
 .DS_Store
+
+# IDE
+.idea
