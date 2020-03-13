@@ -6,14 +6,14 @@ const sendMail = async (experience, moreDetails) => {
     port: 465,
     secure: true,
     auth: {
-      user: process.env.GMAIL_AUTH_USER,
-      pass: process.env.GMAIL_AUTH_PASS
+      user: process.env.EMAIL_AUTH_USER,
+      pass: process.env.EMAIL_AUTH_PASS
     }
   })
 
   await transporter.sendMail({
-    from: `SPL Feedback <${process.env.GMAIL_AUTH_USER}>`,
-    to: process.env.GMAIL_SENDER,
+    from: `SPL Feedback <${process.env.EMAIL_AUTH_USER}>`,
+    to: process.env.EMAIL_RECIPIENT,
     subject: 'SPL Feedback',
     text:
       `
