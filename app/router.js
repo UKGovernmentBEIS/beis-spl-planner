@@ -1,7 +1,7 @@
 const delve = require('dlv')
 const dset = require('dset')
 const express = require('express')
-const nodeMail = require('./node-email')
+const nodeEmail = require('./node-email')
 const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
@@ -310,7 +310,7 @@ router.route(paths.getPath('feedback'))
   .post(function (req, res) {
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
-    nodeMail(experience, moreDetail)
+    nodeEmail(experience, moreDetail)
       .then(() => res.redirect('/'))
   })
 
