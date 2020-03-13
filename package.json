@@ -12,7 +12,7 @@
     "clean": "grunt clean",
     "dev": "grunt",
     "server": "node ./start.js",
-    "start": "npm run compile && npm run server",
+    "start": "npm run server",
     "watch": "./node_modules/.bin/grunt watch",
     "lint": "standard && sass-lint -v",
     "lint-sass": "./node_modules/.bin/sass-lint -v",
