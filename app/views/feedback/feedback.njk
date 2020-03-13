@@ -1,4 +1,7 @@
 {% from "back-link/macro.njk" import govukBackLink %}
+{% from "radios/macro.njk" import govukRadios %}
+{% from "character-count/macro.njk" import govukCharacterCount %}
+{% from "button/macro.njk" import govukButton %}
 
 {% extends "layout.njk" %}
 
@@ -19,23 +22,62 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
-        Provide feedback about this service
+        Give Feedback
       </h1>
-      <p>
-        If you would like to report a problem, give feedback or suggest an improvement to this service, please contact:
-        <br/>
-        {% set feedbackEmailAddress = "SPLfeedbackonlinetool@beis.gov.uk" %}
-        <strong>
-          <a href="mailto:{{ feedbackEmailAddress }}?subject=Feedback%20on%20Shared%20Parental%20Leave%20and%20Pay%20planner">
-            {{ feedbackEmailAddress }}
-          </a>
-        </strong>
-      </p>
-    </div>
-    <div class="govuk-grid-column-two-thirds-from-desktop">
-      <a href="{{ withData(referrer) }}" class="govuk-button">
-        Return to service
-      </a>
+      <form action="/feedback" method="post">
+        {{ govukRadios({
+          classes: "govuk-radios",
+          idPrefix: "feedback",
+          name: "feedback",
+          fieldset: {
+            legend: {
+              text: "What was your experience of the service",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "very satisfactory",
+              text: "Very Satisfactory"
+            },
+            {
+              value: "satisfactory",
+              text: "Satisfactory"
+            },
+            {
+              value: "neither satisfactory or dissatisfactory",
+              text: "Neither Satisfactory or Dissatisfactory"
+            },
+            {
+              value: "dissatisfactory",
+              text: "Dissatisfactory"
+            },
+            {
+              value: "very dissatisfactory",
+              text: "Very Dissatisfactory"
+            }
+          ]
+        }) }}
+
+        {{ govukCharacterCount({
+          id: "feedback-more-detail",
+          name: "feedback-more-detail",
+          maxlength: 1200,
+          hint: {
+            text: "Do not include any personal or financial information, for example your National Insurance or credit card numbers."
+          },
+          label: {
+            text: "How can we improve this service?",
+            classes: "govuk-label--m",
+            isPageHeading: true
+          }
+        }) }}
+        {{ govukButton({
+          text: "Send Feedback",
+          preventDoubleClick: true
+        }) }}
+      </form>
     </div>
   </div>
 {% endblock %}

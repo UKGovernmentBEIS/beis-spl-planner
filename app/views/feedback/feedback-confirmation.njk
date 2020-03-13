@@ -1,0 +1,30 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "panel/macro.njk" import govukPanel %}
+
+{% extends "layout.njk" %}
+
+{% set backLink = withData(referrer or '/') %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: backLink
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukPanel({
+        titleText: "Feedback complete",
+        html: 'Thank you for submitting feedback'
+      }) }}
+
+      <h2 class="govuk-heading-m">What happens next</h2>
+
+      <p class="govuk-body">
+        <a href="/" class="govuk-link">Click here to return to the home page</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

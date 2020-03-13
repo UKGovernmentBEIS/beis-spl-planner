@@ -213,6 +213,9 @@ class Paths {
       feedback: {
         url: '/feedback'
       },
+      feedbackConfirmation: {
+        url: '/feedback/confirmation'
+      },
       cookies: {
         url: '/cookies'
       }
