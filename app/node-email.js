@@ -14,7 +14,7 @@ const sendMail = async (experience, moreDetails) => {
   await transporter.sendMail({
     from: `SPL Feedback <${process.env.EMAIL_AUTH_USER}>`,
     to: process.env.EMAIL_RECIPIENT,
-    subject: 'SPL Feedback',
+    subject: 'SPL Planner Feedback',
     text:
       `
       What was your experience of the service:
