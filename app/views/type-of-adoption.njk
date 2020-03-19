@@ -3,6 +3,7 @@
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "button/macro.njk" import govukButton %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% extends "layout.njk" %}
 
@@ -27,6 +28,7 @@
         errors["type-of-adoption"]
       ]
     }) }}
+    {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["type-of-adoption"].text, "Errorshown") }}
   {% endif %}
 
   <div class="govuk-grid-row">

@@ -3,6 +3,7 @@
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "button/macro.njk" import govukButton %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% extends "layout.njk" %}
 
@@ -28,6 +29,12 @@
         errors["shpp-eligible"]
       ]
     }) }}
+    {% if errors["spl-eligible"] %}
+      {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["spl-eligible"].text, "Errorshown") }}
+    {% endif %}
+    {% if errors["shpp-eligible"] %}
+      {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["shpp-eligible"].text, "Errorshown") }}
+    {% endif %}
   {% endif %}
 
   <div class="govuk-grid-row">

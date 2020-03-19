@@ -4,6 +4,7 @@
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "./components/salary-input.njk" import salaryInput %}
 {% from "button/macro.njk" import govukButton %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% extends "layout.njk" %}
 
@@ -37,6 +38,21 @@
         errors["secondary-salary-period"]
       ] | removeEmpty
     }) }}
+    {% if errors["skip-this-question"] %}
+      {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["skip-this-question"].text, "Errorshown") }}
+    {% endif %}
+    {% if errors["primary-salary-amount"] %}
+      {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["primary-salary-amount"].text, "Errorshown") }}
+    {% endif %}
+    {% if errors["secondary-salary-amount"] %}
+      {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["secondary-salary-amount"].text, "Errorshown") }}
+    {% endif %}
+    {% if errors["primary-salary-period"] %}
+      {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["primary-salary-period"].text, "Errorshown") }}
+    {% endif %}
+    {% if errors["secondary-salary-period"] %}
+      {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["secondary-salary-period"].text, "Errorshown") }}
+    {% endif %}
   {% endif %}
 
   <div class="govuk-grid-row">

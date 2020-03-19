@@ -3,6 +3,7 @@
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "button/macro.njk" import govukButton %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% extends "layout.njk" %}
 
@@ -25,6 +26,7 @@
       titleText: "There is a problem",
       errorList: [errors["maternity-allowance-eligible"]]
     }) }}
+    {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["maternity-allowance-eligible"].text, "Errorshown") }}
   {% endif %}
 
   <div class="govuk-grid-row">

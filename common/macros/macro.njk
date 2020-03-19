@@ -1,0 +1,5 @@
+{% macro pushToGoogleAnalyticsDataLayer(name, value, eventName) %}
+<script>
+  dataLayer.push({"{{ name }}": {{ value | dump | safe }}, "event": "{{ eventName }}"})
+</script>
+{% endmacro %}
