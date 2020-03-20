@@ -6,6 +6,7 @@
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "inset-text/macro.njk" import govukInsetText %}
 {% from "components/calendar.njk" import calendar %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% extends "layout.njk" %}
 
@@ -54,6 +55,11 @@
         errors["calendar.secondary.too-late"]
       ] | removeEmpty
     }) }}
+
+    {% set errorMessages = errors | errorMessages %}
+    {% for message in errorMessages %}
+      {{ pushToGoogleAnalyticsDataLayer("error_msg", message, "Errorshown") }}
+    {% endfor %}
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">

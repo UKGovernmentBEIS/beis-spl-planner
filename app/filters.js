@@ -3,6 +3,7 @@ const { getWeeksArray, parseWeeksFromData } = require('./utils')
 const Day = require('../common/lib/day')
 const { parseEligibilityFromData } = require('./lib/eligibility')
 const { getBlockLength, getRemainingLeaveAllowance, parseLeaveBlocks, parseSplLeaveBlocks } = require('./lib/blocks')
+const _ = require('lodash')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
@@ -142,6 +143,10 @@ module.exports = function (env) {
     }))
   }
 
+  function errorMessages (errors) {
+    return _.values(errors).map(e => e.text)
+  }
+
   return {
     hasStartDateError,
     hasCalendarError,
@@ -166,6 +171,7 @@ module.exports = function (env) {
     weeks,
     zeroWeek,
     mapValuesToSelectOptions,
-    ...require('./views/accessible-planner/answers-so-far/filters')(env)
+    ...require('./views/accessible-planner/answers-so-far/filters')(env),
+    errorMessages
   }
 }
