@@ -3,6 +3,7 @@
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "button/macro.njk" import govukButton %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% extends "layout.njk" %}
 
@@ -28,6 +29,12 @@
         errors["initial-pay-eligible"]
       ]
     }) }}
+    {% if errors["initial-leave-eligible"] %}
+      {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["initial-leave-eligible"].text, "Errorshown") }}
+    {% endif %}
+    {% if errors["initial-pay-eligible"] %}
+      {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["initial-pay-eligible"].text, "Errorshown") }}
+    {% endif %}
   {% endif %}
 
   <div class="govuk-grid-row">
