@@ -1,5 +1,6 @@
 {% from "back-link/macro.njk" import govukBackLink %}
 {% from "tabs/macro.njk" import govukTabs %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% extends "layout.njk" %}
 {% block pageTitle -%}
@@ -61,6 +62,11 @@
           }
         ]
       }) }}
+      {% if data["visualPlanner"] %}
+        {{ pushToGoogleAnalyticsDataLayer("parenthood_type", data["nature-of-parenthood"], "visualplanner") }}
+      {% else %}
+        {{ pushToGoogleAnalyticsDataLayer("parenthood_type", data["nature-of-parenthood"], "questionplanner") }}
+      {% endif %}
     </div>
   </div>
 {% endblock %}
