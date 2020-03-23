@@ -194,6 +194,7 @@ router.route(paths.getPath('planner'))
     res.render('planner')
   })
   .post(function (req, res) {
+    req.session.data.visualPlanner = true
     res.redirect(paths.getPath('summary'))
   })
 
@@ -253,6 +254,7 @@ router.route(paths.getPath('planner.shared-parental-leave'))
   .get(function (req, res) {
     const leaveBlocks = parseLeaveBlocks(req.session.data['leave-blocks'])
     if (getRemainingLeaveAllowance(leaveBlocks) === 0) {
+      req.session.data.visualPlanner = false
       res.redirect(paths.getPath('summary'))
     } else {
       clearCurrenttSplBlockIfIncomplete(req)
@@ -264,6 +266,7 @@ router.route(paths.getPath('planner.shared-parental-leave'))
     const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
     const next = splBlockPlanningOrder[splBlockPlanningOrder.length - 1]
     if (next === 'done') {
+      req.session.data.visualPlanner = false
       res.redirect(paths.getPath('summary'))
     } else {
       const parent = next
