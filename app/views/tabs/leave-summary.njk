@@ -234,7 +234,7 @@
     {{ pushToGoogleAnalyticsDataLayer("splBlockleaves_count", splLeaveCount, "visualplanner") }}
 
     {% set totalBlockCount = 1 + partnerInitialLeaveCount + splLeaveCount %}
-    {{ pushToGoogleAnalyticsDataLayer("totalBlockleaves_count", totalBlockCount, "visualplanner") }}\
+    {{ pushToGoogleAnalyticsDataLayer("totalBlockleaves_count", totalBlockCount, "visualplanner") }}
 
     {{ summaryTabFooter({
       shareLinkId: 'leave-summary-share-link'

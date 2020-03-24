@@ -61,6 +61,7 @@ function parseExternalQueryString (req) {
     req.session.data['start-date-month'] = dueDate.monthOneIndexed()
     req.session.data['start-date-year'] = dueDate.year()
   }
+  req.session.timings.eligibilityStart = Number(req.query.eligibilityStart)
 }
 
 const nonSplLeaveBlockFieldOrder = [
@@ -171,6 +172,15 @@ function safeDeleteKey (object, path) {
   }
 }
 
+function getJourneyTime (timings) {
+  const plannerJourneyTime = timings.plannerEnd - timings.plannerStart
+  const totalJourneyTime = timings.eligibilityStart ? timings.plannerEnd - timings.eligibilityStart : plannerJourneyTime
+  return {
+    plannerJourneyTime: Math.round(plannerJourneyTime / 1000),
+    totalJourneyTime: Math.round(totalJourneyTime / 1000)
+  }
+}
+
 module.exports = {
   registerEligibilityRouteForPrimaryParents,
   registerEligibilityRouteForBirthMother,
@@ -182,5 +192,6 @@ module.exports = {
   clearLaterSplBlocks,
   clearCurrenttSplBlockIfIncomplete,
   clearCurrentSplBlockStart,
-  clearCurrentSplBlockEnd
+  clearCurrentSplBlockEnd,
+  getJourneyTime
 }
