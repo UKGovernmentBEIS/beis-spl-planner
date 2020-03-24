@@ -18,7 +18,8 @@ const {
   clearLaterSplBlocks,
   clearCurrenttSplBlockIfIncomplete,
   clearCurrentSplBlockStart,
-  clearCurrentSplBlockEnd
+  clearCurrentSplBlockEnd,
+  getJourneyTime
 } = require('./lib/routerUtils')
 const dataUtils = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
@@ -31,9 +32,11 @@ router.use('/forms', express.static('./app/forms'))
 
 router.route(paths.getPath('root'))
   .get(function (req, res) {
+    req.session.timings = req.session.timings || {}
     if (Object.entries(req.query).length !== 0) {
       parseExternalQueryString(req)
     }
+    req.session.timings.plannerStart = req.session.timings.plannerStart || Date.now()
     res.render('index')
   })
   .post(function (req, res) {
@@ -42,6 +45,7 @@ router.route(paths.getPath('root'))
 
 router.route(paths.getPath('natureOfParenthood'))
   .get(function (req, res) {
+    req.session.timings = req.session.timings || { plannerStart: Date.now() }
     res.render('nature-of-parenthood')
   })
   .post(function (req, res) {
@@ -302,7 +306,9 @@ router.route(paths.getPath('summary'))
   .get(function (req, res) {
     const { leaveBlocks, payBlocks } = getBlocks(req.session.data)
     const shareToken = new ShareTokenEncoder(req.session.data).encode(1)
-    res.render('summary', { leaveBlocks, payBlocks, shareToken })
+    req.session.timings.plannerEnd = Date.now()
+    const { plannerJourneyTime, totalJourneyTime } = getJourneyTime(req.session.timings)
+    res.render('summary', { leaveBlocks, payBlocks, shareToken, plannerJourneyTime, totalJourneyTime })
   })
 
 router.route(paths.getPath('feedbackConfirmation'))
