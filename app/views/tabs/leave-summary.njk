@@ -225,6 +225,17 @@
       {% endif %}
     {% endif %}
 
+    {{ pushToGoogleAnalyticsDataLayer("primaryBlockleaves_count", 1, "visualplanner") }}
+
+    {% set partnerInitialLeaveCount = 1 if leaveBlocks.secondary.initial else 0 %}
+    {{ pushToGoogleAnalyticsDataLayer("partnerBlockleaves_count", partnerInitialLeaveCount, "visualplanner") }}
+
+    {% set splLeaveCount = leaveBlocks.primary.spl.length + leaveBlocks.secondary.spl.length %}
+    {{ pushToGoogleAnalyticsDataLayer("splBlockleaves_count", splLeaveCount, "visualplanner") }}
+
+    {% set totalBlockCount = 1 + partnerInitialLeaveCount + splLeaveCount %}
+    {{ pushToGoogleAnalyticsDataLayer("totalBlockleaves_count", totalBlockCount, "visualplanner") }}\
+
     {{ summaryTabFooter({
       shareLinkId: 'leave-summary-share-link'
     }) }}
