@@ -225,16 +225,16 @@
       {% endif %}
     {% endif %}
 
-    {{ pushToGoogleAnalyticsDataLayer("primaryBlockleaves_count", 1, "visualplanner") }}
+    {{ pushToGoogleAnalyticsDataLayer("primaryBlockleaves_count", 1, "primaryBlockleaves") }}
 
     {% set partnerInitialLeaveCount = 1 if leaveBlocks.secondary.initial else 0 %}
-    {{ pushToGoogleAnalyticsDataLayer("partnerBlockleaves_count", partnerInitialLeaveCount, "visualplanner") }}
+    {{ pushToGoogleAnalyticsDataLayer("partnerBlockleaves_count", partnerInitialLeaveCount, "partnersBlockleaves") }}
 
     {% set splLeaveCount = leaveBlocks.primary.spl.length + leaveBlocks.secondary.spl.length %}
-    {{ pushToGoogleAnalyticsDataLayer("splBlockleaves_count", splLeaveCount, "visualplanner") }}
+    {{ pushToGoogleAnalyticsDataLayer("splBlockleaves_count", splLeaveCount, "splBlockleaves") }}
 
     {% set totalBlockCount = 1 + partnerInitialLeaveCount + splLeaveCount %}
-    {{ pushToGoogleAnalyticsDataLayer("totalBlockleaves_count", totalBlockCount, "visualplanner") }}
+    {{ pushToGoogleAnalyticsDataLayer("totalBlockleaves_count", totalBlockCount, "totalBlockleaves") }}
 
     {{ summaryTabFooter({
       shareLinkId: 'leave-summary-share-link'

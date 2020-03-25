@@ -64,12 +64,12 @@
       }) }}
       {% if data["visualPlanner"] %}
         {{ pushToGoogleAnalyticsDataLayer("parenthood_type", data["nature-of-parenthood"], "visualplanner") }}
-        {{ pushToGoogleAnalyticsDataLayer("visualplanner_timestamp", plannerJourneyTime, "timestamp") }}
+        {{ pushToGoogleAnalyticsDataLayer("visualplanner_timestamp", plannerJourneyTime, "mainPlanner_timestamp") }}
       {% else %}
         {{ pushToGoogleAnalyticsDataLayer("parenthood_type", data["nature-of-parenthood"], "questionplanner") }}
-        {{ pushToGoogleAnalyticsDataLayer("questionplanner_timestamp", plannerJourneyTime, "timestamp") }}
+        {{ pushToGoogleAnalyticsDataLayer("questionplanner_timestamp", plannerJourneyTime, "secondaryPlanner_timestamp") }}
       {% endif %}
-      {{ pushToGoogleAnalyticsDataLayer("spljourney_timestamp", totalJourneyTime, "timestamp") }}
+      {{ pushToGoogleAnalyticsDataLayer("spljourney_timestamp", totalJourneyTime, "spl_timestamp") }}
     </div>
   </div>
 {% endblock %}
