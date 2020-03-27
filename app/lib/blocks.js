@@ -119,10 +119,7 @@ function getPayBlocks (weeks) {
 function getBlocks (data) {
   const leaveBlocksDataObject = data['leave-blocks']
   if (leaveBlocksDataObject) {
-    return {
-      leaveBlocks: parseLeaveBlocks(leaveBlocksDataObject),
-      payBlocks: []
-    }
+    parseLeaveBlocks(data, leaveBlocksDataObject)
   }
 
   const weeks = new Weeks({
@@ -142,7 +139,7 @@ function getBlocks (data) {
   }
 }
 
-function parseLeaveBlocks (leaveBlocksDataObject) {
+function parseLeaveBlocks (data, leaveBlocksDataObject) {
   const blocks = {
     primary: {
       initial: parseInitialLeaveBlock(leaveBlocksDataObject, 'primary'),
@@ -153,7 +150,36 @@ function parseLeaveBlocks (leaveBlocksDataObject) {
       spl: parseSplLeaveBlocks(leaveBlocksDataObject, 'secondary')
     }
   }
-  return blocks
+
+  if (leaveBlocksDataObject) {
+    for (const block in blocks) {
+      const leave = []
+      const parent = blocks[block]
+      if (parent.initial) {
+        createLeaveArray(leave, parent.initial.start, parent.initial.end)
+        parent.spl.forEach(splLeave => {
+          createLeaveArray(leave, splLeave.start, splLeave.end)
+        })
+        if (data[block].leave) {
+          data[block].leave = removeArrayDuplicates(data[block].leave.concat(leave))
+          data[block].pay = removeArrayDuplicates(data[block].pay.concat(leave))
+        } else {
+          data[block].leave = leave
+          data[block].pay = leave
+        }
+      }
+    }
+  }
+}
+
+function createLeaveArray (leave, start, end) {
+  for (let i = start; i <= end; i++) {
+    leave.push(i.toString())
+  }
+}
+
+function removeArrayDuplicates (array) {
+  return array.filter((a, b) => array.indexOf(a) === b)
 }
 
 function parseInitialLeaveBlock (leaveBlocksDataObject, parent) {
