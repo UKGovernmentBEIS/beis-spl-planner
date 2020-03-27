@@ -140,42 +140,26 @@ function getBlocks (data) {
 }
 
 function parseLeaveBlocks (data, leaveBlocksDataObject) {
-  const blocks = {
-    primary: {
-      initial: parseInitialLeaveBlock(leaveBlocksDataObject, 'primary'),
-      spl: parseSplLeaveBlocks(leaveBlocksDataObject, 'primary')
-    },
-    secondary: {
-      initial: parseInitialLeaveBlock(leaveBlocksDataObject, 'secondary'),
-      spl: parseSplLeaveBlocks(leaveBlocksDataObject, 'secondary')
-    }
+  const leaves = {
+    primary: parseInitialLeaveBlock(leaveBlocksDataObject, 'primary').concat(parseSplLeaveBlocks(leaveBlocksDataObject, 'primary')),
+    secondary: parseInitialLeaveBlock(leaveBlocksDataObject, 'secondary').concat(parseSplLeaveBlocks(leaveBlocksDataObject, 'secondary'))
   }
 
   if (leaveBlocksDataObject) {
-    for (const block in blocks) {
-      const leave = []
-      const parent = blocks[block]
-      if (parent.initial) {
-        createLeaveArray(leave, parent.initial.start, parent.initial.end)
-        parent.spl.forEach(splLeave => {
-          createLeaveArray(leave, splLeave.start, splLeave.end)
-        })
-        if (data[block].leave) {
-          data[block].leave = removeArrayDuplicates(data[block].leave.concat(leave))
-          data[block].pay = removeArrayDuplicates(data[block].pay.concat(leave))
-        } else {
-          data[block].leave = leave
-          data[block].pay = leave
-        }
-      }
+    for (const leave in leaves) {
+      const parentLeave = leaves[leave]
+      data[leave].leave = parentLeave
+      data[leave].pay = parentLeave
     }
   }
 }
 
-function createLeaveArray (leave, start, end) {
+function createLeaveArray (start, end) {
+  const leave = []
   for (let i = start; i <= end; i++) {
     leave.push(i.toString())
   }
+  return leave
 }
 
 function removeArrayDuplicates (array) {
@@ -189,28 +173,23 @@ function parseInitialLeaveBlock (leaveBlocksDataObject, parent) {
 
 function parseSplLeaveBlocks (leaveBlocksDataObject, parent) {
   const splLeaveBlocksDataObject = delve(leaveBlocksDataObject, [parent, 'spl'], {})
-  const blockDataObjects = []
+  let splLeaves = []
 
   // The SPL object in data indexes the blocks with keys like "_0", "_1", "_2", etc.
   let i = 0
   let block
   const getBlock = n => splLeaveBlocksDataObject[`_${n}`]
   while (isBlockDataObject(block = getBlock(i++))) {
-    blockDataObjects.push(block)
+    splLeaves = splLeaves.concat(parseLeaveBlock(block))
   }
-
-  return blockDataObjects.map(obj => parseLeaveBlock(obj))
+  return splLeaves
 }
 
 function parseLeaveBlock (obj) {
   if (!isBlockDataObject(obj)) {
-    return null
+    return []
   }
-  return {
-    leave: obj.leave,
-    start: parseInt(obj.start),
-    end: parseInt(obj.end)
-  }
+  return createLeaveArray(+obj.start, +obj.end)
 }
 
 function getRemainingLeaveAllowance (leaveBlocks) {
