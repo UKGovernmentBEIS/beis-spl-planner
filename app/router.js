@@ -186,6 +186,7 @@ router.route(paths.getPath('parentSalaries'))
 
 router.route(paths.getPath('planner'))
   .get(function (req, res) {
+    req.session.timings = req.session.timings || { plannerStart: Date.now() }
     const { data } = req.session
     const primaryLeaveWeeks = getWeeksArray(data, 'primary', 'leave')
     if (primaryLeaveWeeks.length === 0) {
@@ -306,6 +307,7 @@ router.route(paths.getPath('summary'))
   .get(function (req, res) {
     const { leaveBlocks, payBlocks } = getBlocks(req.session.data)
     const shareToken = new ShareTokenEncoder(req.session.data).encode(1)
+    req.session.timings = req.session.timings || { plannerStart: Date.now() }
     req.session.timings.plannerEnd = Date.now()
     const { plannerJourneyTime, totalJourneyTime } = getJourneyTime(req.session.timings)
     res.render('summary', { leaveBlocks, payBlocks, shareToken, plannerJourneyTime, totalJourneyTime })
