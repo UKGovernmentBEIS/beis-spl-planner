@@ -13,6 +13,13 @@
     </colgroup>
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
+        <th class="govuk-table__header" scope="col" colspan="5">
+          <div id="messages">
+            <Messages :weeks="weeks"/>
+          </div>
+        </th>
+      </tr>
+      <tr class="govuk-table__row">
         <th class="govuk-table__header" scope="col"></th>
         <th class="govuk-table__header" scope="col" colspan="2" id="primary-name">{{ names.primary | capitalize }}</th>
         <th class="govuk-table__header" scope="col" colspan="2" id="secondary-name">{{ names.secondary | capitalize }}</th>
@@ -136,8 +143,13 @@
     'paternity': 'Paternity',
     'shared': 'Shared Parental'
   })
+  
+  const Messages = require('./Messages.vue')
 
   module.exports = {
+    components: {
+      Messages
+    },
     data: () => ({
       isIexplorer: isIexplorer,
       isDragging: false,
