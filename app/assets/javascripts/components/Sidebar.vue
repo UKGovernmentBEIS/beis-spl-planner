@@ -46,7 +46,7 @@
         </div>
       </div>
     </template>
-    <template v-f="hasPaternityLeaveOrPayEligibility">
+    <template v-if="hasPaternityLeaveOrPayEligibility">
       <h2 class="govuk-heading-m">
         Paternity {{ paternityLeaveAndOrPay }}
       </h2>
