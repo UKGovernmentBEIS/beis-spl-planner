@@ -1,0 +1,27 @@
+{
+  "nature-of-parenthood": "birth",
+  "primary": {
+    "spl-eligible": "yes",
+    "shpp-eligible": "yes",
+    "salary-amount": "25000",
+    "salary-period": "year",
+    "leave": [
+      "0",
+      "1"
+    ],
+    "pay": [
+      "0",
+      "1"
+    ]
+  },
+  "secondary": {
+    "spl-eligible": "yes",
+    "shpp-eligible": "yes",
+    "salary-amount": "25000",
+    "salary-period": "year"
+  },
+  "start-date-day": "1",
+  "start-date-month": "1",
+  "start-date-year": "2020",
+  "visualPlanner": true
+}

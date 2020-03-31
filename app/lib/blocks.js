@@ -119,9 +119,11 @@ function getPayBlocks (weeks) {
 function getBlocks (data) {
   const leaveBlocksDataObject = data['leave-blocks']
   if (leaveBlocksDataObject) {
-    return {
-      leaveBlocks: parseLeaveBlocks(leaveBlocksDataObject),
-      payBlocks: []
+    const leaveBlocks = parseLeaveBlocks(leaveBlocksDataObject)
+    const leave = createArrayFromLeaveBlocks(leaveBlocks)
+    for (const parent in leave) {
+      data[parent].leave = leave[parent]
+      data[parent].pay = leave[parent]
     }
   }
 
@@ -140,6 +142,37 @@ function getBlocks (data) {
     leaveBlocks: getLeaveBlocks(weeks),
     payBlocks: getPayBlocks(weeks)
   }
+}
+
+function createArrayFromLeaveBlocks(leaveBlocks) {
+  const leave = {
+    primary: [],
+    secondary: []
+  }
+  for (const parent in leaveBlocks) {
+    for (const leaveType in leaveBlocks[parent]){
+      if (leaveType === 'spl') {
+        for (let leaveObj in leaveBlocks[parent][leaveType]) {
+          leaveObj = leaveBlocks[parent][leaveType][leaveObj];
+          const leaveArr = createLeaveArray(leaveObj.start, leaveObj.end)
+          leave[parent] = leave[parent].concat(leaveArr)
+        }
+      } else {
+        const leaveObj = leaveBlocks[parent][leaveType];
+        const leaveArr = createLeaveArray(leaveObj.start, leaveObj.end)
+        leave[parent] = leave[parent].concat(leaveArr)
+      }
+    }
+  }
+  return leave;
+}
+
+function createLeaveArray (start, end) {
+  const leave = []
+  for (let i = start; i <= end; i++) {
+    leave.push(i.toString())
+  }
+  return leave
 }
 
 function parseLeaveBlocks (leaveBlocksDataObject) {
