@@ -61,7 +61,7 @@ describe('Blocks', () => {
       assert.equal(results.toString(), expectedResults.toString())
     })
 
-    it('should retrieve leave and pay block for questionplanenr data', function () {
+    it('should retrieve leave and pay block for question planner data', function () {
       const expectedResults = {
         'leaveBlocks': {
           'primary': {

@@ -117,23 +117,24 @@ function getPayBlocks (weeks) {
 }
 
 function getBlocks (data) {
-  const leaveBlocksDataObject = data['leave-blocks']
+  const dataClone = _.cloneDeep(data)
+  const leaveBlocksDataObject = dataClone['leave-blocks']
   if (leaveBlocksDataObject) {
     const leaveBlocks = parseLeaveBlocks(leaveBlocksDataObject)
     const leave = createArrayFromLeaveBlocks(leaveBlocks)
     for (const parent in leave) {
-      data[parent].leave = leave[parent]
-      data[parent].pay = leave[parent]
+      dataClone[parent].leave = leave[parent]
+      dataClone[parent].pay = leave[parent]
     }
   }
 
   const weeks = new Weeks({
-    natureOfParenthood: dataUtils.natureOfParenthood(data),
-    typeOfAdoption: dataUtils.typeOfAdoption(data),
-    startWeek: parseStartDay(data),
-    primary: parseParentFromPlanner(data, 'primary'),
-    secondary: parseParentFromPlanner(data, 'secondary'),
-    eligibility: parseEligibilityFromData(data)
+    natureOfParenthood: dataUtils.natureOfParenthood(dataClone),
+    typeOfAdoption: dataUtils.typeOfAdoption(dataClone),
+    startWeek: parseStartDay(dataClone),
+    primary: parseParentFromPlanner(dataClone, 'primary'),
+    secondary: parseParentFromPlanner(dataClone, 'secondary'),
+    eligibility: parseEligibilityFromData(dataClone)
   })
     .leaveAndPay()
     .weeks
