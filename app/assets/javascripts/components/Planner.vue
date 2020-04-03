@@ -128,7 +128,6 @@
   #calendar {
     thead {
       /* Various styling to patch sticky headers. */
-      $th-height-messages: 70.55px;
       $th-height: 48px;
       th {
         @include sticky();
@@ -136,16 +135,7 @@
 
         height: $th-height;
         box-sizing: border-box;
-      }
-      tr:first-child th {
         top: 0;
-        height: $th-height-messages;
-      }
-      tr:nth-child(2) th {
-        top: $th-height-messages;
-      }
-      tr:nth-child(3) th {
-        top: $th-height + $th-height-messages;
       }
     }
   }
