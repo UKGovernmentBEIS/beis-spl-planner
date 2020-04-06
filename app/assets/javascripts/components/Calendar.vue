@@ -13,23 +13,35 @@
     </colgroup>
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
-        <th class="govuk-table__header" scope="col" colspan="5">
+        <th class="govuk-table__header" v-bind:style="{ height:  headerOffset + 'px' }" scope="col" colspan="5">
           <div id="messages">
-            <Messages :weeks="weeks"/>
-          </div>
+            <div>&ensp;<span v-html="formatWeeks(sharedLeaveRemaining, 'leave')"></span> remaining</div>
+            <div>&ensp;<span v-html="formatWeeks(payRemaining, 'pay')"></span> remaining</div>
+            <div class="govuk-error-summary govuk-!-padding-2" role="alert" tabindex="-1" v-if="sharedLeaveRemaining < 0 || payRemaining < 0">
+              <div class="govuk-error-summary__body">
+                <div v-if="sharedLeaveRemaining < 0" >
+                  You’ve taken too many leave weeks.
+                  Unselect <span v-html="formatWeeks(-sharedLeaveRemaining, 'leave')"></span>.
+                </div>
+                <div v-if="payRemaining < 0">
+                  You’ve taken too many pay weeks.
+                  Untick <span v-html="formatWeeks(-payRemaining, 'pay')"></span> .
+                </div>
+              </div>
+            </div>          </div>
         </th>
       </tr>
       <tr class="govuk-table__row">
-        <th class="govuk-table__header" scope="col"></th>
-        <th class="govuk-table__header" scope="col" colspan="2" id="primary-name">{{ names.primary | capitalize }}</th>
-        <th class="govuk-table__header" scope="col" colspan="2" id="secondary-name">{{ names.secondary | capitalize }}</th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 'px' }" scope="col"></th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 'px'  }" scope="col" colspan="2" id="primary-name">{{ names.primary | capitalize }}</th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 'px' }" scope="col" colspan="2" id="secondary-name">{{ names.secondary | capitalize }}</th>
       </tr>
       <tr class="govuk-table__row">
-        <th class="govuk-table__header" scope="col"></th>
-        <th class="govuk-table__header" scope="col" id="primary-leave">Leave</th>
-        <th class="govuk-table__header" scope="col" id="primary-pay">Pay</th>
-        <th class="govuk-table__header" scope="col" id="secondary-leave">Leave</th>
-        <th class="govuk-table__header" scope="col" id="secondary-pay">Pay</th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" scope="col"></th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" scope="col" id="primary-leave">Leave</th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" scope="col" id="primary-pay">Pay</th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" scope="col" id="secondary-leave">Leave</th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" scope="col" id="secondary-pay">Pay</th>
       </tr>
     </thead>
     <tbody class="govuk-table__body">
@@ -144,19 +156,20 @@
     'shared': 'Shared Parental'
   })
   
-  const Messages = require('./Messages.vue')
-
   module.exports = {
-    components: {
-      Messages
-    },
     data: () => ({
       isIexplorer: isIexplorer,
       isDragging: false,
       lastDraggedWeekNumber: null,
       lastClickedCell: null,
       onDrag: null,
-      hideFocus: false
+      hideFocus: false,
+      leaveWeeks: {
+        primary: { nonSpl: 0, spl: 0, shppCountedAsSpl: 0 },
+        secondary: { nonSpl: 0, spl: 0, shppCountedAsSpl: 0 }
+      },
+      shppAndPrimaryInitialPayWeeks: 0,
+      paternityPayWeeks: 0
     }),
     props: {
       natureOfParenthood: String,
@@ -317,6 +330,85 @@
       isDisabledCell: function (week, parent) {
         return this.hasNoEligibility(parent) ||
           (parent === 'secondary' && !this.eligibility.secondary.shpp && !this.eligibility.secondary.spl && week.number > 7)
+      },
+      resetTotals: function () {
+        this.leaveWeeks = {
+          primary: { nonSpl: 0, spl: 0, shppCountedAsSpl: 0 },
+          secondary: { nonSpl: 0, spl: 0, shppCountedAsSpl: 0 }
+        }
+        this.shppAndPrimaryInitialPayWeeks = 0
+        this.paternityPayWeeks = 0
+      },
+      updateTotalsForParent: function (parent, week) {
+        const isSpl = week[parent].leave.text === 'shared'
+
+        if (week[parent].leave.text && week[parent].leave.eligible) {
+          if (isSpl) {
+            this.leaveWeeks[parent].spl++
+          } else {
+            this.leaveWeeks[parent].nonSpl++
+          }
+        }
+
+        if (week[parent].pay.text && week[parent].pay.eligible) {
+          const isPaternity = !isSpl && (parent === 'secondary')
+
+          if (isPaternity) {
+            this.paternityPayWeeks++
+          } else {
+            this.shppAndPrimaryInitialPayWeeks++
+
+            if (!week[parent].leave.eligible) {
+              this.leaveWeeks[parent].shppCountedAsSpl++
+            }
+          }
+        }
+      },
+      formatWeeks: function (number, weekType) {
+        number = Math.max(number, 0)
+        return '<strong>' + number + '</strong> ' + (weekType ? `${weekType} ` : '') + (number === 1 ? 'week' : 'weeks')
+      }
+    },
+    computed: {
+      primaryLeaveUsed: function () {
+        return this.leaveWeeks.primary.nonSpl
+      },
+      splUsed: function () {
+        return this.leaveWeeks.primary.spl + this.leaveWeeks.secondary.spl
+      },
+      shppCountedAsSpl: function () {
+        return this.leaveWeeks.primary.shppCountedAsSpl + this.leaveWeeks.secondary.shppCountedAsSpl
+      },
+      sharedLeaveRemaining: function () {
+        const leaveBalanceUsed = this.primaryLeaveUsed + this.splUsed + this.shppCountedAsSpl
+        return 52 - leaveBalanceUsed
+      },
+      payUsed: function () {
+        return this.shppAndPrimaryInitialPayWeeks
+      },
+      payRemaining: function () {
+        return 39 - this.payUsed
+      },
+      headerOffset: function () {
+        if (this.sharedLeaveRemaining < 0 && this.payRemaining < 0) {
+          return 201
+        } else if (this.sharedLeaveRemaining < 0 || this.payRemaining < 0) {
+          return 151
+        } else {
+          return 71
+        }
+      }
+    },
+    watch: {
+      weeks: {
+        immediate: true,
+        handler: function (val) {
+          this.resetTotals()
+          for (let week of val) {
+            this.updateTotalsForParent('primary', week)
+            this.updateTotalsForParent('secondary', week)
+          }
+        }
       }
     }
   }
@@ -543,5 +635,18 @@
     @media (hover: hover) {
       @include cellHoverRules()
     }
+  }
+</style>
+
+<style lang="scss" scoped>
+  @import "node_modules/govuk-frontend/settings/colours-applied";
+
+  .govuk-error-summary__body {
+    color: $govuk-error-colour;
+    font-weight: bold;
+  }
+
+  .govuk-error-summary {
+    margin-bottom: 0px;
   }
 </style>
