@@ -13,7 +13,7 @@
     </colgroup>
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
-        <th class="govuk-table__header" v-bind:style="{ height:  headerOffset + 'px' }" scope="col" colspan="5">
+        <th class="govuk-table__header" id="info-alert" ref="infoAlert"  style="{ height: 100% }" scope="col" colspan="5">
           <div id="messages">
             <div>&ensp;<span v-html="formatWeeks(sharedLeaveRemaining, 'leave')"></span> remaining</div>
             <div>&ensp;<span v-html="formatWeeks(payRemaining, 'pay')"></span> remaining</div>
@@ -169,7 +169,8 @@
         secondary: { nonSpl: 0, spl: 0, shppCountedAsSpl: 0 }
       },
       shppAndPrimaryInitialPayWeeks: 0,
-      paternityPayWeeks: 0
+      paternityPayWeeks: 0,
+      headerOffset: 0
     }),
     props: {
       natureOfParenthood: String,
@@ -184,6 +185,16 @@
     },
     created: function () {
       window.addEventListener('keydown', this.onWindowMouseDown)
+      window.addEventListener('resize', this.setHeaderOffset)
+    },
+    mounted: function () {
+      this.setHeaderOffset()
+    },
+    updated: function() {
+      this.setHeaderOffset()
+    },
+    beforeDestroy: function () {
+      window.removeEventListener('resize', this.setHeaderOffset)
     },
     filters: {
       payCellLabel: function (payText, cellIsEligible) {
@@ -367,6 +378,9 @@
       formatWeeks: function (number, weekType) {
         number = Math.max(number, 0)
         return '<strong>' + number + '</strong> ' + (weekType ? `${weekType} ` : '') + (number === 1 ? 'week' : 'weeks')
+      },
+      setHeaderOffset() {
+        this.headerOffset = this.$refs.infoAlert.offsetHeight
       }
     },
     computed: {
@@ -388,15 +402,6 @@
       },
       payRemaining: function () {
         return 39 - this.payUsed
-      },
-      headerOffset: function () {
-        if (this.sharedLeaveRemaining < 0 && this.payRemaining < 0) {
-          return 201
-        } else if (this.sharedLeaveRemaining < 0 || this.payRemaining < 0) {
-          return 151
-        } else {
-          return 71
-        }
       }
     },
     watch: {
