@@ -44,7 +44,7 @@
     "nodemailer": "^6.4.6",
     "nunjucks": "^3.2.1",
     "pino": "^5.17.0",
-    "qs": "^6.9.3",
+    "qs": "6.9.2",
     "serve-favicon": "^2.5.0",
     "staticify": "^3.3.4",
     "stickyfill": "^1.1.1-strict",
