@@ -13,6 +13,7 @@ function parseEligibilityFromData (data) {
     }
   })
   eligibilities.primary.maternityAllowance = getMaternityAllowanceEligibility(data)
+  eligibilities.primary.maternityLeave = isEligible(data, 'primary', 'initial-leave')
   return eligibilities
 }
 

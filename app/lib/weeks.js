@@ -185,9 +185,10 @@ class Weeks {
     const {
       'shpp': shppEligible,
       'statutoryPay': statutoryPayEligible,
-      'maternityAllowance': maternityAllowanceEligible
+      'maternityAllowance': maternityAllowanceEligible,
+      'maternityLeave': maternityLeaveEligible
     } = this.eligibility.primary
-    const maternityAllowanceOnly = !shppEligible && !statutoryPayEligible && maternityAllowanceEligible
+    const maternityAllowanceOnly = !shppEligible && !statutoryPayEligible && maternityAllowanceEligible && !maternityLeaveEligible
     if (maternityAllowanceOnly) {
       // When Maternity Allowance only, we only know the upper bound of the mother’s pay.
       return this._getStatutoryPay()
