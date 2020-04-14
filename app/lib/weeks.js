@@ -136,6 +136,15 @@ class Weeks {
     })
   }
 
+  hasCompulsoryLeave (idx) {
+    if (!this.eligibility.primary.spl && !this.eligibility.primary.statutoryLeave) {
+      return false
+    } else if (this.primaryLeaveType === 'maternity' && (idx === 0 || idx === 1)) {
+      return true
+    }
+    return false
+  }
+
   _getBaseWeek (idx) {
     return {
       id: 'week_' + idx,
@@ -143,7 +152,7 @@ class Weeks {
       day: this.startWeek.add(idx, 'weeks'),
       primary: {
         disabled: false,
-        compulsory: (this.primaryLeaveType === 'maternity') && (idx === 0 || idx === 1),
+        compulsory: this.hasCompulsoryLeave(idx),
         leave: {},
         pay: {}
       },
