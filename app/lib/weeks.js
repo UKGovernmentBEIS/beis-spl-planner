@@ -137,12 +137,14 @@ class Weeks {
   }
 
   hasCompulsoryLeave (idx) {
-    if (!this.eligibility.primary.spl && !this.eligibility.primary.statutoryLeave) {
-      return false
-    } else if (this.primaryLeaveType === 'maternity' && (idx === 0 || idx === 1)) {
+    if (this.primaryLeaveType === 'maternity'
+        && (idx === 0 || idx === 1)
+        && this.eligibility.primary.spl
+        && this.eligibility.primary.statutoryLeave) {
       return true
+    } else {
+      return false
     }
-    return false
   }
 
   _getBaseWeek (idx) {
