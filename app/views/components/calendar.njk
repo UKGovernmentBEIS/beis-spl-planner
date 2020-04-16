@@ -4,6 +4,7 @@
   {% set minWeek = data | earliestPrimaryLeaveWeek %}
   {% set maxWeek = 52 %}
   {% set zeroWeekDate = (data | startDay | startOfWeek) %}
+  {% set isCompulsoryLeaveEligible = (data | isCompulsoryLeaveEligible) %}
   {% set isBirth = (data | isBirth) %}
   {% set isAdoption = (data | isAdoption) %}
   {% set weekZeroName= (data | birthOrPlacement) %}
@@ -17,7 +18,7 @@
       <div id="calendar-checkboxes" class="govuk-checkboxes" data-module="checkboxes">
         <div class="govuk-checkboxes" data-module="checkboxes">
           {% for i in range(minWeek, maxWeek + 1) %}
-            {% set compulsoryLeave = (parent === 'primary' and isBirth and (i === 0 or i === 1)) %}
+            {% set compulsoryLeave = (parent === 'primary' and isBirth and (i === 0 or i === 1) and isCompulsoryLeaveEligible) %}
             {% set outOfRange = (parent === 'secondary' and i < 0) %}
             {% set leaveId = parent + '-leave_' + i %}
             {% set leaveName = parent + '[leave]' %}
