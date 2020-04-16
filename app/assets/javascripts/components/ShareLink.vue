@@ -2,9 +2,14 @@
   <span>
     <div class="govuk-form-group">
       <label class="govuk-label govuk-!-font-weight-bold" for="event-name">
-        Link to your plan
+        Save and share your plan
         <span class="govuk-hint">
-          Copy this link and use it to return to your {{ pageType }} or to share it with someone.
+         <p>
+          Copy this link to your email or messaging service to share with someone else or make changes to it in the future.
+         </p>
+         <p>
+          Each time you update your {{ pageType }}, you will need to copy and save this link to ensure you have the latest version.
+         </p>        
         </span>
       </label>
       <div class="govuk-grid-column-three-quarters govuk-!-padding-0">
