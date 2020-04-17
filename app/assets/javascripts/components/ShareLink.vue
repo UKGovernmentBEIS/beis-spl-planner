@@ -2,7 +2,7 @@
   <span>
     <div class="govuk-form-group">
       <label class="govuk-label govuk-!-font-weight-bold" for="event-name">
-        Save and share your plan
+          <span class="govuk-heading-s">Save and share your plan</span>
         <span class="govuk-hint">
          <p>
           Copy this link to your email or messaging service to share with someone else or make changes to it in the future.

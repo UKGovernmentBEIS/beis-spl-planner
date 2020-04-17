@@ -4,7 +4,6 @@
 {% from "../components/leave-block-summary.njk" import leaveBlockSummary %}
 {% from "../components/secondary-notice.njk" import secondaryNotice %}
 {% from "../components/primary-notice.njk" import primaryNotice %}
-{% from "../components/summary-tab-footer.njk" import summaryTabFooter %}
 
 {% set primaryLeaveType = (data | primaryLeaveType) %}
 
@@ -225,18 +224,6 @@
       {% endif %}
     {% endif %}
 
-    <h4 class="govuk-heading-s">
-      Next steps
-    </h4>
-    <ul>
-      <li>
-      Discuss and agree your preferred leave dates with your partner.
-      </li>
-      <li>
-      Use the forms on this page for you and your partner to notify and agree your leave dates with your employers.
-      </li>
-    </ul>
-
     {{ pushToGoogleAnalyticsDataLayer("primaryBlockleaves_count", 1, "primaryBlockleaves") }}
 
     {% set partnerInitialLeaveCount = 1 if leaveBlocks.secondary.initial else 0 %}
@@ -247,15 +234,5 @@
 
     {% set totalBlockCount = 1 + partnerInitialLeaveCount + splLeaveCount %}
     {{ pushToGoogleAnalyticsDataLayer("totalBlockleaves_count", totalBlockCount, "totalBlockleaves") }}
-
-    {{ summaryTabFooter({
-      shareLinkId: 'leave-summary-share-link'
-    }) }}
-    <h2 class="govuk-heading-s">
-      Help us improve this service
-    </h2>
-    <p class="govuk-body">
-      <a href="/feedback" class="govuk-link">What did you think of this service?</a> (takes 30 seconds)
-    </p>
   </div>
 </div>
