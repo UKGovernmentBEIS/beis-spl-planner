@@ -307,7 +307,7 @@ function planner (req) {
 function hasBreakBeforeEnd (weeks, end) {
   weeks = weeks.sort((a, b) => a - b)
   let previousWeek = null
-  for (let week of weeks) {
+  for (const week of weeks) {
     if (week > end) {
       return false
     }

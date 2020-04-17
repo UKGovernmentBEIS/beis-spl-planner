@@ -5,6 +5,7 @@ const ShareTokenDecoder = require('../../app/lib/shareToken/shareTokenDecoder')
 
 module.exports = function (req, res, next) {
   if (req.method === 'GET' && req.query['data-in-query']) {
+    // eslint-disable-next-line node/no-deprecated-api
     const query = url.parse(req.url).query
     const queryData = qs.parse(query, { comma: true })
     const { 'data-in-query': _, ...data } = queryData

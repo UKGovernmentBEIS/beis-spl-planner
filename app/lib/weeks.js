@@ -96,9 +96,9 @@ class Weeks {
 
   _weekEligibleForPrimaryPay (week) {
     const {
-      'shpp': shppEligible,
-      'statutoryPay': statutoryPayEligible,
-      'maternityAllowance': maternityAllowanceEligible
+      shpp: shppEligible,
+      statutoryPay: statutoryPayEligible,
+      maternityAllowance: maternityAllowanceEligible
     } = this.eligibility.primary
     if (shppEligible) {
       return true
@@ -183,10 +183,10 @@ class Weeks {
 
   _getPrimaryPayRate (period) {
     const {
-      'shpp': shppEligible,
-      'statutoryPay': statutoryPayEligible,
-      'maternityAllowance': maternityAllowanceEligible,
-      'maternityLeave': maternityLeaveEligible
+      shpp: shppEligible,
+      statutoryPay: statutoryPayEligible,
+      maternityAllowance: maternityAllowanceEligible,
+      maternityLeave: maternityLeaveEligible
     } = this.eligibility.primary
     const maternityAllowanceOnly = !shppEligible && !statutoryPayEligible && maternityAllowanceEligible && !maternityLeaveEligible
     if (maternityAllowanceOnly) {
