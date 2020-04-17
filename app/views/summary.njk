@@ -1,6 +1,7 @@
 {% from "back-link/macro.njk" import govukBackLink %}
 {% from "tabs/macro.njk" import govukTabs %}
 {% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
+{% from "components/summary-tab-footer.njk" import summaryTabFooter %}
 
 {% extends "layout.njk" %}
 {% block pageTitle -%}
@@ -70,6 +71,32 @@
         {{ pushToGoogleAnalyticsDataLayer("questionplanner_timestamp", plannerJourneyTime, "secondaryPlanner_timestamp") }}
       {% endif %}
       {{ pushToGoogleAnalyticsDataLayer("spljourney_timestamp", totalJourneyTime, "spl_timestamp") }}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+          <h4 class="govuk-heading-l">
+            Next steps
+          </h4>
+          <ul class="govuk-body">
+            <li>
+              Discuss and agree your preferred leave dates with your partner.
+            </li>
+            <li>
+              Use the forms on this page for you and your partner to notify and agree your leave
+              dates with your employers.
+            </li>
+          </ul>
+          {{ summaryTabFooter({
+          shareLinkId: 'pay-summary-share-link'
+          }) }}
+          <h4 class="govuk-heading-s">
+            Help us improve this service
+          </h4>
+          <p class="govuk-body">
+            <a href="/feedback" class="govuk-link">What did you think of this service?</a> (takes 30
+            seconds)
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock %}
