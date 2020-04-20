@@ -224,7 +224,7 @@ class Paths {
 
   getPathObjectFromUrl (url) {
     function findObjectByUrl (obj, url) {
-      for (let key in obj) {
+      for (const key in obj) {
         const subObject = obj[key]
         if (_.isString(subObject)) {
           continue
@@ -258,7 +258,7 @@ class Paths {
   getAllPaths () {
     function searchForUrl (obj) {
       let output = []
-      for (let key in obj) {
+      for (const key in obj) {
         const subObj = obj[key]
 
         if (_.isString(subObj)) {

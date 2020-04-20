@@ -11,18 +11,18 @@ describe('Blocks', () => {
   describe('getBlocks', () => {
     it('should retrieve only compulsory leave and pay blocks', () => {
       const expectedResults = {
-        'leaveBlocks': {
-          'primary': {
-            'initial': { 'start': 0, 'end': 1, 'leave': 'maternity' },
-            'spl': []
+        leaveBlocks: {
+          primary: {
+            initial: { start: 0, end: 1, leave: 'maternity' },
+            spl: []
           },
-          'secondary': {
-            'initial': null,
-            'spl': []
+          secondary: {
+            initial: null,
+            spl: []
           }
         },
-        'payBlocks': [
-          { 'start': 0, 'end': 1, 'primary': '£432.69', 'secondary': undefined }
+        payBlocks: [
+          { start: 0, end: 1, primary: '£432.69', secondary: undefined }
         ]
       }
       const results = blocks.getBlocks(unfilledVisualPlannerJSON)
@@ -32,27 +32,27 @@ describe('Blocks', () => {
 
     it('should retrieve the leave and pay blocks', () => {
       const expectedResults = {
-        'leaveBlocks': {
-          'primary': {
-            'initial': { 'start': 0, 'end': 1, 'leave': 'maternity' },
-            'spl': [
-              { 'start': 3, 'end': 4, 'leave': 'shared' },
-              { 'start': 8, 'end': 9, 'leave': 'shared' }
+        leaveBlocks: {
+          primary: {
+            initial: { start: 0, end: 1, leave: 'maternity' },
+            spl: [
+              { start: 3, end: 4, leave: 'shared' },
+              { start: 8, end: 9, leave: 'shared' }
             ]
           },
-          'secondary': {
-            'initial': { 'start': 0, 'end': 1, 'leave': 'paternity' },
-            'spl': [
-              { 'start': 3, 'end': 4, 'leave': 'shared' },
-              { 'start': 6, 'end': 7, 'leave': 'shared' }
+          secondary: {
+            initial: { start: 0, end: 1, leave: 'paternity' },
+            spl: [
+              { start: 3, end: 4, leave: 'shared' },
+              { start: 6, end: 7, leave: 'shared' }
             ]
           }
         },
-        'payBlocks': [
-          { 'start': 0, 'end': 1, 'primary': '£432.69', 'secondary': '£148.68' },
-          { 'start': 3, 'end': 4, 'primary': '£148.68', 'secondary': '£148.68' },
-          { 'start': 6, 'end': 7, 'primary': undefined, 'secondary': '£148.68' },
-          { 'start': 8, 'end': 9, 'primary': '£148.68', 'secondary': undefined }
+        payBlocks: [
+          { start: 0, end: 1, primary: '£432.69', secondary: '£148.68' },
+          { start: 3, end: 4, primary: '£148.68', secondary: '£148.68' },
+          { start: 6, end: 7, primary: undefined, secondary: '£148.68' },
+          { start: 8, end: 9, primary: '£148.68', secondary: undefined }
         ]
       }
 
@@ -63,27 +63,27 @@ describe('Blocks', () => {
 
     it('should retrieve leave and pay block for question planner data', function () {
       const expectedResults = {
-        'leaveBlocks': {
-          'primary': {
-            'initial': { 'start': 0, 'end': 1, 'leave': 'maternity' },
-            'spl': [
-              { 'start': 3, 'end': 4, 'leave': 'shared' },
-              { 'start': 8, 'end': 9, 'leave': 'shared' }
+        leaveBlocks: {
+          primary: {
+            initial: { start: 0, end: 1, leave: 'maternity' },
+            spl: [
+              { start: 3, end: 4, leave: 'shared' },
+              { start: 8, end: 9, leave: 'shared' }
             ]
           },
-          'secondary': {
-            'initial': { 'start': 0, 'end': 1, 'leave': 'paternity' },
-            'spl': [
-              { 'start': 3, 'end': 4, 'leave': 'shared' },
-              { 'start': 6, 'end': 7, 'leave': 'shared' }
+          secondary: {
+            initial: { start: 0, end: 1, leave: 'paternity' },
+            spl: [
+              { start: 3, end: 4, leave: 'shared' },
+              { start: 6, end: 7, leave: 'shared' }
             ]
           }
         },
-        'payBlocks': [
-          { 'start': 0, 'end': 1, 'primary': '£432.69', 'secondary': '£148.68' },
-          { 'start': 3, 'end': 4, 'primary': '£148.68', 'secondary': '£148.68' },
-          { 'start': 6, 'end': 7, 'primary': undefined, 'secondary': '£148.68' },
-          { 'start': 8, 'end': 9, 'primary': '£148.68', 'secondary': undefined }
+        payBlocks: [
+          { start: 0, end: 1, primary: '£432.69', secondary: '£148.68' },
+          { start: 3, end: 4, primary: '£148.68', secondary: '£148.68' },
+          { start: 6, end: 7, primary: undefined, secondary: '£148.68' },
+          { start: 8, end: 9, primary: '£148.68', secondary: undefined }
         ]
       }
 
@@ -96,31 +96,31 @@ describe('Blocks', () => {
   describe('parseLeaveBlocks', () => {
     it('should parse leave blocks into parent leave object', () => {
       const data = {
-        'primary': {
-          'initial': {start: "0", leave: "maternity", end: "1"},
-          'spl': { _0: {leave: "shared", start: "3", end: "4"} }
+        primary: {
+          initial: { start: '0', leave: 'maternity', end: '1' },
+          spl: { _0: { leave: 'shared', start: '3', end: '4' } }
         },
-        'secondary': {
+        secondary: {
           'is-taking-paternity-leave': 'yes',
-          'initial': {start: '0', leave: 'paternity', end: '1'},
-          'spl': {
-            _0: { leave: 'shared', start: '3', end: '4'},
-            _1: { leave: 'shared', start: '6', end: '7'}
+          initial: { start: '0', leave: 'paternity', end: '1' },
+          spl: {
+            _0: { leave: 'shared', start: '3', end: '4' },
+            _1: { leave: 'shared', start: '6', end: '7' }
           }
         },
         'spl-block-planning-order': ['primary', 'secondary', 'done']
       }
 
       const expectedResults = {
-        'primary': {
-          'initial': {start: "0", leave: "maternity", end: "1"},
-          'spl': [{leave: "shared", start: "3", end: "4"}]
+        primary: {
+          initial: { start: '0', leave: 'maternity', end: '1' },
+          spl: [{ leave: 'shared', start: '3', end: '4' }]
         },
-        'secondary': {
-          'initial': {start: '0', leave: 'paternity', end: '1'},
-          'spl': [
-            { leave: 'shared', start: '3', end: '4'},
-            { leave: 'shared', start: '6', end: '7'}
+        secondary: {
+          initial: { start: '0', leave: 'paternity', end: '1' },
+          spl: [
+            { leave: 'shared', start: '3', end: '4' },
+            { leave: 'shared', start: '6', end: '7' }
           ]
         }
       }

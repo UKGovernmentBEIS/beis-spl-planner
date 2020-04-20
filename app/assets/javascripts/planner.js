@@ -54,7 +54,7 @@ function init (data, interactive) {
 
   if (interactive) {
     const checkboxes = document.querySelectorAll('form#leave-and-pay input[type="checkbox"]')
-    for (let checkbox of checkboxes) {
+    for (const checkbox of checkboxes) {
       checkbox.addEventListener('change', function () {
         const parent = this.getAttribute('data-parent')
         const property = this.getAttribute('data-property')
@@ -88,7 +88,7 @@ function updateLeave (parent, week, value, minimumWeek, eligibility) {
     weeksToUpdate = [week]
   }
 
-  for (let weekToUpdate of weeksToUpdate) {
+  for (const weekToUpdate of weeksToUpdate) {
     const changed = toggleLeave(parent, weekToUpdate, value)
     if (changed) {
       // Pay should always turn on or off with leave.
@@ -126,7 +126,7 @@ function getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity (week, parent, min
     return _.range(earliestSelectedWeek, latestSelectedWeek + 1)
   } else {
     // remove leave after selected week
-    let maximumPeriodDisplayedAsInitialLeave = parent === 'primary' ? 53 : 8
+    const maximumPeriodDisplayedAsInitialLeave = parent === 'primary' ? 53 : 8
     return _.range(week, maximumPeriodDisplayedAsInitialLeave)
   }
 }
@@ -148,7 +148,7 @@ function updatePay (parent, week, value, minimumWeek, eligibility) {
     weeksToUpdate = getPrimaryPayWeeksToUpdateAfterCompulsoryWeeks(week, value, minimumWeek, eligibility)
   }
 
-  for (let weekToUpdate of weeksToUpdate) {
+  for (const weekToUpdate of weeksToUpdate) {
     togglePay(parent, weekToUpdate, value)
   }
 }
@@ -247,7 +247,7 @@ function patchStickyStylingOnInternetExplorer () {
     const { top, bottom } = boundingClientRect
     const offset = (top < 0 && bottom > 0) ? -top : 0
     const headers = document.querySelectorAll('thead th')
-    for (let th of headers) {
+    for (const th of headers) {
       const translate = `translate(0, ${offset}px)`
       th.style.transform = translate
     }

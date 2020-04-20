@@ -46,7 +46,7 @@ function getParentLeaveBlocks (weeks, parent) {
     .sort((week1, week2) => week1.number - week2.number)
 
   let currentBlock = null
-  for (let parentLeaveWeek of parentLeaveWeeks) {
+  for (const parentLeaveWeek of parentLeaveWeeks) {
     if (currentBlock === null) {
       currentBlock = newBlock(parentLeaveWeek)
     }
@@ -94,7 +94,7 @@ function getPayBlocks (weeks) {
 
   let currentBlock = null
 
-  for (let week of payWeeks) {
+  for (const week of payWeeks) {
     if (currentBlock === null) {
       currentBlock = newBlock(week)
     }
@@ -145,27 +145,27 @@ function getBlocks (data) {
   }
 }
 
-function createArrayFromLeaveBlocks(leaveBlocks) {
+function createArrayFromLeaveBlocks (leaveBlocks) {
   const leave = {
     primary: [],
     secondary: []
   }
   for (const parent in leaveBlocks) {
-    for (const leaveType in leaveBlocks[parent]){
+    for (const leaveType in leaveBlocks[parent]) {
       if (leaveType === 'spl') {
         for (let leaveObj in leaveBlocks[parent][leaveType]) {
-          leaveObj = leaveBlocks[parent][leaveType][leaveObj];
+          leaveObj = leaveBlocks[parent][leaveType][leaveObj]
           const leaveArr = createLeaveArray(leaveObj.start, leaveObj.end)
           leave[parent] = leave[parent].concat(leaveArr)
         }
       } else {
-        const leaveObj = leaveBlocks[parent][leaveType];
+        const leaveObj = leaveBlocks[parent][leaveType]
         const leaveArr = createLeaveArray(leaveObj.start, leaveObj.end)
         leave[parent] = leave[parent].concat(leaveArr)
       }
     }
   }
-  return leave;
+  return leave
 }
 
 function createLeaveArray (start, end) {
@@ -253,7 +253,7 @@ function categorisePayBlocksByType (leaveBlocksSet, payBlocksSet) {
   }
 
   const sharedPayBlocks = []
-  let initialPayBlock = {
+  const initialPayBlock = {
     start: payBlocksSet[0].start,
     end: payBlocksSet[0].end
   }
