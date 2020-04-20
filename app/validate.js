@@ -224,7 +224,7 @@ function planner (req) {
 
     // Not taking compulsory leave.
     if (compulsoryLeaveWeeks.some(week => !inputWeeks.primary.leaveWeeks.includes(week))) {
-      const message = `The ${names.primary} must take 2 weeks of Maternity Leave or Pay when the child is born.`
+      const message = `The ${names.primary} must take 2 weeks of Maternity Leave and/or Pay when the child is born.`
       addCalendarError(req, 'primary', 'not-taking-compulsory-leave', message)
       isValid = false
     }
