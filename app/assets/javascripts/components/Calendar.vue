@@ -384,6 +384,8 @@
       printLeaveOrPayLabel: function () {
         if (this.eligibility.primary.statutoryPay && this.eligibility.primary.shpp) {
           return 'Pay'
+        } else if (this.eligibility.primary.maternityAllowance && !(this.eligibility.primary.statutoryPay && this.eligibility.primary.shpp)) {
+          return 'Allowance'
         } else {
           return 'Leave'
         }
