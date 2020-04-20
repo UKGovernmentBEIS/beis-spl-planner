@@ -9,16 +9,8 @@ function typeOfAdoption (data) {
   return data['type-of-adoption']
 }
 
-function primaryData (data) {
-  return data['primary']
-}
-
 function birthOrPlacement (data) {
   return isAdoption(data) ? 'placement' : 'birth'
-}
-
-function isCompulsoryLeaveEligible (data) {
-  return primaryData(data)['spl-eligible'] === 'yes' || primaryData(data)['initial-leave-eligible'] === 'yes'
 }
 
 function isBirth (data) {
@@ -117,7 +109,6 @@ module.exports = {
   primaryName,
   primaryUrlName,
   secondaryName,
-  isCompulsoryLeaveEligible,
   isAdoption,
   isUkAdoption,
   isOverseasAdoption,
