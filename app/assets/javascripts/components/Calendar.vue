@@ -53,7 +53,7 @@
         </tr>
         <tr :key="'earliest-leave-week-' + week.id" v-if="(i === 0) && (week.number !== 0)" class="row-banner" aria-hidden="true">
           <th colspan="5">
-            {{ primaryLeaveType | capitalize }} {{ printLeaveOrPayLabel() }} can start in this week
+            {{ primaryLeaveType | capitalize }} {{ printEligibilityTypeLabel() }} can start in this week
           </th>
         </tr>
         <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner" aria-hidden="true">
@@ -381,7 +381,7 @@
       setHeaderOffset() {
         this.headerOffset = this.$refs.infoAlert.offsetHeight
       },
-      printLeaveOrPayLabel: function () {
+      printEligibilityTypeLabel: function () {
         if (this.eligibility.primary.spl || this.eligibility.primary.maternityLeave) {
           return 'Leave'
         } else if (this.eligibility.primary.statutoryPay || this.eligibility.primary.shpp) {
