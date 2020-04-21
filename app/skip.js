@@ -22,7 +22,8 @@ function maternityAllowance (req) {
     return true
   }
   const maternityLeaveEligible = delve(req.session.data, ['primary', 'initial-leave-eligible'])
-  if (isYes(maternityLeaveEligible)) {
+  const shppEligible = delve(req.session.data, ['primary', 'shpp-eligible'])
+  if (isYes(maternityLeaveEligible) && isYes(shppEligible)) {
     return true
   }
   const initialPayEligible = delve(req.session.data, ['primary', 'initial-pay-eligible'])
