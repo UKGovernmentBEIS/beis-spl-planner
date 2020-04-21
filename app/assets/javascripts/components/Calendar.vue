@@ -382,12 +382,12 @@
         this.headerOffset = this.$refs.infoAlert.offsetHeight
       },
       printLeaveOrPayLabel: function () {
-        if (this.eligibility.primary.statutoryPay && this.eligibility.primary.shpp) {
-          return 'Pay'
-        } else if (this.eligibility.primary.maternityAllowance && !(this.eligibility.primary.statutoryPay && this.eligibility.primary.shpp)) {
-          return 'Allowance'
-        } else {
+        if (this.eligibility.primary.spl || this.eligibility.primary.maternityLeave) {
           return 'Leave'
+        } else if (this.eligibility.primary.statutoryPay || this.eligibility.primary.shpp) {
+          return 'Pay'
+        } else {
+          return 'Allowance'
         }
       }
     },
