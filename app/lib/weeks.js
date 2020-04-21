@@ -143,9 +143,9 @@ class Weeks {
       day: this.startWeek.add(idx, 'weeks'),
       primary: {
         disabled: false,
-        compulsory: this.primaryLeaveType === 'maternity'
-                    && (idx === 0 || idx === 1)
-                    && (this.eligibility.primary.spl || this.eligibility.primary.maternityLeave),
+        compulsory: this.primaryLeaveType === 'maternity' &&
+                    (idx === 0 || idx === 1) &&
+                    (this.eligibility.primary.spl || this.eligibility.primary.maternityLeave),
         leave: {},
         pay: {}
       },
