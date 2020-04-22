@@ -124,7 +124,7 @@ class Paths {
           } else {
             return '/eligibility/partner/shared-parental-leave-and-pay'
           }
-        },
+        }
       },
       startDate: {
         url: '/start-date',
