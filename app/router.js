@@ -12,6 +12,7 @@ const {
   registerEligibilityRouteForPrimaryParents,
   registerEligibilityRouteForBirthMother,
   registerPlannerRouteForPrimaryLeaveTypes,
+  isPrimaryIneligible,
   bothParentsAreIneligible,
   parseExternalQueryString,
   clearLaterLeaveBlockAnswers,
@@ -121,8 +122,11 @@ registerEligibilityRouteForBirthMother(router, 'maternityAllowance', {
   post: function (_, req, res) {
     if (!validate.maternityAllowance(req)) {
       return res.redirect('back')
+    } else if (isPrimaryIneligible(req.session.data)) {
+      res.redirect(paths.getPath('notEligible'))
+    } else {
+      res.redirect(paths.getPath(`eligibility.partner.sharedParentalLeaveAndPay`))
     }
-    res.redirect(paths.getPath(`eligibility.partner.sharedParentalLeaveAndPay`))
   }
 })
 
