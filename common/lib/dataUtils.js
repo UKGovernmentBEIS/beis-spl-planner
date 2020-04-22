@@ -104,12 +104,19 @@ function isPrimaryIneligible (data) {
   const primaryShppEligible = delve(data, ['primary', 'shpp-eligible'])
   const primaryInitialLeaveEligible = delve(data, ['primary', 'initial-leave-eligible'])
   const primaryInitialPayEligible = delve(data, ['primary', 'initial-pay-eligible'])
-  const primaryMaternityAllowEligible = delve(data, ['primary', 'maternity-allowance-eligible'])
-  return this.isNo(primarySplEligible) &&
-         this.isNo(primaryShppEligible) &&
-         this.isNo(primaryInitialLeaveEligible) &&
-         this.isNo(primaryInitialPayEligible) &&
-         this.isNo(primaryMaternityAllowEligible)
+  if (isBirth(data)) {
+    const primaryMaternityAllowEligible = delve(data, ['primary', 'maternity-allowance-eligible'])
+    return this.isNo(primarySplEligible) &&
+           this.isNo(primaryShppEligible) &&
+           this.isNo(primaryInitialLeaveEligible) &&
+           this.isNo(primaryInitialPayEligible) &&
+           this.isNo(primaryMaternityAllowEligible)
+  } else {
+    return this.isNo(primarySplEligible) &&
+           this.isNo(primaryShppEligible) &&
+           this.isNo(primaryInitialLeaveEligible) &&
+           this.isNo(primaryInitialPayEligible)
+  }
 }
 
 module.exports = {

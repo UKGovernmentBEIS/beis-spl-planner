@@ -103,7 +103,9 @@ registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
     if (!validate.initialLeaveAndPay(req)) {
       return res.redirect('back')
     }
-    if (skip.maternityAllowance(req)) {
+    if (dataUtils.isPrimaryIneligible(req.session.data)) {
+      res.redirect(paths.getPath('notEligible'))
+    } else if (skip.maternityAllowance(req)) {
       res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
     } else {
       res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
