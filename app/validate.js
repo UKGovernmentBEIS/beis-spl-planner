@@ -79,15 +79,10 @@ function isPrimaryIneligible (primary) {
 }
 
 function secondarySharedParentalLeaveAndPay (req) {
-  const { primary } = req.session.data
-  if (isPrimaryIneligible(primary)) {
-    return true
-  } else {
-    return validateParentYesNoFields(req, 'secondary', {
-      'spl-eligible': 'Select whether you are eligible for Shared Parental Leave',
-      'shpp-eligible': 'Select whether you are eligible for Shared Parental Pay'
-    })
-  }
+  return validateParentYesNoFields(req, 'secondary', {
+    'spl-eligible': 'Select whether you are eligible for Shared Parental Leave',
+    'shpp-eligible': 'Select whether you are eligible for Shared Parental Pay'
+  })
 }
 
 function paternityLeaveAndPay (req) {
