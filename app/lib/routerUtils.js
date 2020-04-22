@@ -34,19 +34,6 @@ function getParent (parentUrlPart) {
   return parentUrlPart === 'partner' ? 'secondary' : 'primary'
 }
 
-function isPrimaryIneligible (data) {
-  const primarySplEligible = delve(data, ['primary', 'spl-eligible'])
-  const primaryShppEligible = delve(data, ['primary', 'shpp-eligible'])
-  const primaryInitialLeaveEligible = delve(data, ['primary', 'initial-leave-eligible'])
-  const primaryInitialPayEligible = delve(data, ['primary', 'initial-pay-eligible'])
-  const primaryMaternityAllowEligible = delve(data, ['primary', 'maternity-allowance-eligible'])
-  return dataUtils.isNo(primarySplEligible) &&
-    dataUtils.isNo(primaryShppEligible) &&
-    dataUtils.isNo(primaryInitialLeaveEligible) &&
-    dataUtils.isNo(primaryInitialPayEligible) &&
-    dataUtils.isNo(primaryMaternityAllowEligible)
-}
-
 function bothParentsAreIneligible (data) {
   const primarySplEligible = delve(data, ['primary', 'spl-eligible'])
   const primaryShppEligible = delve(data, ['primary', 'shpp-eligible'])
@@ -199,7 +186,6 @@ module.exports = {
   registerEligibilityRouteForBirthMother,
   registerPlannerRouteForPrimaryLeaveTypes,
   getParent,
-  isPrimaryIneligible,
   bothParentsAreIneligible,
   parseExternalQueryString,
   clearLaterLeaveBlockAnswers,

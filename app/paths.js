@@ -119,7 +119,7 @@ class Paths {
       notEligible: {
         url: '/not-eligible',
         workflowParentPath: data => {
-          if (validate.isPrimaryIneligible(data.primary)) {
+          if (dataUtils.isPrimaryIneligible(data)) {
             return '/eligibility/mother/maternity-allowance'
           } else {
             return '/eligibility/partner/shared-parental-leave-and-pay'

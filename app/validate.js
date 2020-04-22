@@ -70,14 +70,6 @@ function maternityAllowance (req) {
   return true
 }
 
-function isPrimaryIneligible (primary) {
-  return dataUtils.isNo(primary['spl-eligible']) &&
-         dataUtils.isNo(primary['shpp-eligible']) &&
-         dataUtils.isNo(primary['initial-leave-eligible']) &&
-         dataUtils.isNo(primary['initial-pay-eligible']) &&
-         dataUtils.isNo(primary['maternity-allowance-eligible'])
-}
-
 function secondarySharedParentalLeaveAndPay (req) {
   return validateParentYesNoFields(req, 'secondary', {
     'spl-eligible': 'Select whether you are eligible for Shared Parental Leave',
@@ -361,7 +353,6 @@ module.exports = {
   primarySharedParentalLeaveAndPay,
   initialLeaveAndPay,
   maternityAllowance,
-  isPrimaryIneligible,
   secondarySharedParentalLeaveAndPay,
   paternityLeaveAndPay,
   startDate,
