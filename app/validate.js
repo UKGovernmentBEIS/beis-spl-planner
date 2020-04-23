@@ -49,11 +49,11 @@ function initialLeaveAndPay (req) {
   let isValid = true
   const { primary } = req.session.data
   if (dataUtils.isNo(primary['spl-eligible']) && !isYesOrNo(primary['initial-leave-eligible'])) {
-    addError(req, 'initial-leave-eligible', 'Select whether you are eligible for leave', '#initial-leave-eligible-1')
+    addError(req, 'initial-leave-eligible', 'Select whether you are eligible for leave', '#primary-initial-leave-eligible-1')
     isValid = false
   }
   if (dataUtils.isNo(primary['shpp-eligible']) && !isYesOrNo(primary['initial-pay-eligible'])) {
-    addError(req, 'initial-pay-eligible', 'Select whether you are eligible for pay', '#initial-pay-eligible-1')
+    addError(req, 'initial-pay-eligible', 'Select whether you are eligible for pay', '#primary-initial-pay-eligible-1')
     isValid = false
   }
   return isValid
