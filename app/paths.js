@@ -118,7 +118,19 @@ class Paths {
       },
       notEligible: {
         url: '/not-eligible',
-        workflowParentPath: '/eligibility/partner/shared-parental-leave-and-pay'
+        workflowParentPath: data => {
+          if (dataUtils.isPrimaryIneligible(data)) {
+            if (dataUtils.isBirth(data)) {
+              return '/eligibility/mother/maternity-allowance'
+            } else if (dataUtils.isAdoption(data)) {
+              return '/eligibility/primary-adopter/initial-leave-and-pay'
+            } else {
+              return '/eligibility/parental-order-parent/initial-leave-and-pay'
+            }
+          } else {
+            return '/eligibility/partner/shared-parental-leave-and-pay'
+          }
+        }
       },
       startDate: {
         url: '/start-date',

@@ -103,7 +103,9 @@ registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
     if (!validate.initialLeaveAndPay(req)) {
       return res.redirect('back')
     }
-    if (skip.maternityAllowance(req)) {
+    if (dataUtils.isPrimaryIneligible(req.session.data)) {
+      res.redirect(paths.getPath('notEligible'))
+    } else if (skip.maternityAllowance(req)) {
       res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
     } else {
       res.redirect(paths.getPath(`eligibility.${parentUrlPart}.maternityAllowance`))
@@ -121,8 +123,11 @@ registerEligibilityRouteForBirthMother(router, 'maternityAllowance', {
   post: function (_, req, res) {
     if (!validate.maternityAllowance(req)) {
       return res.redirect('back')
+    } else if (dataUtils.isPrimaryIneligible(req.session.data)) {
+      res.redirect(paths.getPath('notEligible'))
+    } else {
+      res.redirect(paths.getPath(`eligibility.partner.sharedParentalLeaveAndPay`))
     }
-    res.redirect(paths.getPath(`eligibility.partner.sharedParentalLeaveAndPay`))
   }
 })
 

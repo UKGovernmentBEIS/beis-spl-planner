@@ -99,6 +99,26 @@ function splBlockPlanningOrder (data) {
   return _.castArray(delve(data, 'leave-blocks.spl-block-planning-order', []))
 }
 
+function isPrimaryIneligible (data) {
+  const primarySplEligible = delve(data, ['primary', 'spl-eligible'])
+  const primaryShppEligible = delve(data, ['primary', 'shpp-eligible'])
+  const primaryInitialLeaveEligible = delve(data, ['primary', 'initial-leave-eligible'])
+  const primaryInitialPayEligible = delve(data, ['primary', 'initial-pay-eligible'])
+  if (isBirth(data)) {
+    const primaryMaternityAllowEligible = delve(data, ['primary', 'maternity-allowance-eligible'])
+    return this.isNo(primarySplEligible) &&
+           this.isNo(primaryShppEligible) &&
+           this.isNo(primaryInitialLeaveEligible) &&
+           this.isNo(primaryInitialPayEligible) &&
+           this.isNo(primaryMaternityAllowEligible)
+  } else {
+    return this.isNo(primarySplEligible) &&
+           this.isNo(primaryShppEligible) &&
+           this.isNo(primaryInitialLeaveEligible) &&
+           this.isNo(primaryInitialPayEligible)
+  }
+}
+
 module.exports = {
   natureOfParenthood,
   typeOfAdoption,
@@ -117,5 +137,6 @@ module.exports = {
   earliestPrimaryLeaveWeek,
   isYes,
   isNo,
-  splBlockPlanningOrder
+  splBlockPlanningOrder,
+  isPrimaryIneligible
 }
