@@ -60,22 +60,19 @@
               Your previous answers are at the bottom of the page.
             </p>
           {% endset %}
-          {% call govukFieldset({
-            legend: {
-              text: "How many weeks of " + (data | primaryLeaveType | capitalize) + " Leave will the " + (data | primaryName) + " take?",
-              classes: "govuk-fieldset__legend--xl",
-              isPageHeading: true
-            }
-          })%}
             {{ govukSelect({
               id: "primary-leave-end",
               name: "leave-blocks[primary][initial][end]",
               hint: {
                 html: hint
               },
+              label: {
+                text: "How many weeks of " + (data | primaryLeaveType | capitalize) + " Leave will the " + (data | primaryName) + " take?",
+                classes: "govuk-label--xl",
+                isPageHeading: true
+              },
               items: options | mapValuesToSelectOptions(optionText)
             }) }}
-          {% endcall %}
         {% endcall %}
         {{ govukButton({
           text: "Continue"

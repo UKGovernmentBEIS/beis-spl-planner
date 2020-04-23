@@ -55,22 +55,19 @@
               Your previous answers are at the bottom of the page.
             </p>
           {% endset %}
-          {% call govukFieldset({
-            legend: {
-              text: "How many weeks of Paternity Leave will the partner take?",
-              classes: "govuk-fieldset__legend--xl",
-              isPageHeading: true
-            }
-          })%}
             {{ govukSelect({
               id: "primary-leave-end",
               name: "leave-blocks[secondary][initial][end]",
               hint: {
                 html: hint
               },
+              label: {
+                text: "How many weeks of Paternity Leave will the partner take?",
+                classes: "govuk-label--xl",
+                isPageHeading: true
+              },
               items: options | mapValuesToSelectOptions(optionText)
             }) }}
-          {% endcall %}
         {% endcall %}
         {{ govukButton({
           text: "Continue"

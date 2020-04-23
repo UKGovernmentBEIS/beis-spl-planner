@@ -72,22 +72,19 @@
               Your previous answers are at the bottom of the page.
             </p>
           {% endset %}
-          {% call govukFieldset({
-            legend: {
-              text: "Which week will be the " + parentName + "’s first week of Shared Parental Leave in this block?",
-              classes: "govuk-fieldset__legend--xl",
-              isPageHeading: true
-            }
-          })%}
             {{ govukSelect({
               id: "shared-parental-leave-start",
               name: "leave-blocks[" + parent + "][spl][_" + index + "][start]",
               hint: {
                 html: hint
               },
+              label: {
+                text: "Which week will be the " + parentName + "’s first week of Shared Parental Leave in this block?",
+                classes: "govuk-label--xl",
+                isPageHeading: true
+              },
               items: options | mapValuesToSelectOptions(optionText)
             }) }}
-          {% endcall %}
         {% endcall %}
         {{ govukButton({
           text: "Continue"

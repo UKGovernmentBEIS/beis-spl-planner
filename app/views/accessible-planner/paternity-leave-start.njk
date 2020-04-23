@@ -62,23 +62,20 @@
               Your previous answers are at the bottom of the page.
             </p>
           {% endset %}
-          {% call govukFieldset({
-            legend: {
-              text: "Which week will be the partner’s first week of Paternity Leave?",
-              classes: "govuk-fieldset__legend--xl",
-              isPageHeading: true
-            }
-          })%}
             {{ govukSelect({
               id: "primary-leave-start",
               name: "leave-blocks[secondary][initial][start]",
               hint: {
                 html: hint
               },
+              label: {
+                text: "Which week will be the partner’s first week of Paternity Leave?",
+                classes: "govuk-label--xl",
+                isPageHeading: true
+              },
               items: options | mapValuesToSelectOptions(optionText)
             }) }}
             <input type="hidden" name="leave-blocks[secondary][initial][leave]" value="paternity">
-          {% endcall %}
         {% endcall %}
         {{ govukButton({
           text: "Continue"
