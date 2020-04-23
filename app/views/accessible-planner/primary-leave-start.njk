@@ -66,23 +66,20 @@
               {% endif %}
             </p>
           {% endset %}
-          {% call govukFieldset({
-            legend: {
-              text: "Which week was or will be the " + primaryName + "’s first week of " + (primaryLeaveType | capitalize) + " Leave?",
-              classes: "govuk-fieldset__legend--xl",
-              isPageHeading: true
-            }
-          })%}
             {{ govukSelect({
               id: "primary-leave-start",
               name: "leave-blocks[primary][initial][start]",
               hint: {
                 html: hint
               },
+              label: {
+                text: "Which week was or will be the " + primaryName + "’s first week of " + (primaryLeaveType | capitalize) + " Leave?",
+                classes: "govuk-label--xl",
+                isPageHeading: true
+              },
               items: options | mapValuesToSelectOptions(optionText)
             }) }}
             <input type="hidden" name="leave-blocks[primary][initial][leave]" value="{{ primaryLeaveType }}">
-          {% endcall %}
         {% endcall %}
         {{ govukButton({
           text: "Continue"
