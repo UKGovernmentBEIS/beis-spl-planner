@@ -1,6 +1,11 @@
 {% from "button/macro.njk" import govukButton %}
 
 {% macro summaryTabFooter(options) %}
+
+<div id="{{ options.shareLinkId }}">
+  {# JavaScript enhanced share link component. See /app/assets/javascripts/summary.js and associated Vue components. #}
+</div>
+
   {{ govukButton({
     text: "Print this summary",
     type: "button",
@@ -13,7 +18,4 @@
     }
   }) }}
 
-  <div id="{{ options.shareLinkId }}">
-  {# JavaScript enhanced share link component. See /app/assets/javascripts/summary.js and associated Vue components. #}
-  </div>
 {% endmacro %}
