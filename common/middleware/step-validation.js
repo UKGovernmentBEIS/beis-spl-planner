@@ -3,7 +3,10 @@ const paths = require('../../app/paths')
 module.exports = function (req, res, next) {
   const previousWorkflowPath = paths.getPreviousWorkflowPath(req.path, req.session.data)
   const earliestPathWithValidationErrors = getEarliestPathWithValidationErrors(previousWorkflowPath, req)
-  if (earliestPathWithValidationErrors) {
+
+  const redirectDisabled = (process.env.NODE_ENV !== 'production' && process.env.PA11Y_TEST === 'true')
+
+  if (earliestPathWithValidationErrors && !redirectDisabled) {
     res.redirect(earliestPathWithValidationErrors)
   } else {
     next()
