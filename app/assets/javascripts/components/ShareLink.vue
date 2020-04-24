@@ -19,12 +19,17 @@
           @click="selectToken($event)"
         />
       </div>
-      <div class="govuk-grid-column-one-quarter">
-        <button class="govuk-button" type="button"
-          @click.prevent="copyToken()"
+      <div class="govuk-grid-column-one-quarter copy-button">
+        <button class="govuk-button"
+                :aria-label="isCopied ? 'copied' : ''"
+                @click.prevent="copyToken()"
+                @mouseleave="onMouseLeave()"
         >
           Copy link
         </button>
+        <div v-if="isCopied" role="alert" class="govuk-tag copy-button-alert">
+            Copied
+        </div>
       </div>
     </div>
   </span>
@@ -38,7 +43,8 @@
 
   module.exports = {
     data: () => ({
-      pageType: 'plan'
+      pageType: 'plan',
+      isCopied: false
     }),
     props: {
       formData: Object,
@@ -68,8 +74,26 @@
         const hasCopied = document.execCommand('copy')
         if (!hasCopied) {
           window.alert('Copy failed. Please try again using your browser’s controls.')
+        } else {
+          this.isCopied = true;
         }
+      },
+      onMouseLeave: function () {
+        this.isCopied = false;
       }
     }
   }
 </script>
+
+<style lang="scss" scoped>
+    .copy-button {
+        text-align: center;
+        .govuk-button {
+            margin-bottom: 0;
+        }
+        .copy-button-alert {
+            margin: 10px;
+            display: inline-block;
+        }
+    }
+</style>
