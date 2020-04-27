@@ -20,7 +20,7 @@ const {
 function natureOfParenthood (req) {
   const acceptedValues = ['birth', 'adoption', 'surrogacy']
   if (!acceptedValues.includes(req.session.data['nature-of-parenthood'])) {
-    addError(req, 'nature-of-parenthood', 'Select either birth, adoption or surrogacy', '#nature-of-parenthood-1')
+    addError(req, 'nature-of-parenthood', 'Select either birth, adoption or surrogacy', '#nature-of-parenthood')
     return false
   }
   return true
@@ -32,7 +32,7 @@ function typeOfAdoption (req) {
   }
   const acceptedValues = ['uk', 'overseas']
   if (!acceptedValues.includes(req.session.data['type-of-adoption'])) {
-    addError(req, 'type-of-adoption', 'Select either UK or overseas adoption', '#type-of-adoption-1')
+    addError(req, 'type-of-adoption', 'Select either UK or overseas adoption', '#type-of-adoption')
     return false
   }
   return true
@@ -49,11 +49,11 @@ function initialLeaveAndPay (req) {
   let isValid = true
   const { primary } = req.session.data
   if (dataUtils.isNo(primary['spl-eligible']) && !isYesOrNo(primary['initial-leave-eligible'])) {
-    addError(req, 'initial-leave-eligible', 'Select whether you are eligible for leave', '#primary-initial-leave-eligible-1')
+    addError(req, 'initial-leave-eligible', 'Select whether you are eligible for leave', '#primary-initial-leave-eligible')
     isValid = false
   }
   if (dataUtils.isNo(primary['shpp-eligible']) && !isYesOrNo(primary['initial-pay-eligible'])) {
-    addError(req, 'initial-pay-eligible', 'Select whether you are eligible for pay', '#primary-initial-pay-eligible-1')
+    addError(req, 'initial-pay-eligible', 'Select whether you are eligible for pay', '#primary-initial-pay-eligible')
     isValid = false
   }
   return isValid
@@ -64,7 +64,7 @@ function maternityAllowance (req) {
     return true
   }
   if (!isYesOrNo(delve(req.session.data, ['primary', 'maternity-allowance-eligible']))) {
-    addError(req, 'maternity-allowance-eligible', 'Select whether you are eligible for Maternity Allowance', '#maternity-allowance-eligible-1')
+    addError(req, 'maternity-allowance-eligible', 'Select whether you are eligible for Maternity Allowance', '#maternity-allowance-eligible')
     return false
   }
   return true
@@ -81,11 +81,11 @@ function paternityLeaveAndPay (req) {
   let isValid = true
   const { secondary } = req.session.data
   if (dataUtils.isNo(secondary['spl-eligible']) && !isYesOrNo(secondary['initial-leave-eligible'])) {
-    addError(req, 'initial-leave-eligible', 'Select whether you are eligible for leave', '#initial-leave-eligible-1')
+    addError(req, 'initial-leave-eligible', 'Select whether you are eligible for leave', '#initial-leave-eligible')
     isValid = false
   }
   if (dataUtils.isNo(secondary['shpp-eligible']) && !isYesOrNo(secondary['initial-pay-eligible'])) {
-    addError(req, 'initial-pay-eligible', 'Select whether you are eligible for pay', '#initial-pay-eligible-1')
+    addError(req, 'initial-pay-eligible', 'Select whether you are eligible for pay', '#initial-pay-eligible')
     isValid = false
   }
   return isValid
