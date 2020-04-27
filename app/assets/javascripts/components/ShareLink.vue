@@ -84,16 +84,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-    .copy-button {
-        text-align: center;
-        .govuk-button {
-            margin-bottom: 0;
-        }
-        .copy-button-alert {
-            margin: 10px;
-            display: inline-block;
-        }
-    }
-</style>
