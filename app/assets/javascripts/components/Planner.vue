@@ -14,6 +14,8 @@
             :primaryLeaveType="primaryLeaveType" :names="names"
             :eligibility="eligibility" :reset="resetIfChanged"/>
         </div>
+        <h2 class="govuk-heading-m">Reset the calendar</h2>
+        <p>You can reset the calendar to start again.</p>
         <button v-if="interactive"
           class="govuk-button"
           type="button"
@@ -22,7 +24,7 @@
           data-ga-field-event_category="planner"
           data-ga-field-event_action="reset"
         >
-          Reset
+          Reset to start again
         </button>
       </div>
     </div>
