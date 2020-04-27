@@ -12,20 +12,20 @@
          </p>
         </span>
       </label>
-      <div class="govuk-grid-column-three-quarters govuk-!-padding-0">
+      <div class="govuk-!-padding-0">
         <input id="save-share-link" class="govuk-input govuk-!-font-size-14 share-link" type="text" readonly
           :ref="'share-link'"
           :value="token"
           @click="selectToken($event)"
         />
       </div>
-      <div class="govuk-grid-column-one-quarter copy-button">
+      <div>
         <button class="govuk-button"
                 :aria-label="isCopied ? 'copied' : ''"
                 @click.prevent="copyToken()"
                 @mouseleave="onMouseLeave()"
         >
-          Copy link
+          Copy link to save and share
         </button>
         <div v-if="isCopied" role="alert" class="govuk-tag copy-button-alert">
             Copied
