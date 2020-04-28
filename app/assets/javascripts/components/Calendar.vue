@@ -428,12 +428,12 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "node_modules/govuk-frontend/settings/media-queries";
-  @import "node_modules/govuk-frontend/helpers/media-queries";
-  @import "node_modules/govuk-frontend/settings/colours-applied";
+  @import "node_modules/govuk-frontend/govuk/settings/media-queries";
+  @import "node_modules/govuk-frontend/govuk/helpers/media-queries";
+  @import "node_modules/govuk-frontend/govuk/settings/colours-applied";
 
-  $header-colour: govuk-colour("grey-3");
-  $cell-border: 1px solid govuk-colour("grey-3");
+  $header-colour: govuk-colour("light-grey");
+  $cell-border: 1px solid govuk-colour("light-grey");
 
   $row-banner-colour: govuk-colour("yellow");
 
@@ -587,7 +587,7 @@
     "paternity": lighten(govuk-colour("red"), 50%),
     "shared": lighten(govuk-colour("light-green"), 25%),
     "compulsory": lighten(govuk-colour("blue"), 25%),
-    "disabled": govuk-colour("grey-2"),
+    "disabled": govuk-colour("mid-grey"),
     "unpaid": lighten(govuk-colour("yellow"), 25%)
   );
 
@@ -652,7 +652,7 @@
 </style>
 
 <style lang="scss" scoped>
-  @import "node_modules/govuk-frontend/settings/colours-applied";
+  @import "node_modules/govuk-frontend/govuk/settings/colours-applied";
 
   .govuk-error-summary__body {
     color: $govuk-error-colour;

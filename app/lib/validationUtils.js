@@ -21,7 +21,7 @@ function validateParentYesNoFields (req, parent, fieldErrorMessages) {
   for (const [field, message] of Object.entries(fieldErrorMessages)) {
     const value = delve(req.session.data, [parent, field])
     if (!isYesOrNo(value)) {
-      addError(req, field, message, `#${parent}-${field}-1`)
+      addError(req, field, message, `#${parent}-${field}`)
       isValid = false
     }
   }
