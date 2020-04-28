@@ -160,7 +160,7 @@ function createArrayFromLeaveBlocks (leaveBlocks) {
         }
       } else {
         const leaveObj = leaveBlocks[parent][leaveType]
-        const leaveArr = createLeaveArray(leaveObj.start, leaveObj.end)
+        const leaveArr = leaveObj === null ? null : createLeaveArray(leaveObj.start, leaveObj.end)
         leave[parent] = leave[parent].concat(leaveArr)
       }
     }

@@ -2,8 +2,8 @@ const { describe, it } = require('mocha')
 const assert = require('chai').assert
 
 const blocks = require('../../../app/lib/blocks')
-
 const unfilledVisualPlannerJSON = require('../../data/unfilledVisualPlannerData')
+const unfilledQuestionPlannerJSON = require('../../data/unfilledQuestionPlannerData')
 const filledVisualPlannerJSON = require('../../data/filledVisualPlannerData')
 const filledQuestionPlannerJSON = require('../../data/filledQuestionPlannerData')
 
@@ -49,17 +49,39 @@ describe('Blocks', () => {
           }
         },
         payBlocks: [
-          { start: 0, end: 1, primary: '£432.69', secondary: '£148.68' },
-          { start: 3, end: 4, primary: '£148.68', secondary: '£148.68' },
-          { start: 6, end: 7, primary: undefined, secondary: '£148.68' },
-          { start: 8, end: 9, primary: '£148.68', secondary: undefined }
+          { start: 0, end: 1, primary: '£432.69', secondary: '£151.20' },
+          { start: 3, end: 4, primary: '£151.20', secondary: '£151.20' },
+          { start: 6, end: 7, primary: undefined, secondary: '£151.20' },
+          { start: 8, end: 9, primary: '£151.20', secondary: undefined }
         ]
       }
 
       const results = blocks.getBlocks(filledVisualPlannerJSON)
 
-      assert.equal(results.toString(), expectedResults.toString())
+      assert.equal(JSON.stringify(results), JSON.stringify(expectedResults))
     })
+
+    it('should retrieve only compulsory leave and pay blocks block for question planner data',
+      () => {
+        const expectedResults = {
+          leaveBlocks: {
+            primary: {
+              initial: { start: 0, end: 0, leave: 'maternity' },
+              spl: []
+            },
+            secondary: {
+              initial: null,
+              spl: []
+            }
+          },
+          payBlocks: [
+            { start: 0, end: 0, primary: '90% of weekly pay', secondary: undefined }
+          ]
+        }
+        const results = blocks.getBlocks(unfilledQuestionPlannerJSON)
+
+        assert.equal(JSON.stringify(results), JSON.stringify(expectedResults))
+      })
 
     it('should retrieve leave and pay block for question planner data', function () {
       const expectedResults = {
@@ -80,16 +102,16 @@ describe('Blocks', () => {
           }
         },
         payBlocks: [
-          { start: 0, end: 1, primary: '£432.69', secondary: '£148.68' },
-          { start: 3, end: 4, primary: '£148.68', secondary: '£148.68' },
-          { start: 6, end: 7, primary: undefined, secondary: '£148.68' },
-          { start: 8, end: 9, primary: '£148.68', secondary: undefined }
+          { start: 0, end: 1, primary: '£432.69', secondary: '£151.20' },
+          { start: 3, end: 4, primary: '£151.20', secondary: '£151.20' },
+          { start: 6, end: 7, primary: undefined, secondary: '£151.20' },
+          { start: 8, end: 9, primary: '£151.20', secondary: undefined }
         ]
       }
 
       const results = blocks.getBlocks(filledQuestionPlannerJSON)
 
-      assert.equal(results.toString(), expectedResults.toString())
+      assert.equal(JSON.stringify(results), JSON.stringify(expectedResults))
     })
   })
 
@@ -113,21 +135,21 @@ describe('Blocks', () => {
 
       const expectedResults = {
         primary: {
-          initial: { start: '0', leave: 'maternity', end: '1' },
-          spl: [{ leave: 'shared', start: '3', end: '4' }]
+          initial: { leave: 'maternity', start: 0, end: 1 },
+          spl: [{ leave: 'shared', start: 3, end: 4 }]
         },
         secondary: {
-          initial: { start: '0', leave: 'paternity', end: '1' },
+          initial: { leave: 'paternity', start: 0, end: 1 },
           spl: [
-            { leave: 'shared', start: '3', end: '4' },
-            { leave: 'shared', start: '6', end: '7' }
+            { leave: 'shared', start: 3, end: 4 },
+            { leave: 'shared', start: 6, end: 7 }
           ]
         }
       }
 
       const results = blocks.parseLeaveBlocks(data)
 
-      assert.equal(results.toString(), expectedResults.toString())
+      assert.equal(JSON.stringify(results), JSON.stringify(expectedResults))
     })
   })
 })
