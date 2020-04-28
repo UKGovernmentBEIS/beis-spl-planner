@@ -1,0 +1,38 @@
+{
+  "nature-of-parenthood": "birth",
+  "primary": {
+    "spl-eligible": "yes",
+    "shpp-eligible": "yes",
+    "leave": [
+      "0",
+      "1"
+    ],
+    "pay": [
+      "0",
+      "1"
+    ]
+  },
+  "secondary": {
+    "spl-eligible": "yes",
+    "shpp-eligible": "yes"
+  },
+  "start-date-day": "1",
+  "start-date-month": "1",
+  "start-date-year": "2020",
+  "leave-blocks": {
+    "primary": {
+      "initial": {
+        "start": "0",
+        "leave": "maternity",
+        "end": "0"
+      }
+    },
+    "secondary": {
+      "is-taking-paternity-leave": "no"
+    },
+    "spl-block-planning-order": [
+      "done"
+    ]
+  },
+  "visualPlanner": false
+}
