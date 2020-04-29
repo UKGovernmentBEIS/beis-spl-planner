@@ -71,31 +71,34 @@
       #}
       <form action="parent-salaries" method="POST" novalidate>
         {% call appendHiddenFields(data) %}
-          {% call govukFieldset({
-            legend: {
-              text: "Salary before tax",
-              classes: "govuk-fieldset__legend--m"
-            }
-          }) %}
             <div class="salary-group">
+              <fieldset class="govuk-grid-row govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                  {{ data | primaryName | capitalize }}’s salary before tax (£)
+                </legend>
               {{ salaryInput({
                 data: data,
                 parent: "primary",
-                labelText: data | primaryName | capitalize + "’s salary (£)",
+                labelText: "Amount (£)",
                 amountError: errors["primary-salary-amount"] if errors["primary-salary-amount"],
                 periodError: errors["primary-salary-period"] if errors["primary-salary-period"]
               }) }}
+              </fieldset>
             </div>
             <div class="salary-group">
+              <fieldset class="govuk-grid-row govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                  {{ data | secondaryName | capitalize }}’s salary before tax
+                </legend>
               {{ salaryInput({
                 data: data,
                 parent: "secondary",
-                labelText: data | secondaryName | capitalize + "’s salary (£)",
+                labelText: "Amount (£)",
                 amountError: errors["secondary-salary-amount"] if errors["secondary-salary-amount"],
                 periodError: errors["secondary-salary-period"] if errors["secondary-salary-period"]
               }) }}
+              </fieldset>
             </div>
-          {% endcall %}
         {% endcall %}
         {{ govukButton({
           text: "Continue",
