@@ -33,7 +33,7 @@
 {% macro optionText(weekNumber) %}
   {% set totalWeeks = weekNumber - firstWeekOfLeave + 1 %}
   {{ totalWeeks | weeks }} of leave
-  (ending in the week of {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }})
+  (week commencing {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }})
 {% endmacro %}
 
 {% block content %}
@@ -54,7 +54,7 @@
               or their partner as Shared Parental Leave.
             </p>
             <p class="govuk-hint">
-              The first week of {{ primaryLeaveType | capitalize }} Leave is {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}.
+              The first week of {{ primaryLeaveType | capitalize }} Leave is the week commencing {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}.
             </p>
             <p class="govuk-hint">
               Your previous answers are at the bottom of the page.

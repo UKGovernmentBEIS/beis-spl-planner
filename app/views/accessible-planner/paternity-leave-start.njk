@@ -34,6 +34,8 @@
   {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
   {% if (weekNumber === 0) %}
     (the {{ birthOrPlacement }} week)
+  {% elif (weekNumber === 1) %}
+    (the week following {{ birthOrPlacement }})
   {% else %}
     ({{ weekNumber | weeks }} after {{ birthOrPlacement }})
   {% endif %}
@@ -55,7 +57,7 @@
               </p>
             {% else %}
               <p class="govuk-hint">
-                The {{ primaryName }}’s last week of {{ primaryLeaveType | capitalize }} Leave is {{ zeroWeek | offsetWeeks(primaryLeaveEnd) | formatForDisplay }}.
+                The {{ primaryName }}’s last week of {{ primaryLeaveType | capitalize }} Leave is the week commencing {{ zeroWeek | offsetWeeks(primaryLeaveEnd) | formatForDisplay }}.
               </p>
             {% endif %}
             <p class="govuk-hint">
