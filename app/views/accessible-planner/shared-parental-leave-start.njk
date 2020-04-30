@@ -67,7 +67,7 @@
                 {% else %}
                   {{ initialLeaveType | capitalize }} Leave
                 {% endif %}
-                ended with the week of {{ zeroWeek | offsetWeeks(endOfLastBlock) | formatForDisplay }}.
+                ended in the week commencing {{ zeroWeek | offsetWeeks(endOfLastBlock) | formatForDisplay }}.
               {% endif %}
             </p>
             <p class="govuk-hint">
