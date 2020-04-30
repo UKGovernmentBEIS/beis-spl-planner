@@ -36,7 +36,7 @@
 {% set endOfLastBlock = endOfLastSplBlock or endOfInitialLeave or -1 %}
 {% set options = range(endOfLastBlock + 1, 52) %}
 
-{% macro optionText(weekNumber) %}
+{% macro optionText(weekNumber, index) %}
   {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
   {% if endOfLastBlock === -1 %}
     {% if weekNumber === 0 %}
@@ -44,6 +44,8 @@
     {% else %}
       ({{ weekNumber | weeks }} after {{ birthOrPlacement }})
     {% endif %}
+  {% elif index === 0 %}
+    (The week immediately after the {{ parentName }}’s {{ "previous leave block" if hasTakenSpl else ((initialLeaveType | capitalize) + " Leave") }})
   {% else %}
     ({{ (weekNumber - endOfLastBlock) | weeks }} after the {{ parentName }}’s {{ "previous leave block" if hasTakenSpl else ((initialLeaveType | capitalize) + " Leave") }})
   {% endif %}
