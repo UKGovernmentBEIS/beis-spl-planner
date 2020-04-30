@@ -1,5 +1,5 @@
 applications:
-- name: beis-spl-planner-dev
-  memory: 256M
+- name: beis-spl-planner
+  memory: 1G
   buildpacks:
     - nodejs_buildpack
