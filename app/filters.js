@@ -136,9 +136,9 @@ module.exports = function (env) {
   }
 
   function mapValuesToSelectOptions (values, textMacro, selected) {
-    return values.map(value => ({
+    return values.map((value, i) => ({
       value: value,
-      text: textMacro(value),
+      text: textMacro(value, i),
       selected: value === parseInt(selected)
     }))
   }
