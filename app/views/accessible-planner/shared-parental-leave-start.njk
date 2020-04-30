@@ -33,7 +33,17 @@
 
 {% set endOfInitialLeave = (data["leave-blocks"][parent]["initial"]["end"] | int) %}
 {% set endOfLastSplBlock = (data["leave-blocks"][parent]["spl"]["_" + (index - 1)]["end"] | int) %}
-{% set endOfLastBlock = endOfLastSplBlock or endOfInitialLeave or -1 %}
+
+{% if endOfLastSplBlock %}
+  {% set endOfLastBlock = endOfLastSplBlock%}
+{% elif endOfInitialLeave %}
+  {% set endOfLastBlock = endOfInitialLeave %}
+{% elif endOfInitialLeave === 0 %}
+  {% set endOfLastBlock = 0 %}
+{% else %}
+  {% set endOfLastBlock = -1 %}
+{% endif %}
+
 {% set options = range(endOfLastBlock + 1, 52) %}
 
 {% macro optionText(weekNumber, index) %}
