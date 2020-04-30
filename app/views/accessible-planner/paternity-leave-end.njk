@@ -30,7 +30,7 @@
 {% macro optionText(weekNumber) %}
   {% set totalWeeks = weekNumber - firstWeekOfLeave + 1 %}
   {{ totalWeeks | weeks }} of leave
-  (ending in the week of {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }})
+  (week commencing {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }})
 {% endmacro %}
 
 {% block content %}
@@ -40,7 +40,7 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              The partner’s Paternity Leave starts on {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}
+              The partner’s Paternity Leave starts in the week commencing {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}
               and can be a maximum of 2 weeks.
             </p>
             <p class="govuk-hint">
