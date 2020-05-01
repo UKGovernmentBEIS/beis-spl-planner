@@ -17,7 +17,8 @@
     "lint": "standard && sass-lint -v",
     "lint-sass": "./node_modules/.bin/sass-lint -v",
     "test": "standard && node ./node_modules/mocha/bin/mocha \"!(node_modules)/**/*+(.test|.tests)\".js",
-    "test:watch": "chokidar app common test *.js --initial -c \"npm run test\""
+    "test:watch": "chokidar app common test *.js --initial -c \"npm run test\"",
+    "test:a11y": "NODE_PATH=. mocha test/accessibility/a11y --timeout 15000"
   },
   "browserslist": [
     "defaults or IE 11"
@@ -84,6 +85,8 @@
     "sinon": "^7.5.0",
     "standard": "^13.0.2",
     "supertest": "^4.0.2",
-    "vueify": "^9.4.1"
+    "vueify": "^9.4.1",
+    "pa11y": "5.3.0",
+    "puppeteer": "2.1.1"
   }
 }
