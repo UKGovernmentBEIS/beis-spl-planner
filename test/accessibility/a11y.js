@@ -31,7 +31,7 @@ describe('Accessibility checking planner', function () {
     const args = ['--no-sandbox', '--start-maximized', '--ignore-certificate-errors']
     const opts = {
       args,
-      headless: false,
+      headless: true,
       timeout: 20000,
       ignoreHTTPSErrors: true
     }
