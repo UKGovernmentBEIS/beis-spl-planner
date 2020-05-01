@@ -18,6 +18,7 @@
     "lint-sass": "./node_modules/.bin/sass-lint -v",
     "test": "standard && node ./node_modules/mocha/bin/mocha \"!(node_modules)/**/*+(.test|.tests)\".js",
     "test:watch": "chokidar app common test *.js --initial -c \"npm run test\"",
+    "test:start:a11y": "NODE_ENV=test npm start &",
     "test:a11y": "NODE_PATH=. mocha test/accessibility/a11y --timeout 15000"
   },
   "browserslist": [
