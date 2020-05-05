@@ -195,7 +195,6 @@ class Paths {
             const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
             return splBlockPlanningOrder.length > 0 ? '/planner/shared-parental-leave/end' : '/planner/paternity-leave/end'
           },
-          validator: validate.splQuestions,
           start: {
             url: '/planner/shared-parental-leave/start',
             workflowParentPath: '/planner/shared-parental-leave'

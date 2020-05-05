@@ -358,7 +358,7 @@ function paternityLeaveQuestion (req) {
 
 function splQuestions (req) {
   const leaves = req.session.data['leave-blocks']
-  if (typeof leaves['shared-parental-leave'] === "undefined") {
+  if (typeof leaves['is-taking-spl-or-done'] === "undefined") {
     addError(req, 'shared-parental-leave', 'Select Whether you want to take shared parental leave or finish', '#shared-parental-leave')
     return false
   }

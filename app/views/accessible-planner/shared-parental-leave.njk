@@ -63,7 +63,7 @@
           {% endset %}
           {{ govukRadios({
             idPrefix: "shared-parental-leave",
-            name: "leave-blocks[spl-block-planning-order][]",
+            name: "leave-blocks[is-taking-spl-or-done]",
             fieldset: {
               legend: {
                 text: "Do you want to plan " + ("another" if eitherParentHasTakenSpl else "a") + " block of Shared Parental Leave?",
