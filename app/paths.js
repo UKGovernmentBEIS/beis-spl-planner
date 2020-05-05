@@ -175,6 +175,7 @@ class Paths {
               return '/planner/adoption-leave/end'
             }
           },
+          validator: validate.paternityLeaveQuestion,
           start: {
             url: '/planner/paternity-leave/start',
             workflowParentPath: '/planner/paternity-leave'
@@ -182,8 +183,7 @@ class Paths {
           end: {
             url: '/planner/paternity-leave/end',
             workflowParentPath: '/planner/paternity-leave/start'
-          },
-          validator: validate.paternityLeaveQuestion
+          }
         },
         'shared-parental-leave': {
           url: '/planner/shared-parental-leave',
@@ -195,6 +195,7 @@ class Paths {
             const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
             return splBlockPlanningOrder.length > 0 ? '/planner/shared-parental-leave/end' : '/planner/paternity-leave/end'
           },
+          validator: validate.splQuestions,
           start: {
             url: '/planner/shared-parental-leave/start',
             workflowParentPath: '/planner/shared-parental-leave'
@@ -202,8 +203,7 @@ class Paths {
           end: {
             url: '/planner/shared-parental-leave/end',
             workflowParentPath: '/planner/shared-parental-leave/start'
-          },
-          validator: validate.splQuestions
+          }
         }
       },
       summary: {
