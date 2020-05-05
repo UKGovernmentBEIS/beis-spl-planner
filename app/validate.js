@@ -347,6 +347,24 @@ function addCalendarError (req, parentOrShared, key, message) {
   addError(req, `calendar.${parentOrShared}.${key}`, message, '#leave-and-pay')
 }
 
+function paternityLeaveQuestion (req) {
+  const secondaryLeaves = req.session.data['leave-blocks']['secondary'];
+  if (typeof secondaryLeaves === "undefined" || !isYesOrNo(secondaryLeaves['is-taking-paternity-leave'])) {
+    addError(req, 'is-taking-paternity-leave', 'Select to take paternity leave or not', '#is-taking-paternity-leave')
+    return false
+  }
+  return true
+}
+
+function splQuestions (req) {
+  const leaves = req.session.data['leave-blocks']
+  if (typeof leaves['shared-parental-leave'] === "undefined") {
+    addError(req, 'shared-parental-leave', 'Select Whether you want to take shared parental leave or finish', '#shared-parental-leave')
+    return false
+  }
+  return true
+}
+
 module.exports = {
   natureOfParenthood,
   typeOfAdoption,
@@ -357,5 +375,7 @@ module.exports = {
   paternityLeaveAndPay,
   startDate,
   parentSalaries,
-  planner
+  planner,
+  paternityLeaveQuestion,
+  splQuestions
 }

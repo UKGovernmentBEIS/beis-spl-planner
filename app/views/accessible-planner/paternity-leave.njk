@@ -3,6 +3,7 @@
 {% from "fieldset/macro.njk" import govukFieldset %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "radios/macro.njk" import govukRadios %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
 
 {% from "./answers-so-far/macro.njk" import answersSoFar %}
 
@@ -25,6 +26,14 @@
 {% set remainingLeaveAllowance = (data["leave-blocks"] | remainingLeaveAllowance) %}
 
 {% block content %}
+  {% if errors["is-taking-paternity-leave"] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        errors["is-taking-paternity-leave"]
+      ]
+    }) }}
+  {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <form method="POST">
@@ -57,6 +66,9 @@
             hint: {
               html: hint
             },
+            errorMessage: {
+              text: errors["is-taking-paternity-leave"].text
+            } if errors["is-taking-paternity-leave"],
             items: [
               {
                 value: "yes",

@@ -3,6 +3,7 @@
 {% from "fieldset/macro.njk" import govukFieldset %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "radios/macro.njk" import govukRadios %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
 
 {% from "./answers-so-far/macro.njk" import answersSoFar %}
 
@@ -28,6 +29,14 @@
 {%- endblock %}
 
 {% block content %}
+  {% if errors["shared-parental-leave"] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        errors["shared-parental-leave"]
+      ]
+    }) }}
+  {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <form method="POST">
@@ -65,6 +74,9 @@
             hint: {
               html: hint
             },
+            errorMessage: {
+              text: errors["shared-parental-leave"].text
+            } if errors["shared-parental-leave"],
             items: [
               {
                 value: "primary",

@@ -182,7 +182,8 @@ class Paths {
           end: {
             url: '/planner/paternity-leave/end',
             workflowParentPath: '/planner/paternity-leave/start'
-          }
+          },
+          validator: validate.paternityLeaveQuestion
         },
         'shared-parental-leave': {
           url: '/planner/shared-parental-leave',
@@ -201,7 +202,8 @@ class Paths {
           end: {
             url: '/planner/shared-parental-leave/end',
             workflowParentPath: '/planner/shared-parental-leave/start'
-          }
+          },
+          validator: validate.splQuestions
         }
       },
       summary: {
