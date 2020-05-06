@@ -175,7 +175,6 @@ class Paths {
               return '/planner/adoption-leave/end'
             }
           },
-          validator: validate.paternityLeaveQuestion,
           start: {
             url: '/planner/paternity-leave/start',
             workflowParentPath: '/planner/paternity-leave'

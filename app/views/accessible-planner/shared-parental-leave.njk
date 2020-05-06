@@ -36,6 +36,7 @@
         errors["shared-parental-leave"]
       ]
     }) }}
+  {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["shared-parental-leave"].text, "Errorshown") }}
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">

@@ -33,6 +33,7 @@
         errors["is-taking-paternity-leave"]
       ]
     }) }}
+  {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["is-taking-paternity-leave"].text, "Errorshown") }}
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
