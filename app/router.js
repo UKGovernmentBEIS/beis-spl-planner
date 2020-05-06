@@ -349,10 +349,4 @@ router.route(paths.getPath('cookies'))
     res.render('privacy/cookies', { referrer })
   })
 
-router.route(paths.getPath('cookiePreferences'))
-  .get(function (req, res) {
-    const referrer = req.header('Referrer')
-    res.render('privacy/cookie-preferences', { referrer })
-  })
-
 module.exports = router

@@ -1,7 +1,6 @@
 {% from "footer/macro.njk" import govukFooter %}
 {% from "header/macro.njk" import govukHeader %}
 {% from "phase-banner/macro.njk" import govukPhaseBanner %}
-{% from "button/macro.njk" import govukButton %}
 
 {% extends "template.njk" %}
 
@@ -11,34 +10,12 @@
 
 {% block header %}
 {% include "./includes/ga.njk" %}
-<div class="cookie-banner js-cookie-banner">
-  <div class="govuk-width-container">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-m">Tell us whether you accept cookies</h2>
-        <p>
-          We use <a href="/cookies" class="govuk-link">cookies to collect information</a> about how you use {{ service_name }}. We use this
-          information to make the website work as well as possible and improve government services.
-        </p>
-        <div class="govuk-grid-column-one-half">
-          {{ govukButton({
-          text: 'Accept all cookies'
-          }) }}
-        </div>
-        <div class="govuk-grid-column-one-half">
-          {{ govukButton({
-          text: 'Set cookie preferences'
-          }) }}
-        </div>
-      </div>
-    </div>
-    <div>
-      <p>You’ve accepted all cookies. You can <a class="govuk-link" href="/cookie-preferences">change
-        your cookie settings</a> at any time.</p>
-      <a class="govuk-link" href="/cookie-preferences">Hide</a>
-    </div>
+  <div class="cookie-banner js-cookie-banner">
+    <p class="govuk-width-container">
+      GOV.UK uses cookies to make the site simpler.
+      <a href="/cookies" class="govuk-link">Find out more about cookies</a>
+    </p>
   </div>
-</div>
   {{ govukHeader({
     serviceName: service_name
   }) }}

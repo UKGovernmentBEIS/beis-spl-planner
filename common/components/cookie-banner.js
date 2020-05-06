@@ -57,8 +57,7 @@ const CookieBanner = {
     const message = document.querySelector('.cookie-banner')
     const hasCookieMessage = (message && CookieBanner.init('seen_cookie_message') === null)
 
-    // if (hasCookieMessage) {
-      if (true) {
+    if (hasCookieMessage) {
       message.style.display = 'block'
       CookieBanner.init('seen_cookie_message', 'yes', { days: 28 })
     }
