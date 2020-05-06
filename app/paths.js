@@ -230,7 +230,10 @@ class Paths {
       },
       cookies: {
         url: '/cookies'
-      }
+      },
+      cookiePreferences: {
+        url: '/cookie-preferences'
+      },
     }
   }
 
