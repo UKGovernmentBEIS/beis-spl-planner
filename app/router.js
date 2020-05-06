@@ -234,6 +234,9 @@ router.route(paths.getPath('planner.paternity-leave'))
     res.render('accessible-planner/paternity-leave')
   })
   .post(function (req, res) {
+    if (!validate.paternityLeaveQuestion(req)) {
+      return res.redirect('back')
+    }
     const isTakingPaternityLeave = delve(req.session.data, 'leave-blocks.secondary.is-taking-paternity-leave')
     if (dataUtils.isYes(isTakingPaternityLeave)) {
       res.redirect(paths.getPath('planner.paternity-leave.start'))
@@ -272,9 +275,13 @@ router.route(paths.getPath('planner.shared-parental-leave'))
     }
   })
   .post(function (req, res) {
+    if (!validate.splQuestions(req)) {
+      return res.redirect('back')
+    }
     const { data } = req.session
-    const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
-    const next = splBlockPlanningOrder[splBlockPlanningOrder.length - 1]
+    const next = data['leave-blocks']['is-taking-spl-or-done']
+    data['leave-blocks']['spl-block-planning-order'] = dataUtils.splBlockPlanningOrder(data) || []
+    data['leave-blocks']['spl-block-planning-order'].push(next)
     if (next === 'done') {
       req.session.data.visualPlanner = false
       res.redirect(paths.getPath('summary'))
