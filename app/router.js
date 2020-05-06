@@ -280,8 +280,8 @@ router.route(paths.getPath('planner.shared-parental-leave'))
     }
     const { data } = req.session
     const next = data['leave-blocks']['is-taking-spl-or-done']
-    data['leave-blocks']['spl-block-planning-order'] = dataUtils.splBlockPlanningOrder(data) || [];
-    data['leave-blocks']['spl-block-planning-order'].push(next);
+    data['leave-blocks']['spl-block-planning-order'] = dataUtils.splBlockPlanningOrder(data) || []
+    data['leave-blocks']['spl-block-planning-order'].push(next)
     if (next === 'done') {
       req.session.data.visualPlanner = false
       res.redirect(paths.getPath('summary'))

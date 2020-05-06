@@ -348,8 +348,8 @@ function addCalendarError (req, parentOrShared, key, message) {
 }
 
 function paternityLeaveQuestion (req) {
-  const secondaryLeaves = req.session.data['leave-blocks']['secondary'];
-  if (typeof secondaryLeaves === "undefined" || !isYesOrNo(secondaryLeaves['is-taking-paternity-leave'])) {
+  const secondaryLeaves = req.session.data['leave-blocks']['secondary']
+  if (typeof secondaryLeaves === 'undefined' || !isYesOrNo(secondaryLeaves['is-taking-paternity-leave'])) {
     addError(req, 'is-taking-paternity-leave', ' Select whether or not the Partner will take Paternity Leave', '#is-taking-paternity-leave')
     return false
   }
@@ -358,7 +358,7 @@ function paternityLeaveQuestion (req) {
 
 function splQuestions (req) {
   const leaves = req.session.data['leave-blocks']
-  if (typeof leaves['is-taking-spl-or-done'] === "undefined") {
+  if (typeof leaves['is-taking-spl-or-done'] === 'undefined') {
     addError(req, 'shared-parental-leave', 'Select whether you want to take Shared Parental Leave or finish', '#shared-parental-leave')
     return false
   }
