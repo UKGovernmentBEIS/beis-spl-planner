@@ -20,6 +20,10 @@ jobs:
     - run: npm run compile
     - run: npm run lint
     - run: npm test
+    - uses: actions/upload-artifact@v2
+      with:
+        name: 'Coverage Reports'
+        path: '${{ github.workspace }}/coverage/'
     - run: npm run test:start:a11y
     - run: npm run test:a11y
       env:
