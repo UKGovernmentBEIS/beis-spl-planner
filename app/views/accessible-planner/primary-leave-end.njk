@@ -28,7 +28,7 @@
 {% set birthOrPlacement= (data | birthOrPlacement) %}
 
 {% set firstWeekOfLeave = (data["leave-blocks"]["primary"]["initial"]["start"] | int) %}
-{% set options = range(firstWeekOfLeave, (52 if (firstWeekOfLeave > 0) else (firstWeekOfLeave + 52))) %}
+{% set options = range(firstWeekOfLeave + 1, (52 if (firstWeekOfLeave > 0) else (firstWeekOfLeave + 52))) %}
 
 {% macro optionText(weekNumber) %}
   {% set totalWeeks = weekNumber - firstWeekOfLeave + 1 %}
