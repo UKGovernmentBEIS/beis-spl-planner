@@ -584,7 +584,7 @@
   $cell-colours: (
     "adoption": lighten(govuk-colour("blue"), 50%),
     "maternity": lighten(govuk-colour("blue"), 50%),
-    "paternity": lighten(govuk-colour("red"), 50%),
+    "paternity": lighten(govuk-colour("red"), 25%),
     "shared": lighten(govuk-colour("light-green"), 25%),
     "compulsory": lighten(govuk-colour("blue"), 25%),
     "disabled": govuk-colour("mid-grey"),
