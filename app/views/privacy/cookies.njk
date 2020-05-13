@@ -1,184 +1,193 @@
 {% from "back-link/macro.njk" import govukBackLink %}
+{% from "radios/macro.njk" import govukRadios %}
+{% from "button/macro.njk" import govukButton %}
 {% from "table/macro.njk" import govukTable %}
 
 {% extends "layout.njk" %}
 
-{% block beforeContent %}
-  {{ super() }}
+{% block pageTitle -%}
+{{ "Cookies" | pageTitle }}
+{%- endblock %}
 
-  {{ govukBackLink({
-    text: "Back",
-    href: withData(referrer)
-  }) }}
+{% block beforeContent %}
+{{ super() }}
+
+{{ govukBackLink({
+text: "Back",
+href: withData(referrer)
+}) }}
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-grid-row">
+<div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <h1 class="govuk-heading-xl">
-        Cookies
-      </h1>
-      <p>
-        This service puts small files (known as ‘cookies’) on to your computer.
-      </p>
-      <p>
-        These cookies are used to:
-      </p>
-      <ul class="govuk-list govuk-list--bullet">
-        <li>help us understand how you use the service, so we can make improvements</li>
-        <li>remember what notifications you’ve seen so that you’re not shown them more than once</li>
-        <li>temporarily store the information you enter</li>
-      </ul>
-      <p>
-        Find out <a href="https://www.aboutcookies.org/">how to manage cookies</a>.
-      </p>
-      <h2 class="govuk-heading-m">
-        Our cookie message
-      </h2>
-      <p>
-        You will see a message about cookies when you first use this service.
-        We’ll store a cookie so that your computer knows you’ve seen it and knows not to show it again.
-      </p>
-      {{ govukTable({
-        firstCellIsHeader: true,
-        caption: "Our cookie details",
-        head: [
-          {
-            text: "Name",
-            classes: "govuk-!-width-one-quarter"
-          },
-          {
-            text: "Purpose",
-            classes: "govuk-!-width-one-half"
-          },
-          {
-            text: "Expires",
-            classes: "govuk-!-width-one-quarter"
-          }
-        ],
-        rows: [
-          [
-            {
-              text: "seen_cookie_message"
-            },
-            {
-              text: "Saves a message to let us know that you have seen our cookie message"
-            },
-            {
-              text: "28 days"
-            }
-          ]
-        ]
-      }) }}
-      <h2 class="govuk-heading-m">
-        Google Analytics cookies
-      </h2>
-      <p>
-        We use Google Analytics to collect information about how you use the service.
-        This information helps us to improve the service.
-      </p>
-      <p>
-        The Google analytics cookies collect and store information about:
-      </p>
-      <ul class="govuk-list govuk-list--bullet">
-        <li>the pages you visit - how long you spend on each page</li>
-        <li>how you got to the service</li>
-        <li>what you click on while you’re use your service</li>
-      </ul>
-      {{ govukTable({
-        firstCellIsHeader: true,
-        caption: "Google Analytics cookie details",
-        head: [
-          {
-            text: "Name",
-            classes: "govuk-!-width-one-quarter"
-          },
-          {
-            text: "Purpose",
-            classes: "govuk-!-width-one-half"
-          },
-          {
-            text: "Expires",
-            classes: "govuk-!-width-one-quarter"
-          }
-        ],
-        rows: [
-          [
-            {
-              text: "_ga"
-            },
-            {
-              text: "A randomly generated reference used to identify unique users and inform referring sites, visitor and session counts"
-            },
-            {
-              text: "2 years"
-            }
-          ],
-          [
-            {
-              text: "_gat_gtag_" + GOOGLE_ANALYTICS_ID
-            },
-            {
-              text: "Used to throttle request rate"
-            },
-            {
-              text: "1 minute"
-            }
-          ],
-          [
-            {
-              text: "_gid"
-            },
-            {
-              text: "Used to distinguish users"
-            },
-            {
-              text: "24 hours"
-            }
-          ]
-        ]
-      }) }}
-      <p>
-        Google isn’t allowed to use or share our analytics data with anyone, but you can opt out of Google Analytics cookies.
-      </p>
+        <h1 class="govuk-heading-xl">
+            Cookies
+        </h1>
+        <div id="cookie-preference-success">
+            <div class="success-message" aria-labelledby="success-title" role="alert" tabindex="-1">
+                <h2 class="govuk-heading-m">
+                    Your cookie settings were saved
+                </h2>
+                <div>
+                    <p>Government services may set additional cookies and, if so, will have their
+                        own cookie policy and banner.</p>
+                </div>
+                <a href="/">Go to homepage</a>
+            </div>
+        </div>
+        <p>Cookies are files saved on your phone, tablet or computer when you visit a website.</p>
+        <p>We use two types of cookie:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>We use cookies to store information about how you use this website, such as the
+                pages you visit. You can choose if you're happy for us to use these cookies.
+            </li>
+            <li>We also use essential cookies to do things like remember your progress through a
+                form. They always need to be on.
+            </li>
+        </ul>
+        <h2 class="govuk-heading-l">
+            Cookie Settings
+        </h2>
+        <h3 class="govuk-heading-m">
+            Cookies that measure website use
+        </h3>
+        <p>We use Google Analytics to measure how you use the website so we can improve it based on
+            user needs. We do not allow Google to use or share the data about how you use this
+            site.</p>
 
-      <h2 class="govuk-heading-m">
-        Session cookie
-      </h2>
-      <p>
-        We store session cookies on your computer to help keep your information secure while you use the service.
-      </p>
-      {{ govukTable({
-        firstCellIsHeader: true,
-        caption: "Session cookie details",
-        head: [
-          {
-            text: "Name",
-            classes: "govuk-!-width-one-quarter"
-          },
-          {
-            text: "Purpose",
-            classes: "govuk-!-width-one-half"
-          },
-          {
-            text: "Expires",
-            classes: "govuk-!-width-one-quarter"
-          }
-        ],
+        <p>Google Analytics sets cookies that store anonymised information about:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>How you got to the site.</li>
+            <li>The pages you visit on GOV.UK and government digital services, and how long you
+                spend on each page.
+            </li>
+            <li>What you click on while you're visiting the site.</li>
+        </ul>
+        {{ govukTable({
+            firstCellIsHeader: true,
+            caption: 'Google Analytics cookie details',
+            head: [
+                {
+                    text: 'Name',
+                    classes: 'govuk-!-width-one-quarter'
+                },
+                {
+                    text: 'Purpose',
+                    classes: 'govuk-!-width-one-half'
+                },
+                {
+                    text: 'Expires',
+                    classes: 'govuk-!-width-one-quarter'
+                }
+            ],
         rows: [
-          [
-            {
-              text: "application"
-            },
-            {
-              text: "Stores encrypted session data"
-            },
-            {
-              text: "24 hours, or when you close the browser"
-            }
-          ]
+            [
+                {
+                    text: '_ga'
+                },
+                {
+                    text: "A randomly generated reference used to identify unique users and inform referring
+                    sites, visitor and session counts"
+                },
+                {
+                    text: '2 years'
+                }
+            ],
+            [
+                {
+                    text: '_gat_UA-158688524-1'
+                },
+                {
+                    text: 'Used to throttle request rate'
+                },
+                {
+                    text: '1 minute'
+                }
+            ],
+            [
+                {
+                    text: '_gid'
+                },
+                {
+                    text: 'Used to distinguish users'
+                },
+                {
+                    text: '24 hours'
+                }
+            ]
         ]
-      }) }}
+        }) }}
+
+        <form id="cm_user_preference_form">
+            {{ govukRadios({
+                classes: 'govuk-radios',
+                idPrefix: 'analytics',
+                name: 'analytics',
+                items: [
+                    {
+                        value: 'on',
+                        text: 'Use cookies that measure my website use'
+                    },
+                    {
+                        value: 'off',
+                        text: 'Do not use cookies that measure my website use',
+                        checked: true
+            }
+                ]
+            }) }}
+            {{ govukButton({
+                text: 'Save'
+            }) }}
+        </form>
+
+        <h3 class="govuk-heading-m">
+            Session cookies
+        </h3>
+        <p>We store session cookies on your computer to help keep your information secure while you
+            use the service. These always need to be on.</p>
+        {{ govukTable({
+            firstCellIsHeader: true,
+            caption: 'Session cookie details',
+            head: [
+                {
+                    text: 'Name',
+                    classes: 'govuk-!-width-one-quarter'
+                },
+                {
+                    text: 'Purpose',
+                    classes: 'govuk-!-width-one-half'
+                },
+                {
+                    text: 'Expires',
+                    classes: 'govuk-!-width-one-quarter'
+                }
+            ],
+        rows: [
+            [
+                {
+                    text: 'application'
+                },
+                {
+                    text: 'Stores a unique session id'
+                },
+                {
+                    text: '24 hours, or when you close the browser'
+                }
+            ],
+            [
+                {
+                    text: 'cm-user-preferences'
+                },
+                {
+                    text: 'Stores your selection on whether or not to allow Google Analytics cookies'
+                },
+                {
+                    text: '365 days'
+                }
+            ]
+        ]
+        }) }}
     </div>
-  </div>
+</div>
 {% endblock %}

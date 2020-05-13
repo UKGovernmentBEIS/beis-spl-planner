@@ -5,10 +5,20 @@
   padding: govuk-spacing(3);
   background-color: govuk-colour("white");
 
-  // This is overriden in JavaScript if the banner should be shown.
-  display: none;
-
   @include govuk-media-query($media-type: print) {
     display: none !important;
   }
+}
+
+.success-message {
+  border:5px;
+  border-style:solid;
+  border-color:#28a197;
+  padding:20px;
+  margin-bottom:50px;
+  margin-top:16px;
+}
+
+#cookie-preference-success{
+  display: none;
 }

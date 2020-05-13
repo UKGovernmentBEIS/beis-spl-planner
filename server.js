@@ -42,6 +42,8 @@ const APP_VIEWS = [
   path.join(__dirname, 'common/macros/')
 ]
 
+const cookieParser = require('cookie-parser')
+
 function initialiseGlobalMiddleware (app) {
   app.set('settings', { getVersionedPath: staticify.getVersionedPath })
   app.use(favicon(path.join(__dirname, 'node_modules/govuk-frontend/govuk/assets/', 'images', 'favicon.ico')))
@@ -53,8 +55,14 @@ function initialiseGlobalMiddleware (app) {
       ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" - total time :response-time ms'))
   }
 
+  app.use(cookieParser())
+
   app.use((req, res, next) => {
     res.locals.asset_path = '/public/' // eslint-disable-line camelcase
+    const cmUserPreferences = req.cookies['cm-user-preferences']
+    if (cmUserPreferences) {
+      res.locals.cmUserPreferences = JSON.parse(cmUserPreferences)
+    }
     noCache(res)
     next()
   })
