@@ -10,7 +10,7 @@
   <div class="govuk-form-group">
     {% call govukFieldset({
       legend: {
-        html: "<h3 class=\"govuk-heading-m govuk-!-margin-0\">" + (data | parentName(parent) | capitalize) + "</h3>",
+        html: "<h2 class=\"govuk-heading-m govuk-!-margin-0\">" + (data | parentName(parent) | capitalize) + "</h2>",
         classes: "govuk-fieldset__legend--m"
       }
     }) %}
@@ -25,9 +25,9 @@
             {% set payName = parent + '[pay]' %}
             {% set date = (zeroWeekDate | offsetWeeks(i)) %}
             {% if (i === minWeek) or ((date | formatDate("D") | int) <= 7) %}
-              <h4 class="govuk-heading-s govuk-!-padding-1 background-grey">
+              <h3 class="govuk-heading-s govuk-!-padding-1 background-grey">
                 {{ date | formatDate("MMMM YYYY") }}
-              </h4>
+              </h3>
             {% endif %}
             {% set legend %}
               <strong>
