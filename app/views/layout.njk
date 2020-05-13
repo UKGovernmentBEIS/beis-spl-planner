@@ -10,11 +10,15 @@
 
 {% block header %}
 {% include "./includes/ga.njk" %}
-  <div class="cookie-banner js-cookie-banner">
-    <p class="govuk-width-container">
-      GOV.UK uses cookies to make the site simpler.
-      <a href="/cookies" class="govuk-link">Find out more about cookies</a>
-    </p>
+  <div class="govuk-width-container">
+    <header id="cookie_banner" class="cookie-banner govuk-visually-hidden">
+      <h1 class="govuk-heading-l">Tell us whether you accept cookies</h1>
+      <p>We use <a href="/cookies">cookies to collect information</a> about how you use the {{
+        service_name }} service. We use this information to make the website work as well as
+        possible and improve government services.</p>
+      <button type="submit" class="govuk-button">Accept all cookies</button>
+      <a class="govuk-button" href="/cookies">Set cookie preferences</a>
+    </header>
   </div>
   {{ govukHeader({
     serviceName: service_name,
