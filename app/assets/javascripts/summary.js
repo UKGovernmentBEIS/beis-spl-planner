@@ -1,10 +1,16 @@
 const Vue = require('vue/dist/vue.common')
 const ShareLink = require('./components/ShareLink.vue')
 const { parseParentFromPlanner } = require('../../utils')
+const _ = require('lodash')
+const { parseLeaveBlocksIntoLeaveAndPay } = require('../../lib/blocks')
 
 function init (data) {
-  const primary = parseParentFromPlanner(data, 'primary')
-  const secondary = parseParentFromPlanner(data, 'secondary')
+  const dataClone = _.cloneDeep(data)
+  if (!dataClone['visualPlanner']) {
+    parseLeaveBlocksIntoLeaveAndPay(dataClone, dataClone['leave-blocks'])
+  }
+  const primary = parseParentFromPlanner(dataClone, 'primary')
+  const secondary = parseParentFromPlanner(dataClone, 'secondary')
   const summaryTabs = ['leave', 'pay']
   summaryTabs.forEach(summaryTab => {
     // eslint-disable-next-line no-new
@@ -16,7 +22,7 @@ function init (data) {
       propsData: {
         primary,
         secondary,
-        formData: data
+        formData: dataClone
       }
     })
   })

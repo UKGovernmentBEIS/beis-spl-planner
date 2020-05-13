@@ -116,16 +116,20 @@ function getPayBlocks (weeks) {
   return blocks
 }
 
+function parseLeaveBlocksIntoLeaveAndPay (dataObject, leaveBlocksDataObject) {
+  const leaveBlocks = parseLeaveBlocks(leaveBlocksDataObject)
+  const leave = createArrayFromLeaveBlocks(leaveBlocks)
+  for (const parent in leave) {
+    dataObject[parent].leave = leave[parent]
+    dataObject[parent].pay = leave[parent]
+  }
+}
+
 function getBlocks (data) {
   const dataClone = _.cloneDeep(data)
   const leaveBlocksDataObject = dataClone['leave-blocks']
   if (leaveBlocksDataObject) {
-    const leaveBlocks = parseLeaveBlocks(leaveBlocksDataObject)
-    const leave = createArrayFromLeaveBlocks(leaveBlocks)
-    for (const parent in leave) {
-      dataClone[parent].leave = leave[parent]
-      dataClone[parent].pay = leave[parent]
-    }
+    parseLeaveBlocksIntoLeaveAndPay(dataClone, leaveBlocksDataObject)
   }
 
   const weeks = new Weeks({
@@ -319,5 +323,6 @@ module.exports = {
   parseSplLeaveBlocks,
   parseLeaveBlocks,
   getRemainingLeaveAllowance,
-  getBlockLength
+  getBlockLength,
+  parseLeaveBlocksIntoLeaveAndPay
 }
