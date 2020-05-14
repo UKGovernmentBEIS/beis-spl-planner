@@ -139,7 +139,7 @@ module.exports = function (env) {
     return values.map((value, i) => ({
       value: value,
       text: textMacro(value, i),
-      selected: value === parseInt(selected) || ( selected === undefined && i === 0 )
+      selected: value === parseInt(selected) || (selected === undefined && i === 0)
     }))
   }
 
