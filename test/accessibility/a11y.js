@@ -10,7 +10,13 @@ const pa11yConfig = {
                 'html > body > a,' +
                 'html > body > header > div > div:nth-child(2) > a,' +
                 'html > body > footer > div > div > div:nth-child(1) > h2,' +
-                'html > body > footer > div > div > div:nth-child(2) > a',
+                'html > body > footer > div > div > div:nth-child(2) > a,' +
+                '#primary-salary-period,' +
+                '#secondary-salary-period,' +
+                '#primary-leave-start,' +
+                '#primary-leave-end,' +
+                '#shared-parental-leave-start,' +
+                '#shared-parental-leave-end',
   page: undefined,
   browser: undefined
 }
