@@ -10,6 +10,11 @@
   }
 }
 
+#cookie_banner > h1, #cookie_banner > p{
+  background-color: govuk-colour("white");
+}
+
+
 .success-message {
   border:5px;
   border-style:solid;
