@@ -14,7 +14,7 @@
         classes: "govuk-fieldset__legend--m"
       }
     }) %}
-      <div id="calendar-checkboxes" class="govuk-checkboxes" data-module="govuk-checkboxes">
+      <div id="{{ parent }}-calendar-checkboxes" class="govuk-checkboxes" data-module="govuk-checkboxes">
         <div class="govuk-checkboxes" data-module="govuk-checkboxes">
           {% for i in range(minWeek, maxWeek + 1) %}
             {% set compulsoryLeave = (parent === 'primary' and isBirth and (i === 0 or i === 1)) %}
@@ -89,7 +89,7 @@
 
     TODO: Refactor visual planner to POST the calendar data without use of the checkboxes.
   #}
-  <div class="govuk-grid-row" style="display: none;">
+  <div id="calendar-checkboxes"class="govuk-grid-row" style="display: none;">
     <div class="govuk-grid-column-one-half">
       {{ leaveAndPayCheckboxes(data, "primary") }}
     </div>
