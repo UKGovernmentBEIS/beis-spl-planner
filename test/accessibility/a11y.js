@@ -16,7 +16,10 @@ const pa11yConfig = {
                 '#primary-leave-start,' +
                 '#primary-leave-end,' +
                 '#shared-parental-leave-start,' +
-                '#shared-parental-leave-end',
+                '#shared-parental-leave-end,' +
+                '.hmcts-currency-input__symbol,' +
+                '#primary-salary-amount-currency,' +
+                '#secondary-salary-amount-currency',
   page: undefined,
   browser: undefined
 }
