@@ -14,7 +14,7 @@
     </colgroup>
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
-        <th class="govuk-table__header" id="info-alert" ref="infoAlert"  style="{ height: 100% }" scope="col" colspan="5">
+        <th class="govuk-table__header" id="info-alert" ref="infoAlert"  style="{ height: 100% }" colspan="5">
           <div id="messages">
             <div>&ensp;<span v-html="formatWeeks(sharedLeaveRemaining, 'leave')"></span> remaining</div>
             <div>&ensp;<span v-html="formatWeeks(payRemaining, 'pay')"></span> remaining</div>
@@ -33,16 +33,16 @@
         </th>
       </tr>
       <tr class="govuk-table__row">
-        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 'px' }" scope="col"></th>
-        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 'px'  }" scope="col" colspan="2" id="primary-name">{{ names.primary | capitalize }}</th>
-        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 'px' }" scope="col" colspan="2" id="secondary-name">{{ names.secondary | capitalize }}</th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 'px' }"></th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 'px'  }" colspan="2" id="primary-name">{{ names.primary | capitalize }}</th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 'px' }" colspan="2" id="secondary-name">{{ names.secondary | capitalize }}</th>
       </tr>
       <tr class="govuk-table__row">
-        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" scope="col"></th>
-        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" scope="col" id="primary-leave">Leave</th>
-        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" scope="col" id="primary-pay">Pay</th>
-        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" scope="col" id="secondary-leave">Leave</th>
-        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" scope="col" id="secondary-pay">Pay</th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}"></th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" id="primary-leave">Leave</th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" id="primary-pay">Pay</th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" id="secondary-leave">Leave</th>
+        <th class="govuk-table__header"  v-bind:style="{ top:  headerOffset + 48 + 'px'}" id="secondary-pay">Pay</th>
       </tr>
     </thead>
     <tbody class="govuk-table__body">
@@ -69,7 +69,7 @@
           </th>
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week)">
-          <th class="govuk-table__cell date" :id="`week-${i}-date`" scope="row">
+          <th class="govuk-table__cell date" :id="`week-${i}-date`">
             {{ week.day.format('D') }}<br class="print-hide">
             {{ week.day.format('MMM') }}
           </th>
