@@ -7,7 +7,6 @@
 {% from "inset-text/macro.njk" import govukInsetText %}
 {% from "components/calendar.njk" import calendar %}
 {% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
-{% from "fieldset/macro.njk" import govukFieldset %}
 
 {% extends "layout.njk" %}
 
@@ -130,15 +129,8 @@
         </p>
       </div>
     </div>
-    {% call govukFieldset({
-      legend: {
-        html: "<h2 class=\"govuk-heading-m govuk-!-margin-0\">Leave and Pay</h2>",
-        classes: "govuk-fieldset__legend--m"
-      }
-    }) %}
-      {% call appendHiddenFields(data) %}
-        {{ calendar(data) }}
-      {% endcall %}
+    {% call appendHiddenFields(data) %}
+      {{ calendar(data) }}
     {% endcall %}
     <div class="govuk-grid-row print-hide js-show">
       <div class="govuk-grid-column-two-thirds-from-desktop">
