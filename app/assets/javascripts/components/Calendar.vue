@@ -74,17 +74,17 @@
           </th>
           <template v-for="(parent, j) in ['primary', 'secondary']">
             <template v-if="week[parent].outOfPermittedRange">
-              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`${parent}-name ${parent}-leave week-${i}-date`"></td>
-              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`${parent}-name ${parent}-pay week-${i}-date`"></td>
+              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`info-alert ${parent}-name ${parent}-leave week-${i}-date`"></td>
+              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`info-alert ${parent}-name ${parent}-pay week-${i}-date`"></td>
             </template>
             <template v-else>
-              <td v-if="isDisabledCell(week, parent)" :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`${parent}-name ${parent}-leave week-${i}-date`">
+              <td v-if="isDisabledCell(week, parent)" :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`info-alert ${parent}-name ${parent}-leave week-${i}-date`">
                 <div class="govuk-body-s no-margin">
                   Not eligible for leave or pay
                 </div>
               </td>
               <td v-else :key="parent + '-leave'" class="govuk-table__cell leave"
-                  :headers="`${parent}-name ${parent}-leave week-${i}-date`"
+                  :headers="`info-alert ${parent}-name ${parent}-leave week-${i}-date`"
                   :class="[
                       week[parent].compulsory ? 'compulsory' : week[parent].leave.text,
                       { 'disabled': hasNoEligibility(parent) }
@@ -110,11 +110,11 @@
                     Work or other leave
                 </div>
               </td>
-              <td v-if="isDisabledCell(week, parent)" :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`${parent}-name ${parent}-pay week-${i}-date`">
+              <td v-if="isDisabledCell(week, parent)" :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`info-alert ${parent}-name ${parent}-pay week-${i}-date`">
                 {{ week | payCellLabel(false) }}
               </td>
               <td v-else :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
-                  :headers="`${parent}-name ${parent}-pay week-${i}-date`"
+                  :headers="`info-alert ${parent}-name ${parent}-pay week-${i}-date`"
                   :class="{
                     'unpaid': cellIsEligible(week, parent, 'pay') && week[parent].leave.text && !week[parent].pay.text,
                     'ineligible': !cellIsEligible(week, parent, 'pay')
@@ -155,7 +155,7 @@
     'paternity': 'Paternity',
     'shared': 'Shared Parental'
   })
-  
+
   module.exports = {
     data: () => ({
       isIexplorer: isIexplorer,
