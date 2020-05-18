@@ -7,7 +7,14 @@
   {% macro date(data, weekNumber) %}
     {% set zeroWeek = (data | zeroWeek) %}
     {% if weekNumber %}
-      {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
+      {{ "Week commencing " + zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
+    {% endif %}
+  {% endmacro %}
+
+  {% macro dateEnd(data, weekNumber) %}
+    {% set zeroWeek = (data | zeroWeek) %}
+    {% if weekNumber %}
+      {{ "Week ending " + zeroWeek | offsetWeeks(weekNumber) | endOfWeek | formatForDisplay }}
     {% endif %}
   {% endmacro %}
 
@@ -38,7 +45,7 @@
           text: (primaryLeaveType | capitalize) + " Leave end"
         },
         value: {
-          text: date(data, leaveBlocks["primary"]["initial"]["end"])
+          text: dateEnd(data, leaveBlocks["primary"]["initial"]["end"])
         },
         actions: {
           items: [
@@ -89,7 +96,7 @@
           text: "Paternity Leave end"
         },
         value: {
-          text: date(data, leaveBlocks["secondary"]["initial"]["end"])
+          text: dateEnd(data, leaveBlocks["secondary"]["initial"]["end"])
         },
         actions: {
           items: [
@@ -101,6 +108,6 @@
           ]
         }
       }
-    ] | appendSplAnswerRows(data, date) | removeRowsWithEmptyValues
+    ] | appendSplAnswerRows(data, date, dateEnd) | removeRowsWithEmptyValues
   }) }}
 {% endmacro %}
