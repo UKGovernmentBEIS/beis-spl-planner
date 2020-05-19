@@ -27,7 +27,6 @@
 {% set parentName = (data | parentName(parent)) %}
 {% set zeroWeek = (data | zeroWeek) %}
 {% set isBirth = (data | isBirth) %}
-{% set birthOrPlacement = "birth" if isBirth else "placement" %}
 {% set hasTakenSpl = (data["leave-blocks"] | hasTakenSpl(parent)) %}
 {% set initialLeaveType = (data | parentInitialLeaveType(parent)) %}
 
@@ -48,17 +47,6 @@
 
 {% macro optionText(weekNumber, index) %}
   {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
-  {% if endOfLastBlock === -1 %}
-    {% if weekNumber === 0 %}
-      (the {{ birthOrPlacement }} week)
-    {% else %}
-      ({{ weekNumber | weeks }} after {{ birthOrPlacement }})
-    {% endif %}
-  {% elif index === 0 %}
-    (The week immediately after the {{ parentName }}’s {{ "previous leave block" if hasTakenSpl else ((initialLeaveType | capitalize) + " Leave") }})
-  {% else %}
-    ({{ (weekNumber - endOfLastBlock) | weeks }} after the {{ parentName }}’s {{ "previous leave block" if hasTakenSpl else ((initialLeaveType | capitalize) + " Leave") }})
-  {% endif %}
 {% endmacro %}
 
 {% block content %}
