@@ -31,13 +31,12 @@
 {% set options = range(0, 8) %}
 
 {% macro optionText(weekNumber) %}
-  {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
   {% if (weekNumber === 0) %}
-    (the {{ birthOrPlacement }} week)
+    the {{ birthOrPlacement }} week
   {% elif (weekNumber === 1) %}
-    (the week following {{ birthOrPlacement }})
+    the week following {{ birthOrPlacement }}
   {% else %}
-    ({{ weekNumber | weeks }} after {{ birthOrPlacement }})
+    {{ weekNumber | weeks }} after {{ birthOrPlacement }}
   {% endif %}
 {% endmacro %}
 
@@ -71,7 +70,7 @@
                 html: hint
               },
               label: {
-                text: "Which week will be the partner’s first week of Paternity Leave?",
+                text: "When will Paternity Leave start?",
                 classes: "govuk-label--xl",
                 isPageHeading: true
               },
