@@ -33,9 +33,9 @@
 {% macro optionText(weekNumber) %}
   {% if (weekNumber === 0) %}
     {% if isOverseasAdoption %}
-      the first week the child arrives in the UK
+      The first week the child arrives in the UK
     {% else %}
-      the {{ birthOrPlacement }} week
+      The {{ birthOrPlacement | capitalize }} week
     {% endif %}
   {% else %}
     {% if isOverseasAdoption %}
