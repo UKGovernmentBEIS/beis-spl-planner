@@ -139,7 +139,11 @@
           Paternity Leave
         </h3>
 
-    <p>Paternity Leave can start once the child is born and not before</p>
+        {% if data | isAdoption %}
+          <p>Paternity Leave can start the day your child is placed with you, or within 8 weeks after.</p>
+        {% else %}
+          <p>Paternity Leave can start once the child is born, or within 8 weeks of the child’s birth.</p>
+        {% endif %}
 
         {{ leaveBlockSummary({
           name: "Paternity Leave",
