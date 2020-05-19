@@ -32,18 +32,17 @@
 {% set options = range(0, 4) if isOverseasAdoption else range(0, minWeek - 1, -1) %}
 
 {% macro optionText(weekNumber) %}
-  {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
   {% if (weekNumber === 0) %}
     {% if isOverseasAdoption %}
-      (the first week the child arrives in the UK)
+      the first week the child arrives in the UK
     {% else %}
-      (the {{ birthOrPlacement }} week)
+      the {{ birthOrPlacement }} week
     {% endif %}
   {% else %}
     {% if isOverseasAdoption %}
-      ({{ weekNumber | weeks }} after the child arrives in the UK)
+      {{ weekNumber | weeks }} after the child arrives in the UK
     {% else %}
-      ({{ weekNumber | abs | weeks }} before {{ birthOrPlacement }})
+      {{ weekNumber | abs | weeks }} before {{ birthOrPlacement }}
     {% endif %}
   {% endif %}
 {% endmacro %}
@@ -73,7 +72,7 @@
                 html: hint
               },
               label: {
-                text: "Which week was or will be the " + primaryName + "’s first week of " + (primaryLeaveType | capitalize) + " Leave?",
+                text: "When will " + (primaryLeaveType | capitalize) + " Leave start?",
                 classes: "govuk-label--xl",
                 isPageHeading: true
               },
