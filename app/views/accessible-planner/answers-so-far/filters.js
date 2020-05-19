@@ -6,7 +6,7 @@ const delve = require('dlv')
 module.exports = function (env) {
   const parentName = env.getFilter('parentName')
 
-  function appendSplAnswerRows (rows, data, dateMacro) {
+  function appendSplAnswerRows (rows, data, dateMacro, dateEndMacro) {
     const leaveBlocks = data['leave-blocks']
     const splBlocks = { primary: [], secondary: [] }
     for (const parent of ['primary', 'secondary']) {
@@ -53,7 +53,7 @@ module.exports = function (env) {
             text: blockSummary('end')
           },
           value: {
-            text: dateMacro(data, splBlock.end)
+            text: dateEndMacro(data, splBlock.end)
           },
           actions: {
             items: [
