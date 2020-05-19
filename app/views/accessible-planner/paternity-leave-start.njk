@@ -32,9 +32,9 @@
 
 {% macro optionText(weekNumber) %}
   {% if (weekNumber === 0) %}
-    the {{ birthOrPlacement }} week
+    The {{ birthOrPlacement }} week
   {% elif (weekNumber === 1) %}
-    the week following {{ birthOrPlacement }}
+    The week following {{ birthOrPlacement }}
   {% else %}
     {{ weekNumber | weeks }} after {{ birthOrPlacement }}
   {% endif %}
