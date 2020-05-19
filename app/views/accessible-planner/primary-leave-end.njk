@@ -32,8 +32,7 @@
 
 {% macro optionText(weekNumber) %}
   {% set totalWeeks = weekNumber - firstWeekOfLeave + 1 %}
-  {{ totalWeeks | weeks }} of leave
-  (week commencing {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }})
+  {{ totalWeeks | weeks }} after {{ birthOrPlacement }}
 {% endmacro %}
 
 {% block content %}
