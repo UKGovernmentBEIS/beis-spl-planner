@@ -27,7 +27,6 @@
 {% set parentName = (data | parentName(parent)) %}
 {% set zeroWeek = (data | zeroWeek) %}
 {% set isBirth = (data | isBirth) %}
-{% set birthOrPlacement = "birth" if isBirth else "placement" %}
 {% set hasTakenSpl = (data["leave-blocks"] | hasTakenSpl(parent)) %}
 {% set initialLeaveType = (data | parentInitialLeaveType(parent)) %}
 
