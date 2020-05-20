@@ -6,14 +6,23 @@
     {% set formUrl %}
       {% if data | isBirth -%}
         SPL_Mother_Birth.docx
+        {% set formName %}
+          Shared Parental Leave Forms (after Maternity Leave)
+        {% endset %}
       {%- elif data | isAdoption -%}
         SPL_Primary_Adopter.docx
+        {% set formName %}
+          Shared Parental Leave Forms (after Adoption Leave)
+        {% endset %}
       {%- else -%}
         SPL_Parental_Order_Parent.docx
+        {% set formName %}
+          Shared Parental Leave Forms (for parents getting a parent order for a child through surrogacy)
+        {% endset %}
       {%- endif %}
     {% endset %}
     {{ fileDownload({
-      name: (data | primaryName | capitalize) + "’s Shared Parental Leave and Pay notice form",
+      name: formName,
       href: "/forms/" + formUrl,
       attributes: {
         ga_fileDownloaded: {
@@ -27,14 +36,23 @@
     {% set formUrl %}
       {% if data | isBirth -%}
         Maternity_Entitlement_Curtailment.docx
+        {% set formName %}
+          Curtailment of Maternity Entitlement Form
+        {% endset %}
       {%- elif data | isAdoption -%}
         Adoption_Entitlement_Curtailment.docx
+        {% set formName %}
+          Curtailment of Adoption Entitlement Form
+        {% endset %}
       {%- else -%}
         Parental_Order_Parent_Entitlement_Curtailment.docx
+        {% set formName %}
+          Curtailment of Adoption Entitlement Form (for parents getting a parent order for a child through surrogacy)
+        {% endset %}
       {%- endif %}
     {% endset %}
     {{ fileDownload({
-      name: data | primaryLeaveType | capitalize + " curtailment and SPL consent form",
+      name: formName,
       href:"/forms/" + formUrl,
       attributes: {
         ga_fileDownloaded: {
