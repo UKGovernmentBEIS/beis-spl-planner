@@ -4,9 +4,18 @@
 {% macro secondaryNotice(options) %}
   {% set data = options.data %}
   {% if data | shouldDisplaySecondaryLeaveAndPayForm %}
+    {% set formUrl %}
+      {% if data | isBirth -%}
+        SPL_Partner_Birth.docx
+      {%- elif data | isAdoption -%}
+        SPL_Partner_of_Primary_Adopter.docx
+      {%- else -%}
+        SPL_Partner_of_Parental_Order_Parent.docx
+      {%- endif %}
+    {% endset %}
     {{ fileDownload({
       name: data | secondaryName | capitalize + "’s Shared Parental Leave and Pay notice form",
-      href: "/forms/" + ("SPL_Partner_Birth.pdf" if data | primaryLeaveType == "maternity" else "SPL_Primary_Adopters_Partner.pdf"),
+      href: "/forms/" + formUrl,
       attributes: {
         ga_fileDownloaded: {
           "data-ga-hit-type": "secondary_notice_clicked",

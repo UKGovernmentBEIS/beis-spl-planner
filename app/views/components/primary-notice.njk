@@ -3,9 +3,18 @@
 {% macro primaryNotice(options) %}
   {% set data = options.data %}
   {% if data | shouldDisplayPrimaryLeaveAndPayForm %}
+    {% set formUrl %}
+      {% if data | isBirth -%}
+        SPL_Mother_Birth.docx
+      {%- elif data | isAdoption -%}
+        SPL_Primary_Adopter.docx
+      {%- else -%}
+        SPL_Parental_Order_Parent.docx
+      {%- endif %}
+    {% endset %}
     {{ fileDownload({
       name: (data | primaryName | capitalize) + "’s Shared Parental Leave and Pay notice form",
-      href: "/forms/" + ("SPL_Mother_Birth.pdf" if data | primaryLeaveType == "maternity" else "SPL_Primary_Adopter.pdf"),
+      href: "/forms/" + formUrl,
       attributes: {
         ga_fileDownloaded: {
             "data-ga-hit-type": "primary_notice_clicked",
@@ -15,9 +24,18 @@
       }
     }) }}
   {% elif data | shouldDisplayPrimaryCurtailmentForm %}
+    {% set formUrl %}
+      {% if data | isBirth -%}
+        Maternity_Entitlement_Curtailment.docx
+      {%- elif data | isAdoption -%}
+        Adoption_Entitlement_Curtailment.docx
+      {%- else -%}
+        Parental_Order_Parent_Entitlement_Curtailment.docx
+      {%- endif %}
+    {% endset %}
     {{ fileDownload({
       name: data | primaryLeaveType | capitalize + " curtailment and SPL consent form",
-      href:"/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if data | primaryLeaveType == "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf"),
+      href:"/forms/" + formUrl,
       attributes: {
         ga_fileDownloaded: {
           "data-ga-hit-type": "primary_notice_clicked",

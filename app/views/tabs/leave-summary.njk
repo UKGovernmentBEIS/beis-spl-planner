@@ -206,10 +206,19 @@
         }) }}
 
         {% if leaveBlocks.primary.spl | length === 0 and leaveBlocks.secondary.spl | length > 0 %}
+          {% set formUrl %}
+            {% if data | isBirth -%}
+              Maternity_Entitlement_Curtailment.docx
+            {%- elif data | isAdoption -%}
+              Adoption_Entitlement_Curtailment.docx
+            {%- else -%}
+              Parental_Order_Parent_Entitlement_Curtailment.docx
+            {%- endif %}
+          {% endset %}
           {% set curtailmentWarningHtml %}
             The {{ data | primaryName }} must end their {{ primaryLeaveType | capitalize }} Leave and Pay by returning to work or submitting a curtailment notice.
             They must also give consent for the partner to take Shared Parental Leave or Pay.
-            {% set href = "/forms/" + ("Maternity_Leave_Curtailment_SPL_Consent.pdf" if primaryLeaveType === "maternity" else "Adoption_Leave_Curtailment_SPL_Consent.pdf") %}
+            {% set href = "/forms/" + formUrl %}
             They can do both by submitting the <a href="{{ href }}">{{ primaryLeaveType | capitalize }} curtailment and SPL consent form</a>.
           {% endset %}
           {{ govukWarningText({
