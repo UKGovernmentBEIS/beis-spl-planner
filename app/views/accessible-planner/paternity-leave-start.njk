@@ -34,7 +34,7 @@
   {% if (weekNumber === 0) %}
     The {{ birthOrPlacement }} week
   {% elif (weekNumber === 1) %}
-    The week following {{ birthOrPlacement }}
+    The week following {{ birthOrPlacement | capitalize }}
   {% else %}
     {{ weekNumber | weeks }} after {{ birthOrPlacement }}
   {% endif %}
