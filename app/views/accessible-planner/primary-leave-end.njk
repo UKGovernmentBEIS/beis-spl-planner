@@ -32,7 +32,7 @@
 
 {% macro optionText(weekNumber) %}
   {% set totalWeeks = weekNumber - firstWeekOfLeave + 1 %}
-  {{ totalWeeks | weeks }} after {{ birthOrPlacement }}
+  {{ totalWeeks | weeks }}
 {% endmacro %}
 
 {% block content %}
