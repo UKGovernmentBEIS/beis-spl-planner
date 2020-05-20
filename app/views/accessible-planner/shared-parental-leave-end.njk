@@ -33,9 +33,7 @@
 {% set options = range(firstWeekOfLeave, maxWeek) %}
 
 {% macro optionText(weekNumber) %}
-  {% set totalWeeks = weekNumber - firstWeekOfLeave + 1 %}
   {{ zeroWeek | offsetWeeks(weekNumber) | formatForDisplay }}
-  (taking {{ totalWeeks | weeks }} of leave)
 {% endmacro %}
 {% block content %}
   <div class="govuk-grid-row">
