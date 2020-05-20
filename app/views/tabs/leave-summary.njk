@@ -226,9 +226,9 @@
           {% endset %}
           {% set curtailmentWarningHtml %}
             The {{ data | primaryName }} must end their {{ primaryLeaveType | capitalize }} Leave and Pay by returning to work or submitting a curtailment notice.
-            They must also give consent for the partner to take Shared Parental Leave or Pay.
+            To allow their partner to take Shared Parental Leave or Pay.
             {% set href = "/forms/" + formUrl %}
-            They can do both by submitting the <a href="{{ href }}">{{ formName }}</a>.
+            They can do so by submitting the <a href="{{ href }}">{{ formName }}</a>.
           {% endset %}
           {{ govukWarningText({
             html: curtailmentWarningHtml,
