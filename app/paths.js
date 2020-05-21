@@ -233,6 +233,9 @@ class Paths {
       },
       'contact-us': {
         url: '/contact-us'
+      },
+      accessibilityStatement: {
+        url: '/accessibility-statement'
       }
     }
   }

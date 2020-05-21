@@ -355,4 +355,10 @@ router.route(paths.getPath('contact-us'))
     res.render('feedback/contact-us', { referrer })
   })
 
+router.route(paths.getPath('accessibilityStatement'))
+  .get(function (req, res) {
+    const referrer = req.header('Referrer')
+    res.render('accessibility-statement', { referrer })
+  })
+
 module.exports = router
