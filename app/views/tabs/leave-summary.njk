@@ -225,8 +225,7 @@
             {%- endif %}
           {% endset %}
           {% set curtailmentWarningHtml %}
-            The {{ data | primaryName }} must end their {{ primaryLeaveType | capitalize }} Leave and Pay by returning to work or submitting a curtailment notice.
-            To allow their partner to take Shared Parental Leave or Pay.
+            The {{ data | primaryName }} must end their {{ primaryLeaveType | capitalize }} Leave and Pay by returning to work or submitting a curtailment notice to allow their partner to take Shared Parental Leave or Pay.
             {% set href = "/forms/" + formUrl %}
             They can do so by submitting the <a href="{{ href }}">{{ formName }}</a>.
           {% endset %}
