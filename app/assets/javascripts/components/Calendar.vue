@@ -16,8 +16,8 @@
       <tr class="govuk-table__row">
         <th class="govuk-table__header" id="info-alert" ref="infoAlert"  style="{ height: 100% }" colspan="5">
           <div id="messages">
-            <div>&ensp;<span v-html="formatWeeks(sharedLeaveRemaining, 'leave')"></span> remaining</div>
-            <div>&ensp;<span v-html="formatWeeks(payRemaining, 'pay')"></span> remaining</div>
+            <div>&ensp;<span v-html="formatWeeks(sharedLeaveRemaining, 'leave')"></span> left</div>
+            <div>&ensp;<span v-html="formatWeeks(payRemaining, 'pay')"></span> left</div>
             <div class="govuk-error-summary govuk-!-padding-2" role="alert" tabindex="-1" v-if="sharedLeaveRemaining < 0 || payRemaining < 0">
               <div class="govuk-error-summary__body">
                 <div v-if="sharedLeaveRemaining < 0" >
@@ -512,6 +512,9 @@
   .govuk-table__head {
     .govuk-table__header {
       background-color: $header-colour;
+      #messages {
+        font-weight: normal;
+      }
     }
   }
 
