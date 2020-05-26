@@ -4,7 +4,7 @@
 {% macro salaryInput(options) %}
   {% set salaryPeriodId = options.parent + "[salary-period]" %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-one-half">
+    <div class="govuk-grid-column-one-third">
       {{ hmctsCurrencyInput({
         id: options.parent + "-salary-amount",
         name: options.parent + "[salary-amount]",
@@ -22,7 +22,7 @@
       }) }}
     </div>
 
-    <div class="govuk-grid-column-one-half">
+    <div class="govuk-grid-column-two-thirds">
       {{ govukSelect({
         id: options.parent + "-salary-period",
         name: options.parent + "[salary-period]",
