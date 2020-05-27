@@ -64,26 +64,26 @@
   <div class="govuk-grid-row js-show">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-l">
-        Plan Shared Parental Leave and Pay
+        Plan shared parental leave and pay
       </h1>
       <p class="print-hide">
-        Use the calendar below to plan Shared Parental Leave and Pay alongside {{ primaryLeaveType | capitalize }} and Paternity Leave and Pay.
+        Use the calendar below to plan shared parental leave and pay alongside {{ primaryLeaveType | capitalize }} and Paternity Leave and Pay.
         Alternatively, you can plan your leave by <a href="/planner/maternity-leave/start">answering questions</a>.
       </p>
       <p class="print-hide">
-        The dates shown are based on {{ "the week your child starts living with you" if isAdoption else "your child’s birth week" }}. 
-        There are separate columns for the mother and the partner. 
+        The dates shown are based on {{ "the week your child starts living with you" if isAdoption else "your child’s birth week" }}.
+        There are separate columns for the mother and the partner.
         Select the weeks each parent wants to take as leave by clicking in the leave column within the calendar.
       </p>
       <p class="print-hide">
         You can also select which leave weeks are paid and unpaid by clicking on any tick icons within the pay column.
       </p>
       <p class="print-hide">
-        The calendar will give an indication of how much statutory pay you can expect to receive, based on the salary you have entered. 
-        Your employer can confirm your exact pay amounts. 
+        The calendar will give an indication of how much statutory pay you can expect to receive, based on the salary you have entered.
+        Your employer can confirm your exact pay amounts.
         All leave weeks start on a Monday, you can choose a different day to start your leave when you give notice to your employer.
-      </p> 
-    
+      </p>
+
       {% set examples %}
         <span class="govuk-hint">
           Examples will open in a new page.
@@ -109,7 +109,7 @@
       {% endset %}
 
       {{ govukDetails({
-        summaryText: "Examples of Shared Parental Leave and Pay plans",
+        summaryText: "Examples of shared parental leave and pay plans",
         html: examples,
         classes: "print-hide"
       }) }}
@@ -119,7 +119,7 @@
     <div class="govuk-grid-row print-hide js-hide">
       <div class="govuk-grid-column-two-thirds-from-desktop">
         <h1 class="govuk-heading-l">
-          Plan Shared Parental Leave and Pay
+          Plan shared parental leave and pay
         </h1>
         <p>
           You must have JavaScript enabled to use the interactive leave and pay calendar, but you can still

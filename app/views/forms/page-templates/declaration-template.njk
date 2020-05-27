@@ -44,7 +44,7 @@
   {% endset %}
 
   {% set headertitle %}
-    <strong>{{ options.parent | capitalize }}’s</strong> notices and declarations for Shared Parental Leave and Pay
+    <strong>{{ options.parent | capitalize }}’s</strong> notices and declarations for shared parental leave and pay
   {% endset %}
 
   {% set page1 %}
@@ -70,7 +70,7 @@
     <p>{{cls.next()}}. {{options.otherParent | capitalize}}’s declaration to {{options.parent}}’s employer</p>
     <p>{{cls.next()}}. Period of leave notice</p>
     {% if options.type == "primary" %}
-      <p><strong>If you are NOT taking Shared Parental Leave and Pay but your partner is, only fill out sections 2 and 3.</strong></p>
+      <p><strong>If you are NOT taking shared parental leave and pay but your partner is, only fill out sections 2 and 3.</strong></p>
     {% endif %}
 
     {{ sectionTitle({text: "Section 1 of $count: $Parent’s notice of entitlement and intention" | formTemplate(options) }) }}
