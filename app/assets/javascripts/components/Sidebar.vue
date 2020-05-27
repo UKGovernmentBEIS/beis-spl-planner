@@ -2,7 +2,7 @@
   <div>
     <template v-if="hasAnyPrimaryLeaveOrSharedLeaveEligibility">
       <h2 class="govuk-heading-m">
-        Your leave weeks
+        Your leave
       </h2>
       <p v-if="hasPrimaryLeaveAndSharedLeaveEligibility">
         You can split a total of <span v-html="formatWeeks(52)"></span> as {{ primaryInitialLeaveOrSharedParentalLeave }}.
@@ -30,7 +30,7 @@
     </template>
     <template v-if="hasAnyPrimaryLeaveOrSharedPayEligibility">
       <h2 class="govuk-heading-m">
-        Your pay weeks
+        Your pay
       </h2>
       <p>
         You can {{ hasPrimaryLeaveAndSharedPayEligibility ? "split a total of" : "take" }} <span v-html="formatWeeks(39)"></span> of {{ primaryInitialPayOrSharedParentalPay }}.
