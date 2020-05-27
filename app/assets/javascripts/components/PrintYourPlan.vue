@@ -1,10 +1,7 @@
 <template>
   <div>
-    <h2 class="govuk-heading-s">
-      Print your plan
-    </h2>
     <p>
-      You can <a
+      You can also <a
             onclick="window.print()"
             class="govuk-link--no-visited-state govuk-body print-hide"
             href="#"
@@ -12,7 +9,7 @@
             data-ga-field-event_category="planner"
             data-ga-field-event_action="print_page"
           >
-      print your plan</a> if you want to refer to it later.
+      print your plan</a>.
     </p>
   </div>
 </template>
