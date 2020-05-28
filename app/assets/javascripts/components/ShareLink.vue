@@ -1,6 +1,6 @@
 <template>
   <span>
-    <div class="govuk-form-group">
+    <div class="govuk-form-group" id="share-link-form">
       <label class="govuk-label govuk-!-font-weight-bold" for="save-share-link">
         <span class="govuk-heading-m">Save and share your {{ pageType }}</span>
         <span class="govuk-hint">
@@ -86,7 +86,7 @@
 </script>
 
 <style>
-    .govuk-form-group {
+    #share-link-form {
         margin-bottom: 0;
     }
 </style>
