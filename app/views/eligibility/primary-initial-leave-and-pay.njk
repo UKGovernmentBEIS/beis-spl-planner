@@ -41,12 +41,9 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <h1 class="govuk-heading-l eligibility-heading">
+      <h1 class="govuk-heading-l">
         {{ data | primaryName | capitalize }}’s leave and pay
       </h1>
-      <p class="govuk-hint">
-        If you’re not sure, <a href="https://www.gov.uk/pay-leave-for-parents">check if you can get leave and pay when you have a child</a>.
-      </p>
       <form method="POST">
         {% call appendHiddenFields(data) %}
           {% if data["primary"]["spl-eligible"] | isNo %}
@@ -79,6 +76,12 @@
           {% endif %}
 
           {% if data["primary"]["shpp-eligible"] | isNo %}
+            {% set hint %}
+               <p class="govuk-hint">
+                 If you’re not sure, <a href="https://www.gov.uk/pay-leave-for-parents">check if you can get leave and pay when you have a child</a>.
+               </p>
+            {% endset %}
+
             {{ govukRadios({
               classes: "govuk-radios--inline",
               idPrefix: "primary-initial-pay-eligible",
@@ -92,6 +95,9 @@
               errorMessage: {
                 text: errors["initial-pay-eligible"].text
               } if errors["initial-pay-eligible"].text,
+              hint: {
+                html: hint
+              },
               items: [
                 {
                   value: "yes",
