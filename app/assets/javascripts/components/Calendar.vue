@@ -2,7 +2,7 @@
   <table ref="calendar" class="govuk-table"
     :class="{ 'dragging': isDragging, 'hide-focus': hideFocus, 'is-ie': isIexplorer, 'interactive': interactive }"
     @mouseleave="endDrag" @mouseup.left="endDrag">
-    <caption class="govuk-table__caption govuk-heading-l">Leave and pay planner</caption>
+    <caption class="govuk-table__caption govuk-heading-m">Calendar</caption>
       <col class="col-date" />
     <colgroup>
       <col class="col-leave" />
