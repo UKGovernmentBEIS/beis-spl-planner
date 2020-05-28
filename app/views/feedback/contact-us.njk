@@ -1,0 +1,35 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+
+{% extends "layout.njk" %}
+
+{% block pageTitle -%}
+  {{ "Contact Us" | pageTitle }}
+{%- endblock %}
+
+{% block beforeContent %}
+  {{ super() }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: withData(referrer)
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <h1 class="govuk-heading-l">
+        Shared parental leave and pay
+      </h1>
+      <p>
+        For help completing your plan, phone: 020 7215 5000
+      </p>
+      <p>
+        Monday to Friday, 9:00am to 5:00pm.
+      </p>
+      <p>
+        Find out about <a href="https://www.gov.uk/call-charges?_ga=2.236722695.747384163.1590585513-1383706553.1577720256">call charges</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

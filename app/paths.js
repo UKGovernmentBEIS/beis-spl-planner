@@ -230,6 +230,9 @@ class Paths {
       },
       cookies: {
         url: '/cookies'
+      },
+      'contact-us': {
+        url: '/contact-us'
       }
     }
   }
