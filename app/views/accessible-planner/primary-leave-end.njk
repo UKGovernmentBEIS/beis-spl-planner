@@ -55,9 +55,6 @@
             <p class="govuk-hint">
               The first week of {{ primaryLeaveType | capitalize }} Leave is the week commencing {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}.
             </p>
-            <p class="govuk-hint">
-              Your previous answers are at the bottom of the page.
-            </p>
           {% endset %}
             {{ govukSelect({
               id: "primary-leave-end",

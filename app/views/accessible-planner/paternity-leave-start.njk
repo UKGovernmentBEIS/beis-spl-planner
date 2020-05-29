@@ -59,9 +59,6 @@
                 The {{ primaryName }}’s last week of {{ primaryLeaveType | capitalize }} Leave is the week commencing {{ zeroWeek | offsetWeeks(primaryLeaveEnd) | formatForDisplay }}.
               </p>
             {% endif %}
-            <p class="govuk-hint">
-              Your previous answers are at the bottom of the page.
-            </p>
           {% endset %}
             {{ govukSelect({
               id: "primary-leave-start",
