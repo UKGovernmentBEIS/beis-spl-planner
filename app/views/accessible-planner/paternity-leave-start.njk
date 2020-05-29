@@ -45,27 +45,9 @@
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <form method="POST">
         {% call appendHiddenFields(data) %}
-          {% set hint %}
-            <p class="govuk-hint">
-              The partner can take up to 2 weeks of Paternity Leave during the first 8 weeks after {{ birthOrPlacement }}.
-              This leave must be taken in one go.
-            </p>
-            {% if (primaryLeaveEnd >= 7) %}
-              <p class="govuk-hint">
-                The {{ primaryName }} is on {{ primaryLeaveType | capitalize }} Leave during the entire 8 week period.
-              </p>
-            {% else %}
-              <p class="govuk-hint">
-                The {{ primaryName }}’s last week of {{ primaryLeaveType | capitalize }} Leave is the week commencing {{ zeroWeek | offsetWeeks(primaryLeaveEnd) | formatForDisplay }}.
-              </p>
-            {% endif %}
-          {% endset %}
             {{ govukSelect({
               id: "primary-leave-start",
               name: "leave-blocks[secondary][initial][start]",
-              hint: {
-                html: hint
-              },
               label: {
                 text: "When will Paternity Leave start?",
                 classes: "govuk-label--l",
