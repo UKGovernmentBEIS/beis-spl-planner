@@ -37,26 +37,9 @@
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <form method="POST">
         {% call appendHiddenFields(data) %}
-          {% set hint %}
-            <p class="govuk-hint">
-              The partner’s Paternity Leave starts in the week commencing {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}
-              and can be a maximum of 2 weeks.
-            </p>
-            <p class="govuk-hint">
-              Paternity Leave must be taken within the first 8 weeks of
-              {% if isOverseasAdoption %}
-                the child arriving in the UK
-              {% else %}
-                {{ data | birthOrPlacement }}
-              {% endif %}.
-            </p>
-          {% endset %}
             {{ govukSelect({
               id: "primary-leave-end",
               name: "leave-blocks[secondary][initial][end]",
-              hint: {
-                html: hint
-              },
               label: {
                 text: "How many weeks of Paternity Leave will the partner take?",
                 classes: "govuk-label--l",
