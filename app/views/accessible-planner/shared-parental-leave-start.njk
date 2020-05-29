@@ -75,9 +75,6 @@
                 completed in the week ending {{ zeroWeek | offsetWeeks(endOfLastBlock) | endOfWeek | formatForDisplay }}.
               {% endif %}
             </p>
-            <p class="govuk-hint">
-              Your previous answers are at the bottom of the page.
-            </p>
           {% endset %}
             {{ govukSelect({
               id: "shared-parental-leave-start",
