@@ -7,9 +7,7 @@
     <h1 class="govuk-heading-l print-show">
       Pay summary
     </h1>
-    <p>
-      This summary shows the amount of statutory pay you could get while on leave. These amounts are just an idea of what you could get. Your employer can confirm your exact pay amount.
-    </p>
+    <p>This summary shows the amount of statutory pay you could get while on leave. Your employers will confirm the exact amounts.</p>
 
     {% for block in payBlocks %}
       {% set tableCaption %}
@@ -46,7 +44,7 @@
             { text: secondaryPay }
           ],
           [
-            { html: "<strong>Total pay</br>(before tax) </strong>" },
+            { html: "<strong>Total pay</br>before tax</strong>" },
             { html: "<strong>" + block | totalBlockPay + " per week</strong>" }
           ] if data | displayPayBlockTotal
         ]
