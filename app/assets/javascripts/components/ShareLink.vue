@@ -3,15 +3,11 @@
     <div class="govuk-form-group" id="share-link-form">
       <label class="govuk-label govuk-!-font-weight-bold" for="save-share-link">
         <span class="govuk-heading-m">Save and share your {{ pageType }}</span>
-        <span class="govuk-hint">
-         <p>
-          Copy this link to your email or messaging service to share with someone else or make changes to it in the future.
-         </p>
-         <p>
-          Each time you update your {{ pageType }}, you will need to copy and save this link to ensure you have the latest version.
-         </p>
-        </span>
       </label>
+      <span class="govuk-hint">
+        <p>Copy this link to your email or messaging service to share with someone else or make changes to it in the future.</p>
+        <p>Each time you update your {{ pageType }}, you will need to copy and save this link to ensure you have the latest version.</p>
+      </span>
       <div class="govuk-!-padding-0">
         <input id="save-share-link" class="govuk-input govuk-!-font-size-14 share-link" type="text" readonly
           :ref="'share-link'"
