@@ -48,7 +48,7 @@
     <tbody class="govuk-table__body">
       <template v-for="(week, i) in weeks">
         <tr :key="'month-header-' + week.id" v-if="i === 0 || week.day.date() <= 7" aria-hidden="true">
-          <th class="govuk-table__header month" colspan="5" id="month-header">
+          <th class="govuk-table__header month" colspan="5" :id="`month-header-${week.day.format('MMMM')}`">
             {{ week.day.format('MMMM YYYY') }}
           </th>
         </tr>
@@ -75,17 +75,17 @@
           </th>
           <template v-for="(parent, j) in ['primary', 'secondary']">
             <template v-if="week[parent].outOfPermittedRange">
-              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`info-alert month-header earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-leave week-${i}-date`"></td>
-              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`info-alert month-header earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-pay week-${i}-date`"></td>
+              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-leave week-${i}-date`"></td>
+              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-pay week-${i}-date`"></td>
             </template>
             <template v-else>
-              <td v-if="isDisabledCell(week, parent)" :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`info-alert month-header earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-leave week-${i}-date`">
+              <td v-if="isDisabledCell(week, parent)" :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-leave week-${i}-date`">
                 <div class="govuk-body-s no-margin">
                   Not eligible for leave or pay
                 </div>
               </td>
               <td v-else :key="parent + '-leave'" class="govuk-table__cell leave"
-                  :headers="`info-alert month-header earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-leave week-${i}-date`"
+                  :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-leave week-${i}-date`"
                   :class="[
                       week[parent].compulsory ? 'compulsory' : week[parent].leave.text,
                       { 'disabled': hasNoEligibility(parent) }
@@ -111,11 +111,11 @@
                     Work or other leave
                 </div>
               </td>
-              <td v-if="isDisabledCell(week, parent)" :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`info-alert month-header earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-pay week-${i}-date`">
+              <td v-if="isDisabledCell(week, parent)" :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-pay week-${i}-date`">
                 {{ week | payCellLabel(false) }}
               </td>
               <td v-else :key="parent + '-pay'" class="govuk-table__cell govuk-table__cell pay"
-                  :headers="`info-alert month-header earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-pay week-${i}-date`"
+                  :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-pay week-${i}-date`"
                   :class="{
                     'unpaid': cellIsEligible(week, parent, 'pay') && week[parent].leave.text && !week[parent].pay.text,
                     'ineligible': !cellIsEligible(week, parent, 'pay')
