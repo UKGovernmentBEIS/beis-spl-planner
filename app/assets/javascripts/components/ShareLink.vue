@@ -17,7 +17,7 @@
       </div>
       <div>
         <button class="govuk-button"
-                :aria-label="isCopied ? 'copied' : 'Copy link to save and share'"
+                :aria-label="isCopied ? 'Copy link to save and share :copied' : 'Copy link to save and share'"
                 @click.prevent="copyToken()"
                 @mouseleave="onMouseLeave()"
         >
