@@ -9,7 +9,7 @@
 {% extends "layout.njk" %}
 
 {% block pageTitle -%}
-  {{ "Which week will be the " + parentName + "’s last week of Shared Parental Leave in this block (" + parentName + " block " + (index + 1) +")"  | pageTitle }}
+  {{ "Which will be the " + parentName + "’s last week of Shared Parental Leave in this block (" + parentName + " block " + (index + 1) +")"  | pageTitle }}
 {%- endblock %}
 
 {% block beforeContent %}
@@ -42,7 +42,7 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              The first week in this block of leave is the week commencing {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}.
+              The first week in this block of leave is the week starting {{ zeroWeek | offsetWeeks(firstWeekOfLeave) | formatForDisplay }}.
             </p>
           {% endset %}
             {{ govukSelect({
@@ -52,7 +52,7 @@
                 html: hint
               },
               label: {
-                text: "Which week will be the " + parentName + "’s last week of Shared Parental Leave in this block?",
+                text: "Which will be the " + parentName + "’s last week of Shared Parental Leave in this block?",
                 classes: "govuk-label--l",
                 isPageHeading: true
               },
