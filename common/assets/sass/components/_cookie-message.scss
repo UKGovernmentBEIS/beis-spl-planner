@@ -10,8 +10,12 @@
   }
 }
 
-#cookie_banner > h1, #cookie_banner > p{
+#cookie_banner > h1, #cookie_banner > p {
   background-color: govuk-colour("white");
+}
+
+#cookie_banner.accepted {
+  display: none;
 }
 
 
@@ -24,6 +28,6 @@
   margin-top:16px;
 }
 
-#cookie-preference-success{
+#cookie-preference-success {
   display: none;
 }
