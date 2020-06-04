@@ -23,6 +23,7 @@
 {% set primaryLeaveType = (data | primaryLeaveType) %}
 {% set leaveBlocks = data["leave-blocks"] %}
 {% set remainingLeaveAllowance = (leaveBlocks | remainingLeaveAllowance) %}
+{% set remainingPayAllowance = (leaveBlocks | remainingPayAllowance) %}
 {% set eitherParentHasTakenSpl = (leaveBlocks | hasTakenSpl("primary")) or (leaveBlocks | hasTakenSpl("secondary")) %}
 
 {% block pageTitle -%}
@@ -51,6 +52,7 @@
               {% else %}
                 {{ primaryLeaveType | capitalize }} Leave that can be taken as Shared Parental Leave.
               {% endif %}
+              For {{ remainingPayAllowance | weeks }} of these weeks, you'll receive shared parental pay.
             </p>
             <p class="govuk-hint">
               Shared Parental Leave can be taken by the {{ primaryName }} and the partner, either at the same

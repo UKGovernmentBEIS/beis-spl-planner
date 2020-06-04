@@ -250,13 +250,20 @@ function parseLeaveBlock (obj) {
   }
 }
 
-function getRemainingLeaveAllowance (leaveBlocks) {
+function getTotalAllowance (leaveBlocks) {
   const initialPrimaryLeave = delve(leaveBlocks, 'primary.initial', {})
   const primarySpl = delve(leaveBlocks, 'primary.spl', [])
   const secondarySpl = delve(leaveBlocks, 'secondary.spl', [])
   const blocks = [initialPrimaryLeave, ...primarySpl, ...secondarySpl]
-  const totalAllowanceUsed = blocks.reduce((total, block) => total + getBlockLength(block), 0)
-  return 52 - totalAllowanceUsed
+  return blocks.reduce((total, block) => total + getBlockLength(block), 0)
+}
+
+function getRemainingLeaveAllowance (leaveBlocks) {
+  return 52 - getTotalAllowance(leaveBlocks)
+}
+
+function getRemainingPayAllowance (leaveBlocks) {
+  return 39 - getTotalAllowance(leaveBlocks)
 }
 
 function getBlockLength (block) {
@@ -348,6 +355,7 @@ module.exports = {
   parseSplLeaveBlocks,
   parseLeaveBlocks,
   getRemainingLeaveAllowance,
+  getRemainingPayAllowance,
   getBlockLength,
   parseLeaveBlocksIntoLeaveAndPay
 }
