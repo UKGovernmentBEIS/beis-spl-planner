@@ -1,0 +1,89 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "radios/macro.njk" import govukRadios %}
+{% from "button/macro.njk" import govukButton %}
+{% from "table/macro.njk" import govukTable %}
+
+{% extends "layout.njk" %}
+
+{% block pageTitle -%}
+{{ "Accessibility statement" | pageTitle }}
+{%- endblock %}
+
+{% block beforeContent %}
+{{ super() }}
+
+{{ govukBackLink({
+text: "Back",
+href: withData(referrer)
+}) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds-from-desktop">
+    <h1 class="govuk-heading-xl">
+      Accessibility statement for the &lsquo;{{ service_name }}&rsquo; service
+    </h1>
+
+    <p>This service allows users to plan their shared parental leave and pay.</p>
+    <p>This website is run by the Department for Business, Energy & Industrial Strategy (BEIS). We want as many people as possible to be able to use this website, so we have designed it to be accessible. For example, that means you should be able to:</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+      <li>change colours, contrast levels and fonts</li>
+      <li>zoom in up to 300% without the text spilling off the screen</li>
+      <li>navigate most of the website using just a keyboard</li>
+      <li>navigate most of the website using speech recognition software</li>
+      <li>listen to most of the website using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)</li>
+    </ul>
+
+    <p>We’ve also made the website text as simple as possible to understand.</p>
+    <p><a href="https://mcmw.abilitynet.org.uk/" class="govuk-link" aria-label="AbilityNet">AbilityNet</a> has advice on making your device easier to use if you have a disability.</p>
+
+    <h2 class="govuk-heading-m">How accessible is this website?</h2>
+    <p>The website has been tested by the Digital Accessibility Centre (DAC) to meet the required level of accessibility.
+      In addition we’ve carried out internal testing to ensure that we’re in-line with or close to the latest accessibility standards.</p>
+
+    <h2 class="govuk-heading-m">What to do if you cannot access parts of this website</h2>
+    <p>If you need information on this website in a different format like accessible PDF, large print, easy read or braille then phone:</p>
+    <p>020 7215 5000</p>
+    <p>Monday to Friday, 9:00am to 5:00pm.</p>
+    <p><a href="https://www.gov.uk/call-charges/" class="govuk-link" aria-label="Find out about call charges">Find out about call charges</a></p>
+    <p>We’ll consider your request and get back to you in 10 working days.</p>
+
+    <h2 class="govuk-heading-m">Reporting accessibility problems with this website</h2>
+    <p>We’re always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we’re not meeting accessibility requirements, phone:
+    <p>020 7215 5000</p>
+    <p>Monday to Friday, 9:00am to 5:00pm.</p>
+    <p><a href="https://www.gov.uk/call-charges/" class="govuk-link" aria-label="Find out about call charges">Find out about call charges</a></p>
+    <p>We’ll consider your request and get back to you in 10 working days.</p>
+
+    <h2 class="govuk-heading-m">Enforcement procedure</h2>
+    <p>The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’).
+      If you’re not happy with how we respond to your complaint, <a href="https://www.equalityadvisoryservice.com/" class="govuk-link" aria-label="contact the Equality Advisory and Support Service (EASS)">contact the Equality Advisory and Support Service (EASS)</a>.</p>
+
+    <h2 class="govuk-heading-m">Technical information about this website’s accessibility</h2>
+    <p>BEIS is committed to making its websites accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.</p>
+    <p>The website is partially compliant with the <a href="https://www.w3.org/TR/WCAG21/" class="govuk-link" aria-label="Web Content Accessibility Guidelines version 2.1 AA standard">Web Content Accessibility Guidelines version 2.1 AA standard</a> due to the non-compliances listed below.</p>
+
+    <h2 class="govuk-heading-m">Content that’s not within the scope of the accessibility regulations</h2>
+    <h3 class="govuk-heading-s">Third party content that’s under someone else’s control</h3>
+    <p>Pages and websites that are linked to from the shared parental leave and pay service may not be fully accessible. These include:</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>Pages on gov.uk and any PDFs or websites linked to from these pages e.g. <a href="https://www.gov.uk/maternity-pay-leave/eligibility" class="govuk-link" aria-label="https://www.gov.uk/maternity-pay-leave/eligibility">https://www.gov.uk/maternity-pay-leave/eligibility</a></li>
+      <li>Online PDF forms hosted by third parties e.g. <a href="https://public-online.hmrc.gov.uk/lc/content/xfaforms/profiles/forms.html?contentRoot=repository:///Applications/PersonalTax_iForms/1.0/SC3&template=SC3.xdp" class="govuk-link" aria-label="form SC3 ">form SC3</a></li>
+    </ul>
+
+
+    <h2 class="govuk-heading-m">How we tested this website</h2>
+    <p>This shared parental leave and pay website was tested by the Digital Accessibility Centre (DAC) in April 2020 and retested in May 2020.</p>
+    <p>The website was assessed against the <a href="https://www.w3.org/TR/WCAG21/" class="govuk-link" aria-label="Web Content Accessibility Guidelines version 2.1">Web Content Accessibility Guidelines version 2.1</a></p>
+    <p>The initial test set a baseline and the retest was used to validate responses to the test recommendations.</p>
+    <p>We also use automated accessibility testing as part of our development practices and resolve issues before new functionality is released. We use Pa11y with our quality assurance processes.</p>
+
+    <h2 class="govuk-heading-m">What we’re doing to improve accessibility</h2>
+    <p>This website is continually tested using accessibility software. Any new features which are introduced will also be tested internally.
+    <p>This statement was prepared on 1 June 2020. It was last updated on 2 June 2020.</p>
+
+  </div>
+</div>
+{% endblock %}
