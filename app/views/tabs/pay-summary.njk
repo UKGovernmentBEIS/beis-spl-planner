@@ -1,6 +1,4 @@
 {% from "table/macro.njk" import govukTable %}
-{% from "../components/primary-notice.njk" import primaryNotice %}
-{% from "../components/secondary-notice.njk" import secondaryNotice %}
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds-from-desktop">
@@ -50,66 +48,6 @@
         ]
       }) }}
     {% endfor %}
-
-    <h2 class="govuk-heading-m">
-      How to claim
-    </h2>
-
-    <h3 class="govuk-heading-s">
-      {{ "Statutory Maternity Pay" if data | isBirth else "Statutory Adoption Pay" }}
-    </h3>
-    {% if data | isBirth %}
-      <p>
-        To apply for <a href="https://www.gov.uk/maternity-pay-leave">Statutory Maternity Pay</a> tell your employer you want to stop work to have a baby and the day you want your Statutory Maternity Pay to start.
-        You must give them at least 28 days’ notice (in writing if they ask for it) and proof that you’re pregnant.
-      </p>
-    {% else %}
-      <p>
-        To apply for <a href="https://www.gov.uk/adoption-pay-leave">Statutory Adoption Pay</a> tell your employer you want to stop work to adopt a child and the day you want your Statutory Adoption Pay to start.
-        You must give them at least 28 days’ notice. They can ask for this in writing and for proof of the adoption.
-      </p>
-    {% endif %}
-    <p>
-      Your employer must confirm within 28 days how much Statutory {{ data | primaryLeaveType | capitalize }} Pay you’ll get and when it will start and stop.
-    </p>
-    <p>
-      If they decide you’re not eligible, they must give you form {{ "SMP1" if data | isBirth else "SAP1 "}} within 7 days of making their decision and explain why.
-    </p>
-
-    <h4 class="govuk-heading-s">
-      Statutory Paternity Pay
-    </h4>
-    <p>
-      Use <a href="https://public-online.hmrc.gov.uk/lc/content/xfaforms/profiles/forms.html?contentRoot=repository:///Applications/PersonalTax_iForms/1.0/SC3&template=SC3.xdp" target="_blank">form SC3</a>
-      to claim for Statutory Paternity Pay 15 weeks before your {{ "child’s match date" if data | isAdoption else "baby’s due date" }}.
-    </p>
-
-    <h4 class="govuk-heading-s">
-      Statutory Shared Parental Pay
-    </h4>
-    <p>
-      To claim Shared Parental Pay complete the shared parental leave and pay notice form for the relevant parent and submit it to their employer 8 weeks before you want to start receiving it.
-    </p>
-
-    {% set noticeDescription %}
-      <p>
-        This form has been prefilled with your chosen leave dates. If you prefer you can <a href="#">download a blank version</a>.
-      </p>
-    {% endset %}
-
-    {% set noticeDetails %}
-      <p>
-        This file may not be suitable for users of assistive technology. <a href="#">Request an accesible format</a>.
-      </p>
-    {% endset %}
-
-    {{ primaryNotice ({
-      data: data
-    }) }}
-
-    {{ secondaryNotice({
-      data: data
-    }) }}
   </div>
 </div>
 
