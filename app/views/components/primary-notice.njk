@@ -7,17 +7,17 @@
       {% if data | isBirth -%}
         SPL_Mother_Birth.docx
         {% set formName %}
-          Shared Parental Leave Forms (after Maternity Leave)
+          Mother Shared Parental Leave Forms (after Maternity Leave)
         {% endset %}
       {%- elif data | isAdoption -%}
         SPL_Primary_Adopter.docx
         {% set formName %}
-          Shared Parental Leave Forms (after Adoption Leave)
+          Primary adopter (parent eligible for adoption leave) Shared Parental Leave Forms
         {% endset %}
       {%- else -%}
         SPL_Parental_Order_Parent.docx
         {% set formName %}
-          Shared Parental Leave Forms (for parents getting a parent order for a child through surrogacy)
+          Parental Order Parent (parent eligible for adoption leave) Shared Parental Leave Forms (a child through surrogacy)
         {% endset %}
       {%- endif %}
     {% endset %}
@@ -47,7 +47,7 @@
       {%- else -%}
         Parental_Order_Parent_Entitlement_Curtailment.docx
         {% set formName %}
-          Curtailment of Adoption Entitlement Form (for parents getting a parent order for a child through surrogacy)
+          Curtailment of Adoption Entitlement Form (a child through surrogacy)
         {% endset %}
       {%- endif %}
     {% endset %}
