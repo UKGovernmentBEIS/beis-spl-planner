@@ -2,6 +2,8 @@
 {% from "tabs/macro.njk" import govukTabs %}
 {% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 {% from "components/summary-tab-footer.njk" import summaryTabFooter %}
+{% from "components/primary-notice.njk" import primaryNotice %}
+{% from "components/secondary-notice.njk" import secondaryNotice %}
 
 {% extends "layout.njk" %}
 {% block pageTitle -%}
@@ -87,6 +89,20 @@
               dates with your employers
             </li>
           </ul>
+
+          <h3 class="govuk-heading-m">
+            How to give notice and claim Shared Parental Leave and/or Pay
+          </h3>
+          <p class="govuk-body">
+            To claim Shared Parental Leave and/or Pay complete the form set below for the relevant parent and submit this to your employer 8 weeks before you want to start receiving it.
+          </p>
+          {{ primaryNotice ({
+            data: data
+          }) }}
+          {{ secondaryNotice({
+            data: data
+          }) }}
+
           {{ summaryTabFooter({
           shareLinkId: 'pay-summary-share-link'
           }) }}
