@@ -1,11 +1,13 @@
 const { describe, it } = require('mocha')
 const assert = require('chai').assert
+const _ = require('lodash')
 
 const blocks = require('../../../app/lib/blocks')
 const unfilledVisualPlannerJSON = require('../../data/unfilledVisualPlannerData')
 const unfilledQuestionPlannerJSON = require('../../data/unfilledQuestionPlannerData')
 const filledVisualPlannerJSON = require('../../data/filledVisualPlannerData')
 const filledQuestionPlannerJSON = require('../../data/filledQuestionPlannerData')
+const filledQBPLargeWeeksData = require('../../data/filledQBPLargeWeeksData.json')
 
 describe('Blocks', () => {
   describe('getBlocks', () => {
@@ -150,6 +152,133 @@ describe('Blocks', () => {
       const results = blocks.parseLeaveBlocks(data)
 
       assert.equal(JSON.stringify(results), JSON.stringify(expectedResults))
+    })
+  })
+
+  describe('parseLeaveBlocksIntoLeaveAndPay', () => {
+    it('should parse the question based planner leave blocks the same as visual planner', () => {
+      const expectedResults = {
+        'nature-of-parenthood': 'birth',
+        primary: {
+          'spl-eligible': 'yes',
+          'shpp-eligible': 'yes',
+          'salary-amount': '25000',
+          'salary-period': 'year',
+          leave: [
+            '0',
+            '1',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '10',
+            '11',
+            '12',
+            '13',
+            '14',
+            '15',
+            '16',
+            '17',
+            '18',
+            '19',
+            '20',
+            '21',
+            '23',
+            '24',
+            '25',
+            '26'
+          ],
+          pay: [
+            '0',
+            '1',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '10',
+            '11',
+            '12',
+            '13',
+            '14',
+            '15',
+            '16',
+            '17',
+            '18',
+            '19',
+            '20',
+            '21'
+          ]
+        },
+        secondary: {
+          'spl-eligible': 'yes',
+          'shpp-eligible': 'yes',
+          'salary-amount': '25000',
+          'salary-period': 'year',
+          leave: [
+            '0',
+            '1',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '10',
+            '11',
+            '12',
+            '13',
+            '14',
+            '15',
+            '16',
+            '17',
+            '18',
+            '19',
+            '20'
+          ],
+          pay: [
+            '0',
+            '1',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '10',
+            '11',
+            '12',
+            '13',
+            '14',
+            '15',
+            '16',
+            '17',
+            '18',
+            '19',
+            '20'
+          ]
+        },
+        'start-date-day': '1',
+        'start-date-month': '1',
+        'start-date-year': '2020',
+        'leave-blocks': '',
+        visualPlanner: false
+      }
+      expectedResults['leave-blocks'] = filledQBPLargeWeeksData['leave-blocks']
+
+      const data = _.cloneDeep(filledQBPLargeWeeksData)
+      const leaveBlock = _.cloneDeep(data['leave-blocks'])
+
+      blocks.parseLeaveBlocksIntoLeaveAndPay(data, leaveBlock)
+
+      assert.equal(JSON.stringify(data), JSON.stringify(expectedResults))
     })
   })
 })
