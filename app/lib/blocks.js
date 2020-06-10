@@ -119,10 +119,35 @@ function getPayBlocks (weeks) {
 function parseLeaveBlocksIntoLeaveAndPay (dataObject, leaveBlocksDataObject) {
   const leaveBlocks = parseLeaveBlocks(leaveBlocksDataObject)
   const leave = createArrayFromLeaveBlocks(leaveBlocks)
+  const pay = validateShppAndPrimaryInitialPayWeeks(leave)
   for (const parent in leave) {
     dataObject[parent].leave = leave[parent]
-    dataObject[parent].pay = leave[parent]
+    dataObject[parent].pay = pay[parent]
   }
+}
+
+function validateShppAndPrimaryInitialPayWeeks (leave) {
+  const pay = _.cloneDeep(leave)
+  const { primary, secondary } = pay
+  const maxLength = 39 + calculatePaternityLeaveWeeks(secondary)
+  while (!(primary.length + secondary.length <= maxLength)) {
+    if (primary[primary.length - 1] <= secondary[secondary.length - 1]) {
+      secondary.pop()
+    } else {
+      primary.pop()
+    }
+  }
+  return pay
+}
+
+function calculatePaternityLeaveWeeks (leave) {
+  let count = 0
+  for (let i = 0; i < 2; i++) {
+    if (+leave[i] === i) {
+      count++
+    }
+  }
+  return count
 }
 
 function getBlocks (data) {
