@@ -8,6 +8,7 @@ const unfilledQuestionPlannerJSON = require('../../data/unfilledQuestionPlannerD
 const filledVisualPlannerJSON = require('../../data/filledVisualPlannerData')
 const filledQuestionPlannerJSON = require('../../data/filledQuestionPlannerData')
 const filledQBPLargeWeeksData = require('../../data/filledQBPLargeWeeksData.json')
+const filledLeaveBlocks = require('../../data/filledLeaveBlocks.json')
 
 describe('Blocks', () => {
   describe('getBlocks', () => {
@@ -279,6 +280,22 @@ describe('Blocks', () => {
       blocks.parseLeaveBlocksIntoLeaveAndPay(data, leaveBlock)
 
       assert.equal(JSON.stringify(data), JSON.stringify(expectedResults))
+    })
+  })
+
+  describe('getRemainingLeaveAllowance', () => {
+    it('should calculate the amount of leave left', () => {
+      const result = blocks.getRemainingLeaveAllowance(filledLeaveBlocks)
+
+      assert.equal(result, 42)
+    })
+  })
+
+  describe('getRemainingPayAllowance', () => {
+    it('should calculate the amount of pay left', () => {
+      const result = blocks.getRemainingPayAllowance(filledLeaveBlocks)
+
+      assert.equal(result, 29)
     })
   })
 })

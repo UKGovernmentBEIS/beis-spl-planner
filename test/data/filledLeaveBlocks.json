@@ -1,0 +1,48 @@
+{
+  "primary": {
+    "initial": {
+      "start": "0",
+      "leave": "maternity",
+      "end": "1"
+    },
+    "spl": [
+      {
+        "leave": "shared",
+        "start": "3",
+        "end": "4"
+      },
+      {
+        "leave": "shared",
+        "start": "8",
+        "end": "9"
+      }
+    ]
+  },
+  "secondary": {
+    "is-taking-paternity-leave": "yes",
+    "initial": {
+      "start": "0",
+      "leave": "paternity",
+      "end": "1"
+    },
+    "spl": [
+      {
+        "leave": "shared",
+        "start": "3",
+        "end": "4"
+      },
+      {
+        "leave": "shared",
+        "start": "6",
+        "end": "7"
+      }
+    ]
+  },
+  "spl-block-planning-order": [
+    "primary",
+    "secondary",
+    "secondary",
+    "primary",
+    "done"
+  ]
+}
