@@ -1,8 +1,6 @@
 {% from "summary-list/macro.njk" import govukSummaryList %}
 {% from "inset-text/macro.njk" import govukInsetText %}
-{% from "warning-text/macro.njk" import govukWarningText %}
 {% from "../components/leave-block-summary.njk" import leaveBlockSummary %}
-{% from "../components/primary-notice.njk" import primaryNotice %}
 
 {% set primaryLeaveType = (data | primaryLeaveType) %}
 
@@ -11,7 +9,7 @@
     <h1 class="govuk-heading-l print-show">
     Leave summary
     </h1>
-    <p>This summary shows your leave weeks, when you need to notify your employer and how you can apply.</p>
+    <p>This summary shows your leave weeks and how you can apply to your employer.</p>
     <p>All start dates are on a Monday. You can choose to start on a different day when you notify your employers.</p>
 
     {{ govukSummaryList({
@@ -43,26 +41,6 @@
         explanation: "15 weeks before " + data | startDateName
       }
     }) }}
-
-    {% if leaveBlocks.primary.spl | length === 0 and leaveBlocks.secondary.spl | length > 0 %}
-      <h4 class="govuk-heading-s">
-        Ending your {{ primaryLeaveType | capitalize }} Leave or Pay
-      </h4>
-      <p>
-        You must end your {{ primaryLeaveType | capitalize }} Leave or pay to create Shared Parental Leave or Pay.
-        You can do this by returning to work or curtailing it (committing to end it before you return to work).
-      </p>
-      <p>
-        You must also confirm that you’re not taking shared parental leave and pay and consent to your partner taking it.
-      </p>
-      <p>
-        You can do all of this by submitting the {{ primaryLeaveType | capitalize }} Leave curtailment and Shared Parental Leave consent form
-        to your employer at least 8 weeks before your partner wants to start Shared Parental Leave.
-      </p>
-      {{ primaryNotice ({
-        data: data
-      }) }}
-    {% endif %}
 
     {% if leaveBlocks.primary.spl.length > 0 %}
       <h3 class="govuk-heading-m">
@@ -124,36 +102,6 @@
             }
           }) }}
         {% endfor %}
-
-        {% if leaveBlocks.primary.spl | length === 0 and leaveBlocks.secondary.spl | length > 0 %}
-          {% set formUrl %}
-            {% if data | isBirth -%}
-              Maternity_Entitlement_Curtailment.docx
-              {% set formName %}
-                Curtailment of Maternity Entitlement Form
-              {% endset %}
-            {%- elif data | isAdoption -%}
-              Adoption_Entitlement_Curtailment.docx
-              {% set formName %}
-                Curtailment of Adoption Entitlement Form
-              {% endset %}
-            {%- else -%}
-              Parental_Order_Parent_Entitlement_Curtailment.docx
-              {% set formName %}
-                Curtailment of Adoption Entitlement Form (for parents getting a parent order for a child through surrogacy)
-              {% endset %}
-            {%- endif %}
-          {% endset %}
-          {% set curtailmentWarningHtml %}
-            The {{ data | primaryName }} must end their {{ primaryLeaveType | capitalize }} Leave and Pay by returning to work or submitting a curtailment notice to allow their partner to take Shared Parental Leave or Pay.
-            {% set href = "/forms/" + formUrl %}
-            They can do so by submitting the <a href="{{ href }}">{{ formName }}</a>.
-          {% endset %}
-          {{ govukWarningText({
-            html: curtailmentWarningHtml,
-            iconFallBackText: "Warning"
-          }) }}
-        {% endif %}
       {% endif %}
     {% endif %}
 
