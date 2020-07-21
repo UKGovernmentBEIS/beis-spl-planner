@@ -1,12 +1,12 @@
 {% extends "./example.njk" %}
 
 {% block pageTitle -%}
-  {%- set bornOrPlaced = "placed" if exampleData | isAdoption else "born" -%}
-  {{ "Example of shared parental leave and pay plans" | pageTitle("Extending time as a family after the child is " + bornOrPlaced) }}
+  {%- set bornOrPlaced = "placement" if exampleData | isAdoption else "birth" -%}
+  {{ "Example of shared parental leave and pay plans" | pageTitle("Partner takes extended leave after " + bornOrPlaced) }}
 {%- endblock %}
 
 {% block exampleTitle %}
-  Extending time as a family after {{ "the child is placed" if isAdoption else "birth" }}
+  Partner takes extended leave after {{ "placement" if isAdoption else "birth" }}
 {% endblock %}
 
 {% block background %}

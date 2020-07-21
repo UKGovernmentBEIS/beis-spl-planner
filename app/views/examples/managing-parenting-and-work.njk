@@ -1,11 +1,12 @@
 {% extends "./example.njk" %}
 
 {% block pageTitle -%}
-  {{ "Example of shared parental leave and pay plans" | pageTitle("Managing parenting and work") }}
+{% set title %}Partner takes leave and {{ primaryName }} returns to work{% endset %}
+{{ "Example of shared parental leave and pay plans" | pageTitle(title) }}
 {%- endblock %}
 
 {% block exampleTitle %}
-  Managing parenting and work
+  Partner takes leave and {{ primaryName }} returns to work
 {% endblock %}
 
 {% block background %}
