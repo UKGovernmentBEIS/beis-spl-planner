@@ -60,16 +60,28 @@ module.exports = function (env) {
   }
 
   function shouldDisplayPrimaryLeaveAndPayForm (data) {
-    return parseWeeksFromData(data).hasPrimarySharedPayOrLeave()
+    if (data.visualPlanner) {
+      return parseWeeksFromData(data).hasPrimarySharedPayOrLeave()
+    } else {
+      return !!delve(data, ['leave-blocks', 'primary', 'spl'])
+    }
   }
 
   function shouldDisplayPrimaryCurtailmentForm (data) {
-    const weeks = parseWeeksFromData(data)
-    return !weeks.hasPrimarySharedPayOrLeave() && weeks.hasSecondarySharedPayOrLeave()
+    if (data.visualPlanner) {
+      const weeks = parseWeeksFromData(data)
+      return !weeks.hasPrimarySharedPayOrLeave() && weeks.hasSecondarySharedPayOrLeave()
+    } else {
+      return !delve(data, ['leave-blocks', 'primary', 'spl']) && !!delve(data, ['leave-blocks', 'secondary', 'spl'])
+    }
   }
 
   function shouldDisplaySecondaryLeaveAndPayForm (data) {
-    return parseWeeksFromData(data).hasSecondarySharedPayOrLeave()
+    if (data.visualPlanner) {
+      return parseWeeksFromData(data).hasSecondarySharedPayOrLeave()
+    } else {
+      return !!delve(data, ['leave-blocks', 'secondary', 'spl'])
+    }
   }
 
   function formTemplate (text, options) {
