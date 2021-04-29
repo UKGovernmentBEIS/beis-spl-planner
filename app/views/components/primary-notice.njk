@@ -21,17 +21,6 @@
         {% endset %}
       {%- endif %}
     {% endset %}
-    {{ fileDownload({
-      name: formName,
-      href: "/forms/" + formUrl,
-      attributes: {
-        ga_fileDownloaded: {
-            "data-ga-hit-type": "primary_notice_clicked",
-            "data-ga-field-event_category": "summary",
-            "data-ga-field-event_action": "primary_notice_clicked"
-        }
-      }
-    }) }}
   {% elif data | shouldDisplayPrimaryCurtailmentForm %}
     {% set formUrl %}
       {% if data | isBirth -%}
@@ -51,16 +40,6 @@
         {% endset %}
       {%- endif %}
     {% endset %}
-    {{ fileDownload({
-      name: formName,
-      href:"/forms/" + formUrl,
-      attributes: {
-        ga_fileDownloaded: {
-          "data-ga-hit-type": "primary_notice_clicked",
-          "data-ga-field-event_category": "summary",
-          "data-ga-field-event_action": "primary_notice_clicked"
-        }
-      }
-    }) }}
   {% endif %}
+  {{ formName }}
 {% endmacro %}

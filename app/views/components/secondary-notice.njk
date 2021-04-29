@@ -22,16 +22,6 @@
         {% endset %}
       {%- endif %}
     {% endset %}
-    {{ fileDownload({
-      name: formName,
-      href: "/forms/" + formUrl,
-      attributes: {
-        ga_fileDownloaded: {
-          "data-ga-hit-type": "secondary_notice_clicked",
-          "data-ga-field-event_category": "summary",
-          "data-ga-field-event_action": "secondary_notice_clicked"
-        }
-      }
-    }) }}
   {% endif %}
+  {{ formName }}
 {% endmacro %}

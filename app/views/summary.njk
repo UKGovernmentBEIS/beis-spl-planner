@@ -96,12 +96,21 @@
           <p class="govuk-body">
             To claim Shared Parental Leave and/or Pay complete the form set below for the relevant parent and submit this to your employer 8 weeks before you want to start receiving it.
           </p>
-          {{ primaryNotice ({
-            data: data
-          }) }}
-          {{ secondaryNotice({
-            data: data
-          }) }}
+          <ul class="govuk-list govuk-list--bullet">
+            <li>
+              {{ primaryNotice ({
+                data: data
+              }) }}
+            </li>
+            <li>
+              {{ secondaryNotice({
+                data: data
+              }) }}
+            </li>
+          </ul>
+          <p class="govuk-body">
+            <a href="https://www.acas.org.uk/shared-parental-leave-forms">The forms can be found here.</a>
+          </p>
 
           {{ summaryTabFooter({
           shareLinkId: 'pay-summary-share-link'
