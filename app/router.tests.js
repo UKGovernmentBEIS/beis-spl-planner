@@ -2,12 +2,14 @@ const supertest = require('supertest')
 const { describe, it } = require('mocha')
 
 const getApp = require('../server').getApp
+const paths = require('./paths')
 
 describe('GET /', () => {
-  it('should return 200 status', done => {
+  it('returns 302 status and redirects to the first question page', done => {
     supertest(getApp())
-      .get('/')
-      .expect(200)
+      .get(paths.getPath('root'))
+      .expect(302)
+      .expect('Location', paths.getPath('natureOfParenthood'))
       .end(done)
   })
 })

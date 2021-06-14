@@ -37,9 +37,6 @@ router.route(paths.getPath('root'))
       parseExternalQueryString(req)
     }
     req.session.timings.plannerStart = req.session.timings.plannerStart || Date.now()
-    res.render('index')
-  })
-  .post(function (req, res) {
     res.redirect(paths.getPath('natureOfParenthood'))
   })
 
