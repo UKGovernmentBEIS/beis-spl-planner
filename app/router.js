@@ -47,7 +47,7 @@ router.route(paths.getPath('natureOfParenthood'))
   })
   .post(function (req, res) {
     if (!validate.natureOfParenthood(req)) {
-      return res.redirect('back')
+      return res.redirect(req.path)
     }
     if (skip.typeOfAdoption(req)) {
       const parentName = dataUtils.parentNameForUrl(req.session.data, 'primary')
@@ -60,13 +60,13 @@ router.route(paths.getPath('natureOfParenthood'))
 router.route(paths.getPath('typeOfAdoption'))
   .get(function (req, res) {
     if (skip.typeOfAdoption(req)) {
-      return res.redirect('back')
+      return res.redirect('nature-of-parenthood')
     }
     res.render('type-of-adoption')
   })
   .post(function (req, res) {
     if (!validate.typeOfAdoption(req)) {
-      return res.redirect('back')
+      return res.redirect(req.path)
     }
     res.redirect(paths.getPath(`eligibility.primary-adopter.sharedParentalLeaveAndPay`))
   })
@@ -77,7 +77,7 @@ registerEligibilityRouteForPrimaryParents(router, 'sharedParentalLeaveAndPay', {
   },
   post: function (parentUrlPart, req, res) {
     if (!validate.primarySharedParentalLeaveAndPay(req)) {
-      return res.redirect('back')
+      return res.redirect(req.path)
     }
     if (skip.initialLeaveAndPay(req) && skip.maternityAllowance(req)) {
       res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
@@ -98,7 +98,7 @@ registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
   },
   post: function (parentUrlPart, req, res) {
     if (!validate.initialLeaveAndPay(req)) {
-      return res.redirect('back')
+      return res.redirect(req.path)
     }
     if (dataUtils.isPrimaryIneligible(req.session.data)) {
       res.redirect(paths.getPath('notEligible'))
@@ -119,7 +119,7 @@ registerEligibilityRouteForBirthMother(router, 'maternityAllowance', {
   },
   post: function (_, req, res) {
     if (!validate.maternityAllowance(req)) {
-      return res.redirect('back')
+      return res.redirect(req.path)
     } else if (dataUtils.isPrimaryIneligible(req.session.data)) {
       res.redirect(paths.getPath('notEligible'))
     } else {
@@ -134,7 +134,7 @@ router.route(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
   })
   .post(function (req, res) {
     if (!validate.secondarySharedParentalLeaveAndPay(req)) {
-      return res.redirect('back')
+      return res.redirect(req.path)
     }
     if (bothParentsAreIneligible(req.session.data)) {
       res.redirect(paths.getPath('notEligible'))
@@ -154,7 +154,7 @@ router.route(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
   })
   .post(function (req, res) {
     if (!validate.paternityLeaveAndPay(req)) {
-      return res.redirect('back')
+      return res.redirect(req.path)
     }
     res.redirect(paths.getPath('startDate'))
   })
@@ -170,7 +170,7 @@ router.route(paths.getPath('startDate'))
   })
   .post(function (req, res) {
     if (!validate.startDate(req)) {
-      return res.redirect('back')
+      return res.redirect(req.path)
     }
     res.redirect(paths.getPath('parentSalaries'))
   })
@@ -181,7 +181,7 @@ router.route(paths.getPath('parentSalaries'))
   })
   .post(function (req, res) {
     if (!validate.parentSalaries(req)) {
-      return res.redirect('back')
+      return res.redirect(req.path)
     }
     res.redirect(paths.getPath('planner'))
   })
@@ -232,7 +232,7 @@ router.route(paths.getPath('planner.paternity-leave'))
   })
   .post(function (req, res) {
     if (!validate.paternityLeaveQuestion(req)) {
-      return res.redirect('back')
+      return res.redirect(req.path)
     }
     const isTakingPaternityLeave = delve(req.session.data, 'leave-blocks.secondary.is-taking-paternity-leave')
     if (dataUtils.isYes(isTakingPaternityLeave)) {
@@ -273,7 +273,7 @@ router.route(paths.getPath('planner.shared-parental-leave'))
   })
   .post(function (req, res) {
     if (!validate.splQuestions(req)) {
-      return res.redirect('back')
+      return res.redirect(req.path)
     }
     const { data } = req.session
     const next = data['leave-blocks']['is-taking-spl-or-done']
