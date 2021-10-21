@@ -5,6 +5,11 @@
 }
 
 @include govuk-media-query($media-type: print) {
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+  }
+
   html {
     background-color: govuk-colour("white") !important;
   }
