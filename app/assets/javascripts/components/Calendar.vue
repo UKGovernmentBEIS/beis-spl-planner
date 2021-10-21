@@ -210,7 +210,7 @@
         if (pay && pay[0] === '£') {
           return pay
         } else if (pay) {
-          return 'Paid'
+          return pay.text
         } else {
           return 'Unpaid'
         }
