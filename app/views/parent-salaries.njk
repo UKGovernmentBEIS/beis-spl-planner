@@ -5,6 +5,7 @@
 {% from "./components/salary-input.njk" import salaryInput %}
 {% from "button/macro.njk" import govukButton %}
 {% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
+{% from "../views/components/get-help.njk" import getHelp %}
 
 {% extends "layout.njk" %}
 
@@ -117,6 +118,8 @@
       >
         Skip this question
       </a>
+
+      {{ getHelp() }}
     </div>
   </div>
 
