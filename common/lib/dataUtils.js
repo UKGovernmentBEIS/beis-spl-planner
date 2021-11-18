@@ -119,6 +119,14 @@ function isPrimaryIneligible (data) {
   }
 }
 
+function isLeaveTypeOther (leaveType) {
+  return leaveType === 'adoption' || leaveType === 'maternity'
+}
+
+function isLeaveTypeShared (leaveType) {
+  return leaveType === 'shared'
+}
+
 module.exports = {
   natureOfParenthood,
   typeOfAdoption,
@@ -138,5 +146,7 @@ module.exports = {
   isYes,
   isNo,
   splBlockPlanningOrder,
-  isPrimaryIneligible
+  isPrimaryIneligible,
+  isLeaveTypeOther,
+  isLeaveTypeShared
 }

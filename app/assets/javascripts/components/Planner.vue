@@ -44,7 +44,7 @@
   const PrintYourPlan = require('./PrintYourPlan.vue')
   const ShareLink = require('./ShareLink.vue')
   const Weeks = require('../../../lib/weeks')
-  const { primaryName, isBirth } = require('../../../../common/lib/dataUtils')
+  const { primaryName, isBirth, isLeaveTypeOther, isLeaveTypeShared } = require('../../../../common/lib/dataUtils')
 
   module.exports = {
     components: {
@@ -76,7 +76,13 @@
       }
     },
     methods: {
-      updateWeek: function(parent, property, week, checked) {
+      updateWeek: function(parent, property, week, checked, leaveType) {
+        if (isLeaveTypeOther(leaveType) && week < this[parent]['firstSplWeek'] && week > 0) {
+          this[parent]['firstSplWeek'] = week
+        } else if (isLeaveTypeShared(leaveType) && week === this[parent]['firstSplWeek']) {
+          this[parent]['firstSplWeek'] = Number.MAX_SAFE_INTEGER
+        }
+
         const weeks = this[parent][property + 'Weeks']
         if (checked && !weeks.includes(week)) {
           weeks.push(week)

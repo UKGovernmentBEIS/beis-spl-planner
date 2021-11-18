@@ -44,11 +44,11 @@ function init (data, interactive) {
   })
 
   const minimumWeek = dataUtils.earliestPrimaryLeaveWeek(data)
-  function updateLeaveOrPay (parent, property, week, value) {
+  function updateLeaveOrPay (parent, property, week, leaveType) {
     if (property === 'leave') {
-      updateLeave(parent, week, value, minimumWeek, eligibility)
+      updateLeave(parent, week, leaveType, minimumWeek, eligibility)
     } else if (property === 'pay') {
-      updatePay(parent, week, value, minimumWeek, eligibility)
+      updatePay(parent, week, leaveType, minimumWeek, eligibility)
     }
   }
 
@@ -59,7 +59,7 @@ function init (data, interactive) {
         const parent = this.getAttribute('data-parent')
         const property = this.getAttribute('data-property')
         const week = parseInt(this.value)
-        planner.updateWeek(parent, property, week, this.checked)
+        planner.updateWeek(parent, property, week, this.checked, this.leavetype)
       })
     }
   }
@@ -75,30 +75,29 @@ function init (data, interactive) {
   }
 }
 
-function updateLeave (parent, week, value, minimumWeek, eligibility) {
+function updateLeave (parent, week, leaveType, minimumWeek, eligibility) {
   // Maternity / adoption leave taken before the 0th week must be in a continuous block.
   let weeksToUpdate
   const hasNoSharedEligibility = !eligibility[parent].spl && !eligibility[parent].shpp
 
   if (week < 0) {
-    weeksToUpdate = getLeaveWeeksToUpdateWhenBeforeZeroWeek(week, value, minimumWeek)
+    weeksToUpdate = getLeaveWeeksToUpdateWhenBeforeZeroWeek(week, leaveType, minimumWeek)
   } else if (hasNoSharedEligibility) {
-    weeksToUpdate = getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity(week, parent, minimumWeek, value)
+    weeksToUpdate = getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity(week, parent, minimumWeek, leaveType)
   } else {
     weeksToUpdate = [week]
   }
-
   for (const weekToUpdate of weeksToUpdate) {
-    const changed = toggleLeave(parent, weekToUpdate, value)
+    const changed = toggleLeave(parent, weekToUpdate, leaveType)
     if (changed) {
       // Pay should always turn on or off with leave.
-      togglePay(parent, weekToUpdate, value)
+      togglePay(parent, weekToUpdate, leaveType)
     }
   }
 }
 
-function getLeaveWeeksToUpdateWhenBeforeZeroWeek (week, value, minimumWeek) {
-  if (value) {
+function getLeaveWeeksToUpdateWhenBeforeZeroWeek (week, leaveType, minimumWeek) {
+  if (leaveType) {
     // Add leave from selected week to earliestSelectedWeek week.
     return _.range(week, 0)
   } else {
@@ -107,21 +106,21 @@ function getLeaveWeeksToUpdateWhenBeforeZeroWeek (week, value, minimumWeek) {
   }
 }
 
-function getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity (week, parent, minimumWeek, value) {
+function getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity (week, parent, minimumWeek, leaveType) {
   const checkboxes = document.querySelectorAll(`input[type=checkbox][name="${parent}[leave]"]:checked`)
   const earliestSelectedCheckbox = _.first(checkboxes)
   const earliestSelectedWeek = earliestSelectedCheckbox && earliestSelectedCheckbox.value < week ? parseInt(earliestSelectedCheckbox.value) : week
   const latestSelectedCheckbox = _.last(checkboxes)
   const latestSelectedWeek = latestSelectedCheckbox && latestSelectedCheckbox.value > week ? parseInt(latestSelectedCheckbox.value) : week
   if (week === earliestSelectedWeek) {
-    if (week < latestSelectedWeek && value) {
+    if (week < latestSelectedWeek && leaveType) {
       // if later leave exists fill in all cells up to later leave
       return _.range(week, latestSelectedWeek + 1)
     } else {
       // only toggle selected week if clicking on first week
       return [week]
     }
-  } else if (value) {
+  } else if (leaveType) {
     // add leave from earliestSelectedWeek to selected week
     return _.range(earliestSelectedWeek, latestSelectedWeek + 1)
   } else {
@@ -205,20 +204,22 @@ function toggleLeave (parent, week, value) {
   return toggleCheckbox(parent, 'leave', week, value)
 }
 
-function togglePay (parent, week, value) {
-  if (value && !getCheckbox(parent, 'leave', week).checked) {
+function togglePay (parent, week, leaveType) {
+  if (leaveType && !getCheckbox(parent, 'leave', week).checked) {
     // Cannot have pay without leave.
     return false
   }
-  return toggleCheckbox(parent, 'pay', week, value)
+  return toggleCheckbox(parent, 'pay', week, leaveType)
 }
 
-function toggleCheckbox (parent, property, week, value) {
+function toggleCheckbox (parent, property, week, leaveType) {
+  const checked = isChecked(leaveType, week)
   const checkbox = getCheckbox(parent, property, week)
-  if (!checkbox || checkbox.disabled || checkbox.checked === value) {
+  if (checkbox.disabled) {
     return false
   }
-  checkbox.checked = value
+  checkbox.checked = checked
+  checkbox.leavetype = leaveType
   const changeEvent = new Event('change', { cancelable: true })
   checkbox.dispatchEvent(changeEvent)
   return true
@@ -227,6 +228,10 @@ function toggleCheckbox (parent, property, week, value) {
 function getCheckbox (parent, property, week) {
   const query = `input[type="checkbox"][name="${parent}[${property}]"][value="${week}"]`
   return document.querySelector(query)
+}
+
+function isChecked (leaveType, week) {
+  return week > 0 ? leaveType == null || dataUtils.isLeaveTypeOther(leaveType) : leaveType == null
 }
 
 function patchStickyStylingOnInternetExplorer () {
