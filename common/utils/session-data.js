@@ -25,6 +25,9 @@ module.exports = function (req, res, next) {
   } else if (!req.session.data) {
     req.session.data = {}
   }
+
+  req.session.data.backPathForHelpPages = paths.isWorkFlowPage(req.path) ? req.path : req.session.data.backPathForHelpPages
+
   res.locals.data = req.session.data
   res.locals.withData = function (path) {
     const queryData = { 'data-in-query': true, ...req.session.data }

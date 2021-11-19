@@ -41,15 +41,18 @@ class Paths {
   constructor () {
     this.pathObjects = {
       root: {
-        url: '/'
+        url: '/',
+        workFlowPage: true,
       },
       natureOfParenthood: {
         url: '/nature-of-parenthood',
+        workFlowPage: true,
         workflowParentPath: '/',
         validator: validate.natureOfParenthood
       },
       typeOfAdoption: {
         url: '/type-of-adoption',
+        workFlowPage: true,
         workflowParentPath: '/nature-of-parenthood',
         validator: validate.typeOfAdoption
       },
@@ -57,16 +60,19 @@ class Paths {
         mother: {
           sharedParentalLeaveAndPay: {
             url: '/eligibility/mother/shared-parental-leave-and-pay',
+            workFlowPage: true,
             workflowParentPath: '/nature-of-parenthood',
             validator: validate.primarySharedParentalLeaveAndPay
           },
           initialLeaveAndPay: {
             url: '/eligibility/mother/initial-leave-and-pay',
+            workFlowPage: true,
             workflowParentPath: '/eligibility/mother/shared-parental-leave-and-pay',
             validator: validate.initialLeaveAndPay
           },
           maternityAllowance: {
             url: '/eligibility/mother/maternity-allowance',
+            workFlowPage: true,
             workflowParentPath: '/eligibility/mother/initial-leave-and-pay',
             validator: validate.maternityAllowance
           }
@@ -74,11 +80,13 @@ class Paths {
         'primary-adopter': {
           sharedParentalLeaveAndPay: {
             url: '/eligibility/primary-adopter/shared-parental-leave-and-pay',
+            workFlowPage: true,
             workflowParentPath: '/type-of-adoption',
             validator: validate.primarySharedParentalLeaveAndPay
           },
           initialLeaveAndPay: {
             url: '/eligibility/primary-adopter/initial-leave-and-pay',
+            workFlowPage: true,
             workflowParentPath: '/eligibility/primary-adopter/shared-parental-leave-and-pay',
             validator: validate.initialLeaveAndPay
           }
@@ -86,11 +94,13 @@ class Paths {
         'parental-order-parent': {
           sharedParentalLeaveAndPay: {
             url: '/eligibility/parental-order-parent/shared-parental-leave-and-pay',
+            workFlowPage: true,
             workflowParentPath: '/nature-of-parenthood',
             validator: validate.primarySharedParentalLeaveAndPay
           },
           initialLeaveAndPay: {
             url: '/eligibility/parental-order-parent/initial-leave-and-pay',
+            workFlowPage: true,
             workflowParentPath: '/eligibility/parental-order-parent/shared-parental-leave-and-pay',
             validator: validate.initialLeaveAndPay
           }
@@ -98,6 +108,7 @@ class Paths {
         partner: {
           sharedParentalLeaveAndPay: {
             url: '/eligibility/partner/shared-parental-leave-and-pay',
+            workFlowPage: true,
             workflowParentPath: data => {
               if (dataUtils.isBirth(data)) {
                 return '/eligibility/mother/maternity-allowance'
@@ -111,6 +122,7 @@ class Paths {
           },
           paternityLeaveAndPay: {
             url: '/eligibility/partner/paternity-leave-and-pay',
+            workFlowPage: true,
             workflowParentPath: '/eligibility/partner/shared-parental-leave-and-pay',
             validator: validate.paternityLeaveAndPay
           }
@@ -118,6 +130,7 @@ class Paths {
       },
       notEligible: {
         url: '/not-eligible',
+        workFlowPage: true,
         workflowParentPath: data => {
           if (dataUtils.isPrimaryIneligible(data)) {
             if (dataUtils.isBirth(data)) {
@@ -134,40 +147,48 @@ class Paths {
       },
       startDate: {
         url: '/start-date',
+        workFlowPage: true,
         workflowParentPath: '/eligibility/partner/paternity-leave-and-pay',
         validator: validate.startDate
       },
       parentSalaries: {
         url: '/parent-salaries',
+        workFlowPage: true,
         workflowParentPath: '/start-date',
         validator: validate.parentSalaries
       },
       planner: {
         url: '/planner',
+        workFlowPage: true,
         workflowParentPath: '/parent-salaries',
         validator: validate.planner,
         'maternity-leave': {
           start: {
             url: '/planner/maternity-leave/start',
+            workFlowPage: true,
             workflowParentPath: '/planner'
           },
           end: {
             url: '/planner/maternity-leave/end',
+            workFlowPage: true,
             workflowParentPath: '/planner/maternity-leave/start'
           }
         },
         'adoption-leave': {
           start: {
             url: '/planner/adoption-leave/start',
+            workFlowPage: true,
             workflowParentPath: '/planner'
           },
           end: {
             url: '/planner/adoption-leave/end',
+            workFlowPage: true,
             workflowParentPath: '/planner/adoption-leave/start'
           }
         },
         'paternity-leave': {
           url: '/planner/paternity-leave',
+          workFlowPage: true,
           workflowParentPath: data => {
             if (dataUtils.isBirth(data)) {
               return '/planner/maternity-leave/end'
@@ -177,15 +198,18 @@ class Paths {
           },
           start: {
             url: '/planner/paternity-leave/start',
+            workFlowPage: true,
             workflowParentPath: '/planner/paternity-leave'
           },
           end: {
             url: '/planner/paternity-leave/end',
+            workFlowPage: true,
             workflowParentPath: '/planner/paternity-leave/start'
           }
         },
         'shared-parental-leave': {
           url: '/planner/shared-parental-leave',
+          workFlowPage: true,
           workflowParentPath: (data, isForValidator) => {
             if (isForValidator) {
               // Prevent circular reference when validating page history.
@@ -196,16 +220,19 @@ class Paths {
           },
           start: {
             url: '/planner/shared-parental-leave/start',
+            workFlowPage: true,
             workflowParentPath: '/planner/shared-parental-leave'
           },
           end: {
             url: '/planner/shared-parental-leave/end',
+            workFlowPage: true,
             workflowParentPath: '/planner/shared-parental-leave/start'
           }
         }
       },
       summary: {
         url: '/summary',
+        workFlowPage: true,
         workflowParentPath: data => {
           if (!data['leave-blocks']) {
             return '/planner'
@@ -223,18 +250,23 @@ class Paths {
         }
       },
       feedback: {
+        workFlowPage: false,
         url: '/feedback'
       },
       feedbackConfirmation: {
+        workFlowPage: false,
         url: '/feedback/confirmation'
       },
       cookies: {
+        workFlowPage: false,
         url: '/cookies'
       },
       'contact-us': {
+        workFlowPage: false,
         url: '/contact-us'
       },
       accessibilityStatement: {
+        workFlowPage: false,
         url: '/accessibility-statement'
       }
     }
@@ -266,6 +298,11 @@ class Paths {
     const pathObject = this.getPathObjectFromUrl(url)
     const workflowParentPath = delve(pathObject, 'workflowParentPath', undefined)
     return _.isFunction(workflowParentPath) ? workflowParentPath(data, isForValidator) : workflowParentPath
+  }
+
+  isWorkFlowPage (url) {
+    const pathObject = this.getPathObjectFromUrl(url)
+    return delve(pathObject, 'workFlowPage', false)
   }
 
   getPath (location) {
