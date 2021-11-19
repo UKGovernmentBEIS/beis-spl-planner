@@ -88,16 +88,16 @@ function updateLeave (parent, week, leaveType, minimumWeek, eligibility) {
     weeksToUpdate = [week]
   }
   for (const weekToUpdate of weeksToUpdate) {
-    const changed = toggleLeave(parent, weekToUpdate, leaveType)
+    const changed = toggleLeave(parent, weekToUpdate, leaveType, !hasNoSharedEligibility)
     if (changed) {
       // Pay should always turn on or off with leave.
-      togglePay(parent, weekToUpdate, leaveType)
+      togglePay(parent, weekToUpdate, leaveType, !hasNoSharedEligibility)
     }
   }
 }
 
 function getLeaveWeeksToUpdateWhenBeforeZeroWeek (week, leaveType, minimumWeek) {
-  if (leaveType) {
+  if (!leaveType) {
     // Add leave from selected week to earliestSelectedWeek week.
     return _.range(week, 0)
   } else {
@@ -113,14 +113,14 @@ function getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity (week, parent, min
   const latestSelectedCheckbox = _.last(checkboxes)
   const latestSelectedWeek = latestSelectedCheckbox && latestSelectedCheckbox.value > week ? parseInt(latestSelectedCheckbox.value) : week
   if (week === earliestSelectedWeek) {
-    if (week < latestSelectedWeek && leaveType) {
+    if (week < latestSelectedWeek && !leaveType) {
       // if later leave exists fill in all cells up to later leave
       return _.range(week, latestSelectedWeek + 1)
     } else {
       // only toggle selected week if clicking on first week
       return [week]
     }
-  } else if (leaveType) {
+  } else if (!leaveType) {
     // add leave from earliestSelectedWeek to selected week
     return _.range(earliestSelectedWeek, latestSelectedWeek + 1)
   } else {
@@ -130,8 +130,8 @@ function getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity (week, parent, min
   }
 }
 
-function updatePay (parent, week, value, minimumWeek, eligibility) {
-  if (value && !getCheckbox(parent, 'leave', week).checked) {
+function updatePay (parent, week, leaveType, minimumWeek, eligibility) {
+  if (!leaveType && !getCheckbox(parent, 'leave', week).checked) {
     // Pay cannot be added without leave.
     updateLeave(parent, week, true, minimumWeek, eligibility)
     return
@@ -140,25 +140,25 @@ function updatePay (parent, week, value, minimumWeek, eligibility) {
   let weeksToUpdate
   const lastCompulsoryWeek = 1
   if (parent === 'secondary') {
-    weeksToUpdate = getSecondaryPayWeeksToUpdate(week, value, eligibility)
+    weeksToUpdate = getSecondaryPayWeeksToUpdate(week, leaveType, eligibility)
   } else if (week < lastCompulsoryWeek) {
-    weeksToUpdate = getPrimaryPayWeeksToUpdateBeforeCompulsoryWeeks(week, value, minimumWeek, eligibility, lastCompulsoryWeek)
+    weeksToUpdate = getPrimaryPayWeeksToUpdateBeforeCompulsoryWeeks(week, leaveType, minimumWeek, eligibility, lastCompulsoryWeek)
   } else {
-    weeksToUpdate = getPrimaryPayWeeksToUpdateAfterCompulsoryWeeks(week, value, minimumWeek, eligibility)
+    weeksToUpdate = getPrimaryPayWeeksToUpdateAfterCompulsoryWeeks(week, leaveType, minimumWeek, eligibility)
   }
 
   for (const weekToUpdate of weeksToUpdate) {
-    togglePay(parent, weekToUpdate, value)
+    togglePay(parent, weekToUpdate, leaveType)
   }
 }
 
-function getSecondaryPayWeeksToUpdate (week, value, eligibility) {
+function getSecondaryPayWeeksToUpdate (week, leaveType, eligibility) {
   const lastPossiblePaternityLeave = 7
   const hasNoSharedEligibility = !eligibility.secondary.shpp && !eligibility.secondary.spl
   const earliestSelectedCheckbox = document.querySelector(`input[type=checkbox][name="secondary[leave]"]:checked`)
   const earliestSelectedWeek = earliestSelectedCheckbox && earliestSelectedCheckbox.value < week ? parseInt(earliestSelectedCheckbox.value) : week
   if (hasNoSharedEligibility) {
-    if (value) {
+    if (!leaveType) {
       // add pay to all cells before selected
       return _.range(earliestSelectedWeek, week + 1)
     } else if (week === earliestSelectedWeek) {
@@ -173,10 +173,10 @@ function getSecondaryPayWeeksToUpdate (week, value, eligibility) {
   }
 }
 
-function getPrimaryPayWeeksToUpdateBeforeCompulsoryWeeks (week, value, minimumWeek, eligibility, lastCompulsoryWeek) {
+function getPrimaryPayWeeksToUpdateBeforeCompulsoryWeeks (week, leaveType, minimumWeek, eligibility, lastCompulsoryWeek) {
   // Maternity / adoption pay must be taken in a continuous block from the start
   // of the maternity / adoption leave until the pay is curtailed.
-  if (value) {
+  if (!leaveType) {
     // Add pay from earliest week.
     return _.range(minimumWeek, week + 1)
   } else {
@@ -186,12 +186,12 @@ function getPrimaryPayWeeksToUpdateBeforeCompulsoryWeeks (week, value, minimumWe
   }
 }
 
-function getPrimaryPayWeeksToUpdateAfterCompulsoryWeeks (week, value, minimumWeek, eligibility) {
+function getPrimaryPayWeeksToUpdateAfterCompulsoryWeeks (week, leaveType, minimumWeek, eligibility) {
   // After the end of compulsory leave, it is valid for non-continuous pay to be
   // taken as Statutory Shared Parental Pay.
   if (eligibility.primary.shpp) {
     return [week]
-  } else if (value) {
+  } else if (!leaveType) {
     // Add pay from earliest week.
     return _.range(minimumWeek, week + 1)
   } else {
@@ -200,20 +200,20 @@ function getPrimaryPayWeeksToUpdateAfterCompulsoryWeeks (week, value, minimumWee
   }
 }
 
-function toggleLeave (parent, week, value) {
-  return toggleCheckbox(parent, 'leave', week, value)
+function toggleLeave (parent, week, leaveType, isEligible) {
+  return toggleCheckbox(parent, 'leave', week, leaveType, isEligible)
 }
 
-function togglePay (parent, week, leaveType) {
-  if (leaveType && !getCheckbox(parent, 'leave', week).checked) {
+function togglePay (parent, week, leaveType, isEligible) {
+  if (!leaveType && !getCheckbox(parent, 'leave', week).checked) {
     // Cannot have pay without leave.
     return false
   }
-  return toggleCheckbox(parent, 'pay', week, leaveType)
+  return toggleCheckbox(parent, 'pay', week, leaveType, isEligible)
 }
 
-function toggleCheckbox (parent, property, week, leaveType) {
-  const checked = isChecked(leaveType, week)
+function toggleCheckbox (parent, property, week, leaveType, isEligible) {
+  const checked = isChecked(leaveType, week, isEligible, parent)
   const checkbox = getCheckbox(parent, property, week)
   if (checkbox.disabled) {
     return false
@@ -230,8 +230,8 @@ function getCheckbox (parent, property, week) {
   return document.querySelector(query)
 }
 
-function isChecked (leaveType, week) {
-  return week > 0 ? leaveType == null || dataUtils.isLeaveTypeOther(leaveType) : leaveType == null
+function isChecked (leaveType, week, isEligible, parent) {
+  return parent === 'primary' && isEligible && week > 0 ? !leaveType || dataUtils.isLeaveTypeOther(leaveType) : !leaveType
 }
 
 function patchStickyStylingOnInternetExplorer () {

@@ -119,6 +119,14 @@ function isPrimaryIneligible (data) {
   }
 }
 
+function shouldSetNewFirstSplWeek (checked, parent, leaveType, newWeek, previousWeek) {
+  return checked && parent === 'primary' && isLeaveTypeOther(leaveType) && newWeek < previousWeek && newWeek > 0
+}
+
+function shouldResetFirstSplWeek (parent, leaveType, newWeek, previousWeek) {
+  return parent === 'primary' && isLeaveTypeShared(leaveType) && newWeek === previousWeek
+}
+
 function isLeaveTypeOther (leaveType) {
   return leaveType === 'adoption' || leaveType === 'maternity'
 }
@@ -147,6 +155,8 @@ module.exports = {
   isNo,
   splBlockPlanningOrder,
   isPrimaryIneligible,
+  isLeaveTypeShared,
   isLeaveTypeOther,
-  isLeaveTypeShared
+  shouldSetNewFirstSplWeek,
+  shouldResetFirstSplWeek
 }
