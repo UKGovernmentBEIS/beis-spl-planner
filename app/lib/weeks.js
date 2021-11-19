@@ -32,7 +32,8 @@ class Weeks {
         if (!primarySplHasStarted) {
           const startSplBecauseOfBreak = primaryLeaveTracker.initialBlockEnded
           const startSplBecauseOfPayAfterCurtailment = hasCurtailedPrimaryPay && weekLeaveAndPay.primary.pay
-          primarySplHasStarted = startSplBecauseOfBreak || startSplBecauseOfPayAfterCurtailment
+          const startSplBecauseOfUserSelect = this.primary.firstSplWeek <= i
+          primarySplHasStarted = startSplBecauseOfBreak || startSplBecauseOfPayAfterCurtailment || startSplBecauseOfUserSelect
         }
         dset(week.primary, 'leave.text', !primarySplHasStarted ? this.primaryLeaveType : 'shared')
         if (weekLeaveAndPay.primary.pay) {

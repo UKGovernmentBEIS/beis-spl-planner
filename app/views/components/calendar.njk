@@ -43,6 +43,7 @@
               <div class="govuk-checkboxes__item">
                 <input class="govuk-checkboxes__input" id="{{ leaveId }}" name="{{ leaveName }}" type="checkbox" value="{{ i }}"
                   data-parent="{{ parent }}" data-property="leave"
+                  {{ 'leave-type' }}
                   {{ 'checked' if (data | isWeekChecked(parent, 'leave', i)) }}
                   {{ 'disabled' if (compulsoryLeave or outOfRange) }}>
                 {% if compulsoryLeave %}

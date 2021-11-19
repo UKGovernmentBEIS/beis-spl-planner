@@ -242,13 +242,13 @@
           this.hideFocus = false
         }
       },
-      updateCell: function (week, parent, property, value) {
+      updateCell: function (week, parent, property, leaveType) {
         // Explicitly check for false to avoid problems with empty leave object.
         if (week[parent].leave.eligible === false) {
           // When not eligible for leave, clicking in leave or pay toggles both.
-          this.updateLeaveOrPay(parent, 'leave', week.number, value)
+          this.updateLeaveOrPay(parent, 'leave', week.number, leaveType)
         } else {
-          this.updateLeaveOrPay(parent, property, week.number, value)
+          this.updateLeaveOrPay(parent, property, week.number, leaveType)
         }
       },
       onCellMouseDown: function (event, parent, property, week) {
@@ -258,12 +258,13 @@
         }
         this.isDragging = true
         this.lastClickedCell = event.currentTarget
-        const value = !week[parent][property].text
         this.onDrag = function (week) {
           if (!this.cellIsClickable(week, parent, property) || this.isDisabledCell(week, parent)) {
             return
           }
-          this.updateCell(week, parent, property, value)
+
+          const leaveType = week[parent][property].text
+          this.updateCell(week, parent, property, leaveType)
         }
         // Perform drag action on initial cell.
         this.onRowMouseEnter(week)
@@ -288,7 +289,8 @@
         if (this.hideFocus) {
           this.hideFocus = false
         } else if (this.interactive && this.cellIsClickable(week, parent, property)) {
-          this.updateCell(week, parent, property, !week[parent][property].text)
+          const leaveType = week[parent][property].text
+          this.updateCell(week, parent, property, leaveType)
         }
       },
       focusCell: function (row, column) {

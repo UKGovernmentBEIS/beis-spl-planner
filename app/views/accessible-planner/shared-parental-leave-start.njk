@@ -44,12 +44,7 @@
 {% endif %}
 
 
-{% if parent === 'primary' and endOfLastBlock === endOfInitialLeave %}
-  {% set startWeekOption = endOfLastBlock + 2 %}
-{% else %}
-  {% set startWeekOption = endOfLastBlock + 1 %}
-{% endif %}
-
+{% set startWeekOption = endOfLastBlock + 1 %}
 {% set options = range(startWeekOption, 52) %}
 
 {% macro optionText(weekNumber, index) %}

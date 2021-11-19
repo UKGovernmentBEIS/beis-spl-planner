@@ -44,7 +44,7 @@
   const PrintYourPlan = require('./PrintYourPlan.vue')
   const ShareLink = require('./ShareLink.vue')
   const Weeks = require('../../../lib/weeks')
-  const { primaryName, isBirth } = require('../../../../common/lib/dataUtils')
+  const { primaryName, isBirth, shouldSetNewFirstSplWeek, shouldResetFirstSplWeek } = require('../../../../common/lib/dataUtils')
 
   module.exports = {
     components: {
@@ -76,7 +76,9 @@
       }
     },
     methods: {
-      updateWeek: function(parent, property, week, checked) {
+      updateWeek: function(parent, property, week, checked, leaveType) {
+        this.updateFirstSplWeek(parent, week, checked, leaveType)
+
         const weeks = this[parent][property + 'Weeks']
         if (checked && !weeks.includes(week)) {
           weeks.push(week)
@@ -84,6 +86,17 @@
           const index = weeks.indexOf(week)
           weeks.splice(index, 1)
         }
+      },
+      updateFirstSplWeek: function (parent, selectedWeek, checked, leaveType) {
+        const previousWeek = this.primary.firstSplWeek
+        if (shouldSetNewFirstSplWeek(checked, parent, leaveType, selectedWeek, previousWeek)) {
+          this.primary.firstSplWeek = selectedWeek
+        } else if (shouldResetFirstSplWeek(parent, leaveType, selectedWeek, previousWeek)) {
+          this.resetFirstSplWeek()
+        }
+      },
+      resetFirstSplWeek: function() {
+        this.primary.firstSplWeek = Number.MAX_SAFE_INTEGER
       },
       resetIfChanged: function () {
         const warning = "This will overwrite any leave or pay which you have already entered in the calender."
