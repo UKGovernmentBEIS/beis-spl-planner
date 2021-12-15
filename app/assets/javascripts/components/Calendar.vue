@@ -99,10 +99,10 @@
                   @keydown.space.enter.stop.prevent="onKeyboardToggleCell(parent, 'leave', week)"
                   @mousedown.left="onCellMouseDown($event, parent, 'leave', week)">
                 <div v-if="week[parent].leave.text">
-                  <div class="govuk-body no-margin print-hide">
+                  <div class="govuk-body no-margin">
                     {{ leaveCellPayLabel(week, parent) }}
                   </div>
-                  <div class="govuk-body-s no-margin">
+                  <div class="govuk-body-s no-margin print-hide">
                     {{ leaveCellLeaveLabel(week, parent) }}
                   </div>
                 </div>
@@ -132,7 +132,7 @@
                   <div class="govuk-body govuk-!-font-weight-bold no-margin print-hide">
                     {{ week[parent].pay.text | payCellLabel(cellIsClickable(week, parent, 'pay')) }}
                   </div>
-                  <div class="govuk-body no-margin print-show">
+                  <div class="govuk-body-s no-margin">
                     {{ week[parent].pay | printPayLabel }}
                   </div>
                 </div>
@@ -217,7 +217,7 @@
       }
     },
     methods: {
-      leaveCellLeaveLabel: function (week, parent) {
+      leaveLabelText: function (week, parent) {
         if (week[parent].compulsory) {
           return 'Compulsory Leave'
         }
@@ -231,11 +231,17 @@
           return label + ' Pay'
         }
       },
+      leaveCellLeaveLabel: function (week, parent) {
+        if (!this.cellIsEligible(week, parent, 'pay')) {
+          return this.leaveLabelText(week, parent);
+        }
+      },
       leaveCellPayLabel: function (week, parent) {
         if (!this.cellIsEligible(week, parent, 'pay')) {
           return 'Not eligible for pay'
         }
-        return week[parent].pay.text || 'Unpaid'
+
+        return this.leaveLabelText(week, parent)
       },
       onWindowKeydown: function (event) {
         if (event.keyCode === 9 /* TAB */) {
@@ -470,7 +476,7 @@
       width: 35%;
     }
     .col-pay {
-      width: 10%;
+      width: 15%;
     }
 
     @include govuk-media-query($until: tablet) {
