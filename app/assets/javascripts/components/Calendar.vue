@@ -29,7 +29,8 @@
                   Untick <span v-html="formatWeeks(-payRemaining, 'pay')"></span> .
                 </div>
               </div>
-            </div>          </div>
+            </div>          
+          </div>
         </th>
       </tr>
       <tr class="govuk-table__row">
@@ -68,7 +69,7 @@
             Week the child arrives in the UK
           </th>
         </tr>
-        <tr :key="week.id" class="govuk-table__row" @mouseenter="onRowMouseEnter(week)">
+        <tr :key="week.id" class="govuk-table__row" @mousemove="onRowMouseEnter(week)">
           <th class="govuk-table__cell date" :id="`week-${i}-date`">
             {{ week.day.format('D') }}<br class="print-hide">
             {{ week.day.format('MMM') }}

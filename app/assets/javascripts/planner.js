@@ -78,20 +78,20 @@ function init (data, interactive) {
 function updateLeave (parent, week, leaveType, minimumWeek, eligibility) {
   // Maternity / adoption leave taken before the 0th week must be in a continuous block.
   let weeksToUpdate
-  const hasNoSharedEligibility = !eligibility[parent].spl && !eligibility[parent].shpp
+  const isEligible = eligibility[parent].spl && eligibility[parent].shpp
 
   if (week < 0) {
     weeksToUpdate = getLeaveWeeksToUpdateWhenBeforeZeroWeek(week, leaveType, minimumWeek)
-  } else if (hasNoSharedEligibility) {
+  } else if (!isEligible) {
     weeksToUpdate = getLeaveWeeksToUpdateWhenParentHasNoSharedEligiblity(week, parent, minimumWeek, leaveType)
   } else {
     weeksToUpdate = [week]
   }
   for (const weekToUpdate of weeksToUpdate) {
-    const changed = toggleLeave(parent, weekToUpdate, leaveType, !hasNoSharedEligibility)
+    const changed = toggleLeave(parent, weekToUpdate, leaveType, isEligible)
     if (changed) {
       // Pay should always turn on or off with leave.
-      togglePay(parent, weekToUpdate, leaveType, !hasNoSharedEligibility)
+      togglePay(parent, weekToUpdate, leaveType, isEligible)
     }
   }
 }
