@@ -3,43 +3,20 @@
 {% macro primaryNotice(options) %}
   {% set data = options.data %}
   {% if data | shouldDisplayPrimaryLeaveAndPayForm %}
-    {% set formUrl %}
-      {% if data | isBirth -%}
-        SPL_Mother_Birth.docx
-        {% set formName %}
-          Mother Shared Parental Leave Forms (after Maternity Leave)
-        {% endset %}
-      {%- elif data | isAdoption -%}
-        SPL_Primary_Adopter.docx
-        {% set formName %}
-          Primary adopter (parent eligible for adoption leave) Shared Parental Leave Forms
-        {% endset %}
-      {%- else -%}
-        SPL_Parental_Order_Parent.docx
-        {% set formName %}
-          Parental Order Parent (parent eligible for adoption leave) Shared Parental Leave Forms (a child through surrogacy)
-        {% endset %}
-      {%- endif %}
-    {% endset %}
+    {% if data | isBirth -%}
+      <li>Mother Shared Parental Leave Forms (after Maternity Leave)</li>
+    {%- elif data | isAdoption -%}
+      <li>Primary adopter (parent eligible for adoption leave) Shared Parental Leave Forms</li>
+    {%- else -%}
+      <li>Parental Order Parent (parent eligible for adoption leave) Shared Parental Leave Forms (a child through surrogacy)</li>
+    {%- endif %}
   {% elif data | shouldDisplayPrimaryCurtailmentForm %}
-    {% set formUrl %}
-      {% if data | isBirth -%}
-        Maternity_Entitlement_Curtailment.docx
-        {% set formName %}
-          Curtailment of Maternity Entitlement Form
-        {% endset %}
-      {%- elif data | isAdoption -%}
-        Adoption_Entitlement_Curtailment.docx
-        {% set formName %}
-          Curtailment of Adoption Entitlement Form
-        {% endset %}
-      {%- else -%}
-        Parental_Order_Parent_Entitlement_Curtailment.docx
-        {% set formName %}
-          Curtailment of Adoption Entitlement Form (a child through surrogacy)
-        {% endset %}
-      {%- endif %}
-    {% endset %}
+    {% if data | isBirth -%}
+      <li>Curtailment of Maternity Entitlement Form</li>
+    {%- elif data | isAdoption -%}
+      <li>Curtailment of Adoption Entitlement Form</li>
+    {%- else -%}
+      <li>Curtailment of Adoption Entitlement Form (a child through surrogacy)</li>
+    {%- endif %}
   {% endif %}
-  <li> {{ formName }} </li>
 {% endmacro %}

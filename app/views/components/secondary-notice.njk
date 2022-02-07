@@ -4,24 +4,12 @@
 {% macro secondaryNotice(options) %}
   {% set data = options.data %}
   {% if data | shouldDisplaySecondaryLeaveAndPayForm %}
-    {% set formUrl %}
-      {% if data | isBirth -%}
-        SPL_Partner_Birth.docx
-        {% set formName %}
-          Partner Shared Parental Leave Forms (after Maternity Leave)
-        {% endset %}
-      {%- elif data | isAdoption -%}
-        SPL_Partner_of_Primary_Adopter.docx
-        {% set formName %}
-          Partner Shared Parental Leave Forms (after Adoption Leave)
-        {% endset %}
-      {%- else -%}
-        SPL_Partner_of_Parental_Order_Parent.docx
-        {% set formName %}
-          Partner Shared Parental Leave Forms (a child through surrogacy)
-        {% endset %}
-      {%- endif %}
-    {% endset %}
-    <li> {{ formName }} </li>
+    {% if data | isBirth -%}
+      <li>Partner Shared Parental Leave Forms (after Maternity Leave)</li>
+    {%- elif data | isAdoption -%}
+      <li>Partner Shared Parental Leave Forms (after Adoption Leave)</li>
+    {%- else -%}
+      <li>Partner Shared Parental Leave Forms (a child through surrogacy)</li>
+    {% endif %}
   {% endif %}
 {% endmacro %}
