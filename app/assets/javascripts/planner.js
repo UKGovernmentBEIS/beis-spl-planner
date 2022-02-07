@@ -69,7 +69,7 @@ function init (data, interactive) {
     const weekNumbers = _.range(minimumWeek, 53)
     parents.forEach(parent => {
       weekNumbers.forEach(weekNumber => {
-        updateLeaveOrPay(parent, 'leave', weekNumber, false)
+        updateLeaveOrPay(parent, 'leave', weekNumber, 'shared')
       })
     })
   }
