@@ -1,6 +1,10 @@
 name: Spl-planner-continuous-check
 
-on: [pull_request]
+on:
+  pull_request:
+    types: [opened, edited, reopened, ready_for_review, review_requested, auto_merge_enabled]
+    branches:
+      - 'master'
 
 jobs:
   build:
@@ -8,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x]
+        node-version: [12.22]
 
     steps:
     - uses: actions/checkout@v2
