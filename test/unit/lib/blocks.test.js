@@ -52,10 +52,10 @@ describe('Blocks', () => {
           }
         },
         payBlocks: [
-          { start: 0, end: 1, primary: '£432.69', secondary: '£151.97' },
-          { start: 3, end: 4, primary: '£151.97', secondary: '£151.97' },
-          { start: 6, end: 7, primary: undefined, secondary: '£151.97' },
-          { start: 8, end: 9, primary: '£151.97', secondary: undefined }
+          { start: 0, end: 1, primary: '£432.69', secondary: '£156.66' },
+          { start: 3, end: 4, primary: '£156.66', secondary: '£156.66' },
+          { start: 6, end: 7, primary: undefined, secondary: '£156.66' },
+          { start: 8, end: 9, primary: '£156.66', secondary: undefined }
         ]
       }
 
@@ -105,10 +105,10 @@ describe('Blocks', () => {
           }
         },
         payBlocks: [
-          { start: 0, end: 1, primary: '£432.69', secondary: '£151.97' },
-          { start: 3, end: 4, primary: '£151.97', secondary: '£151.97' },
-          { start: 6, end: 7, primary: undefined, secondary: '£151.97' },
-          { start: 8, end: 9, primary: '£151.97', secondary: undefined }
+          { start: 0, end: 1, primary: '£432.69', secondary: '£156.66' },
+          { start: 3, end: 4, primary: '£156.66', secondary: '£156.66' },
+          { start: 6, end: 7, primary: undefined, secondary: '£156.66' },
+          { start: 8, end: 9, primary: '£156.66', secondary: undefined }
         ]
       }
 

@@ -42,7 +42,7 @@ class Paths {
     this.pathObjects = {
       root: {
         url: '/',
-        workFlowPage: true,
+        workFlowPage: true
       },
       natureOfParenthood: {
         url: '/nature-of-parenthood',
