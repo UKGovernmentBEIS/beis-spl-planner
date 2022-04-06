@@ -41,7 +41,7 @@
     "jsdom": "^15.2.1",
     "lodash": "^4.17.15",
     "memorystore": "^1.6.2",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "moment": "^2.24.0",
     "morgan": "1.9.x",
     "nodemailer": "^6.6",
