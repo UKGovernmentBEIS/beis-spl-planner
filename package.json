@@ -38,7 +38,7 @@
     "file-url": "^3.0.0",
     "govuk-frontend": "^3.14.0",
     "is-iexplorer": "^1.0.0",
-    "jsdom": "^15.2.1",
+    "jsdom": "^16.5.0",
     "lodash": "^4.17.15",
     "memorystore": "^1.6.7",
     "minimist": "^1.2.6",
