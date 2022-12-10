@@ -33,7 +33,7 @@
     "cookie-parser": "^1.4.6",
     "dlv": "^1.1.3",
     "dset": "^2.0.1",
-    "express": "4.16.x",
+    "express": "4.17.x",
     "express-session": "^1.17.2",
     "file-url": "^3.0.0",
     "govuk-frontend": "^3.14.0",
