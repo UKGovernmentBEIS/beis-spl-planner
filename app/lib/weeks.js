@@ -210,7 +210,7 @@ class Weeks {
 
   _formatPay (pay) {
     const payAsFloat = parseFloat(pay)
-    return isNaN(payAsFloat) ? pay : '£' + payAsFloat.toFixed(2)
+    return isNaN(payAsFloat) ? pay : ('£' + (+payAsFloat.toFixed(2)).toLocaleString('en-US'))
   }
 }
 

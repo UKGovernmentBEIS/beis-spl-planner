@@ -1,6 +1,14 @@
 const _ = require('lodash')
 const delve = require('dlv')
 
+function feedbackExperience (data, optionName) {
+  if (_.isString(data)) {
+    return data === optionName
+  } else {
+    return data['feedback'] === optionName
+  }
+}
+
 function natureOfParenthood (data) {
   return data['nature-of-parenthood']
 }
@@ -136,6 +144,7 @@ function isLeaveTypeShared (leaveType) {
 }
 
 module.exports = {
+  feedbackExperience,
   natureOfParenthood,
   typeOfAdoption,
   birthOrPlacement,

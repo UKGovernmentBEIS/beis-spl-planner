@@ -52,6 +52,49 @@ module.exports = function (env) {
     return '£' + ((primaryPay || 0) + (secondaryPay || 0)).toFixed(2)
   }
 
+  function numberAsString (block) {
+    const numbersToTwenty = [
+      'zero',
+      'one',
+      'two',
+      'three',
+      'four',
+      'five',
+      'six',
+      'seven',
+      'eight',
+      'nine',
+      'ten',
+      'eleven',
+      'twelve',
+      'thirteen',
+      'fourteen',
+      'fifteen',
+      'sixteen',
+      'seventeen',
+      'eighteen',
+      'nineteen']
+
+    const tens = [
+      '',
+      'twenty',
+      'thirty',
+      'forty',
+      'fifty'
+    ]
+
+    var weekCount = block.end - block.start + 1
+
+    var result
+
+    if (weekCount && weekCount > 19 && weekCount < 60) {
+      result = tens[+weekCount.toString().charAt(0)] + '-' + numbersToTwenty[+weekCount.toString().charAt(1)]
+    } else if (weekCount && weekCount < 20) {
+      result = numbersToTwenty[weekCount]
+    }
+    return result.trim()
+  }
+
   function displayPayBlockTotal (data) {
     const eligibility = parseEligibilityFromData(data)
     return eligibility.primary.statutoryPay && // Cannot get exact value for Maternity Allowance.
@@ -175,6 +218,7 @@ module.exports = function (env) {
     startDateName,
     hasEitherSalary,
     totalBlockPay,
+    numberAsString,
     displayPayBlockTotal,
     shouldDisplayPrimaryLeaveAndPayForm,
     shouldDisplayPrimaryCurtailmentForm,

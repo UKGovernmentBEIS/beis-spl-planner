@@ -334,6 +334,9 @@ router.route(paths.getPath('feedback'))
     res.render('feedback/feedback', { referrer })
   })
   .post(function (req, res) {
+    if (!validate.feedback(req)) {
+      return res.redirect(req.path)
+    }
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
     nodeEmail(experience, moreDetail)
