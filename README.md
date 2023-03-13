@@ -4,6 +4,9 @@ This repository contains the code for the Shared Parental Leave (SPL) and Stauto
 
 It is built on top of the [BEIS SPL common](https://github.com/UKGovernmentBEIS/beis-spl-common) baseline project, which in turn is forked from the [GDS Node.js boilerplate](https://github.com/alphagov/gds-nodejs-boilerplate) project.
 
+## Architecture
+The application is is purely frontend. There is no backend, no database. An example architecture diagram can be seen in the root folder.
+
 ## Getting started on development
 
 ### Installs
