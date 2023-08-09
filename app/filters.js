@@ -53,46 +53,8 @@ module.exports = function (env) {
   }
 
   function numberAsString (block) {
-    const numbersToTwenty = [
-      'zero',
-      'one',
-      'two',
-      'three',
-      'four',
-      'five',
-      'six',
-      'seven',
-      'eight',
-      'nine',
-      'ten',
-      'eleven',
-      'twelve',
-      'thirteen',
-      'fourteen',
-      'fifteen',
-      'sixteen',
-      'seventeen',
-      'eighteen',
-      'nineteen']
-
-    const tens = [
-      '',
-      'twenty',
-      'thirty',
-      'forty',
-      'fifty'
-    ]
-
     var weekCount = block.end - block.start + 1
-
-    var result
-
-    if (weekCount && weekCount > 19 && weekCount < 60) {
-      result = tens[+weekCount.toString().charAt(0)] + '-' + numbersToTwenty[+weekCount.toString().charAt(1)]
-    } else if (weekCount && weekCount < 20) {
-      result = numbersToTwenty[weekCount]
-    }
-    return result.trim()
+    return weekCount.toString()
   }
 
   function displayPayBlockTotal (data) {
