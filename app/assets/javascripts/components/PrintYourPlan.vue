@@ -10,6 +10,7 @@
             data-ga-field-event_action="print_page"
           >
       print your plan</a>.
+      Save or print the plan as a PDF by selecting the PDF option in the print view.
     </p>
   </div>
 </template>
