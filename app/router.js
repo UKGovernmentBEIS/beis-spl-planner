@@ -334,6 +334,9 @@ router.route(paths.getPath('feedback'))
     res.render('feedback/feedback', { referrer })
   })
   .post(function (req, res) {
+    if (!validate.feedback(req)) {
+      return res.redirect(req.path)
+    }
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
     nodeEmail(experience, moreDetail)
@@ -344,12 +347,6 @@ router.route(paths.getPath('cookies'))
   .get(function (req, res) {
     const referrer = req.header('Referrer')
     res.render('privacy/cookies', { referrer })
-  })
-
-router.route(paths.getPath('contact-us'))
-  .get(function (req, res) {
-    const referrer = req.header('Referrer')
-    res.render('feedback/contact-us', { referrer })
   })
 
 router.route(paths.getPath('accessibilityStatement'))

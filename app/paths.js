@@ -261,10 +261,6 @@ class Paths {
         workFlowPage: false,
         url: '/cookies'
       },
-      'contact-us': {
-        workFlowPage: false,
-        url: '/contact-us'
-      },
       accessibilityStatement: {
         workFlowPage: false,
         url: '/accessibility-statement'

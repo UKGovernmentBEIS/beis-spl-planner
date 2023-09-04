@@ -4,7 +4,10 @@ window.GOVUKFrontend.initAll()
 const cookieManager = require('../../node_modules/@dvsa/cookie-manager/cookie-manager.js')
 cookieManager.init({
   'cookie-banner-id': 'cookie_banner',
-  'cookie-banner-visibility-class': 'accepted',
+  'cookie-banner-saved-callback': function () {
+    const banner = document.querySelector('#cookie_banner')
+    banner.hidden = true
+  },
   'cookie-banner-visible-on-page-with-preference-form': false,
   'user-preference-configuration-form-id': 'cm_user_preference_form',
   'user-preference-saved-callback': function () {

@@ -4,7 +4,6 @@
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "button/macro.njk" import govukButton %}
 {% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
-{% from "../views/components/get-help.njk" import getHelp %}
 
 {% extends "layout.njk" %}
 
@@ -84,8 +83,6 @@
           text: "Continue"
         }) }}
       </form>
-
-      {{ getHelp() }}
     </div>
   </div>
 

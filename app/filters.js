@@ -52,6 +52,11 @@ module.exports = function (env) {
     return '£' + ((primaryPay || 0) + (secondaryPay || 0)).toFixed(2)
   }
 
+  function numberAsString (block) {
+    var weekCount = block.end - block.start + 1
+    return weekCount.toString()
+  }
+
   function displayPayBlockTotal (data) {
     const eligibility = parseEligibilityFromData(data)
     return eligibility.primary.statutoryPay && // Cannot get exact value for Maternity Allowance.
@@ -175,6 +180,7 @@ module.exports = function (env) {
     startDateName,
     hasEitherSalary,
     totalBlockPay,
+    numberAsString,
     displayPayBlockTotal,
     shouldDisplayPrimaryLeaveAndPayForm,
     shouldDisplayPrimaryCurtailmentForm,

@@ -128,6 +128,25 @@ function startDate (req) {
   return true
 }
 
+function feedback (req) {
+  var valid = true
+  if (!req.session.data['feedback']) {
+    addError(req, 'feedback', 'Provide your experience with the service.', '#feedback')
+    valid = false
+  }
+
+  var value = req.session.data['spam-filter'].toLowerCase()
+  if (!value.length) {
+    addError(req, 'spam-filter', 'Prove you are not a robot.', '#spam-filter')
+    valid = false
+  } else if (value !== 'yes' && value !== 'yes.') {
+    addError(req, 'spam-filter', 'The value you entered was incorrect. Please try again.', '#spam-filter')
+    valid = false
+  }
+
+  return valid
+}
+
 function addStartDateError (req, message, dateParts) {
   const href = `#start-date-${dateParts[0]}`
   addError(req, 'start-date', message, href, { dateParts })
@@ -377,5 +396,6 @@ module.exports = {
   parentSalaries,
   planner,
   paternityLeaveQuestion,
-  splQuestions
+  splQuestions,
+  feedback
 }

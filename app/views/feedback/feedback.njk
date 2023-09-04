@@ -2,6 +2,9 @@
 {% from "radios/macro.njk" import govukRadios %}
 {% from "character-count/macro.njk" import govukCharacterCount %}
 {% from "button/macro.njk" import govukButton %}
+{% from "input/macro.njk" import govukInput %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% extends "layout.njk" %}
 
@@ -19,6 +22,16 @@
 {% endblock %}
 
 {% block content %}
+  {% if errors["spam-filter"] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        errors["spam-filter"],
+        errors["feedback"]
+      ]
+    }) }}
+    {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["spam-filter"].text, "Errorshown") }}
+  {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-l">
@@ -39,25 +52,33 @@
           items: [
             {
               value: "very satisfactory",
-              text: "Very Satisfactory"
+              text: "Very Satisfactory",
+              checked: data | feedbackExperience("very satisfactory")
             },
             {
               value: "satisfactory",
-              text: "Satisfactory"
+              text: "Satisfactory",
+              checked: data | feedbackExperience("satisfactory")
             },
             {
               value: "neither satisfactory or dissatisfactory",
-              text: "Neither Satisfactory or Dissatisfactory"
+              text: "Neither Satisfactory or Dissatisfactory",
+              checked: data | feedbackExperience("neither satisfactory or dissatisfactory")
             },
             {
               value: "dissatisfactory",
-              text: "Dissatisfactory"
+              text: "Dissatisfactory",
+              checked: data | feedbackExperience("dissatisfactory")
             },
             {
               value: "very dissatisfactory",
-              text: "Very Dissatisfactory"
+              text: "Very Dissatisfactory",
+              checked: data | feedbackExperience("very dissatisfactory")
             }
-          ]
+          ],
+          errorMessage: {
+              text: errors["feedback"].text
+          } if errors["feedback"]
         }) }}
 
         {{ govukCharacterCount({
@@ -73,6 +94,21 @@
             isPageHeading: true
           }
         }) }}
+
+        {{ govukInput({
+          id: "spam-filter",
+          name: "spam-filter",
+          value: data["spam-filter"],
+          label: {
+            text: "To prove you are not a robot, please type YES.",
+            classes: "govuk-label--m",
+            isPageHeading: true
+          },
+          errorMessage: {
+              text: errors["spam-filter"].text
+          } if errors["spam-filter"]
+        }) }}
+
         {{ govukButton({
           text: "Send Feedback",
           preventDoubleClick: true
