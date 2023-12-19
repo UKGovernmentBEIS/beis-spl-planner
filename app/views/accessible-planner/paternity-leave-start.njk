@@ -28,7 +28,7 @@
 {% set birthOrPlacement= (data | birthOrPlacement) %}
 {% set primaryLeaveEnd = data["leave-blocks"]["primary"]["initial"]["end"] %}
 
-{% set options = range(0, 8) %}
+{% set options = range(0, 52) %}
 
 {% macro optionText(weekNumber) %}
   {% if (weekNumber === 0) %}
