@@ -105,6 +105,19 @@
         html: examples,
         classes: "print-hide"
       }) }}
+
+      {% set additionalText %}
+        {% if isAdoption %}
+          From the 6th April 2024 (inclusive), the adoption partner will be able to take their two-week paternity leave entitlement as two separate, one-week blocks. They will also be able to take paternity leave at any time within the 52 weeks after placement of the child. If the child is due to be placed on or after the 6th April but they are placed prematurely before this date, the adoption partner will still be entitled to the benefits.
+        {% else %}
+          From the 7th April 2024, birth partners will be able to take their two-week paternity leave entitlement as two separate, one-week blocks. They will also be able to take paternity leave at any time within the 52 weeks after the birth of the child. If the child is due to be born after the 6th April 2024 but they are born prematurely before the 7th April 2024, you will still be entitled to the benefits.
+        {% endif %}
+      {% endset %}
+
+      {{ govukInsetText({
+          text: additionalText
+      }) }}
+
     </div>
   </div>
   <form id="leave-and-pay" method="POST">
