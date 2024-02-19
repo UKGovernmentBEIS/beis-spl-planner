@@ -151,6 +151,7 @@ function calculatePaternityLeaveWeeks (leave) {
 }
 
 function getBlocks (data) {
+  console.log(data);
   const dataClone = _.cloneDeep(data)
   const leaveBlocksDataObject = dataClone['leave-blocks']
   if (leaveBlocksDataObject) {
