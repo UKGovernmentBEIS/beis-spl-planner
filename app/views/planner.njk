@@ -108,14 +108,18 @@
 
       {% set additionalText %}
         {% if isAdoption %}
-          From the 6th April 2024 (inclusive), the adoption partner will be able to take their two-week paternity leave entitlement as two separate, one-week blocks. They will also be able to take paternity leave at any time within the 52 weeks after placement of the child. If the child is due to be placed on or after the 6th April but they are placed prematurely before this date, the adoption partner will still be entitled to the benefits.
+          From the 6th April 2024 (inclusive), adoption partners will be able to take the Paternity Leave and/or Pay that they are entitled to in two-separate, one-week blocks at any time within the 52 weeks after placement of the child. Any Paternity Leave and Pay they wish to claim must still be taken before starting Shared Parental Leave.
+          <br><br>
+          If you have been notified that the child is due to be placed with you on or after the 6th April, but the child is then placed with you early and before this date, the adoption partner will still be able to claim their Paternity Leave and Pay under these new rules.
         {% else %}
-          From the 7th April 2024, birth partners will be able to take their two-week paternity leave entitlement as two separate, one-week blocks. They will also be able to take paternity leave at any time within the 52 weeks after the birth of the child. If the child is due to be born after the 6th April 2024 but they are born prematurely before the 7th April 2024, you will still be entitled to the benefits.
+          From the 7th April 2024, birth partners of babies that are due to be born after this date will be able to take the Paternity Leave and/or Pay that they are entitled to in two-separate, one-week blocks at any time within the 52 weeks after the birth of the child. Any Paternity Leave and Pay they wish to claim must still be taken before starting Shared Parental Leave.
+          <br><br>
+          If your child is due to be born after the 6th April 2024 but is born prematurely or before this date, you will still be entitled to claim your Paternity Leave and Pay under these new rules.
         {% endif %}
       {% endset %}
 
       {{ govukInsetText({
-          text: additionalText
+          text: additionalText | safe
       }) }}
 
     </div>
