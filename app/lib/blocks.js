@@ -14,7 +14,7 @@ function getLeaveBlocks (weeks) {
 
 function getParentLeaveBlocks (weeks, parent) {
   const blocks = {
-    initial: null,
+    initial: [],
     spl: []
   }
 
@@ -28,9 +28,9 @@ function getParentLeaveBlocks (weeks, parent) {
 
   function store (block) {
     if (block && ['maternity', 'paternity', 'adoption'].includes(block.leave)) {
-      blocks.initial = block
+      blocks.initial.push(block);
     } else {
-      blocks.spl.push(block)
+      blocks.spl.push(block);
     }
   }
 
@@ -151,6 +151,7 @@ function calculatePaternityLeaveWeeks (leave) {
 }
 
 function getBlocks (data) {
+  console.log(data);
   const dataClone = _.cloneDeep(data)
   const leaveBlocksDataObject = dataClone['leave-blocks']
   if (leaveBlocksDataObject) {
@@ -273,6 +274,16 @@ function getBlockLength (block) {
   return parseInt(block.end) - parseInt(block.start) + 1
 }
 
+function getPaternalBlockLength (block) {
+  if (!block || block.length === 0) {
+    return 0
+  } else if (block.length === 2) {
+    return 2
+  } else if (block.length === 1) {
+    return parseInt(block[0].end) - parseInt(block[0].start) + 1
+  }
+}
+
 function isBlockDataObject (obj) {
   return _.isObject(obj) &&
     obj.leave !== undefined &&
@@ -357,5 +368,6 @@ module.exports = {
   getRemainingLeaveAllowance,
   getRemainingPayAllowance,
   getBlockLength,
+  getPaternalBlockLength,
   parseLeaveBlocksIntoLeaveAndPay
 }
