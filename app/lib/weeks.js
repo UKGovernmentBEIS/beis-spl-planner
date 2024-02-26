@@ -56,8 +56,12 @@ class Weeks {
           const maxCellsDisplayedAsPaternity = 2
           const usePaternityLeave = secondaryLeaveTracker.totalLeaveWeeks <= maxCellsDisplayedAsPaternity
 
+          const latestPrimaryWeekLeave = this._getLatestPrimaryWeekLeave();
+
           // determine whether to display paternity or shared pay label
-          if (usePaternityLeave) {
+          // the label should say "Paternity" if there are enough weeks left e.g. totalLeaveWeeks <= 2
+          // and the selected week is within the range of the mother's leave
+          if (usePaternityLeave && weekNumber <= latestPrimaryWeekLeave) {
             dset(week.secondary, 'leave.text', 'paternity')
           } else {
             dset(week.secondary, 'leave.text', 'shared')
@@ -223,6 +227,11 @@ class Weeks {
   _formatPay (pay) {
     const payAsFloat = parseFloat(pay)
     return isNaN(payAsFloat) ? pay : ('£' + (+payAsFloat.toFixed(2)).toLocaleString('en-US'))
+  }
+
+  _getLatestPrimaryWeekLeave() {
+    const primaryLeaveWeeks = this.primary.leaveWeeks;
+    return primaryLeaveWeeks.length > 0 ? Math.max(...primaryLeaveWeeks) : 0;
   }
 }
 
