@@ -1,0 +1,42 @@
+{% from "summary-list/macro.njk" import govukSummaryList %}
+
+{% macro paternityLeaveBlockSummary(options) %}
+  {{ govukSummaryList({
+    classes: "summary-block-print-margin",
+    rows: [
+      {
+        key: {
+          text: options.name + " starts (week 1)"
+        },
+        value: {
+          text: "week starting " + options.data | startDay | startOfWeek | offsetWeeks(options.block[0].start) | formatForDisplay
+        }
+      },
+      {
+        key: {
+          text: options.name + " starts (week 2)"
+        },
+        value: {
+          text: "week starting " + options.data | startDay | startOfWeek | offsetWeeks(options.block[1].start) | formatForDisplay
+        }
+      } if options.block.length > 1 else "",
+      {
+        key: {
+          text: "Length"
+        },
+        value: {
+          text: options.block | paternalBlockLength | weeks
+        }
+      },
+      {
+        key: {
+          text: "Notify employers"
+        },
+        value: {
+          html: "by " + (options.notify.date | formatForDisplay) + ("*" if options.notify.asterisk) + "<br>" +
+            "(" + options.notify.explanation + ")"
+        }
+      }
+    ]
+  }) }}
+{% endmacro %}

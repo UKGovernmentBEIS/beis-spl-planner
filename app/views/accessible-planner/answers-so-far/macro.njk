@@ -21,6 +21,11 @@
   <h2 class="govuk-heading-m">
     Your answers so far
   </h2>
+<p>
+  Leave{{ leaveBlocks["secondary"]["initial"][0].start }}
+    Leave{{ leaveBlocks["secondary"]["initial"][1].start }}
+</p>
+
   {{ govukSummaryList({
     rows: [
       {
@@ -76,10 +81,10 @@
       },
       {
         key: {
-          text: "Paternity Leave start"
+          text: "Paternity Leave start (week 1)"
         },
         value: {
-          text: date(data, leaveBlocks["secondary"]["initial"]["start"])
+          text: date(data, leaveBlocks["secondary"]["initial"][0]["start"])
         },
         actions: {
           items: [
@@ -93,17 +98,17 @@
       },
       {
         key: {
-          text: "Paternity Leave end"
+          text: "Paternity Leave start (week 2)"
         },
         value: {
-          text: dateEnd(data, leaveBlocks["secondary"]["initial"]["end"])
+          text: date(data, leaveBlocks["secondary"]["initial"][1]["start"])
         },
         actions: {
           items: [
             {
-              href: "/planner/paternity-leave/end",
+              href: "/planner/paternity-leave/start",
               text: "Change",
-              visuallyHiddenText: "Paternity Leave end"
+              visuallyHiddenText: "Paternity Leave start"
             }
           ]
         }

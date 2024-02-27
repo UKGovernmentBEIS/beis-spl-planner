@@ -2,7 +2,7 @@ const delve = require('dlv')
 const { getWeeksArray, parseWeeksFromData } = require('./utils')
 const Day = require('../common/lib/day')
 const { parseEligibilityFromData } = require('./lib/eligibility')
-const { getBlockLength, getRemainingLeaveAllowance, getRemainingPayAllowance, parseLeaveBlocks, parseSplLeaveBlocks } = require('./lib/blocks')
+const { getBlockLength, getPaternalBlockLength, getRemainingLeaveAllowance, getRemainingPayAllowance, parseLeaveBlocks, parseSplLeaveBlocks } = require('./lib/blocks')
 const _ = require('lodash')
 
 // Existing filters can be imported from env using env.getFilter(name)
@@ -138,6 +138,10 @@ module.exports = function (env) {
     return getBlockLength(block)
   }
 
+  function paternalBlockLength (block) {
+    return getPaternalBlockLength(block)
+  }
+
   function remainingLeaveAllowance (leaveBlocksDataObject) {
     const leaveBlocks = parseLeaveBlocks(leaveBlocksDataObject)
     return getRemainingLeaveAllowance(leaveBlocks)
@@ -189,6 +193,7 @@ module.exports = function (env) {
     blocksToDates,
     htmlAttributesFromObject,
     blockLength,
+    paternalBlockLength,
     remainingLeaveAllowance,
     remainingPayAllowance,
     hasTakenSpl,

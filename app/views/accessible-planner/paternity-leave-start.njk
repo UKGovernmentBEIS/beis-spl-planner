@@ -26,9 +26,9 @@
 {% set zeroWeek = (data | zeroWeek) %}
 {% set isAdoption = (data | isAdoption) %}
 {% set birthOrPlacement= (data | birthOrPlacement) %}
-{% set primaryLeaveEnd = data["leave-blocks"]["primary"]["initial"]["end"] %}
+{% set primaryLeaveEnd = data["leave-blocks"]["primary"]["initial"]["end"] | float %}
 
-{% set options = range(0, 8) %}
+{% set options = range(primaryLeaveEnd + 1) %}
 
 {% macro optionText(weekNumber) %}
   {% if (weekNumber === 0) %}
@@ -49,7 +49,17 @@
               id: "primary-leave-start",
               name: "leave-blocks[secondary][initial][start]",
               label: {
-                text: "When will Paternity Leave start?",
+                text: "When will the first week of Paternity Leave start?",
+                classes: "govuk-label--l",
+                isPageHeading: true
+              },
+              items: options | mapValuesToSelectOptions(optionText)
+            }) }}
+            {{ govukSelect({
+              id: "primary-leave-start",
+              name: "leave-blocks[secondary][initial][start]",
+              label: {
+                text: "When will the second week of Paternity Leave start?",
                 classes: "govuk-label--l",
                 isPageHeading: true
               },

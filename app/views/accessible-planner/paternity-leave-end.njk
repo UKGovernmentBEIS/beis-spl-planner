@@ -25,7 +25,7 @@
 {% set isOverseasAdoption = (data | isOverseasAdoption) %}
 {% set zeroWeek = (data | zeroWeek) %}
 {% set firstWeekOfLeave = (data["leave-blocks"]["secondary"]["initial"]["start"] | int) %}
-{% set options = range(firstWeekOfLeave, firstWeekOfLeave + 2 if firstWeekOfLeave < 7 else 8) %}
+{% set options = range(firstWeekOfLeave, firstWeekOfLeave + 2 if firstWeekOfLeave < 51 else 52) %}
 
 {% macro optionText(weekNumber) %}
   {% set totalWeeks = weekNumber - firstWeekOfLeave + 1 %}
