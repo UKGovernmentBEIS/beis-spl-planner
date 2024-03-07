@@ -250,19 +250,19 @@ router.route(paths.getPath('planner.paternity-leave.start'))
   .post(function (req, res) {
     const startData = delve(req.session.data, 'leave-blocks.secondary.initial.start')
     const updatedData = {
-        initial: [
-          {
-            start: startData[0],
-            end: parseInt(startData[0]) + 1,
-            leave: 'paternity'
-          },
-          {
-            start: startData[1],
-            end: parseInt(startData[1]) + 1,
-            leave: 'paternity'
-          }
-        ]
-      }
+      initial: [
+        {
+          start: startData[0],
+          end: parseInt(startData[0]) + 1,
+          leave: 'paternity'
+        },
+        {
+          start: startData[1],
+          end: parseInt(startData[1]) + 1,
+          leave: 'paternity'
+        }
+      ]
+    }
     dset(req.session.data, 'leave-blocks.secondary.initial', updatedData.initial)
     res.redirect(paths.getPath('planner.shared-parental-leave'))
   })

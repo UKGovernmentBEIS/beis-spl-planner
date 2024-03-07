@@ -56,7 +56,7 @@ class Weeks {
           const maxCellsDisplayedAsPaternity = 2
           const usePaternityLeave = secondaryLeaveTracker.totalLeaveWeeks <= maxCellsDisplayedAsPaternity
 
-          const latestPrimaryWeekLeave = this._getLatestPrimaryMaternityWeekLeave();
+          const latestPrimaryWeekLeave = this._getLatestPrimaryMaternityWeekLeave()
 
           // determine whether to display paternity or shared pay label
           // the label should say "Paternity" if there are enough weeks left e.g. totalLeaveWeeks <= 2
@@ -229,9 +229,9 @@ class Weeks {
     return isNaN(payAsFloat) ? pay : ('£' + (+payAsFloat.toFixed(2)).toLocaleString('en-US'))
   }
 
-  _getLatestPrimaryMaternityWeekLeave() {
-    const primaryLeaveWeeks = this.primary.leaveWeeks;
-    return primaryLeaveWeeks.length > 0 ? Math.max(...primaryLeaveWeeks) : 0;
+  _getLatestPrimaryMaternityWeekLeave () {
+    const primaryLeaveWeeks = this.primary.leaveWeeks
+    return primaryLeaveWeeks.length > 0 ? Math.max(...primaryLeaveWeeks) : 0
   }
 }
 

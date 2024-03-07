@@ -28,9 +28,9 @@ function getParentLeaveBlocks (weeks, parent) {
 
   function store (block) {
     if (block && ['maternity', 'paternity', 'adoption'].includes(block.leave)) {
-      blocks.initial.push(block);
+      blocks.initial.push(block)
     } else {
-      blocks.spl.push(block);
+      blocks.spl.push(block)
     }
   }
 

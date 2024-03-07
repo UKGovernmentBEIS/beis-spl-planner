@@ -200,7 +200,7 @@ class Paths {
             url: '/planner/paternity-leave/start',
             workFlowPage: true,
             workflowParentPath: '/planner/paternity-leave'
-          },
+          }
         },
         'shared-parental-leave': {
           url: '/planner/shared-parental-leave',
