@@ -1,6 +1,7 @@
 {% from "summary-list/macro.njk" import govukSummaryList %}
 {% from "inset-text/macro.njk" import govukInsetText %}
 {% from "../components/leave-block-summary.njk" import leaveBlockSummary %}
+{% from "../components/paternity-leave-block-summary.njk" import paternityLeaveBlockSummary %}
 
 {% set primaryLeaveType = (data | primaryLeaveType) %}
 
@@ -72,12 +73,12 @@
         </h3>
 
         {% if data | isAdoption %}
-          <p>Paternity Leave can start the day your child is placed with you, or within 8 weeks after.</p>
+          <p>Paternity Leave can start at any point in the first year after the adoption of the child.</p>
         {% else %}
-          <p>Paternity Leave can start once the child is born, or within 8 weeks of the child’s birth.</p>
+          <p>Paternity Leave can start at any point in the first year after the birth of the child.</p>
         {% endif %}
 
-        {{ leaveBlockSummary({
+        {{ paternityLeaveBlockSummary({
           name: "Paternity Leave",
           block: leaveBlocks.secondary.initial,
           data: data,
