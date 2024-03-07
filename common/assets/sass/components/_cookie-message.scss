@@ -1,3 +1,4 @@
+// sass-lint:disable no-ids, no-color-literals
 .cookie-banner {
   box-sizing: border-box;
   width: 100%;
@@ -10,7 +11,8 @@
   }
 }
 
-#cookie_banner > h1, #cookie_banner > p {
+#cookie_banner > h1,
+#cookie_banner > p {
   background-color: govuk-colour("white");
 }
 
@@ -19,12 +21,12 @@
 }
 
 .success-message {
-  border:5px;
-  border-style:solid;
-  border-color:#28a197;
-  padding:20px;
-  margin-bottom:50px;
-  margin-top:16px;
+  border: 5px;
+  border-style: solid;
+  border-color: #28a197;
+  padding: 20px;
+  margin-bottom: 50px;
+  margin-top: 16px;
 }
 
 #cookie-preference-success {
