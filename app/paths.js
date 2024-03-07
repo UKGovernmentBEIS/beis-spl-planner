@@ -200,11 +200,6 @@ class Paths {
             url: '/planner/paternity-leave/start',
             workFlowPage: true,
             workflowParentPath: '/planner/paternity-leave'
-          },
-          end: {
-            url: '/planner/paternity-leave/end',
-            workFlowPage: true,
-            workflowParentPath: '/planner/paternity-leave/start'
           }
         },
         'shared-parental-leave': {
@@ -213,10 +208,10 @@ class Paths {
           workflowParentPath: (data, isForValidator) => {
             if (isForValidator) {
               // Prevent circular reference when validating page history.
-              return '/planner/paternity-leave/end'
+              return '/planner/paternity-leave/start'
             }
             const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
-            return splBlockPlanningOrder.length > 0 ? '/planner/shared-parental-leave/end' : '/planner/paternity-leave/end'
+            return splBlockPlanningOrder.length > 0 ? '/planner/shared-parental-leave/end' : '/planner/paternity-leave/start'
           },
           start: {
             url: '/planner/shared-parental-leave/start',

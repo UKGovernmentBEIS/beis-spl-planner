@@ -5,6 +5,7 @@ class LeaveTracker {
     this.initialBlockStarted = false
     this.initialBlockEnded = false
     this.initialBlockLength = 0
+    this.totalLeaveWeeks = 0
   }
 
   next (isLeave, weekNumber) {
@@ -16,6 +17,9 @@ class LeaveTracker {
     this.initialBlockEnded = this.initialBlockEnded || (this.initialBlockStarted && !isLeave)
     if (this.initialBlockStarted && !this.initialBlockEnded) {
       this.initialBlockLength++
+    }
+    if (isLeave) {
+      this.totalLeaveWeeks++
     }
   }
 

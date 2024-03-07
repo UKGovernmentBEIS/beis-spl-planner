@@ -2,7 +2,7 @@ name: Spl-planner-continuous-check
 
 on:
   pull_request:
-    types: [opened, edited, reopened, ready_for_review, review_requested, auto_merge_enabled]
+    types: [opened, synchronize, edited, reopened, ready_for_review, review_requested, auto_merge_enabled]
     branches:
       - 'master'
 

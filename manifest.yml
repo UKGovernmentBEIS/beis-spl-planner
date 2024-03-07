@@ -2,4 +2,4 @@ applications:
 - name: beis-spl-planner
   memory: 1G
   buildpacks:
-    - nodejs_buildpack
+    - https://github.com/cloudfoundry/nodejs-buildpack#v1.8.15

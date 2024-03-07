@@ -248,15 +248,22 @@ router.route(paths.getPath('planner.paternity-leave.start'))
     res.render('accessible-planner/paternity-leave-start')
   })
   .post(function (req, res) {
-    res.redirect(paths.getPath('planner.paternity-leave.end'))
-  })
-
-router.route(paths.getPath('planner.paternity-leave.end'))
-  .get(function (req, res) {
-    clearLaterLeaveBlockAnswers(req, 'secondary.initial.end')
-    res.render('accessible-planner/paternity-leave-end')
-  })
-  .post(function (req, res) {
+    const startData = delve(req.session.data, 'leave-blocks.secondary.initial.start')
+    const updatedData = {
+      initial: [
+        {
+          start: startData[0],
+          end: parseInt(startData[0]) + 1,
+          leave: 'paternity'
+        },
+        {
+          start: startData[1],
+          end: parseInt(startData[1]) + 1,
+          leave: 'paternity'
+        }
+      ]
+    }
+    dset(req.session.data, 'leave-blocks.secondary.initial', updatedData.initial)
     res.redirect(paths.getPath('planner.shared-parental-leave'))
   })
 
