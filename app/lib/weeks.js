@@ -38,14 +38,6 @@ class Weeks {
       const week = this._getBaseWeek(weekNumber);
       const weekLeaveAndPay = this._getWeekLeaveAndPay(weekNumber);
 
-      console.log("weekNumber", weekNumber);
-      console.log(
-        "secondaryLeaveTracker.totalLeaveWeeks",
-        secondaryLeaveTracker.totalLeaveWeeks
-      );
-      console.log("primarySplHasStarted", primarySplHasStarted);
-      console.log("secondarySplHasStarted", secondarySplHasStarted);
-
       primaryLeaveTracker.next(weekLeaveAndPay.primary.leave, weekNumber);
       if (weekLeaveAndPay.primary.leave) {
         if (!primarySplHasStarted) {
