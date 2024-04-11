@@ -4,8 +4,8 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": "^16.14",
-    "npm": "^8.5"
+    "node": ">18.0.0",
+    "npm": ">8.5"
   },
   "scripts": {
     "compile": "grunt generate-assets",
