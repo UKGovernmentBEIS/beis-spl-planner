@@ -62,10 +62,6 @@ function getParentLeaveBlocks (weeks, parent) {
     store(currentBlock)
   }
 
-  console.log("");
-  console.log("blocks", blocks);
-  console.log("");
-
   return blocks
 }
 
