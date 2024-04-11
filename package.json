@@ -82,7 +82,7 @@
     "grunt-sass": "^3.1.0",
     "mocha": "^6.2.3",
     "nock": "^10.0.6",
-    "node-sass": "^7.0.3",
+    "node-sass": "npm:sass@^1.74.1",
     "nyc": "^15.0.0",
     "pa11y": "5.3.0",
     "puppeteer": "2.1.1",
