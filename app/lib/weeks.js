@@ -58,10 +58,12 @@ class Weeks {
 
           const latestPrimaryWeekLeave = this._getLatestPrimaryMaternityWeekLeave()
 
+          const isMaternityAdoptionOrSurrogacy = week.primary.leave.text === 'maternity' || week.primary.leave.text === 'adoption' || week.primary.leave.text === 'surrogacy'
+
           // determine whether to display paternity or shared pay label
           // the label should say "Paternity" if there are enough weeks left e.g. totalLeaveWeeks <= 2
           // and the selected week is within the range of the mother's leave
-          if (usePaternityLeave && weekNumber <= latestPrimaryWeekLeave && week.primary.leave.text === 'maternity') {
+          if (usePaternityLeave && weekNumber <= latestPrimaryWeekLeave && isMaternityAdoptionOrSurrogacy) {
             dset(week.secondary, 'leave.text', 'paternity')
           } else {
             dset(week.secondary, 'leave.text', 'shared')
