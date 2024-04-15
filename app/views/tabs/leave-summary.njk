@@ -2,6 +2,7 @@
 {% from "inset-text/macro.njk" import govukInsetText %}
 {% from "../components/leave-block-summary.njk" import leaveBlockSummary %}
 {% from "../components/paternity-leave-block-summary.njk" import paternityLeaveBlockSummary %}
+{% from "../components/shared-leave-block-summary.njk" import sharedLeaveBlockSummary %}
 
 {% set primaryLeaveType = (data | primaryLeaveType) %}
 
@@ -50,12 +51,12 @@
         Shared Parental Leave ({{ data | primaryName }})
       </h3>
       {% for block in leaveBlocks.primary.spl %}
-        {{ leaveBlockSummary({
+        {{ sharedLeaveBlockSummary({
           name: "Block " + loop.index,
           block: block,
           data: data,
           notify: {
-            date: data | startDay | startOfWeek | offsetWeeks(block.start) | offsetWeeks(-8),
+            date: data | startDay | startOfWeek | offsetWeeks(block[0].start) | offsetWeeks(-8),
             explanation: "8 weeks before block starts",
             asterisk: false
           }
@@ -94,12 +95,12 @@
           Shared Parental Leave ({{ data | secondaryName }})
         </h3>
         {% for block in leaveBlocks.secondary.spl %}
-          {{ leaveBlockSummary({
+          {{ sharedLeaveBlockSummary({
             name: "Block " + loop.index,
             block: block,
             data: data,
             notify: {
-              date: data | startDay | startOfWeek | offsetWeeks(block.start) | offsetWeeks(-8),
+              date: data | startDay | startOfWeek | offsetWeeks(block[0].start) | offsetWeeks(-8),
               explanation: "8 weeks before block starts",
               asterisk: false
             }
