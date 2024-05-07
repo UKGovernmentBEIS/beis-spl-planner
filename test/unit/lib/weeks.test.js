@@ -11,7 +11,7 @@ const options = {
   natureOfParenthood: 'birth',
   typeOfAdoption: undefined,
   startWeek: moment('2024-01-01'),
-  primary: { firstSplWeek: 10, leaveWeeks: [1, 2, 3], payWeeks: [1, 2] }, // <- Maybe the issue was that wasn't passing in a value for firstSplWeek?
+  primary: { firstSplWeek: 10, leaveWeeks: [1, 2, 3], payWeeks: [1, 2] },
   secondary: { leaveWeeks: [], payWeeks: [] },
   eligibility: {
     primary: {
@@ -90,7 +90,6 @@ const options4 = {
 describe('Weeks Class', function () {
   describe('Constructor', function () {
     it('should properly initialise with the provided options', function () {
-      // Instantiate the Weeks class
       const weeks = new Weeks(options)
 
       assert.equal(weeks.primaryLeaveType, 'maternity')
@@ -117,7 +116,6 @@ describe('Weeks Class', function () {
       assert.equal(result.weeks.length - 1, 52)
     })
 
-    // Test specific weeks to ensure correct behavior
     it('should handle primary SPL start correctly', function () {
       const weeks = new Weeks(options3)
       const result = weeks.leaveAndPay()
