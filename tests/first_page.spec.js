@@ -18,3 +18,47 @@ test('should allow me to check birth and continue', async ({ page }) => {
 
   await expect(page.getByRole('heading', { name: 'Mother’s leave and pay' })).toBeVisible()
 })
+
+test('should allow me to check adoption and continue', async ({ page }) => {
+  await page.goto('http://localhost:3000/')
+
+  await page.check("input[value='adoption']") // <- Click on adoption
+
+  await expect(page.locator("input[value='adoption']")).toBeChecked()
+
+  await page.click('//*[@id="main-content"]/div/div/form/button') // <- Click on continue button
+
+  await expect(page.getByRole('heading', { name: 'Are you adopting the child from the UK or from overseas?' })).toBeVisible()
+
+})
+
+test('should allow me to check surrogacy and continue', async ({ page }) => {
+  await page.goto('http://localhost:3000/')
+
+  await page.check("input[value='surrogacy']") // <- Click on surrogacy
+
+  await expect(page.locator("input[value='surrogacy']")).toBeChecked()
+
+  await page.click('//*[@id="main-content"]/div/div/form/button') // <- Click on continue button
+
+  await expect(page.getByRole('heading', { name: 'Parental order parent’s leave and pay' })).toBeVisible()
+
+})
+
+test('should allow me to click on feedback', async ({ page }) => {
+  await page.goto('http://localhost:3000/')
+
+  await page.getByRole('link', { name: 'feedback', exact: true }).click() // <- Click on 'feedback'
+
+  await expect(page.getByText('Give Feedback')).toBeVisible() // <- Correct page is displayed
+
+})
+
+test('should display an error if click continue without selecting an option', async ({ page }) => {
+  await page.goto('http://localhost:3000/')
+
+  await page.click('//*[@id="main-content"]/div/div/form/button') // <- Click on continue button without selecting an option first
+
+  await expect(page.getByText('There is a problem')).toBeVisible() // <- Displays an error
+
+})
