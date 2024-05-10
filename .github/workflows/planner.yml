@@ -5,7 +5,6 @@ on:
     types: [opened, synchronize, edited, reopened, ready_for_review, review_requested, auto_merge_enabled]
     branches:
       - 'master'
-      - 'SPL-313' # <- Temporary, for testing
 
 jobs:
   build:
