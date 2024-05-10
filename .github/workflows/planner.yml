@@ -94,6 +94,12 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: compiled-files
+    - name: Start server
+      run: npm run test:start:a11y &
+    - name: Wait for server to be ready
+      run: |
+        sleep 5
+        echo "Server is ready"
     - run: npm run test:a11y
       env:
         CI: true
