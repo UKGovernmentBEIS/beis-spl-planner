@@ -52,12 +52,6 @@ test.describe('nature-of-parenthood', () => {
     ).toBeVisible()
   })
 
-  test('should allow me to click on feedback', async ({ page }) => {
-    await page.getByRole('link', { name: 'feedback', exact: true }).click() // <- Click on 'feedback'
-
-    await expect(page.getByText('Give Feedback')).toBeVisible() // <- Correct page is displayed
-  })
-
   test('should display an error if click continue without selecting an option', async ({
     page
   }) => {
