@@ -81,7 +81,7 @@ test.describe('mother/shared-parental-leave-and-pay', () => {
         await page.click('button:text("Continue")')
       })
 
-      test('next page buttons are both no', async ({ page }) => {
+      test('correct page displays when next page buttons are both no', async ({ page }) => {
         await page.getByRole('group', { name: 'Is the mother eligible for Maternity Leave?' }).getByLabel('No').click()
         await page.getByRole('group', { name: 'Is the mother eligible for Statutory Maternity Pay?' }).getByLabel('No').click()
         await page.click('button:text("Continue")')
@@ -90,7 +90,7 @@ test.describe('mother/shared-parental-leave-and-pay', () => {
 
       })
 
-      test('next page buttons are both yes', async ({ page }) => {
+      test('correct page displays when next page buttons are both yes', async ({ page }) => {
         await page.getByRole('group', { name: 'Is the mother eligible for Maternity Leave?' }).getByLabel('Yes').click()
         await page.getByRole('group', { name: 'Is the mother eligible for Statutory Maternity Pay?' }).getByLabel('Yes').click()
         await page.click('button:text("Continue")')
@@ -111,7 +111,7 @@ test.describe('mother/shared-parental-leave-and-pay', () => {
         await page.click('button:text("Continue")')
       })
 
-      test('next page buttons are both no', async ({ page }) => {
+      test('correct page displays when next page buttons are both no', async ({ page }) => {
         await page.getByRole('group', { name: 'Is the partner eligible for Shared Parental Leave?' }).getByLabel('No').click()
         await page.getByRole('group', { name: 'Is the partner eligible for Statutory Shared Parental Pay?' }).getByLabel('No').click()
         await page.click('button:text("Continue")')
@@ -120,7 +120,7 @@ test.describe('mother/shared-parental-leave-and-pay', () => {
 
       })
 
-      test('next page buttons are both yes', async ({ page }) => {
+      test('correct page displays when next page buttons are both yes', async ({ page }) => {
         await page.getByRole('group', { name: 'Is the partner eligible for Shared Parental Leave?' }).getByLabel('Yes').click()
         await page.getByRole('group', { name: 'Is the partner eligible for Statutory Shared Parental Pay?' }).getByLabel('Yes').click()
         await page.click('button:text("Continue")')
@@ -133,7 +133,7 @@ test.describe('mother/shared-parental-leave-and-pay', () => {
 
       })
 
-      test('next page buttons are yes then no', async ({ page }) => {
+      test('correct page displays when next page buttons are yes then no', async ({ page }) => {
         await page.getByRole('group', { name: 'Is the partner eligible for Shared Parental Leave?' }).getByLabel('Yes').click()
         await page.getByRole('group', { name: 'Is the partner eligible for Statutory Shared Parental Pay?' }).getByLabel('No').click()
         await page.click('button:text("Continue")')
@@ -142,7 +142,7 @@ test.describe('mother/shared-parental-leave-and-pay', () => {
 
       })
 
-      test('next page buttons are no then yes', async ({ page }) => {
+      test('correct page displays when next page buttons are no then yes', async ({ page }) => {
         await page.getByRole('group', { name: 'Is the partner eligible for Shared Parental Leave?' }).getByLabel('No').click()
         await page.getByRole('group', { name: 'Is the partner eligible for Statutory Shared Parental Pay?' }).getByLabel('Yes').click()
         await page.click('button:text("Continue")')
