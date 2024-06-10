@@ -29,13 +29,11 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
       await page.getByRole('group', { name: 'Is the mother eligible for Shared Parental Leave?' }).getByLabel('No').click() // <- Click on No
       await expect(page.getByRole('group', { name: 'Is the mother eligible for Shared Parental Leave?' }).getByLabel('No')).toBeChecked()
 
-
       await page.getByRole('group', { name: 'Is the mother eligible for Statutory Shared Parental Pay?' }).getByLabel('Yes').click() // <- Click on Yes
       await expect(page.getByRole('group', { name: 'Is the mother eligible for Statutory Shared Parental Pay?' }).getByLabel('Yes')).toBeChecked()
 
       await page.getByRole('group', { name: 'Is the mother eligible for Statutory Shared Parental Pay?' }).getByLabel('No').click() // <- Click on No
       await expect(page.getByRole('group', { name: 'Is the mother eligible for Statutory Shared Parental Pay?' }).getByLabel('No')).toBeChecked()
-
     })
 
     test('continue button should be clickable', async ({ page }) => {
@@ -49,7 +47,6 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Partner’s leave and pay'
         })
       ).toBeVisible()
-
     })
 
     test('should show error message when one set of radio buttons are not selected', async ({ page }) => {
@@ -59,7 +56,6 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
 
       await expect(page.getByText('There is a problem')).toBeVisible() // <- Displays an error
       await expect(page.getByRole('link', { name: 'Select whether you are eligible for Shared Parental Pay' })).toBeVisible() // <- Displays an error
-
     })
 
     test('should show error message when both sets of radio buttons are not selected', async ({ page }) => {
@@ -68,7 +64,6 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
       await expect(page.getByText('There is a problem')).toBeVisible() // <- Displays an error
       await expect(page.getByRole('link', { name: 'Select whether you are eligible for Shared Parental Leave' })).toBeVisible() // <- Displays an error
       await expect(page.getByRole('link', { name: 'Select whether you are eligible for Shared Parental Pay' })).toBeVisible() // <- Displays an error
-
     })
   })
 
@@ -86,7 +81,6 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
       await page.click('button:text("Continue")')
 
       await expect(page.getByText('Is the mother eligible for Maternity Allowance?')).toBeVisible()
-
     })
 
     test('correct page displays when next page buttons are both yes', async ({ page }) => {
@@ -99,7 +93,6 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Partner’s leave and pay'
         })
       ).toBeVisible()
-
     })
   })
 
@@ -116,7 +109,6 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
       await page.click('button:text("Continue")')
 
       await expect(page.getByRole('link', { name: 'check if you can get leave and pay when you have a child' })).toBeVisible()
-
     })
 
     test('correct page displays when next page buttons are both yes', async ({ page }) => {
@@ -129,7 +121,6 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'When is the baby due, or when was the baby born?'
         })
       ).toBeVisible()
-
     })
 
     test('correct page displays when next page buttons are yes then no', async ({ page }) => {
@@ -138,7 +129,6 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
       await page.click('button:text("Continue")')
 
       await expect(page.getByText('Is the partner eligible for Statutory Paternity Pay?')).toBeVisible()
-
     })
 
     test('correct page displays when next page buttons are no then yes', async ({ page }) => {
@@ -147,7 +137,6 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
       await page.click('button:text("Continue")')
 
       await expect(page.getByText('Is the partner eligible for Paternity Leave?')).toBeVisible()
-
     })
   })
 })

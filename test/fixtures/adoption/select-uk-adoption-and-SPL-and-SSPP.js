@@ -1,4 +1,4 @@
-const { test: base } = require('@playwright/test')
+// const { test: base } = require('@playwright/test')
 const SelectAdoption = require('./select-adoption')
 
 const test = SelectAdoption.extend({

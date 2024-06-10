@@ -1,8 +1,8 @@
-const { expect } = require('@playwright/test');
-const test = require('../../fixtures/adoption/select-adoption');
+const { expect } = require('@playwright/test')
+const test = require('../../fixtures/adoption/select-adoption')
 
 test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
-  test.beforeEach(async ({ setupAdoptionPage }) => {});
+  test.beforeEach(async ({ setupAdoptionPage }) => {})
 
   test('should have url', async ({ setupAdoptionPage: page }) => {
     await expect(page.url()).toEqual('http://localhost:3000/type-of-adoption')
@@ -25,7 +25,6 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
 
       await page.check("input[value='overseas']")
       await expect(page.locator("input[value='overseas']")).toBeChecked()
-
     })
 
     test('continue button should be clickable', async ({ setupAdoptionPage: page }) => {
@@ -38,7 +37,6 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
           name: 'Primary adopter’s leave and pay'
         })
       ).toBeVisible()
-
     })
 
     test('should show error message when radio button is not selected', async ({ setupAdoptionPage: page }) => {
@@ -46,7 +44,6 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
 
       await expect(page.getByText('There is a problem')).toBeVisible() // <- Displays an error
       await expect(page.getByRole('link', { name: 'Select either UK or overseas adoption' })).toBeVisible() // <- Displays an error
-
     })
   })
 
@@ -57,9 +54,7 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
     })
 
     test('correct page displays', async ({ setupAdoptionPage: page }) => {
-
       await expect(page.getByText('Primary adopter’s leave and pay')).toBeVisible()
-
     })
 
     test('correct page displays when next page buttons are both yes', async ({ setupAdoptionPage: page }) => {
@@ -72,7 +67,6 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
           name: 'Partner’s leave and pay'
         })
       ).toBeVisible()
-
     })
 
     test('correct page displays when next page buttons are both no', async ({ setupAdoptionPage: page }) => {
@@ -81,7 +75,6 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
       await page.click('button:text("Continue")')
 
       await expect(page.getByRole('link', { name: 'check if you can get leave and pay when you have a child' })).toBeVisible()
-
     })
 
     test('correct page displays when next page buttons are yes then no', async ({ setupAdoptionPage: page }) => {
@@ -90,7 +83,6 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
       await page.click('button:text("Continue")')
 
       await expect(page.getByText('Is the primary adopter eligible for Statutory Adoption Pay?')).toBeVisible()
-
     })
 
     test('correct page displays when next page buttons are no then yes', async ({ setupAdoptionPage: page }) => {
@@ -99,8 +91,6 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
       await page.click('button:text("Continue")')
 
       await expect(page.getByText('Is the primary adopter eligible for Adoption Leave?')).toBeVisible()
-
     })
   })
-
 })
