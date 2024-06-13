@@ -42,7 +42,7 @@ test.describe('when "adoption" then "UK Adoption" is selected on "nature-of-pare
   })
 
   test.describe('and "UK Adoption" is selected and SPL and SSPP', () => {
-    test('correct page displays when options are both yes', async ({ setupAdoptionPage: page }) => {
+    test('correct page displays when options are both yes', async ({ setupUKAdoptionPage: page }) => {
       await page.getByRole('group', { name: 'Is the partner eligible for Shared Parental Leave?' }).getByLabel('Yes').click()
       await page.getByRole('group', { name: 'Is the partner eligible for Statutory Shared Parental Pay?' }).getByLabel('Yes').click()
       await page.click('button:text("Continue")')
@@ -54,7 +54,7 @@ test.describe('when "adoption" then "UK Adoption" is selected on "nature-of-pare
       ).toBeVisible()
     })
 
-    test('correct page displays when options are no then no', async ({ setupAdoptionPage: page }) => {
+    test('correct page displays when options are no then no', async ({ setupUKAdoptionPage: page }) => {
       await page.getByRole('group', { name: 'Is the partner eligible for Shared Parental Leave?' }).getByLabel('No').click()
       await page.getByRole('group', { name: 'Is the partner eligible for Statutory Shared Parental Pay?' }).getByLabel('No').click()
       await page.click('button:text("Continue")')
@@ -70,7 +70,7 @@ test.describe('when "adoption" then "UK Adoption" is selected on "nature-of-pare
       ).toBeVisible()
     })
 
-    test('correct page displays when options are no then yes', async ({ setupAdoptionPage: page }) => {
+    test('correct page displays when options are no then yes', async ({ setupUKAdoptionPage: page }) => {
       await page.getByRole('group', { name: 'Is the partner eligible for Shared Parental Leave?' }).getByLabel('No').click()
       await page.getByRole('group', { name: 'Is the partner eligible for Statutory Shared Parental Pay?' }).getByLabel('No').click()
       await page.click('button:text("Continue")')
