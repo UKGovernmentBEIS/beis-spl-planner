@@ -23,9 +23,18 @@ test.describe('child live-in date page', () => {
     })
 
     test('should display correct page if input boxes have valid values', async ({ setupPartnersLeaveAndPay: page }) => {
-      await page.getByRole('textbox', { name: 'Day' }).fill('1')
-      await page.getByRole('textbox', { name: 'Month' }).fill('1')
-      await page.getByRole('textbox', { name: 'Year' }).fill('2024')
+
+      let today = new Date()
+
+      let threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
+
+      let day = threeMonthsAgo.getDate()
+      let month = threeMonthsAgo.getMonth() + 1 // <- Months are zero-based, so add 1
+      let year = threeMonthsAgo.getFullYear()
+
+      await page.getByRole('textbox', { name: 'Day' }).fill(day.toString())
+      await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
+      await page.getByRole('textbox', { name: 'Year' }).fill(year.toString())
 
       await page.click('button:text("Continue")')
 
@@ -37,9 +46,16 @@ test.describe('child live-in date page', () => {
     })
 
     test('should display an error if a number greater than 31 is inputted into day', async ({ setupPartnersLeaveAndPay: page }) => {
+      let today = new Date()
+
+      let threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
+
+      let month = threeMonthsAgo.getMonth() + 1 // <- Months are zero-based, so add 1
+      let year = threeMonthsAgo.getFullYear()
+
       await page.getByRole('textbox', { name: 'Day' }).fill('50')
-      await page.getByRole('textbox', { name: 'Month' }).fill('1')
-      await page.getByRole('textbox', { name: 'Year' }).fill('2024')
+      await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
+      await page.getByRole('textbox', { name: 'Year' }).fill(year.toString())
 
       await page.click('button:text("Continue")')
 
@@ -58,9 +74,16 @@ test.describe('child live-in date page', () => {
     // })
 
     test('should display an error if a future date greater than 1 year is inputted', async ({ setupPartnersLeaveAndPay: page }) => {
+
+      let today = new Date()
+
+      let fiveYearsFromNow = new Date(today.setFullYear(today.getFullYear() + 5))
+
+      let year = fiveYearsFromNow.getFullYear()
+
       await page.getByRole('textbox', { name: 'Day' }).fill('1')
       await page.getByRole('textbox', { name: 'Month' }).fill('1')
-      await page.getByRole('textbox', { name: 'Year' }).fill('2097') // <- Far away enough date for the test not to fail any time soon (i.e. if put 2026, in 3 years the test will fail)
+      await page.getByRole('textbox', { name: 'Year' }).fill(year.toString())
 
       await page.click('button:text("Continue")')
 
