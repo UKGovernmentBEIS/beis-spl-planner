@@ -22,29 +22,6 @@ test.describe('child live-in date page', () => {
       await expect(page.getByRole('link', { name: 'Enter a valid day, month and year' })).toBeVisible()
     })
 
-    test('should display correct page if input boxes have valid values', async ({ setupPartnersLeaveAndPay: page }) => {
-
-      let today = new Date()
-
-      let threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
-
-      let day = threeMonthsAgo.getDate()
-      let month = threeMonthsAgo.getMonth() + 1 // <- Months are zero-based, so add 1
-      let year = threeMonthsAgo.getFullYear()
-
-      await page.getByRole('textbox', { name: 'Day' }).fill(day.toString())
-      await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
-      await page.getByRole('textbox', { name: 'Year' }).fill(year.toString())
-
-      await page.click('button:text("Continue")')
-
-      await expect(
-        page.getByRole('heading', {
-          name: 'Earnings from work'
-        })
-      ).toBeVisible()
-    })
-
     test('should display an error if a number greater than 31 is inputted into day', async ({ setupPartnersLeaveAndPay: page }) => {
       let today = new Date()
 
@@ -73,7 +50,28 @@ test.describe('child live-in date page', () => {
     //   await page.locator('input#day[pattern]')
     // })
     test.describe('when given dates in the future', () => {
-      test('should not display an error if a future date less than 1 year is inputted', async ({ setupPartnersLeaveAndPay: page }) => {})
+      test('should not display an error if a future date less than 1 year is inputted', async ({ setupPartnersLeaveAndPay: page }) => {
+
+        let today = new Date()
+
+        let threeMonthsFromNow = new Date(today.setMonth(today.getMonth() + 3))
+
+        let day = threeMonthsFromNow.getDate()
+        let month = threeMonthsFromNow.getMonth() + 1 // <- Months are zero-based, so add 1
+        let year = threeMonthsFromNow.getFullYear()
+
+        await page.getByRole('textbox', { name: 'Day' }).fill(day.toString())
+        await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
+        await page.getByRole('textbox', { name: 'Year' }).fill(year.toString())
+
+        await page.click('button:text("Continue")')
+
+        await expect(
+          page.getByRole('heading', {
+            name: 'Earnings from work'
+          })
+        ).toBeVisible()
+      })
 
       test('should display an error if a future date greater than 1 year is inputted', async ({ setupPartnersLeaveAndPay: page }) => {
 
@@ -118,9 +116,65 @@ test.describe('child live-in date page', () => {
     })
 
     test.describe('when given dates in the past', () => {
-      test('should not display an error if a past date less than 1 year is inputted', async ({ setupPartnersLeaveAndPay: page }) => {})
-      test('should display an error if a past date greater than 1 year is inputted', async ({ setupPartnersLeaveAndPay: page }) => {})
-      test('should display an error if the date is exactly 1 year in the past', async ({ setupPartnersLeaveAndPay: page }) => {})
+      test('should not display an error if a past date less than 1 year is inputted', async ({ setupPartnersLeaveAndPay: page }) => {
+        let today = new Date()
+
+        let threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
+  
+        let day = threeMonthsAgo.getDate()
+        let month = threeMonthsAgo.getMonth() + 1 // <- Months are zero-based, so add 1
+        let year = threeMonthsAgo.getFullYear()
+  
+        await page.getByRole('textbox', { name: 'Day' }).fill(day.toString())
+        await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
+        await page.getByRole('textbox', { name: 'Year' }).fill(year.toString())
+  
+        await page.click('button:text("Continue")')
+  
+        await expect(
+          page.getByRole('heading', {
+            name: 'Earnings from work'
+          })
+        ).toBeVisible()
+      })
+
+      test('should display an error if a past date greater than 1 year is inputted', async ({ setupPartnersLeaveAndPay: page }) => {
+        let today = new Date()
+
+        let fiveYearsAgo = new Date(today.setFullYear(today.getFullYear() - 5))
+
+        let day = fiveYearsAgo.getDate()
+        let month = fiveYearsAgo.getMonth() + 1
+        let year = fiveYearsAgo.getFullYear()
+
+        await page.getByRole('textbox', { name: 'Day' }).fill(day.toString())
+        await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
+        await page.getByRole('textbox', { name: 'Year' }).fill(year.toString())
+
+        await page.click('button:text("Continue")')
+
+        await expect(page.getByText('There is a problem')).toBeVisible()
+        await expect(page.getByRole('link', { name: 'Enter a date within one year of today' })).toBeVisible()
+      })
+
+      test('should display an error if the date is exactly 1 year in the past', async ({ setupPartnersLeaveAndPay: page }) => {
+        let today = new Date()
+
+        let oneYearAgo = new Date(today.setFullYear(today.getFullYear() - 1))
+
+        let day = oneYearAgo.getDate()
+        let month = oneYearAgo.getMonth() + 1
+        let year = oneYearAgo.getFullYear()
+
+        await page.getByRole('textbox', { name: 'Day' }).fill(day.toString())
+        await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
+        await page.getByRole('textbox', { name: 'Year' }).fill(year.toString())
+
+        await page.click('button:text("Continue")')
+
+        await expect(page.getByText('There is a problem')).toBeVisible()
+        await expect(page.getByRole('link', { name: 'Enter a date within one year of today' })).toBeVisible()
+      })
     })
   })
 })
