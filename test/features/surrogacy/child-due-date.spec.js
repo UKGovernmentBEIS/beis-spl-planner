@@ -23,12 +23,12 @@ test.describe('child live-in date page', () => {
     })
 
     test('should display an error if a number greater than 31 is inputted into day', async ({ setupPartnersLeaveAndPay: page }) => {
-      let today = new Date()
+      const today = new Date()
 
-      let threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
+      const threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
 
-      let month = threeMonthsAgo.getMonth() + 1 // <- Months are zero-based, so add 1
-      let year = threeMonthsAgo.getFullYear()
+      const month = threeMonthsAgo.getMonth() + 1 // <- Months are zero-based, so add 1
+      const year = threeMonthsAgo.getFullYear()
 
       await page.getByRole('textbox', { name: 'Day' }).fill('50')
       await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
@@ -51,14 +51,13 @@ test.describe('child live-in date page', () => {
     // })
     test.describe('when given dates in the future', () => {
       test('should not display an error if a future date less than 1 year is inputted', async ({ setupPartnersLeaveAndPay: page }) => {
+        const today = new Date()
 
-        let today = new Date()
+        const threeMonthsFromNow = new Date(today.setMonth(today.getMonth() + 3))
 
-        let threeMonthsFromNow = new Date(today.setMonth(today.getMonth() + 3))
-
-        let day = threeMonthsFromNow.getDate()
-        let month = threeMonthsFromNow.getMonth() + 1 // <- Months are zero-based, so add 1
-        let year = threeMonthsFromNow.getFullYear()
+        const day = threeMonthsFromNow.getDate()
+        const month = threeMonthsFromNow.getMonth() + 1 // <- Months are zero-based, so add 1
+        const year = threeMonthsFromNow.getFullYear()
 
         await page.getByRole('textbox', { name: 'Day' }).fill(day.toString())
         await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
@@ -74,14 +73,13 @@ test.describe('child live-in date page', () => {
       })
 
       test('should display an error if a future date greater than 1 year is inputted', async ({ setupPartnersLeaveAndPay: page }) => {
+        const today = new Date()
 
-        let today = new Date()
+        const fiveYearsFromNow = new Date(today.setFullYear(today.getFullYear() + 5))
 
-        let fiveYearsFromNow = new Date(today.setFullYear(today.getFullYear() + 5))
-
-        let day = fiveYearsFromNow.getDate()
-        let month = fiveYearsFromNow.getMonth() + 1
-        let year = fiveYearsFromNow.getFullYear()
+        const day = fiveYearsFromNow.getDate()
+        const month = fiveYearsFromNow.getMonth() + 1
+        const year = fiveYearsFromNow.getFullYear()
 
         await page.getByRole('textbox', { name: 'Day' }).fill(day.toString())
         await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
@@ -94,15 +92,14 @@ test.describe('child live-in date page', () => {
       })
 
       test('should display an error if the date is exactly 1 year in the future', async ({ setupPartnersLeaveAndPay: page }) => {
-
-        let today = new Date()
+        const today = new Date()
 
         today.setFullYear(today.getFullYear() + 1)
-        let oneYearAndOneDayFromNow = new Date(today.setDate(today.getDate() + 1))
+        const oneYearAndOneDayFromNow = new Date(today.setDate(today.getDate() + 1))
 
-        let day = oneYearAndOneDayFromNow.getDate()
-        let month = oneYearAndOneDayFromNow.getMonth() + 1
-        let year = oneYearAndOneDayFromNow.getFullYear()
+        const day = oneYearAndOneDayFromNow.getDate()
+        const month = oneYearAndOneDayFromNow.getMonth() + 1
+        const year = oneYearAndOneDayFromNow.getFullYear()
 
         await page.getByRole('textbox', { name: 'Day' }).fill(day.toString())
         await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
@@ -117,20 +114,20 @@ test.describe('child live-in date page', () => {
 
     test.describe('when given dates in the past', () => {
       test('should not display an error if a past date less than 1 year is inputted', async ({ setupPartnersLeaveAndPay: page }) => {
-        let today = new Date()
+        const today = new Date()
 
-        let threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
-  
-        let day = threeMonthsAgo.getDate()
-        let month = threeMonthsAgo.getMonth() + 1 // <- Months are zero-based, so add 1
-        let year = threeMonthsAgo.getFullYear()
-  
+        const threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
+
+        const day = threeMonthsAgo.getDate()
+        const month = threeMonthsAgo.getMonth() + 1 // <- Months are zero-based, so add 1
+        const year = threeMonthsAgo.getFullYear()
+
         await page.getByRole('textbox', { name: 'Day' }).fill(day.toString())
         await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
         await page.getByRole('textbox', { name: 'Year' }).fill(year.toString())
-  
+
         await page.click('button:text("Continue")')
-  
+
         await expect(
           page.getByRole('heading', {
             name: 'Earnings from work'
@@ -139,13 +136,13 @@ test.describe('child live-in date page', () => {
       })
 
       test('should display an error if a past date greater than 1 year is inputted', async ({ setupPartnersLeaveAndPay: page }) => {
-        let today = new Date()
+        const today = new Date()
 
-        let fiveYearsAgo = new Date(today.setFullYear(today.getFullYear() - 5))
+        const fiveYearsAgo = new Date(today.setFullYear(today.getFullYear() - 5))
 
-        let day = fiveYearsAgo.getDate()
-        let month = fiveYearsAgo.getMonth() + 1
-        let year = fiveYearsAgo.getFullYear()
+        const day = fiveYearsAgo.getDate()
+        const month = fiveYearsAgo.getMonth() + 1
+        const year = fiveYearsAgo.getFullYear()
 
         await page.getByRole('textbox', { name: 'Day' }).fill(day.toString())
         await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
@@ -158,13 +155,13 @@ test.describe('child live-in date page', () => {
       })
 
       test('should display an error if the date is exactly 1 year in the past', async ({ setupPartnersLeaveAndPay: page }) => {
-        let today = new Date()
+        const today = new Date()
 
-        let oneYearAgo = new Date(today.setFullYear(today.getFullYear() - 1))
+        const oneYearAgo = new Date(today.setFullYear(today.getFullYear() - 1))
 
-        let day = oneYearAgo.getDate()
-        let month = oneYearAgo.getMonth() + 1
-        let year = oneYearAgo.getFullYear()
+        const day = oneYearAgo.getDate()
+        const month = oneYearAgo.getMonth() + 1
+        const year = oneYearAgo.getFullYear()
 
         await page.getByRole('textbox', { name: 'Day' }).fill(day.toString())
         await page.getByRole('textbox', { name: 'Month' }).fill(month.toString())
