@@ -52,7 +52,8 @@ You should now be able to see the project running at http://localhost:3000/ in y
 If you have installed the LiveReload browser extension as above, then you can enable it once on the page. This will cause the page to automatically reload when you make changes to any file.
 
 ### Running Playwright tests
+This configuration of Playwright runs tests in parallel.
 
 - Run `npx playwright install` to setup browsers and playwright dependencies
-- Use `npm run test:feature` or `npx playwright install`
+- Use `npm run test:feature` or `npx playwright test` to run tests
   - Add a `--ui` flag to the command to use Playwright GUI
