@@ -5,7 +5,8 @@ test.describe('child live-in date page', () => {
   test.beforeEach(async ({ setupPartnersLeaveAndPay }) => {})
 
   test('should have url', async ({ setupPartnersLeaveAndPay: page }) => {
-    await expect(page.url()).toEqual('http://localhost:3000/start-date')
+    const { baseURL } = page.context()._options
+    await expect(page.url()).toEqual(`${baseURL}/start-date`)
   })
 
   test('should have title', async ({ setupPartnersLeaveAndPay: page }) => {

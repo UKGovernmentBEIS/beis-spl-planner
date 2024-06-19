@@ -2,7 +2,8 @@ const { test, expect } = require('@playwright/test')
 
 test.describe('nature-of-parenthood', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:3000')
+    const { baseURL } = page.context()._options
+    await page.goto(`${baseURL}`)
   })
 
   test('has title', async ({ page }) => {
