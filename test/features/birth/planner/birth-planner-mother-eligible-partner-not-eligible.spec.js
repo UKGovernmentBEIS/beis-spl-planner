@@ -24,7 +24,6 @@ test.describe('Planner page', () => {
   })
 
   test('Father cannot take any leave', async ({ setupPlannerPage: page }) => {
-
     const disabledCells = page.locator('.govuk-table__cell.leave.disabled')
     const disabledCellCount = await disabledCells.count()
 
@@ -33,7 +32,6 @@ test.describe('Planner page', () => {
 
       const disabledCellTextContent = await disabledCell.textContent()
       expect(disabledCellTextContent).toContain('Not eligible for leave or pay')
-
     }
   })
 })
