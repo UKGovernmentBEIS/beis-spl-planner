@@ -1,10 +1,6 @@
 const { expect } = require('@playwright/test')
 const test = require('../../../fixtures/birth/planner/mother-eligible-partner-not-eligible')
-
-// Utility function to select a leave week for a given parent
-async function selectLeave (page, parent, week) {
-  await page.click(`td[data-row="${week}"][data-column="${parent === 'mother' ? 0 : 2}"]`)
-}
+const selectLeave = require('../../../utils/plannerSelectLeave')
 
 test.describe('Planner page', () => {
   test.beforeEach(async ({ setupPlannerPage }) => {})
