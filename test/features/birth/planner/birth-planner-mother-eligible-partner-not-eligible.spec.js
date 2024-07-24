@@ -25,19 +25,15 @@ test.describe('Planner page', () => {
 
   test('Father cannot take any leave', async ({ setupPlannerPage: page }) => {
 
-    for (let week = 18; week <= 81; week++){
-      const selector = `#calendar table tbody tr:nth-child(${week}) td.govuk-table__cell.leave.disabled div`
+    const disabledCells = page.locator('.govuk-table__cell.leave.disabled')
+    const disabledCellCount = await disabledCells.count()
 
-      // If 'week' gets to a number where the selector returns a month header,
-      // page.textContent will time out, so if it takes longer than 50ms, skip it
-      try {
-        const currentDisabledCell = await page.textContent(selector, { timeout: 50 });
-        expect(currentDisabledCell).toContain('Not eligible for leave or pay');
-      } catch (error) {
-        console.log(`Skipping week ${week} due to error: ${error.message}`);
-        continue
-      }
+    for (let i = 11; i < disabledCellCount; i++) { // <- Start from 11 as that's when disabled cells start to say 'Not eligible for leave and pay'
+      const disabledCell = disabledCells.nth(i)
+
+      const disabledCellTextContent = await disabledCell.textContent()
+      expect(disabledCellTextContent).toContain('Not eligible for leave or pay')
+
     }
-
   })
 })
