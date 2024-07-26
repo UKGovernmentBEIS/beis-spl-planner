@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, edited, reopened, ready_for_review, review_requested, auto_merge_enabled]
     branches:
       - 'master'
+      - 'sonarless-scan-test' # <- Temporary, for testing
 
 jobs:
   build:
