@@ -149,7 +149,10 @@ jobs:
         run: |
           echo "Checking for code smells in Sonar Metrics JSON"
           CODE_SMELLS=$(cat ./sonar-metrics.json | jq -r '.component.measures[] | select(.metric == "code_smells").value')
+          CODE_SMELLS_DESCRIPTIONS=$(cat ./sonar-metrics.json | jq -r '.issues[] | select(.type == "CODE_SMELL") | .message')
           echo "# of code smells = ${CODE_SMELLS}"
+          echo "Code smells found:"
+          echo "${CODE_SMELLS_DESCRIPTIONS}"
           [ ${CODE_SMELLS} -lt "10" ]
 
       - name: Check Sonar Metrics - Duplications
