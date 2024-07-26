@@ -125,3 +125,35 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+
+  Sonarless-Scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Solarless Scan
+        uses: gitricko/sonarless@v1.2
+        with:
+          sonar-metrics-path: './sonar-metrics.json'
+
+      - name: Check Sonar Metrics - No Vulnerabilities
+        run: |
+          echo "Checking for any vulnerabilities in Sonar Metrics JSON"
+          VULN=$(cat ./sonar-metrics.json | jq -r '.component.measures[] | select(.metric == "vulnerabilities").value')
+          echo "# of vulnerabilities = ${VULN}"
+          [ ${VULN} -eq "0" ]
+
+      - name: Check Sonar Metrics - Code Smells
+        run: |
+          echo "Checking for code smells in Sonar Metrics JSON"
+          CODE_SMELLS=$(cat ./sonar-metrics.json | jq -r '.component.measures[] | select(.metric == "code_smells").value')
+          echo "# of code smells = ${CODE_SMELLS}"
+          [ ${CODE_SMELLS} -lt "10" ]
+
+      - name: Check Sonar Metrics - Duplications
+        run: |
+          echo "Checking for duplications in Sonar Metrics JSON"
+          DUPLICATIONS=$(cat ./sonar-metrics.json | jq -r '.component.measures[] | select(.metric == "duplicated_lines_density").value')
+          echo "Duplicated lines density = ${DUPLICATIONS}"
+          [ $(echo "${DUPLICATIONS} < 5.0" | bc) -eq 1 ]
