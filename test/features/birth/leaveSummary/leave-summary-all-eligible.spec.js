@@ -16,10 +16,20 @@ test.describe('Leave summary page', () => {
 
   test.describe('Mothers Leave Dates', () => {
     test('maternity leave starts label has correct value', async ({ setupLeavePage: page }) => { // <- Should be 3 months prior to test run date
-     // #leave-summary div div dl:nth-child(7) div:nth-child(1) dd
+      const today = new Date()
+
+      const threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
+  
+      const day = threeMonthsAgo.getDate()
+      const month = threeMonthsAgo.toLocaleString('default', { month: 'long' }) // <- Get full month name (e.g. "September")
+      const year = threeMonthsAgo.getFullYear()
+  
+
      const maternityLeaveStartsLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(7) > div:nth-child(1) > dd')
-     console.log("maternity leave start label:", maternityLeaveStartsLabel)
-     //expect(maternityLeaveStartsLabel).toContain('0')
+
+     const correctStartDate = `week starting ${day.toString() - 1} ${month.toString()} ${year.toString()}` // <- Will be in format 'week starting 13 May 2024', for example
+
+     expect(maternityLeaveStartsLabel).toContain(correctStartDate)
 
     })
   

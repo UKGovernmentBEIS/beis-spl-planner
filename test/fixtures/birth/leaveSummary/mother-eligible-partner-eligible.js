@@ -51,8 +51,10 @@ const test = base.extend({
       await selectLeave(page, 'partner', week)
     }
 
-    // await page.click('button:text("Continue")')
-    await page.locator('#leave-and-pay div.govuk-grid-row.print-hide.js-show div button').click()
+    await page.click('button:text("Continue")')
+
+    await use(page)
+
   }
 })
 
