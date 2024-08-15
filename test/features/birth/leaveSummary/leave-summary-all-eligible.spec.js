@@ -11,6 +11,17 @@ test.describe('Leave summary page', () => {
   })
 
   test('baby is due label has correct value', async ({ setupLeavePage: page }) => {
+    const today = new Date()
+
+    const threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3)) 
+
+    const day = threeMonthsAgo.getDate()
+    const monthLong = threeMonthsAgo.toLocaleString('default', { month: 'long' }) //Used to get the full month name 
+    const year = threeMonthsAgo.getFullYear()
+    const babydueDate = `${day.toString()} ${monthLong.toString()} ${year.toString()}` //Full string format found within appliation 
+
+    const dueDateLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(4) > div > dd')
+    expect(dueDateLabel).toContain(babydueDate)
 
   })
 
@@ -68,7 +79,7 @@ test.describe('Leave summary page', () => {
       const threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
       const threeMonthsAgoDay = threeMonthsAgo.getDay()
 
-      const daystoMonday = (threeMonthsAgoDay === 0 ? -6 : 1) - threeMonthsAgoDay // Calculates the days to the Monday of the week as a difference 
+      const daystoMonday = (threeMonthsAgoDay === 0 ? -6 : 1) - threeMonthsAgoDay // Calculates the days to the Monday of the week from any given day as a difference 
       const startOfWeek = new Date(threeMonthsAgo)
       startOfWeek.setDate(threeMonthsAgo.getDate() + daystoMonday)
 
