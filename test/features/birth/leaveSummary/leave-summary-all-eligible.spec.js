@@ -15,7 +15,7 @@ test.describe('Leave summary page', () => {
   })
 
   test.describe('Mothers Leave Dates', () => {
-    test('maternity leave starts label has correct value', async ({ setupLeavePage: page }) => { // <- Should be 3 months prior to test run date
+    test('maternity leave starts label has correct value', async ({ setupLeavePage: page }) => { // <- Should be on the Monday 3 months prior to test run date
       const today = new Date()
 
       const threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
