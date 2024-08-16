@@ -192,7 +192,7 @@ test.describe('Leave summary page', () => {
       expect(sharedparentalLengthLabel).toContain("12 weeks")
     })
 
-    test('shared parental leave notify employers label has correct value', async ({ setupLeavePage: page }) => { // <- 8 weeks before block 1 starts
+    test('shared parental leave notify employers label has correct value', async ({ setupLeavePage: page }) => { // <- On the Monday 8 weeks before due date
       
     })
 
