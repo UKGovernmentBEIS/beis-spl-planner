@@ -170,10 +170,26 @@ test.describe('Leave summary page', () => {
     })
 
     test('shared parental leave block 1 ends label has correct value', async ({ setupLeavePage: page }) => { // <- 12 weeks after block 1 starts
-      
+      const today = new Date()
+
+      const threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
+      threeMonthsAgo.setDate(threeMonthsAgo.getDate() + 14)
+      threeMonthsAgo.setDate(threeMonthsAgo.getDate() + 84)
+
+      const day = threeMonthsAgo.getDate()
+      const month = threeMonthsAgo.toLocaleString('default', { month: 'long' }) // <- Get full month name (e.g. "September")
+      const year = threeMonthsAgo.getFullYear()
+      const dayOfTheWeek = (threeMonthsAgo.getDay()) % 7 // <- 0: Sunday, 1: Monday, 2: Tuesday etc... s
+
+      const correctblockoneEndDate = `week ending ${day.toString() - dayOfTheWeek} ${month.toString()} ${year.toString()}` // <- Will be in format 'week starting 13 May 2024', for example
+      console.log(`DATE GENERATED: ${day.toString()} ${month.toString()} ${year.toString()}`)
+      const blockoneEndsLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(13) > div:nth-child(2) > dd')
+      expect(blockoneEndsLabel).toContain(correctblockoneEndDate)
     })
 
     test('shared parental leave length label has correct value', async ({ setupLeavePage: page }) => { // <- 12 weeks
+      const sharedparentalLengthLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(13) > div:nth-child(3) > dd')
+      expect(sharedparentalLengthLabel).toContain("12 weeks")
     })
 
     test('shared parental leave notify employers label has correct value', async ({ setupLeavePage: page }) => { // <- 8 weeks before block 1 starts
