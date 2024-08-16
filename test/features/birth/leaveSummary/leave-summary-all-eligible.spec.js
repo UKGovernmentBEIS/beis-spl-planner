@@ -1,5 +1,7 @@
 const { expect } = require('@playwright/test')
 const test = require('../../../fixtures/birth/leaveSummary/mother-eligible-partner-eligible.js')
+const formatDate = require('../../../utils/formatDate.js')
+const calculateDate = require('../../../utils/calculateDate.js')
 
 test.describe('Leave summary page', () => {
   test.beforeEach(async ({ setupLeavePage }) => {})
