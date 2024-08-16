@@ -19,7 +19,7 @@ const test = base.extend({
     await page.getByRole('group', { name: 'Is the partner eligible for Statutory Shared Parental Pay?' }).getByLabel('Yes').click()
     await page.click('button:text("Continue")')
 
-// -------------------------------------------------------------------
+    // -------------------------------------------------------------------
 
     const today = new Date()
 
@@ -39,22 +39,21 @@ const test = base.extend({
 
     await page.getByRole('link', { name: 'Skip this question' }).click()
 
-// -------------------------------------------------------------------
+    // -------------------------------------------------------------------
 
     // Select mother's leave
-    for (let week = 13; week < 38; week++){
+    for (let week = 13; week < 38; week++) {
       await selectLeave(page, 'mother', week)
     }
 
     // Select partner's leave
-    for (let week = 11; week < 25; week++){
+    for (let week = 11; week < 25; week++) {
       await selectLeave(page, 'partner', week)
     }
 
     await page.click('button:text("Continue")')
 
     await use(page)
-
   }
 })
 
