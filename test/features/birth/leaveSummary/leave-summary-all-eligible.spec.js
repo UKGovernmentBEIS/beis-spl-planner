@@ -193,7 +193,27 @@ test.describe('Leave summary page', () => {
     })
 
     test('shared parental leave notify employers label has correct value', async ({ setupLeavePage: page }) => { // <- On the Monday 8 weeks before due date
-      
+      const today = new Date()
+
+      const threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
+      const threeMonthsAgoDay = threeMonthsAgo.getDay()
+
+      const daystoMonday = (threeMonthsAgoDay === 0 ? -6 : 1) - threeMonthsAgoDay // Calculates the days to the Monday of the week from any given day as a difference 
+      const startOfWeek = new Date(threeMonthsAgo)
+      startOfWeek.setDate(threeMonthsAgo.getDate() + daystoMonday)
+
+      const eightweeksBefore = new Date(startOfWeek)
+      eightweeksBefore.setDate(startOfWeek.getDate() - (8 * 7))  
+
+      const month = eightweeksBefore.toLocaleString('default', { month: 'long' }) // <- Get full month name (e.g. "September")
+      const year = eightweeksBefore.getFullYear()
+      const day = eightweeksBefore.getDate()
+  
+      const notifyEmployerLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(13) > div:nth-child(4) > dd')
+
+      const correctnotifyEmployerDate = `by ${day.toString()} ${month.toString()} ${year.toString()}` // <- Will be in format 'week starting 13 May 2024', for example
+
+      expect(notifyEmployerLabel).toContain(correctnotifyEmployerDate)
     })
 
   })
