@@ -1,5 +1,5 @@
-async function formatDate (day, month, year) {
-  return `${day.toString()} ${month.toString()} ${year.toString()}`
+function formatDate (addition, day, month, year) {
+  return `${addition} ${day.toString()} ${month.toString()} ${year.toString()}`
 }
 
 module.exports = formatDate

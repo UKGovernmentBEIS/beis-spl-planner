@@ -12,14 +12,8 @@ test.describe('Leave summary page', () => {
   })
 
   test('baby is due label has correct value', async ({ setupLeavePage: page }) => {
-    const today = new Date()
-
-    const threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
-
-    const day = threeMonthsAgo.getDate()
-    const monthLong = threeMonthsAgo.toLocaleString('default', { month: 'long' }) // Used to get the full month name
-    const year = threeMonthsAgo.getFullYear()
-    const babydueDate = `${day.toString()} ${monthLong.toString()} ${year.toString()}` // Full string format found within appliation
+    const {day, month, year} = await calculateDate(0, -3, 0, 0) //Used to pass due date 3 months ago 
+    const babydueDate = formatDate('', day, month, year) // Full string format found within appliation
 
     const dueDateLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(4) > div > dd')
     expect(dueDateLabel).toContain(babydueDate)
@@ -27,44 +21,29 @@ test.describe('Leave summary page', () => {
 
   test.describe('Mothers Leave Dates', () => {
     test('maternity leave starts label has correct value', async ({ setupLeavePage: page }) => { // <- Should be on the Monday 3 months prior to test run date
-      const today = new Date()
-
-      const threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
-      const day = threeMonthsAgo.getDate()
-      const month = threeMonthsAgo.toLocaleString('default', { month: 'long' }) // <- Get full month name (e.g. "September")
-      const year = threeMonthsAgo.getFullYear()
-      const dayOfTheWeek = (threeMonthsAgo.getDay() - 1) % 7 // <- 0: Sunday, 1: Monday, 2: Tuesday etc...
+      const threeMonthsAgo = await calculateDate(0, -3, 0, 0) //Used to pass due date 3 months ago 
+      const dayOfTheWeek = (threeMonthsAgo.dateCalculated.getDay() - 1) % 7 // <- 0: Sunday, 1: Monday, 2: Tuesday etc...
 
       const maternityLeaveStartsLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(7) > div:nth-child(1) > dd')
 
-      const correctStartDate = `week starting ${day.toString() - dayOfTheWeek} ${month.toString()} ${year.toString()}` // <- Will be in format 'week starting 13 May 2024', for example
-
+      const correctStartDate = await formatDate('week starting', threeMonthsAgo.day-dayOfTheWeek, threeMonthsAgo.month, threeMonthsAgo.year)//Used to pass prefix and date needed to util function
       console.log('correct start date: ', correctStartDate)
 
       expect(maternityLeaveStartsLabel).toContain(correctStartDate)
     })
 
     test('maternity leave ends label has correct value', async ({ setupLeavePage: page }) => { // <- Should be 27 weeks after 3 months prior to test run date
-      const today = new Date()
+      const threeMonthsAgo = await calculateDate(0,-3,0,0) // Used to calculate the date 3 months ago
+      const dayOfTheWeek = threeMonthsAgo.dateCalculated.getDay()
+      const daystoNextSunday = (7 - dayOfTheWeek) % 7 // Calculates the days to the next Sunday as a difference
 
-      const threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
-      const threeMonthsAgoDay = threeMonthsAgo.getDay()
-
-      const daystoNextSunday = (7 - threeMonthsAgoDay) % 7 // Calculates the days to the next Sunday as a difference
-      const lastDayOfWeek = new Date(threeMonthsAgo)
-      lastDayOfWeek.setDate(lastDayOfWeek.getDate() + daystoNextSunday)
-
-      const twentySevenWeeksLater = new Date(lastDayOfWeek)
-      twentySevenWeeksLater.setDate(lastDayOfWeek.getDate() + (26 * 7)) // Includes the week that the maternity leave was started so 26 weeks added
-
-      const month = twentySevenWeeksLater.toLocaleString('default', { month: 'long' }) // <- Get full month name (e.g. "September")
-      const year = twentySevenWeeksLater.getFullYear()
-      const day = twentySevenWeeksLater.getDate()
-
+      const twentySevenWeeksLater = await calculateDate(daystoNextSunday, -3, 0, 26) // Calculates the date 27 weeks before due date being 3 months prior to today 
+      console.log(twentySevenWeeksLater.day.toString())
+      console.log(twentySevenWeeksLater.month.toString())
+      console.log(twentySevenWeeksLater.year.toString())
       const maternityLeaveEndsLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(7) > div:nth-child(2) > dd')
 
-      const correctEndDate = `week ending ${day.toString()} ${month.toString()} ${year.toString()}` // <- Will be in format 'week starting 13 May 2024', for example
-
+      const correctEndDate = await formatDate('week ending', twentySevenWeeksLater.day, twentySevenWeeksLater.month, twentySevenWeeksLater.year ) // Passes the prefix of string with the date for a string 
       expect(maternityLeaveEndsLabel).toContain(correctEndDate)
     })
 
@@ -74,26 +53,14 @@ test.describe('Leave summary page', () => {
     })
 
     test('notify employers label has correct value', async ({ setupLeavePage: page }) => { // <- 15 weeks before due date
-      const today = new Date()
+      const threeMonthsAgo = await calculateDate(0, -3, 0, 0) // Calculates the date for 3 months ago 
 
-      const threeMonthsAgo = new Date(today.setMonth(today.getMonth() - 3))
-      const threeMonthsAgoDay = threeMonthsAgo.getDay()
-
-      const daystoMonday = (threeMonthsAgoDay === 0 ? -6 : 1) - threeMonthsAgoDay // Calculates the days to the Monday of the week from any given day as a difference
-      const startOfWeek = new Date(threeMonthsAgo)
-      startOfWeek.setDate(threeMonthsAgo.getDate() + daystoMonday)
-
-      const fifteenweeksBefore = new Date(startOfWeek)
-      fifteenweeksBefore.setDate(startOfWeek.getDate() - (15 * 7)) // Includes the week that the maternity leave was started so 26 weeks added
-
-      const month = fifteenweeksBefore.toLocaleString('default', { month: 'long' }) // <- Get full month name (e.g. "September")
-      const year = fifteenweeksBefore.getFullYear()
-      const day = fifteenweeksBefore.getDate()
+      const daystoMonday = (threeMonthsAgo.dateCalculated.getDay() === 0 ? -6 : 1) - threeMonthsAgo.dateCalculated.getDay() // Calculates the days to the Monday of the week from any given day as a difference
+      const fifteenweeksBefore = await calculateDate(daystoMonday, -3, 0, -15) // Calculates the date 15 weeks before due date and ensures it is based on the days to the Monday of the week 
 
       const notifyEmployerLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(7) > div:nth-child(4) > dd')
 
-      const correctnotifyEmployerDate = `by ${day.toString()} ${month.toString()} ${year.toString()}` // <- Will be in format 'week starting 13 May 2024', for example
-
+      const correctnotifyEmployerDate = await formatDate('by', fifteenweeksBefore.day, fifteenweeksBefore.month, fifteenweeksBefore.year) //Passes the prefix with the date for 15 weeks before due date 
       expect(notifyEmployerLabel).toContain(correctnotifyEmployerDate)
     })
   })
