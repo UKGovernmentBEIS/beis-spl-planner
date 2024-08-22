@@ -48,7 +48,7 @@ test.describe('Planner page', () => {
     await selectLeave(page, 'father', 11)
     await selectLeave(page, 'father', 14) // <- Father takes second week
 
-    const fathersLeave = await page.textContent('#calendar table tbody tr:nth-child(22) td.govuk-table__cell.leave.shared div div.govuk-body.no-margin')
+    const fathersLeave = await page.textContent('#calendar > table > tbody > tr:nth-child(21) > td.govuk-table__cell.leave.shared')
     expect(fathersLeave).toContain('Shared Parental Leave')
   })
 })
