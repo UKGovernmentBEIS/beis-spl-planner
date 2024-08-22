@@ -11,54 +11,54 @@ test.describe('Leave summary page', () => {
     await expect(page.url()).toEqual(`${baseURL}/summary`)
   })
 
-  test('baby is due label has correct value', async ({ setupLeavePage: page }) => {
-    const { day, month, year } = await calculateDate(0, -3, 0, 0) // <- Used to pass due date 3 months ago
-    const babyDueDate = formatDate('', day, month, year) // <- Full string format found within appliation
+  test('baby is due label has correct value when given a due date 3 months ago from test run date', async ({ setupLeavePage: page }) => {
+    const { day, month, year } = await calculateDate(0, -3, 0, 0) 
+    const babyDueDate = formatDate('', day, month, year)
 
     const dueDateLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(4) > div > dd')
     expect(dueDateLabel).toContain(babyDueDate)
   })
 
   test.describe('Mothers Leave Dates', () => {
-    test('maternity leave starts label has correct value', async ({ setupLeavePage: page }) => { // <- Should be on the Monday 3 months prior to test run date
-      const referenceDate = await calculateDate(0, -3, 0, 0) // <- Used to pass due date 3 months ago
-      const dayOfTheWeek = (referenceDate.dateCalculated.getDay() - 1) % 7 // <- 0: Sunday, 1: Monday, 2: Tuesday etc...
+    test('maternity leave starts label has correct value for Monday 3 months before test run date', async ({ setupLeavePage: page }) => {
+      const referenceDate = await calculateDate(0, -3, 0, 0) 
+      const dayOfTheWeek = (referenceDate.dateCalculated.getDay() - 1) % 7 
 
       const maternityLeaveStartsLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(7) > div:nth-child(1) > dd')
 
-      const correctStartDate = await formatDate('week starting', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year) // <- Used to pass prefix and date needed to util function
+      const correctStartDate = await formatDate('week starting', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year)
 
       expect(maternityLeaveStartsLabel).toContain(correctStartDate)
     })
 
-    test('maternity leave ends label has correct value', async ({ setupLeavePage: page }) => { // <- Should be 27 weeks after 3 months prior to test run date
+    test('maternity leave ends label has correct value for Sunday 27 weeks after 3 months before test run date', async ({ setupLeavePage: page }) => { 
       const referenceDate = await calculateDate(0, -3, 0, 27)
       const dayOfTheWeek = referenceDate.dateCalculated.getDay() % 7
       const maternityLeaveEndsLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(7) > div:nth-child(2) > dd')
 
-      const correctEndDate = await formatDate('week ending', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year) // <- Passes the prefix of string with the date for a string
+      const correctEndDate = await formatDate('week ending', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year)
       expect(maternityLeaveEndsLabel).toContain(correctEndDate)
     })
 
-    test('length label has correct value', async ({ setupLeavePage: page }) => { // <- Should be 27
+    test('maternity leave length label has correct value of 27 weeks', async ({ setupLeavePage: page }) => { 
       const maternityLength = await page.textContent('#leave-summary > div > div > dl:nth-child(7) > div:nth-child(3) > dd')
       expect(maternityLength).toContain('27 weeks')
     })
 
-    test('notify employers label has correct value', async ({ setupLeavePage: page }) => { // <- 15 weeks before due date
+    test('notify employers label has correct value of 15 weeks before 3 months before test run date', async ({ setupLeavePage: page }) => {
       const referenceDate = await calculateDate(0, -3, 0, -15)
       const dayOfTheWeek = (referenceDate.dateCalculated.getDay() - 1) % 7
       const notifyEmployerLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(7) > div:nth-child(4) > dd')
 
-      const correctNotifyEmployerDate = await formatDate('by', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year) // <- Passes the prefix with the date for 15 weeks before due date
+      const correctNotifyEmployerDate = await formatDate('by', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year)
       expect(notifyEmployerLabel).toContain(correctNotifyEmployerDate)
     })
   })
 
   test.describe('Partners Leave Dates', () => {
-    test('paternity leave starts (week 1) label has correct value', async ({ setupLeavePage: page }) => { // <- Should be on the Monday 3 months prior to test run date
-      const referenceDate = await calculateDate(0, -3, 0, 0) // <- Used to pass due date 3 months ago
-      const dayOfTheWeek = (referenceDate.dateCalculated.getDay() - 1) % 7 // <- 0: Sunday, 1: Monday, 2: Tuesday etc...
+    test('paternity leave starts (week 1) label has correct value for Monday 3 months before test run date', async ({ setupLeavePage: page }) => { 
+      const referenceDate = await calculateDate(0, -3, 0, 0) 
+      const dayOfTheWeek = (referenceDate.dateCalculated.getDay() - 1) % 7
 
       const maternityLeaveStartsLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(11) > div:nth-child(1) > dd')
 
@@ -67,50 +67,50 @@ test.describe('Leave summary page', () => {
       expect(maternityLeaveStartsLabel).toContain(correctStartDate)
     })
 
-    test('length label has correct value', async ({ setupLeavePage: page }) => { // <- Should be 2
+    test('parental leave length label has correct value of 2 weeks', async ({ setupLeavePage: page }) => { 
       const lengthLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(11) > div:nth-child(2) > dd')
       expect(lengthLabel).toContain('2 weeks')
     })
 
-    test('notify employers label has correct value', async ({ setupLeavePage: page }) => { // <- 15 weeks before due date
+    test('notify employers label has correct value of 15 weeks before 3 months before test run date', async ({ setupLeavePage: page }) => { 
       const referenceDate = await calculateDate(0, -3, 0, -15)
       const dayOfTheWeek = (referenceDate.dateCalculated.getDay() - 1) % 7
       const notifyEmployerLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(11) > div:nth-child(3) > dd')
 
-      const correctNotifyEmployerDate = await formatDate('by', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year) // Passes the prefix with the date for 15 weeks before due date
+      const correctNotifyEmployerDate = await formatDate('by', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year) 
       expect(notifyEmployerLabel).toContain(correctNotifyEmployerDate)
     })
 
-    test('shared parental leave block 1 starts label has correct value', async ({ setupLeavePage: page }) => { // <- 2 weeks after due date
+    test('shared parental leave block 1 starts label has correct value of 2 weeks after 3 months before test run date', async ({ setupLeavePage: page }) => { 
       const referenceDate = await calculateDate(0, -3, 0, 2)
-      const dayOfTheWeek = (referenceDate.dateCalculated.getDay() - 1) % 7 // <- 0: Sunday, 1: Monday, 2: Tuesday etc... s
+      const dayOfTheWeek = (referenceDate.dateCalculated.getDay() - 1) % 7 
 
-      const correctBlockOneStartDate = await formatDate('week starting', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year) // <- Will be in format 'week starting 13 May 2024', for example
+      const correctBlockOneStartDate = await formatDate('week starting', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year) 
       const blockOneStartsLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(13) > div:nth-child(1) > dd')
       expect(blockOneStartsLabel).toContain(correctBlockOneStartDate)
     })
 
-    test('shared parental leave block 1 ends label has correct value', async ({ setupLeavePage: page }) => { // <- 12 weeks after block 1 starts
+    test('shared parental leave block 1 ends label has correct value of 12 weeks after block 1 starts', async ({ setupLeavePage: page }) => { 
       const referenceDate = await calculateDate(0, -3, 0, 14)
-      const dayOfTheWeek = referenceDate.dateCalculated.getDay() % 7 // <- 0: Sunday, 1: Monday, 2: Tuesday etc...
+      const dayOfTheWeek = referenceDate.dateCalculated.getDay() % 7 
 
       const correctBlockOneEndDate = await formatDate('week ending', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year)
       const blockOneEndsLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(13) > div:nth-child(2) > dd')
       expect(blockOneEndsLabel).toContain(correctBlockOneEndDate)
     })
 
-    test('shared parental leave length label has correct value', async ({ setupLeavePage: page }) => { // <- 12 weeks
+    test('shared parental leave length label has correct value of 12 weeks', async ({ setupLeavePage: page }) => {
       const sharedParentalLengthLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(13) > div:nth-child(3) > dd')
       expect(sharedParentalLengthLabel).toContain('12 weeks')
     })
 
-    test('shared parental leave notify employers label has correct value', async ({ setupLeavePage: page }) => { // <- On the Monday 8 weeks before due date
+    test('shared parental leave notify employers label has correct value of the Monday 8 weeks before 3 months before test run date', async ({ setupLeavePage: page }) => { 
       const referenceDate = await calculateDate(0, -3, 0, -8)
       const dayOfTheWeek = (referenceDate.dateCalculated.getDay() - 1) % 7
 
       const notifyEmployerLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(13) > div:nth-child(4) > dd')
 
-      const correctNotifyEmployerDate = await formatDate('by', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year) // <- Will be in format 'week starting 13 May 2024', for example
+      const correctNotifyEmployerDate = await formatDate('by', referenceDate.day - dayOfTheWeek, referenceDate.month, referenceDate.year) 
 
       expect(notifyEmployerLabel).toContain(correctNotifyEmployerDate)
     })
