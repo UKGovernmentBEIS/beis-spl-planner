@@ -4,7 +4,7 @@ async function calculateDate (days, months, years, weeks) {
   const dateCalculated = new Date(
     today.getFullYear() + years,
     today.getMonth() + months,
-    today.getDate() + days + weeks * 7
+    today.getDate() + days + (weeks * 7)
   )
   const day = dateCalculated.getDate()
   const month = dateCalculated.toLocaleString('default', { month: 'long' }) // <- Get full month name (e.g. "September")
