@@ -1,6 +1,6 @@
 const { expect } = require('@playwright/test')
 
-async function assertRemainingLeave (page, selector, expectedText) {
+async function assertLeaveText (page, selector, expectedText) {
   const remainingLeaveLocator = page.locator(selector)
   await remainingLeaveLocator.waitFor({ state: 'visible', timeout: 5000 })
 
@@ -10,4 +10,4 @@ async function assertRemainingLeave (page, selector, expectedText) {
   expect(normalizedText).toContain(expectedText)
 }
 
-module.exports = { assertRemainingLeave }
+module.exports = { assertLeaveText }

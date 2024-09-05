@@ -4,19 +4,23 @@ const test = base.extend({
   setupPlannerPage: async ({ page, baseURL }, use) => {
     // nature-of-parenthood
     await page.goto(`${baseURL}`)
-    await page.check("input[value='birth']")
+    await page.check("input[value='adoption']")
     await page.click('button:text("Continue")')
 
-    // eligibility/mother/shared-parental-leave-and-pay
+    // type-of-adoption
+    await page.getByLabel('UK Adoption').click()
+    await page.click('button:text("Continue")')
+
+    // eligibility/primary-adopter/shared-parental-leave-and-pay
     await page
       .getByRole('group', {
-        name: 'Is the mother eligible for Shared Parental Leave?'
+        name: 'Is the primary adopter eligible for Shared Parental Leave?'
       })
       .getByLabel('Yes')
       .click()
     await page
       .getByRole('group', {
-        name: 'Is the mother eligible for Statutory Shared Parental Pay?'
+        name: 'Is the primary adopter eligible for Statutory Shared Parental Pay?'
       })
       .getByLabel('Yes')
       .click()

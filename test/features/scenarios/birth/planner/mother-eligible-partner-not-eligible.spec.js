@@ -1,56 +1,56 @@
-const test = require('../../../fixtures/birth/planner/mother-not-eligible-partner-eligible')
+const test = require("../../../fixtures/birth/planner/mother-not-eligible-partner-eligible");
 const {
   selectLeave,
-  selectLeaveRange
-} = require('../../../utils/plannerUtils/plannerSelectLeave')
-const { assertRemainingLeave } = require('../../../helpers/plannerHelpers')
-const checkUrl = require('../../../helpers/general')
-const plannerSelectors = require('../../../utils/selectors/planner')
-const textConstants = require('../../../utils/constants/textConstants')
+  selectLeaveRange,
+} = require("../../../utils/plannerUtils/plannerSelectLeave");
+const { assertLeaveText } = require("../../../helpers/plannerHelpers");
+const checkUrl = require("../../../helpers/general");
+const plannerSelectors = require("../../../utils/selectors/planner");
+const textConstants = require("../../../utils/constants/textConstants");
 
-test.describe('Birth > Mother Eligible, Partner Not Eligible > Planner', () => {
-  test.beforeEach(async ({ setupPlannerPage }) => {})
+test.describe("Birth > Mother Eligible, Partner Not Eligible > Planner", () => {
+  test.beforeEach(async ({ setupPlannerPage }) => {});
 
-  test('should have correct URL', async ({ setupPlannerPage: page }) => {
-    await checkUrl(page, '/planner')
-  })
+  test("should have correct URL", async ({ setupPlannerPage: page }) => {
+    await checkUrl(page, "/planner");
+  });
 
-  test('Partner can take 2 weeks paternity leave', async ({
-    setupPlannerPage: page
+  test("Partner can take 2 weeks paternity leave", async ({
+    setupPlannerPage: page,
   }) => {
-    await selectLeaveRange(page, 'father', 11, 12)
+    await selectLeaveRange(page, "father", 11, 12);
 
-    await assertRemainingLeave(
+    await assertLeaveText(
       page,
       plannerSelectors.remainingLeaveSidebar,
-      textConstants.partnerNoRemainingLeave
-    )
-  })
+      textConstants.partnerNoRemainingLeave,
+    );
+  });
 
-  test('Father can take 2 weeks leave separated by 10 weeks', async ({
-    setupPlannerPage: page
+  test("Father can take 2 weeks leave separated by 10 weeks", async ({
+    setupPlannerPage: page,
   }) => {
-    await selectLeaveRange(page, 'mother', 13, 23)
+    await selectLeaveRange(page, "mother", 13, 23);
 
-    await selectLeave(page, 'father', 11)
-    await selectLeave(page, 'father', 15)
+    await selectLeave(page, "father", 11);
+    await selectLeave(page, "father", 15);
 
-    await assertRemainingLeave(
+    await assertLeaveText(
       page,
       plannerSelectors.remainingLeaveSidebar,
-      textConstants.partnerNoRemainingLeave
-    )
-  })
+      textConstants.partnerNoRemainingLeave,
+    );
+  });
 
-  test('Partner can take up to 39 weeks of paid leave', async ({
-    setupPlannerPage: page
+  test("Partner can take up to 39 weeks of paid leave", async ({
+    setupPlannerPage: page,
   }) => {
-    await selectLeaveRange(page, 'father', 11, 50)
+    await selectLeaveRange(page, "father", 11, 50);
 
-    await assertRemainingLeave(
+    await assertLeaveText(
       page,
       plannerSelectors.remainingLeaveSidebar,
-      textConstants.partnerNoRemainingLeave
-    )
-  })
-})
+      textConstants.partnerNoRemainingLeave,
+    );
+  });
+});
