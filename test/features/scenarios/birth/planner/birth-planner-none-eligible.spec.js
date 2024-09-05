@@ -1,6 +1,7 @@
 const { expect } = require('@playwright/test')
 const test = require('../../../fixtures/birth/planner/none-eligible')
-const { checkUrl } = require('../../../helpers/plannerHelpers')
+const checkUrl = require('../../../helpers/general')
+const textConstants = require('../../../utils/constants/textConstants')
 
 test.describe('Birth > No Eligibility > Planner', () => {
   test.beforeEach(async ({ setupPlannerPageNoneEligible }) => {})
@@ -16,7 +17,7 @@ test.describe('Birth > No Eligibility > Planner', () => {
   }) => {
     await expect(
       page.getByRole('heading', {
-        name: 'Neither parent is eligible for Shared Parental Leave or Pay'
+        name: textConstants.neitherEligibleTitle
       })
     ).toBeVisible()
   })

@@ -1,12 +1,12 @@
 const { expect } = require('@playwright/test')
 const test = require('../../fixtures/adoption/select-adoption')
+const checkUrl = require('../../helpers/general')
 
 test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
   test.beforeEach(async ({ setupAdoptionPage }) => {})
 
   test('should have url', async ({ setupAdoptionPage: page }) => {
-    const { baseURL } = page.context()._options
-    await expect(page.url()).toEqual(`${baseURL}/type-of-adoption`)
+    await checkUrl(page, '/type-of-adoption')
   })
 
   test('should have title', async ({ setupAdoptionPage: page }) => {
@@ -16,10 +16,6 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
       })
     ).toBeVisible()
   })
-
-  // test('should have a link to the eligibility tool', async ({ page }) => {
-  //   await expect(page.getByRole('link', { name: 'check if you can get Shared Parental Leave or Pay' })).toBeVisible()
-  // })
 
   test.describe('with the form buttons', () => {
     test('radio buttons should be clickable', async ({

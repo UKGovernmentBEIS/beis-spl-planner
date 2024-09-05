@@ -1,11 +1,12 @@
-const { expect } = require('@playwright/test')
 const test = require('../../../fixtures/birth/planner/mother-not-eligible-partner-eligible')
+const { assertRemainingLeave } = require('../../../helpers/plannerHelpers')
+const checkUrl = require('../../../helpers/general')
 const {
-  checkUrl,
-  assertRemainingLeave
-} = require('../../../helpers/plannerHelpers')
-const selectLeave = require('../../../utils/plannerUtils/plannerSelectLeave')
+  selectLeave,
+  selectLeaveRange
+} = require('../../../utils/plannerUtils/plannerSelectLeave')
 const plannerSelectors = require('../../../utils/selectors/planner')
+const textConstants = require('../../../utils/constants/textConstants')
 
 test.describe('Birth > Mother Not Eligible, Partner Eligible > Planner', () => {
   test.beforeEach(async ({ setupPlannerPage }) => {})
@@ -17,22 +18,19 @@ test.describe('Birth > Mother Not Eligible, Partner Eligible > Planner', () => {
   test('Partner can take 2 weeks paternity leave', async ({
     setupPlannerPage: page
   }) => {
-    await selectLeave(page, 'father', 11)
-    await selectLeave(page, 'father', 12)
+    await selectLeaveRange(page, 'father', 11, 12)
 
     await assertRemainingLeave(
       page,
       plannerSelectors.remainingLeaveSidebar,
-      'The partner has 0 weeks left to take as Paternity Leave and Pay.'
+      textConstants.partnerNoRemainingLeave
     )
   })
 
   test('Father can take 2 weeks leave separated by 10 number of weeks', async ({
     setupPlannerPage: page
   }) => {
-    for (let week = 13; week < 23; week++) {
-      await selectLeave(page, 'mother', week)
-    }
+    await selectLeaveRange(page, 'mother', 13, 23)
 
     await selectLeave(page, 'father', 11)
     await selectLeave(page, 'father', 15)
@@ -40,20 +38,19 @@ test.describe('Birth > Mother Not Eligible, Partner Eligible > Planner', () => {
     await assertRemainingLeave(
       page,
       plannerSelectors.remainingLeaveSidebar,
-      'The partner has 0 weeks left to take as Paternity Leave and Pay.'
+      textConstants.partnerNoRemainingLeave
     )
   })
 
   test('Partner can take up to 39 weeks of paid leave', async ({
     setupPlannerPage: page
   }) => {
-    for (let week = 11; week < 50; week++) {
-      await selectLeave(page, 'father', week)
-    }
+    await selectLeaveRange(page, 'father', 11, 50)
 
-    const remainingLeave = await page.textContent(
-      plannerSelectors.remainingLeaveInfoAlert
+    await assertRemainingLeave(
+      page,
+      plannerSelectors.remainingLeaveSidebar,
+      textConstants.partnerNoRemainingLeave
     )
-    expect(remainingLeave).toBe('0')
   })
 })

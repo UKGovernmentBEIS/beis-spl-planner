@@ -4,4 +4,10 @@ async function selectLeave (page, parent, week) {
   )
 }
 
-module.exports = selectLeave
+async function selectLeaveRange (page, parentType, startWeek, endWeek) {
+  for (let week = startWeek; week <= endWeek; week++) {
+    await selectLeave(page, parentType, week)
+  }
+}
+
+module.exports = { selectLeave, selectLeaveRange }

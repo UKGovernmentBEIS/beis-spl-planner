@@ -1,12 +1,12 @@
 const { expect } = require('@playwright/test')
 const test = require('../../fixtures/birth/select-partners-leave-and-pay')
+const checkUrl = require('../../helpers/general')
 
 test.describe('child live-in date page', () => {
   test.beforeEach(async ({ setupPartnersLeaveAndPay }) => {})
 
   test('should have url', async ({ setupPartnersLeaveAndPay: page }) => {
-    const { baseURL } = page.context()._options
-    await expect(page.url()).toEqual(`${baseURL}/start-date`)
+    await checkUrl(page, '/start-date')
   })
 
   test('should have title', async ({ setupPartnersLeaveAndPay: page }) => {

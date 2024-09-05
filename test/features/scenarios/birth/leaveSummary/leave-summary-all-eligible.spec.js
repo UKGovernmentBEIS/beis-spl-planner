@@ -3,19 +3,17 @@ const test = require('../../../fixtures/birth/leaveSummary/mother-eligible-partn
 const calculateDate = require('../../../utils/dateUtils/calculateDate.js')
 const assertDateLabel = require('../../../utils/dateUtils/assertDateLabel.js')
 const leaveSummarySelectors = require('../../../utils/selectors/leaveSummary.js')
+const checkUrl = require('../../../helpers/general')
 
 test.describe('Leave summary page', () => {
   let calculatedLeaveDate
-  let baseURL
 
   test.beforeEach(async ({ setupLeavePage }) => {
-    const { baseURL: url } = setupLeavePage.context()._options
-    baseURL = url
     calculatedLeaveDate = await calculateDate()
   })
 
   test('should have the correct url', async ({ setupLeavePage: page }) => {
-    await expect(page.url()).toEqual(`${baseURL}/summary`)
+    await checkUrl(page, '/summary')
   })
 
   test('baby is due label has correct value', async ({

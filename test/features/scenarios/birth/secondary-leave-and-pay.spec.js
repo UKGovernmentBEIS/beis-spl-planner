@@ -1,14 +1,12 @@
 const { expect } = require('@playwright/test')
 const test = require('../../fixtures/birth/select-mothers-leave-and-pay')
+const checkUrl = require('../../helpers/general')
 
 test.describe('when "surrogacy" then "parental order parents leave and pay" is selected on "nature-of-parenthood"', () => {
   test.beforeEach(async ({ setupMothersLeaveAndPay }) => {})
 
   test('should have url', async ({ setupMothersLeaveAndPay: page }) => {
-    const { baseURL } = page.context()._options
-    await expect(page.url()).toEqual(
-      `${baseURL}/eligibility/partner/shared-parental-leave-and-pay`
-    )
+    await checkUrl(page, '/eligibility/partner/shared-parental-leave-and-pay')
   })
 
   test('should have title', async ({ setupMothersLeaveAndPay: page }) => {
