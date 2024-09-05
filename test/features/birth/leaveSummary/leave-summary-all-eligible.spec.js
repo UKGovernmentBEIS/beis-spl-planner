@@ -1,7 +1,6 @@
 const { expect } = require('@playwright/test')
 const test = require('../../../fixtures/birth/leaveSummary/mother-eligible-partner-eligible.js')
 const calculateDate = require('../../../utils/calculateDate.js')
-const { start } = require('repl')
 
 test.describe('Leave summary page', () => {
   test.beforeEach(async ({ setupLeavePage }) => {})
@@ -25,7 +24,7 @@ test.describe('Leave summary page', () => {
       expect(maternityLeaveStartsLabel).toContain(startofweekLeaveDate.format('[week starting] D MMMM YYYY'))
     })
 
-    test('maternity leave ends label has correct value for Sunday 27 weeks after 3 months before test run date', async ({ setupLeavePage: page }) => { 
+    test('maternity leave ends label has correct value for Sunday 27 weeks after 3 months before test run date', async ({ setupLeavePage: page }) => {
       const calculatedLeaveDate = await calculateDate()
       const seventeenWeeksLater = calculatedLeaveDate.add(26, 'weeks')
       const endofweekLeaveDate = seventeenWeeksLater.endOf('isoWeek')
@@ -33,7 +32,7 @@ test.describe('Leave summary page', () => {
       expect(maternityLeaveEndsLabel).toContain(endofweekLeaveDate.format('[week ending] D MMMM YYYY'))
     })
 
-    test('maternity leave length label has correct value of 27 weeks', async ({ setupLeavePage: page }) => { 
+    test('maternity leave length label has correct value of 27 weeks', async ({ setupLeavePage: page }) => {
       const maternityLength = await page.textContent('#leave-summary > div > div > dl:nth-child(7) > div:nth-child(3) > dd')
       expect(maternityLength).toContain('27 weeks')
     })
@@ -48,35 +47,35 @@ test.describe('Leave summary page', () => {
   })
 
   test.describe('Partners Leave Dates', () => {
-    test('paternity leave starts (week 1) label has correct value for Monday 3 months before test run date', async ({ setupLeavePage: page }) => { 
+    test('paternity leave starts (week 1) label has correct value for Monday 3 months before test run date', async ({ setupLeavePage: page }) => {
       const calculatedLeaveDate = await calculateDate()
       const startofweekleaveDate = calculatedLeaveDate.startOf('isoWeek')
       const maternityLeaveStartsLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(11) > div:nth-child(1) > dd')
       expect(maternityLeaveStartsLabel).toContain(startofweekleaveDate.format('[week starting] D MMMM YYYY'))
     })
 
-    test('parental leave length label has correct value of 2 weeks', async ({ setupLeavePage: page }) => { 
+    test('parental leave length label has correct value of 2 weeks', async ({ setupLeavePage: page }) => {
       const lengthLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(11) > div:nth-child(2) > dd')
       expect(lengthLabel).toContain('2 weeks')
     })
 
-    test('notify employers label has correct value of 15 weeks before 3 months before test run date', async ({ setupLeavePage: page }) => { 
+    test('notify employers label has correct value of 15 weeks before 3 months before test run date', async ({ setupLeavePage: page }) => {
       const notifyEmployerDate = await calculateDate()
       const fifteenWeeksLater = notifyEmployerDate.subtract(15, 'weeks')
       const notifyByDate = fifteenWeeksLater.startOf('isoWeek')
-      const notifyEmployerLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(11) > div:nth-child(3) > dd') 
+      const notifyEmployerLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(11) > div:nth-child(3) > dd')
       expect(notifyEmployerLabel).toContain(notifyByDate.format('[by] D MMMM YYYY'))
     })
 
-    test('shared parental leave block 1 starts label has correct value of 2 weeks after 3 months before test run date', async ({ setupLeavePage: page }) => { 
+    test('shared parental leave block 1 starts label has correct value of 2 weeks after 3 months before test run date', async ({ setupLeavePage: page }) => {
       const calculatedLeaveDate = await calculateDate()
       const twoWeeksAfter = calculatedLeaveDate.add(2, 'weeks')
       const sharedparentalStartsDate = twoWeeksAfter.startOf('isoWeek')
       const blockOneStartsLabel = await page.textContent('#leave-summary > div > div > dl:nth-child(13) > div:nth-child(1) > dd')
       expect(blockOneStartsLabel).toContain(sharedparentalStartsDate.format('[week starting] D MMMM YYYY'))
     })
- 
-    test('shared parental leave block 1 ends label has correct value of 12 weeks after block 1 starts', async ({ setupLeavePage: page }) => { 
+
+    test('shared parental leave block 1 ends label has correct value of 12 weeks after block 1 starts', async ({ setupLeavePage: page }) => {
       const calculatedLeaveDate = await calculateDate()
       const fourteenWeeksLater = calculatedLeaveDate.add(13, 'weeks')
       const sharedoarentEndsDate = fourteenWeeksLater.endOf('isoWeek')
@@ -89,7 +88,7 @@ test.describe('Leave summary page', () => {
       expect(sharedParentalLengthLabel).toContain('12 weeks')
     })
 
-    test('shared parental leave notify employers label has correct value of the Monday 8 weeks before 3 months before test run date', async ({ setupLeavePage: page }) => { 
+    test('shared parental leave notify employers label has correct value of the Monday 8 weeks before 3 months before test run date', async ({ setupLeavePage: page }) => {
       const calculatedLeaveDate = await calculateDate()
       const eightWeeksBefore = calculatedLeaveDate.subtract(8, 'weeks')
       const notifyByDate = eightWeeksBefore.startOf('isoWeek')
