@@ -10,8 +10,12 @@ const test = base.extend({
     }
     const secondaryParent = {
       name: 'partner',
-      splEligible: 'Yes',
-      splPayEligible: 'Yes'
+      splEligible: 'No',
+      splPayEligible: 'No'
+    }
+    const additionalLeaveQuestions = {
+      primaryParentLeaveEligible: true,
+      secondaryParentLeaveEligible: false
     }
     await commonSetup(
       page,
@@ -19,7 +23,7 @@ const test = base.extend({
       'adoption',
       primaryParent,
       secondaryParent,
-      false,
+      additionalLeaveQuestions,
       async (page) => {
         // Type of adoption (UK Adoption specific to this route)
         await page.getByLabel('UK Adoption').click()
