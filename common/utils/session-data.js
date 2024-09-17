@@ -6,7 +6,7 @@ const ShareTokenDecoder = require('../../app/lib/shareToken/shareTokenDecoder')
 module.exports = function (req, res, next) {
   if (req.method === 'GET' && req.query['data-in-query']) {
     const parsedUrl = new URL(req.url, `http://${req.headers.host}`)
-    const query = parsedUrl.parse(req.url).query
+    const query = parsedUrl.search
     const queryData = qs.parse(query, { comma: true })
     const { 'data-in-query': _, ...data } = queryData
     req.session.data = data
