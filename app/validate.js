@@ -129,13 +129,13 @@ function startDate (req) {
 }
 
 function feedback (req) {
-  var valid = true
-  if (!req.session.data['feedback']) {
+  let valid = true
+  if (!req.session.data.feedback) {
     addError(req, 'feedback', 'Provide your experience with the service.', '#feedback')
     valid = false
   }
 
-  var value = req.session.data['spam-filter'].toLowerCase()
+  const value = req.session.data['spam-filter'].toLowerCase()
   if (!value.length) {
     addError(req, 'spam-filter', 'Prove you are not a robot.', '#spam-filter')
     valid = false
@@ -298,7 +298,7 @@ function planner (req) {
   if (paternityLeaveAllowanceUsed > 2) {
     const overspend = paternityLeaveAllowanceUsed - 2
     const message = `You’ve taken too many weeks of Paternity Leave. Unselect ${overspend} Paternity Leave week${overspend > 1 ? 's' : ''}.`
-    addCalendarError(req, 'secondary', `too-many-paternity-leave-weeks`, message)
+    addCalendarError(req, 'secondary', 'too-many-paternity-leave-weeks', message)
     isValid = false
   }
 
@@ -307,7 +307,7 @@ function planner (req) {
   if (sharedLeaveAllowanceUsed > 52) {
     const overspend = sharedLeaveAllowanceUsed - 52
     const message = `You’ve taken too many weeks of leave. Unselect ${overspend} leave week${overspend > 1 ? 's' : ''}.`
-    addCalendarError(req, 'shared', `too-many-leave-weeks`, message)
+    addCalendarError(req, 'shared', 'too-many-leave-weeks', message)
     isValid = false
   }
 
@@ -316,7 +316,7 @@ function planner (req) {
   if (sharedPayAllowanceUsed > 39) {
     const overspend = sharedPayAllowanceUsed - 39
     const message = `You’ve taken too many weeks of pay. Untick ${overspend} pay week${overspend > 1 ? 's' : ''}.`
-    addCalendarError(req, 'shared', `too-many-pay-weeks`, message)
+    addCalendarError(req, 'shared', 'too-many-pay-weeks', message)
     isValid = false
   }
 
@@ -367,7 +367,7 @@ function addCalendarError (req, parentOrShared, key, message) {
 }
 
 function paternityLeaveQuestion (req) {
-  const secondaryLeaves = req.session.data['leave-blocks']['secondary']
+  const secondaryLeaves = req.session.data['leave-blocks'].secondary
   if (typeof secondaryLeaves === 'undefined' || !isYesOrNo(secondaryLeaves['is-taking-paternity-leave'])) {
     addError(req, 'is-taking-paternity-leave', ' Select whether or not the Partner will take Paternity Leave', '#is-taking-paternity-leave')
     return false

@@ -68,7 +68,7 @@ router.route(paths.getPath('typeOfAdoption'))
     if (!validate.typeOfAdoption(req)) {
       return res.redirect(req.path)
     }
-    res.redirect(paths.getPath(`eligibility.primary-adopter.sharedParentalLeaveAndPay`))
+    res.redirect(paths.getPath('eligibility.primary-adopter.sharedParentalLeaveAndPay'))
   })
 
 registerEligibilityRouteForPrimaryParents(router, 'sharedParentalLeaveAndPay', {
@@ -123,7 +123,7 @@ registerEligibilityRouteForBirthMother(router, 'maternityAllowance', {
     } else if (dataUtils.isPrimaryIneligible(req.session.data)) {
       res.redirect(paths.getPath('notEligible'))
     } else {
-      res.redirect(paths.getPath(`eligibility.partner.sharedParentalLeaveAndPay`))
+      res.redirect(paths.getPath('eligibility.partner.sharedParentalLeaveAndPay'))
     }
   }
 })

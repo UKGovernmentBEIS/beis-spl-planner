@@ -28,7 +28,7 @@ function start () {
 function startMaster () {
   logger.info(`Master started. PID: ${process.pid}`)
   process.on('SIGINT', () => {
-    logger.info(`Master exiting`)
+    logger.info('Master exiting')
     process.exit()
   })
 }

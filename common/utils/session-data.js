@@ -1,12 +1,12 @@
 const qs = require('qs')
-const url = require('url')
+const { URL } = require('url')
 const paths = require('../../app/paths')
 const ShareTokenDecoder = require('../../app/lib/shareToken/shareTokenDecoder')
 
 module.exports = function (req, res, next) {
   if (req.method === 'GET' && req.query['data-in-query']) {
-    // eslint-disable-next-line node/no-deprecated-api
-    const query = url.parse(req.url).query
+    const parsedUrl = new URL(req.url, `http://${req.headers.host}`)
+    const query = parsedUrl.parse(req.url).query
     const queryData = qs.parse(query, { comma: true })
     const { 'data-in-query': _, ...data } = queryData
     req.session.data = data
@@ -26,7 +26,9 @@ module.exports = function (req, res, next) {
     req.session.data = {}
   }
 
-  req.session.data.backPathForHelpPages = paths.isWorkFlowPage(req.path) ? req.path : req.session.data.backPathForHelpPages
+  req.session.data.backPathForHelpPages = paths.isWorkFlowPage(req.path)
+    ? req.path
+    : req.session.data.backPathForHelpPages
 
   res.locals.data = req.session.data
   res.locals.withData = function (path) {
@@ -34,7 +36,9 @@ module.exports = function (req, res, next) {
     return `${path}?${qs.stringify(queryData, { arrayFormat: 'comma' })}`
   }
   res.locals.backPath = function () {
-    return res.locals.withData(paths.getPreviousWorkflowPath(req.path, req.session.data))
+    return res.locals.withData(
+      paths.getPreviousWorkflowPath(req.path, req.session.data)
+    )
   }
   next()
 }
