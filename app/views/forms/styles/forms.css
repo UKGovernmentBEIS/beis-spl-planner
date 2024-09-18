@@ -1,10 +1,56 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-weight: 400;
   font-size: 12px;
   box-sizing: border-box;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 0;
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 3px;
+}
+
+h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 4px;
+  padding-bottom: 7px;
+}
+
+p {
+  margin: 0.5rem 0;
+}
+
+p .field-number {
+  display: inline-block;
+  margin: 0 3px;
+}
+
+.primary h1,
+.primary h2,
+.primary h3,
+.primary h4,
+.primary h5,
+.primary h6 {
+  color: #005192;
+}
+
+.secondary h1,
+.secondary h2,
+.secondary h3,
+.secondary h4,
+.secondary h5,
+.secondary h6 {
+  color: #b10e1e;
 }
 
 .page {
@@ -50,33 +96,6 @@ html, body {
   position: absolute;
   bottom: 0;
   right: 0;
-}
-
-h1 {
-  font-weight: 600;
-  font-size: 20px;
-}
-
-p {
-  margin: 0.5rem 0;
-}
-
-.primary h1,
-.primary h2,
-.primary h3,
-.primary h4,
-.primary h5,
-.primary h6 {
-  color: #005192;
-}
-
-.secondary h1,
-.secondary h2,
-.secondary h3,
-.secondary h4,
-.secondary h5,
-.secondary h6 {
-  color: #B10E1E;
 }
 
 .input-field {
@@ -132,11 +151,6 @@ p {
 
 .field-address .input-field {
   margin: 0;
-}
-
-p .field-number {
-  display: inline-block;
-  margin: 0 3px;
 }
 
 .field-number .input-field {
@@ -221,23 +235,7 @@ p .field-number {
 }
 
 .secondary .section-title {
-  border-bottom: 2px solid #B10E1E;
-}
-
-h1 {
-  margin-bottom: 0;
-}
-
-h3 {
-  margin-top: 0;
-  margin-bottom: 3px;
-}
-
-h4 {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-top: 4px;
-  padding-bottom: 7px;
+  border-bottom: 2px solid #b10e1e;
 }
 
 .with-margin {
