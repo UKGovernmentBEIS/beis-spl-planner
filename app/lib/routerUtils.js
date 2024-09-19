@@ -1,13 +1,19 @@
 const _ = require('lodash')
 const delve = require('dlv')
-const dset = require('dset')
+const { dset } = require('dset')
 const paths = require('../paths')
 const dataUtils = require('../../common/lib/dataUtils')
 const Day = require('../../common/lib/day')
 const { isYesOrNo } = require('./validationUtils')
 
 function registerEligibilityRouteForPrimaryParents (router, endpoint, handlers) {
-  registerRoutes(router, 'eligibility', ['mother', 'primary-adopter', 'parental-order-parent'], endpoint, handlers)
+  registerRoutes(
+    router,
+    'eligibility',
+    ['mother', 'primary-adopter', 'parental-order-parent'],
+    endpoint,
+    handlers
+  )
 }
 
 function registerEligibilityRouteForBirthMother (router, endpoint, handlers) {
@@ -15,7 +21,13 @@ function registerEligibilityRouteForBirthMother (router, endpoint, handlers) {
 }
 
 function registerPlannerRouteForPrimaryLeaveTypes (router, endpoint, handlers) {
-  registerRoutes(router, 'planner', ['maternity-leave', 'adoption-leave'], endpoint, handlers)
+  registerRoutes(
+    router,
+    'planner',
+    ['maternity-leave', 'adoption-leave'],
+    endpoint,
+    handlers
+  )
 }
 
 function registerRoutes (router, path, subpaths, endpoint, handlers) {
@@ -39,18 +51,24 @@ function bothParentsAreIneligible (data) {
   const primaryShppEligible = delve(data, ['primary', 'shpp-eligible'])
   const secondarySplEligible = delve(data, ['secondary', 'spl-eligible'])
   const secondaryShppEligible = delve(data, ['secondary', 'shpp-eligible'])
-  return dataUtils.isNo(primarySplEligible) &&
-         dataUtils.isNo(primaryShppEligible) &&
-         dataUtils.isNo(secondarySplEligible) &&
-         dataUtils.isNo(secondaryShppEligible)
+  return (
+    dataUtils.isNo(primarySplEligible) &&
+    dataUtils.isNo(primaryShppEligible) &&
+    dataUtils.isNo(secondarySplEligible) &&
+    dataUtils.isNo(secondaryShppEligible)
+  )
 }
 
 function parseExternalQueryString (req) {
-  ['primary', 'secondary'].forEach(parent => {
-    ['spl', 'shpp'].forEach(policy => {
+  ['primary', 'secondary'].forEach((parent) => {
+    ['spl', 'shpp'].forEach((policy) => {
       const parentPolicyEligibility = req.query[`${parent}-${policy}-eligible`]
       if (isYesOrNo(parentPolicyEligibility)) {
-        dset(req.session.data, `${parent}.${policy}-eligible`, parentPolicyEligibility)
+        dset(
+          req.session.data,
+          `${parent}.${policy}-eligible`,
+          parentPolicyEligibility
+        )
       }
     })
   })
@@ -110,12 +128,17 @@ function clearCurrenttSplBlockIfIncomplete (req) {
   clearDoneFromSplPlanningOrder(req)
   const { data } = req.session
   const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
-  const currentPlanned = splBlockPlanningOrder[splBlockPlanningOrder.length - 1]
+  const currentPlanned =
+    splBlockPlanningOrder[splBlockPlanningOrder.length - 1]
   if (!currentPlanned) {
     return
   }
   const currentParent = currentPlanned
-  const parentSplBlocks = delve(data, ['leave-blocks', currentParent, 'spl'], {})
+  const parentSplBlocks = delve(
+    data,
+    ['leave-blocks', currentParent, 'spl'],
+    {}
+  )
   const numberOfBlocks = Object.keys(parentSplBlocks).length
   if (numberOfBlocks === 0) {
     return
@@ -126,7 +149,12 @@ function clearCurrenttSplBlockIfIncomplete (req) {
     // Remove incomplete block.
     splBlockPlanningOrder.pop()
     dset(data, 'leave-blocks.spl-block-planning-order', splBlockPlanningOrder)
-    safeDeleteKey(data, ['leave-blocks', currentParent, 'spl', currentBlockIndex])
+    safeDeleteKey(data, [
+      'leave-blocks',
+      currentParent,
+      'spl',
+      currentBlockIndex
+    ])
   }
 }
 
@@ -154,7 +182,11 @@ function clearDoneFromSplPlanningOrder (req) {
 function getCurrentSplBlock (data) {
   const splBlockPlanningOrder = dataUtils.splBlockPlanningOrder(data)
   const currentParent = splBlockPlanningOrder[splBlockPlanningOrder.length - 1]
-  const parentSplBlocks = delve(data, ['leave-blocks', currentParent, 'spl'], {})
+  const parentSplBlocks = delve(
+    data,
+    ['leave-blocks', currentParent, 'spl'],
+    {}
+  )
   const numberOfBlocks = Object.keys(parentSplBlocks).length
   if (numberOfBlocks === 0) {
     return null
@@ -174,7 +206,9 @@ function safeDeleteKey (object, path) {
 
 function getJourneyTime (timings) {
   const plannerJourneyTime = timings.plannerEnd - timings.plannerStart
-  const totalJourneyTime = timings.eligibilityStart ? timings.plannerEnd - timings.eligibilityStart : plannerJourneyTime
+  const totalJourneyTime = timings.eligibilityStart
+    ? timings.plannerEnd - timings.eligibilityStart
+    : plannerJourneyTime
   return {
     plannerJourneyTime: Math.round(plannerJourneyTime / 1000),
     totalJourneyTime: Math.round(totalJourneyTime / 1000)
