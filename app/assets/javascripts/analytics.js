@@ -7,7 +7,7 @@ window.addEventListener('load', () => {
     const gaFields = getGaFields(element)
     const gaHitType = element.getAttribute('data-ga-hit-type')
     element.addEventListener('click', function (e) {
-      gaFields['nature_of_parenthood'] = gaFields['nature_of_parenthood'] || getNatureOfParenthood()
+      gaFields.nature_of_parenthood = gaFields.nature_of_parenthood || getNatureOfParenthood()
       gtag('event', gaHitType, gaFields)
     })
   })

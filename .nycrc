@@ -13,7 +13,6 @@
     "html"
   ],
   "report-dir": "./coverage",
-  "temp-directory": "./coverage/.nyc_output",
   "temp-dir": "./coverage/.nyc_output",
   "all": true
 }

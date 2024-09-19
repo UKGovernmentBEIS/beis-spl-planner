@@ -155,7 +155,7 @@ function updatePay (parent, week, leaveType, minimumWeek, eligibility) {
 function getSecondaryPayWeeksToUpdate (week, leaveType, eligibility) {
   const lastPossiblePaternityLeave = 7
   const hasNoSharedEligibility = !eligibility.secondary.shpp && !eligibility.secondary.spl
-  const earliestSelectedCheckbox = document.querySelector(`input[type=checkbox][name="secondary[leave]"]:checked`)
+  const earliestSelectedCheckbox = document.querySelector('input[type=checkbox][name="secondary[leave]"]:checked')
   const earliestSelectedWeek = earliestSelectedCheckbox && earliestSelectedCheckbox.value < week ? parseInt(earliestSelectedCheckbox.value) : week
   if (hasNoSharedEligibility) {
     if (!leaveType) {
