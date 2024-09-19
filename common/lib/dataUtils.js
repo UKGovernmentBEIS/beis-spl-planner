@@ -5,7 +5,7 @@ function feedbackExperience (data, optionName) {
   if (_.isString(data)) {
     return data === optionName
   } else {
-    return data['feedback'] === optionName
+    return data.feedback === optionName
   }
 }
 

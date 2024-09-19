@@ -6,7 +6,7 @@ const { parseLeaveBlocksIntoLeaveAndPay } = require('../../lib/blocks')
 
 function init (data) {
   const dataClone = _.cloneDeep(data)
-  if (!dataClone['visualPlanner']) {
+  if (!dataClone.visualPlanner) {
     parseLeaveBlocksIntoLeaveAndPay(dataClone, dataClone['leave-blocks'])
   }
   const primary = parseParentFromPlanner(dataClone, 'primary')

@@ -6,7 +6,7 @@ class Day {
       case 0:
         this.moment = moment.utc()
         break
-      case 1:
+      case 1: {
         if (moment.isMoment(yearDateStringOrMoment)) {
           this.moment = yearDateStringOrMoment
         } else {
@@ -14,11 +14,13 @@ class Day {
           this.moment = Day.parseDateStringToMoment(dateString)
         }
         break
-      case 3:
+      }
+      case 3: {
         const year = yearDateStringOrMoment
         const dateString = [year, month, day].join('-')
         this.moment = Day.parseDateStringToMoment(dateString)
         break
+      }
       default:
         this.moment = moment.invalid()
         break
