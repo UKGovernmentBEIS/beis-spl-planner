@@ -1,5 +1,5 @@
 const { chunk } = require('lodash')
-const dset = require('dset')
+const { dset } = require('dset')
 const {
   getBase64Index,
   convertBase10ToBinary,
@@ -7,7 +7,12 @@ const {
   convertBase64ToBinary
 } = require('./baseMathsUtils')
 const { earliestPrimaryLeaveWeek } = require('../../../common/lib/dataUtils')
-const { separator, policies, parents, entitlements } = require('./tokenConstants')
+const {
+  separator,
+  policies,
+  parents,
+  entitlements
+} = require('./tokenConstants')
 
 class ShareTokenEncoder {
   constructor (encoded) {
@@ -32,7 +37,11 @@ class ShareTokenEncoder {
     this._decodeNatureOfParenthood(natureOfParenthood)
     this._decodeEligibility(eligibilities)
     this._decodeStartDate(startDate)
-    this._decodeSalaryInformation(primarySalary, secondarySalary, salaryPeriods)
+    this._decodeSalaryInformation(
+      primarySalary,
+      secondarySalary,
+      salaryPeriods
+    )
     this._decodeWeeks(weeks)
     return this.data
   }
@@ -57,25 +66,36 @@ class ShareTokenEncoder {
   }
 
   _decodeEligibility (eligibilities) {
-    const binaryEncoding = eligibilities.split('')
+    const binaryEncoding = eligibilities
+      .split('')
       .map(getBase64Index)
       .map(convertBase10ToBinary)
-      .map(binary => binary.padStart(6, '0'))
+      .map((binary) => binary.padStart(6, '0'))
       .join('')
 
     const bitsPerEligibility = 2
-    chunk(binaryEncoding, bitsPerEligibility).forEach((eligibilityEncoding, idx) => {
-      if (eligibilityEncoding[0] === '1') {
-        const parent = idx < policies.primary.length ? 'primary' : 'secondary'
-        const policyIndex = parent === 'primary' ? idx : idx - policies.primary.length
-        const policy = `${policies[parent][policyIndex]}-eligible`
-        dset(this.data, `${parent}.${policy}`, getYesOrNo(eligibilityEncoding[1]))
+    chunk(binaryEncoding, bitsPerEligibility).forEach(
+      (eligibilityEncoding, idx) => {
+        if (eligibilityEncoding[0] === '1') {
+          const parent =
+            idx < policies.primary.length ? 'primary' : 'secondary'
+          const policyIndex =
+            parent === 'primary' ? idx : idx - policies.primary.length
+          const policy = `${policies[parent][policyIndex]}-eligible`
+          dset(
+            this.data,
+            `${parent}.${policy}`,
+            getYesOrNo(eligibilityEncoding[1])
+          )
+        }
       }
-    })
+    )
   }
 
   _decodeStartDate (startDate) {
-    const base10Date = convertBase64ToBase10(startDate).toString().padStart(8, '0')
+    const base10Date = convertBase64ToBase10(startDate)
+      .toString()
+      .padStart(8, '0')
     this.data['start-date-day'] = base10Date.substring(0, 2)
     this.data['start-date-month'] = base10Date.substring(2, 4)
     this.data['start-date-year'] = base10Date.substring(4)
@@ -95,14 +115,20 @@ class ShareTokenEncoder {
       // remove salary existence bit
       salary = salary.substring(1)
     }
-    dset(this.data, `${parent}.salary-amount`, convertBase64ToBase10(salary).toString())
+    dset(
+      this.data,
+      `${parent}.salary-amount`,
+      convertBase64ToBase10(salary).toString()
+    )
   }
 
   _decodeSalaryPeriods (salaryPeriods) {
     const bitsPerSalaryPeriod = 2
-    const binarySalaryPeriods = convertBase64ToBinary(salaryPeriods).padStart(4, '0').split('')
+    const binarySalaryPeriods = convertBase64ToBinary(salaryPeriods)
+      .padStart(4, '0')
+      .split('')
     chunk(binarySalaryPeriods, bitsPerSalaryPeriod)
-      .map(binaryArray => binaryArray.join(''))
+      .map((binaryArray) => binaryArray.join(''))
       .forEach((periodBinary, idx) => {
         if (periodBinary === '00') {
           return
@@ -114,15 +140,16 @@ class ShareTokenEncoder {
   }
 
   _decodeWeeks (weeks) {
-    parents.forEach(parent => {
-      entitlements.forEach(entitlement => {
+    parents.forEach((parent) => {
+      entitlements.forEach((entitlement) => {
         dset(this.data, `${parent}.${entitlement}`, [])
       })
     })
 
-    const binaryWeeks = weeks.split('')
+    const binaryWeeks = weeks
+      .split('')
       .map(convertBase64ToBinary)
-      .map(binaryString => binaryString.padStart(6, '0'))
+      .map((binaryString) => binaryString.padStart(6, '0'))
       .join('')
 
     const weekOffset = earliestPrimaryLeaveWeek(this.data)

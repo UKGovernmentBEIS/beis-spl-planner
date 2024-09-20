@@ -53,7 +53,7 @@ module.exports = function (env) {
   }
 
   function numberAsString (block) {
-    var weekCount = block.end - block.start + 1
+    const weekCount = block.end - block.start + 1
     return weekCount.toString()
   }
 
@@ -163,7 +163,7 @@ module.exports = function (env) {
 
   function mapValuesToSelectOptions (values, textMacro, selected) {
     return values.map((value, i) => ({
-      value: value,
+      value,
       text: textMacro(value, i),
       selected: value === parseInt(selected) || (selected === undefined && i === 0)
     }))
