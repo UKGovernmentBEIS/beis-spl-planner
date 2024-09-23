@@ -47,7 +47,7 @@
     "moment": "^2.29.3",
     "morgan": "1.9.x",
     "nodemailer": "^6.7.5",
-    "nunjucks": "^3.2.1",
+    "nunjucks": "^3.2.4",
     "pino": "^5.17.0",
     "qs": "6.9.7",
     "regenerator-runtime": "^0.14.1",
