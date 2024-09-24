@@ -14,19 +14,14 @@ const sendMail = async (experience, moreDetails) => {
     }
   })
 
-  await transporter.sendMail({
+  const mailOptions = {
     from: `SPL Feedback <${process.env.EMAIL_AUTH_USER}>`,
     to: process.env.EMAIL_RECIPIENT,
     subject: 'SPL Planner Feedback',
-    text:
-      `
-      What was your experience of the service:
-      ${experience}
-      
-      How could we improve this service:
-      ${moreDetails}
-      `
-  }, (error, info) => {
+    text: `${experience}\n\n${moreDetails}`
+  }
+
+  await transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error)
     } else {
