@@ -33,7 +33,7 @@ module.exports = function (req, res, next) {
   res.locals.data = req.session.data
   res.locals.withData = function (path) {
     const queryData = { 'data-in-query': true, ...req.session.data }
-    return `${path}?${qs.stringify(queryData, { arrayFormat: 'comma' })}`
+    return `${path}?${qs.stringify(queryData, { arrayFormat: 'brackets' })}`
   }
   res.locals.backPath = function () {
     return res.locals.withData(
