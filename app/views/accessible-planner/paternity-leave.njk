@@ -42,8 +42,7 @@
         {% call appendHiddenFields(data) %}
           {% set hint %}
             <p class="govuk-hint">
-              A partner can take up to 2 weeks of Paternity Leave in the first 8 weeks after {{ birthOrPlacement }}.
-              Weeks must be taken together, without breaks.
+              A partner can take up to 2 weeks of Paternity Leave in the first year after {{ birthOrPlacement }}.
             </p>
             {% if (remainingLeaveAllowance > 0) %}
               <p class="govuk-hint">

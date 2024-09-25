@@ -1,14 +1,22 @@
 const LeaveTracker = require('./leaveTracker')
 const { earliestPrimaryLeaveWeek } = require('../../common/lib/dataUtils')
 const { STATUTORY_MAXIMUM_PAY } = require('../constants')
-const dset = require('dset')
+const { dset } = require('dset')
 
 class Weeks {
-  constructor ({ natureOfParenthood, typeOfAdoption, startWeek, primary, secondary, eligibility }) {
+  constructor ({
+    natureOfParenthood,
+    typeOfAdoption,
+    startWeek,
+    primary,
+    secondary,
+    eligibility
+  }) {
     this.startWeek = startWeek
     this.primary = primary
     this.secondary = secondary
-    this.primaryLeaveType = natureOfParenthood === 'birth' ? 'maternity' : 'adoption'
+    this.primaryLeaveType =
+      natureOfParenthood === 'birth' ? 'maternity' : 'adoption'
     this.eligibility = eligibility
     this.payRates = this._getPayRates()
     this.minimumWeek = earliestPrimaryLeaveWeek({
@@ -23,45 +31,105 @@ class Weeks {
     const secondaryLeaveTracker = new LeaveTracker()
     let hasCurtailedPrimaryPay = false
     let primarySplHasStarted = false
-    for (let i = this.minimumWeek; i <= 52; i++) {
-      const week = this._getBaseWeek(i)
-      const weekLeaveAndPay = this._getWeekLeaveAndPay(i)
+    for (let weekNumber = this.minimumWeek; weekNumber <= 52; weekNumber++) {
+      const week = this._getBaseWeek(weekNumber)
+      const weekLeaveAndPay = this._getWeekLeaveAndPay(weekNumber)
 
-      primaryLeaveTracker.next(weekLeaveAndPay.primary.leave, i)
+      primaryLeaveTracker.next(weekLeaveAndPay.primary.leave, weekNumber)
       if (weekLeaveAndPay.primary.leave) {
         if (!primarySplHasStarted) {
           const startSplBecauseOfBreak = primaryLeaveTracker.initialBlockEnded
-          const startSplBecauseOfPayAfterCurtailment = hasCurtailedPrimaryPay && weekLeaveAndPay.primary.pay
-          const startSplBecauseOfUserSelect = this.primary.firstSplWeek <= i
-          primarySplHasStarted = startSplBecauseOfBreak || startSplBecauseOfPayAfterCurtailment || startSplBecauseOfUserSelect
+          const startSplBecauseOfPayAfterCurtailment =
+            hasCurtailedPrimaryPay && weekLeaveAndPay.primary.pay
+          const startSplBecauseOfUserSelect =
+            this.primary.firstSplWeek <= weekNumber
+          primarySplHasStarted =
+            startSplBecauseOfBreak ||
+            startSplBecauseOfPayAfterCurtailment ||
+            startSplBecauseOfUserSelect
         }
-        dset(week.primary, 'leave.text', !primarySplHasStarted ? this.primaryLeaveType : 'shared')
+        dset(
+          week.primary,
+          'leave.text',
+          !primarySplHasStarted ? this.primaryLeaveType : 'shared'
+        )
         if (weekLeaveAndPay.primary.pay) {
           if (primarySplHasStarted) {
             dset(week.primary, 'pay.text', this.payRates.primary.statutory)
           } else {
-            const useInitialPayRate = primaryLeaveTracker.initialBlockLength <= 6
-            dset(week.primary, 'pay.text', useInitialPayRate ? this.payRates.primary.initial : this.payRates.primary.statutory)
+            const useInitialPayRate =
+              primaryLeaveTracker.initialBlockLength <= 6
+            dset(
+              week.primary,
+              'pay.text',
+              useInitialPayRate
+                ? this.payRates.primary.initial
+                : this.payRates.primary.statutory
+            )
           }
         } else {
           hasCurtailedPrimaryPay = true
         }
-        dset(week.primary, 'pay.eligible', this._weekEligibleForPrimaryPay(week))
-        dset(week.primary, 'leave.eligible', this._weekEligibleForPrimaryLeave(week))
+        dset(
+          week.primary,
+          'pay.eligible',
+          this._weekEligibleForPrimaryPay(week)
+        )
+        dset(
+          week.primary,
+          'leave.eligible',
+          this._weekEligibleForPrimaryLeave(week)
+        )
       }
 
       if (!week.secondary.disabled) {
-        secondaryLeaveTracker.next(weekLeaveAndPay.secondary.leave, i)
+        secondaryLeaveTracker.next(weekLeaveAndPay.secondary.leave, weekNumber)
         if (weekLeaveAndPay.secondary.leave) {
-          const maxCellsDisplayedAsPaternity = this.eligibility.secondary.spl || this.eligibility.secondary.shpp ? 2 : 8
-          const usePaternityLeave = i < 8 && !secondaryLeaveTracker.initialBlockEnded && secondaryLeaveTracker.initialBlockLength <= maxCellsDisplayedAsPaternity
-          dset(week.secondary, 'leave.text', usePaternityLeave ? 'paternity' : 'shared')
+          const maxCellsDisplayedAsPaternity = 2
+          const usePaternityLeave =
+            secondaryLeaveTracker.totalLeaveWeeks <=
+            maxCellsDisplayedAsPaternity
+
+          const latestPrimaryWeekLeave =
+            this._getLatestPrimaryMaternityWeekLeave()
+
+          const isMaternityAdoptionOrSurrogacy =
+            week.primary.leave.text === 'maternity' ||
+            week.primary.leave.text === 'adoption' ||
+            week.primary.leave.text === 'surrogacy'
+
+          // determine whether to display paternity or shared pay label
+          // the label should say "Paternity" if there are enough weeks left e.g. totalLeaveWeeks <= 2
+          // and the selected week is within the range of the mother's leave
+          if (
+            usePaternityLeave &&
+            weekNumber <= latestPrimaryWeekLeave &&
+            isMaternityAdoptionOrSurrogacy
+          ) {
+            dset(week.secondary, 'leave.text', 'paternity')
+          } else {
+            dset(week.secondary, 'leave.text', 'shared')
+          }
+
+          // determine whether to display pay label
           if (weekLeaveAndPay.secondary.pay) {
             dset(week.secondary, 'pay.text', this.payRates.secondary.statutory)
           }
-          dset(week.secondary, 'pay.eligible', this._weekEligibleForSecondaryPay(week))
+
+          // determine whether to display pay checkbox
+          dset(
+            week.secondary,
+            'pay.eligible',
+            this._weekEligibleForSecondaryPay(week)
+          )
         }
-        dset(week.secondary, 'leave.eligible', this._weekEligibleForSecondaryLeave(week))
+
+        // determine whether to display leave checkbox
+        dset(
+          week.secondary,
+          'leave.eligible',
+          this._weekEligibleForSecondaryLeave(week)
+        )
       }
 
       weeks.push(week)
@@ -79,7 +147,10 @@ class Weeks {
     if (this.eligibility.primary.spl) {
       return true
     } else if (this.eligibility.primary.statutoryLeave) {
-      return week.primary.leave.text === 'maternity' || week.primary.leave.text === 'adoption'
+      return (
+        week.primary.leave.text === 'maternity' ||
+        week.primary.leave.text === 'adoption'
+      )
     } else {
       return false
     }
@@ -89,7 +160,7 @@ class Weeks {
     if (this.eligibility.secondary.spl) {
       return true
     } else if (this.eligibility.secondary.statutoryLeave) {
-      return week.secondary.leave.text === 'paternity' && week.number < 8
+      return week.secondary.leave.text === 'paternity' && week.number < 52
     } else {
       return false
     }
@@ -116,7 +187,7 @@ class Weeks {
     } else if (!this.eligibility.secondary.statutoryPay) {
       return false
     } else if (!this.eligibility.secondary.spl) {
-      return week.number < 8
+      return week.number < 52
     } else {
       return week.secondary.leave.text === 'paternity'
     }
@@ -132,7 +203,7 @@ class Weeks {
 
   _hasSharedPayOrLeave (parent) {
     const weeks = this.leaveAndPay().weeks
-    return weeks.some(week => {
+    return weeks.some((week) => {
       return week[parent].leave.text === 'shared'
     })
   }
@@ -144,9 +215,11 @@ class Weeks {
       day: this.startWeek.add(idx, 'weeks'),
       primary: {
         disabled: false,
-        compulsory: this.primaryLeaveType === 'maternity' &&
-                    (idx === 0 || idx === 1) &&
-                    (this.eligibility.primary.spl || this.eligibility.primary.maternityLeave),
+        compulsory:
+          this.primaryLeaveType === 'maternity' &&
+          (idx === 0 || idx === 1) &&
+          (this.eligibility.primary.spl ||
+            this.eligibility.primary.maternityLeave),
         leave: {},
         pay: {}
       },
@@ -191,12 +264,18 @@ class Weeks {
       maternityAllowance: maternityAllowanceEligible,
       maternityLeave: maternityLeaveEligible
     } = this.eligibility.primary
-    const maternityAllowanceOnly = !shppEligible && !statutoryPayEligible && maternityAllowanceEligible && !maternityLeaveEligible
+    const maternityAllowanceOnly =
+      !shppEligible &&
+      !statutoryPayEligible &&
+      maternityAllowanceEligible &&
+      !maternityLeaveEligible
     if (maternityAllowanceOnly) {
       // When Maternity Allowance only, we only know the upper bound of the mother’s pay.
       return this._getStatutoryPay()
     } else if (period === 'initial') {
-      return this.primary.weeklyPay ? this._formatPay(0.9 * this.primary.weeklyPay) : '90% of weekly pay'
+      return this.primary.weeklyPay
+        ? this._formatPay(0.9 * this.primary.weeklyPay)
+        : '90% of weekly pay'
     } else {
       return this._getStatutoryPay(this.primary.weeklyPay)
     }
@@ -210,7 +289,14 @@ class Weeks {
 
   _formatPay (pay) {
     const payAsFloat = parseFloat(pay)
-    return isNaN(payAsFloat) ? pay : '£' + payAsFloat.toFixed(2)
+    return isNaN(payAsFloat)
+      ? pay
+      : '£' + (+payAsFloat.toFixed(2)).toLocaleString('en-US')
+  }
+
+  _getLatestPrimaryMaternityWeekLeave () {
+    const primaryLeaveWeeks = this.primary.leaveWeeks
+    return primaryLeaveWeeks.length > 0 ? Math.max(...primaryLeaveWeeks) : 0
   }
 }
 

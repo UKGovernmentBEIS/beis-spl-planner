@@ -2,9 +2,18 @@ name: Spl-planner-continuous-check
 
 on:
   pull_request:
-    types: [opened, edited, reopened, ready_for_review, review_requested, auto_merge_enabled]
+    types:
+      [
+        opened,
+        synchronize,
+        edited,
+        reopened,
+        ready_for_review,
+        review_requested,
+        auto_merge_enabled,
+      ]
     branches:
-      - 'master'
+      - "master"
 
 jobs:
   build:
@@ -12,23 +21,112 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.14]
+        node-version: [18.18.2]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run compile
-    - run: npm run lint
-    - run: npm test
-    - uses: actions/upload-artifact@v2
-      with:
-        name: 'Coverage Reports'
-        path: '${{ github.workspace }}/coverage/'
-    - run: npm run test:start:a11y
-    - run: npm run test:a11y
-      env:
-        CI: true
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run compile
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: compiled-files
+          path: |
+            dist/
+            public/
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: build
+
+    strategy:
+      matrix:
+        node-version: [18.18.2]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run lint
+
+  unit_tests:
+    runs-on: ubuntu-latest
+    needs: build
+
+    strategy:
+      matrix:
+        node-version: [18.18.2]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: compiled-files
+      - run: npm test
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "Coverage Reports"
+          path: "${{ github.workspace }}/coverage/"
+
+  accessibility_tests:
+    runs-on: ubuntu-latest
+    needs: build
+
+    strategy:
+      matrix:
+        node-version: [18.18.2]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: compiled-files
+      - name: Start server
+        run: npm run test:start:a11y &
+      - name: Wait for server to be ready
+        run: |
+          sleep 5
+          echo "Server is ready"
+      - run: npm run test:a11y
+        env:
+          CI: true
+
+  feature_tests:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: npx playwright test
+      - uses: actions/upload-artifact@v3
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

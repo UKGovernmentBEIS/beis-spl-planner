@@ -2,7 +2,7 @@ const delve = require('dlv')
 const { getWeeksArray, parseWeeksFromData } = require('./utils')
 const Day = require('../common/lib/day')
 const { parseEligibilityFromData } = require('./lib/eligibility')
-const { getBlockLength, getRemainingLeaveAllowance, getRemainingPayAllowance, parseLeaveBlocks, parseSplLeaveBlocks } = require('./lib/blocks')
+const { getBlockLength, getPaternalBlockLength, getRemainingLeaveAllowance, getRemainingPayAllowance, parseLeaveBlocks, parseSplLeaveBlocks } = require('./lib/blocks')
 const _ = require('lodash')
 
 // Existing filters can be imported from env using env.getFilter(name)
@@ -50,6 +50,11 @@ module.exports = function (env) {
     const primaryPay = block.primary && parseFloat(block.primary.substring(1))
     const secondaryPay = block.secondary && parseFloat(block.secondary.substring(1))
     return '£' + ((primaryPay || 0) + (secondaryPay || 0)).toFixed(2)
+  }
+
+  function numberAsString (block) {
+    const weekCount = block.end - block.start + 1
+    return weekCount.toString()
   }
 
   function displayPayBlockTotal (data) {
@@ -133,6 +138,10 @@ module.exports = function (env) {
     return getBlockLength(block)
   }
 
+  function paternalBlockLength (block) {
+    return getPaternalBlockLength(block)
+  }
+
   function remainingLeaveAllowance (leaveBlocksDataObject) {
     const leaveBlocks = parseLeaveBlocks(leaveBlocksDataObject)
     return getRemainingLeaveAllowance(leaveBlocks)
@@ -154,7 +163,7 @@ module.exports = function (env) {
 
   function mapValuesToSelectOptions (values, textMacro, selected) {
     return values.map((value, i) => ({
-      value: value,
+      value,
       text: textMacro(value, i),
       selected: value === parseInt(selected) || (selected === undefined && i === 0)
     }))
@@ -175,6 +184,7 @@ module.exports = function (env) {
     startDateName,
     hasEitherSalary,
     totalBlockPay,
+    numberAsString,
     displayPayBlockTotal,
     shouldDisplayPrimaryLeaveAndPayForm,
     shouldDisplayPrimaryCurtailmentForm,
@@ -183,6 +193,7 @@ module.exports = function (env) {
     blocksToDates,
     htmlAttributesFromObject,
     blockLength,
+    paternalBlockLength,
     remainingLeaveAllowance,
     remainingPayAllowance,
     hasTakenSpl,

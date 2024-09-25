@@ -1,6 +1,8 @@
 {% from "summary-list/macro.njk" import govukSummaryList %}
 {% from "inset-text/macro.njk" import govukInsetText %}
 {% from "../components/leave-block-summary.njk" import leaveBlockSummary %}
+{% from "../components/paternity-leave-block-summary.njk" import paternityLeaveBlockSummary %}
+{% from "../components/shared-leave-block-summary.njk" import sharedLeaveBlockSummary %}
 
 {% set primaryLeaveType = (data | primaryLeaveType) %}
 
@@ -49,12 +51,12 @@
         Shared Parental Leave ({{ data | primaryName }})
       </h3>
       {% for block in leaveBlocks.primary.spl %}
-        {{ leaveBlockSummary({
+        {{ sharedLeaveBlockSummary({
           name: "Block " + loop.index,
           block: block,
           data: data,
           notify: {
-            date: data | startDay | startOfWeek | offsetWeeks(block.start) | offsetWeeks(-8),
+            date: data | startDay | startOfWeek | offsetWeeks(block[0].start) | offsetWeeks(-8),
             explanation: "8 weeks before block starts",
             asterisk: false
           }
@@ -72,12 +74,12 @@
         </h3>
 
         {% if data | isAdoption %}
-          <p>Paternity Leave can start the day your child is placed with you, or within 8 weeks after.</p>
+          <p>Paternity Leave can start at any point in the first year after the adoption of the child.</p>
         {% else %}
-          <p>Paternity Leave can start once the child is born, or within 8 weeks of the child’s birth.</p>
+          <p>Paternity Leave can start at any point in the first year after the birth of the child.</p>
         {% endif %}
 
-        {{ leaveBlockSummary({
+        {{ paternityLeaveBlockSummary({
           name: "Paternity Leave",
           block: leaveBlocks.secondary.initial,
           data: data,
@@ -93,12 +95,12 @@
           Shared Parental Leave ({{ data | secondaryName }})
         </h3>
         {% for block in leaveBlocks.secondary.spl %}
-          {{ leaveBlockSummary({
+          {{ sharedLeaveBlockSummary({
             name: "Block " + loop.index,
             block: block,
             data: data,
             notify: {
-              date: data | startDay | startOfWeek | offsetWeeks(block.start) | offsetWeeks(-8),
+              date: data | startDay | startOfWeek | offsetWeeks(block[0].start) | offsetWeeks(-8),
               explanation: "8 weeks before block starts",
               asterisk: false
             }

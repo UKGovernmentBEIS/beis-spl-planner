@@ -13,7 +13,6 @@
 
   // optional
   font-family: arial, sans-serif; //input has OS specific font-family
-  font: inherit;
   text-decoration: underline;
   color: $govuk-link-colour;
   @include remove-default-button-styling;

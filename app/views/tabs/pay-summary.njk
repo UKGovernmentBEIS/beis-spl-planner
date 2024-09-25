@@ -8,16 +8,20 @@
     <p>This summary shows the amount of statutory pay you could get while on leave. Your employers will confirm the exact amounts.</p>
 
     {% for block in payBlocks %}
+      {% set weekCount %}
+        {{-block | numberAsString}}
+      {% endset %}
+
       {% set tableCaption %}
-        {{ data | startDay | startOfWeek | offsetWeeks(block.start) | formatForDisplay }} to {{ data | startDay | endOfWeek | offsetWeeks(block.end) | formatForDisplay }}
+        {{ data | startDay | startOfWeek | offsetWeeks(block.start) | formatForDisplay }} to {{ data | startDay | endOfWeek | offsetWeeks(block.end) | formatForDisplay }} ({{weekCount}} weeks)
       {% endset %}
 
       {% set primaryPay %}
-        {{ block["primary"] + " per week" if block["primary"] else "Unpaid" }}
+        {{ block["primary"] + " per week, for " + weekCount + " weeks" if block["primary"] else "Unpaid" }}
       {% endset %}
 
       {% set secondaryPay %}
-        {{ block["secondary"] + " per week" if block["secondary"] else "Unpaid" }}
+        {{ block["secondary"] + " per week, for " + weekCount + " weeks" if block["secondary"] else "Unpaid" }}
       {% endset %}
 
       {{ govukTable({
@@ -43,7 +47,7 @@
           ],
           [
             { html: "<strong>Total pay</br>before tax</strong>" },
-            { html: "<strong>" + block | totalBlockPay + " per week</strong>" }
+            { html: "<strong>" + block | totalBlockPay + " per week, for " + weekCount + " weeks</strong>" }
           ] if data | displayPayBlockTotal
         ]
       }) }}

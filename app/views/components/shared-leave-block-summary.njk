@@ -1,0 +1,42 @@
+{% from "summary-list/macro.njk" import govukSummaryList %}
+
+{% macro sharedLeaveBlockSummary(options) %}
+  {{ govukSummaryList({
+    classes: "summary-block-print-margin",
+    rows: [
+      {
+        key: {
+          text: options.name + " starts"
+        },
+        value: {
+          text: "week starting " + options.data | startDay | startOfWeek | offsetWeeks(options.block.start) | formatForDisplay
+        }
+      },
+      {
+        key: {
+          text: options.name + " ends"
+        },
+        value: {
+          text: "week ending " + options.data | startDay | startOfWeek | offsetWeeks(options.block.end) | endOfWeek | formatForDisplay
+        }
+      },
+      {
+        key: {
+          text: "Length"
+        },
+        value: {
+          text: options.block | blockLength | weeks
+        }
+      },
+      {
+        key: {
+          text: "Notify employers"
+        },
+        value: {
+          html: "by " + (options.notify.date | formatForDisplay) + ("*" if options.notify.asterisk) + "<br>" +
+            "(" + options.notify.explanation + ")"
+        }
+      }
+    ]
+  }) }}
+{% endmacro %}

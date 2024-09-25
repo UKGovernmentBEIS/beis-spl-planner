@@ -37,14 +37,18 @@ describe('Blocks', () => {
       const expectedResults = {
         leaveBlocks: {
           primary: {
-            initial: { start: 0, end: 1, leave: 'maternity' },
+            initial: [
+              { start: 0, end: 1, leave: 'maternity' }
+            ],
             spl: [
               { start: 3, end: 4, leave: 'shared' },
               { start: 8, end: 9, leave: 'shared' }
             ]
           },
           secondary: {
-            initial: { start: 0, end: 1, leave: 'paternity' },
+            initial: [
+              { start: 0, end: 1, leave: 'paternity' }
+            ],
             spl: [
               { start: 3, end: 4, leave: 'shared' },
               { start: 6, end: 7, leave: 'shared' }
@@ -52,10 +56,10 @@ describe('Blocks', () => {
           }
         },
         payBlocks: [
-          { start: 0, end: 1, primary: '£432.69', secondary: '£156.66' },
-          { start: 3, end: 4, primary: '£156.66', secondary: '£156.66' },
-          { start: 6, end: 7, primary: undefined, secondary: '£156.66' },
-          { start: 8, end: 9, primary: '£156.66', secondary: undefined }
+          { start: 0, end: 1, primary: '£432.69', secondary: '£184.03' },
+          { start: 3, end: 4, primary: '£184.03', secondary: '£184.03' },
+          { start: 6, end: 7, primary: undefined, secondary: '£184.03' },
+          { start: 8, end: 9, primary: '£184.03', secondary: undefined }
         ]
       }
 
@@ -69,11 +73,13 @@ describe('Blocks', () => {
         const expectedResults = {
           leaveBlocks: {
             primary: {
-              initial: { start: 0, end: 0, leave: 'maternity' },
+              initial: [
+                { start: 0, end: 0, leave: 'maternity' }
+              ],
               spl: []
             },
             secondary: {
-              initial: null,
+              initial: [],
               spl: []
             }
           },
@@ -90,14 +96,18 @@ describe('Blocks', () => {
       const expectedResults = {
         leaveBlocks: {
           primary: {
-            initial: { start: 0, end: 1, leave: 'maternity' },
+            initial: [
+              { start: 0, end: 1, leave: 'maternity' }
+            ],
             spl: [
               { start: 3, end: 4, leave: 'shared' },
               { start: 8, end: 9, leave: 'shared' }
             ]
           },
           secondary: {
-            initial: { start: 0, end: 1, leave: 'paternity' },
+            initial: [
+              { start: 0, end: 1, leave: 'paternity' }
+            ],
             spl: [
               { start: 3, end: 4, leave: 'shared' },
               { start: 6, end: 7, leave: 'shared' }
@@ -105,10 +115,10 @@ describe('Blocks', () => {
           }
         },
         payBlocks: [
-          { start: 0, end: 1, primary: '£432.69', secondary: '£156.66' },
-          { start: 3, end: 4, primary: '£156.66', secondary: '£156.66' },
-          { start: 6, end: 7, primary: undefined, secondary: '£156.66' },
-          { start: 8, end: 9, primary: '£156.66', secondary: undefined }
+          { start: 0, end: 1, primary: '£432.69', secondary: '£184.03' },
+          { start: 3, end: 4, primary: '£184.03', secondary: '£184.03' },
+          { start: 6, end: 7, primary: undefined, secondary: '£184.03' },
+          { start: 8, end: 9, primary: '£184.03', secondary: undefined }
         ]
       }
 
