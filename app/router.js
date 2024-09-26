@@ -27,6 +27,9 @@ const {
 } = require('./lib/routerUtils')
 const dataUtils = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
+const healthcheck = require('./lib/healthcheck')
+
+router.use(healthcheck)
 
 router.use('/planner/examples', require('./router.examples'))
 
