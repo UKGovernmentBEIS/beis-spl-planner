@@ -10,11 +10,8 @@ router.get('/pingdom/ping.xml', (req, res) => {
   const isHealthy = Object.values(healthStatus).every((check) => check.success)
   const status = isHealthy ? 'OK' : 'FAIL'
 
-  const response = xml({
-    PingdomResponse: [
-      { status },
-      { app: healthStatus.app.success ? 'OK' : 'FAIL' }
-    ]
+  const response = xml([{ pingdom_http_custom_check: [{ status }] }], {
+    declaration: true
   })
 
   console.info(`Healthcheck status: ${status}`)

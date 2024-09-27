@@ -19,7 +19,7 @@ describe('Health Check Endpoint', () => {
       expect(response.type).to.equal('application/xml')
 
       const expectedXml =
-        '<PingdomResponse><status>OK</status><app>OK</app></PingdomResponse>'
+        '<?xml version="1.0" encoding="UTF-8"?><pingdom_http_custom_check><status>OK</status></pingdom_http_custom_check>'
 
       const actualXml = response.text.trim()
       expect(actualXml).to.equal(expectedXml)
