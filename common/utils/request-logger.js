@@ -11,7 +11,7 @@ module.exports = {
       url: context.url,
       correlationId: context.correlationId,
       additionalInfo: {
-        description: context.description,
+        description: context.description
       }
     })
   },
@@ -57,9 +57,9 @@ module.exports = {
       url: context.url,
       error: error.message,
       correlationId: context.correlationId,
-      stackTrace: error.stack, 
+      stackTrace: error.stack,
       additionalInfo: {
-        description: context.description,
+        description: context.description
       }
     })
   }
