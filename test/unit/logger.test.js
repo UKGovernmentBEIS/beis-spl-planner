@@ -11,7 +11,7 @@ describe('Logger transport check', () => {
     stdMocks.restore()
   })
 
-  describe('In non-production environment', () => {
+  describe('In production environment', () => {
     xit('should log info in JSON format', () => {})
     xit('should log error in JSON format', () => {})
   })
