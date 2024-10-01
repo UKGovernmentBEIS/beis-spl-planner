@@ -3,6 +3,8 @@ const { NODE_ENV, LOG_LEVEL } = process.env
 
 const { createLogger, transports, format } = winston
 
+console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+
 const asimFormat = format.printf(({ level, message, timestamp, eventType }) => {
   return JSON.stringify({
     EventMessage: message,
