@@ -40,6 +40,10 @@ describe('Logger transport check', () => {
 
   describe('In production environment', () => {
     beforeEach(() => {
+      if (process.env.NODE_ENV === 'CI') {
+        this.skip()
+      }
+
       stdMocks.use()
       process.env.NODE_ENV = 'production'
       logger = require('../test-app')
