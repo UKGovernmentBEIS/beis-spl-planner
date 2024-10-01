@@ -77,6 +77,8 @@ jobs:
           name: compiled-files
       - run: npm test
       - uses: actions/upload-artifact@v3
+        env:
+          CI: true
         with:
           name: "Coverage Reports"
           path: "${{ github.workspace }}/coverage/"

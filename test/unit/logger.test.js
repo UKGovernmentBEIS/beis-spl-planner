@@ -40,7 +40,7 @@ describe('Logger transport check', () => {
 
   describe('In production environment', () => {
     beforeEach(() => {
-      if (process.env.NODE_ENV === 'CI') {
+      if (process.env.CI) {
         this.skip()
       }
 
