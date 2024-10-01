@@ -40,16 +40,15 @@ describe('Logger transport check', () => {
 
   describe('In production environment', () => {
     beforeEach(() => {
-      if (process.env.CI) {
-        this.skip()
-      }
-
       stdMocks.use()
       process.env.NODE_ENV = 'production'
       logger = require('../test-app')
     })
 
-    it('should log info in JSON format', () => {
+    it('should log info in JSON format', function () {
+      if (process.env.CI) {
+        this.skip()
+      }
       logger.info('Message for info', { eventType: 'ApplicationEvent' })
 
       stdMocks.restore()
@@ -59,7 +58,10 @@ describe('Logger transport check', () => {
 
       expect(logEntry).to.deep.include(expectedInfo)
     })
-    it('should log error in JSON format', () => {
+    it('should log error in JSON format', function () {
+      if (process.env.CI) {
+        this.skip()
+      }
       logger.error('Message for error', { eventType: 'ApplicationEvent' })
 
       stdMocks.restore()
