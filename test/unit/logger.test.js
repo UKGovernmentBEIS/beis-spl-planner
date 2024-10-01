@@ -1,29 +1,80 @@
-const { describe, xit, it, beforeEach, afterEach } = require('mocha')
+const { describe, it, beforeEach, afterEach } = require('mocha')
 const stdMocks = require('std-mocks')
 const sinon = require('sinon')
 const chai = require('chai')
 const expect = chai.expect
-const logger = require('../../app/logger')
+
+const expectedInfo = {
+  EventMessage: 'Message for info',
+  EventCount: 1,
+  EventType: 'ApplicationEvent',
+  EventResult: 'NA',
+  EventSeverity: 'Informational',
+  EventOriginalSeverity: 'info',
+  EventSchema: 'ProcessEvent',
+  EventSchemaVersion: '0.1.4',
+  ActingAppType: 'Express',
+  AdditionalFields: { CustomASIMFormatter: true, TraceHeaders: {} }
+}
+
+const expectedError = {
+  EventMessage: 'Message for error',
+  EventCount: 1,
+  EventType: 'ApplicationEvent',
+  EventResult: 'NA',
+  EventSeverity: 'Medium',
+  EventOriginalSeverity: 'error',
+  EventSchema: 'ProcessEvent',
+  EventSchemaVersion: '0.1.4',
+  ActingAppType: 'Express',
+  AdditionalFields: { CustomASIMFormatter: true, TraceHeaders: {} }
+}
 
 describe('Logger transport check', () => {
+  let logger
+
   afterEach(() => {
     sinon.restore()
     stdMocks.restore()
   })
 
   describe('In production environment', () => {
-    xit('should log info in JSON format', () => {})
-    xit('should log error in JSON format', () => {})
+    beforeEach(() => {
+      stdMocks.use()
+      process.env.NODE_ENV = 'production'
+      logger = require('../test-app')
+    })
+
+    it('should log info in JSON format', () => {
+      logger.info('Message for info', { eventType: 'ApplicationEvent' })
+
+      stdMocks.restore()
+      const output = stdMocks.flush()
+
+      const logEntry = JSON.parse(output.stdout[0])
+
+      expect(logEntry).to.deep.include(expectedInfo)
+    })
+    it('should log error in JSON format', () => {
+      logger.error('Message for error', { eventType: 'ApplicationEvent' })
+
+      stdMocks.restore()
+      const output = stdMocks.flush()
+
+      const logEntry = JSON.parse(output.stdout[0])
+
+      expect(logEntry).to.deep.include(expectedError)
+    })
   })
 
   describe('In non-production environment', () => {
     beforeEach(() => {
       process.env.NODE_ENV = 'development'
+      logger = require('../test-app')
+      stdMocks.use()
     })
 
     it('should log info in plain text format', () => {
-      stdMocks.use()
-
       logger.info('Plain log info')
 
       stdMocks.restore()
@@ -33,8 +84,6 @@ describe('Logger transport check', () => {
     })
 
     it('should log error in plain text format', () => {
-      stdMocks.use()
-
       logger.error('Plain log error')
 
       stdMocks.restore()
