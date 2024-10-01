@@ -47,6 +47,7 @@ describe('Logger transport check', () => {
 
     it('should log info in JSON format', function () {
       if (process.env.CI) {
+        stdMocks.restore()
         this.skip()
       }
       logger.info('Message for info', { eventType: 'ApplicationEvent' })
@@ -60,6 +61,7 @@ describe('Logger transport check', () => {
     })
     it('should log error in JSON format', function () {
       if (process.env.CI) {
+        stdMocks.restore()
         this.skip()
       }
       logger.error('Message for error', { eventType: 'ApplicationEvent' })
