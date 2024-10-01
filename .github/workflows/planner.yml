@@ -77,6 +77,8 @@ jobs:
           name: compiled-files
       - run: npm test
       - uses: actions/upload-artifact@v3
+        env:
+          CI: true
         with:
           name: "Coverage Reports"
           path: "${{ github.workspace }}/coverage/"
@@ -101,7 +103,7 @@ jobs:
         with:
           name: compiled-files
       - name: Start server
-        run: npm run test:start:a11y &
+        run: npm run test:start:a11y
       - name: Wait for server to be ready
         run: |
           sleep 5
