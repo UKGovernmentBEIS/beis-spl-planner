@@ -47,5 +47,24 @@ describe('sendMail', function () {
       expect(mailOptions.text).to.contain(experience)
       expect(mailOptions.text).to.contain(moreDetails)
     })
+
+    it('should have the correctly formatted text', async function () {
+      const expectedText =
+      `
+      What was your experience of the service:
+      ${experience}
+
+      How could we improve this service:
+      ${moreDetails}
+      `
+
+      await sendMail(experience, moreDetails)
+      const mailOptions = sendMailStub.getCall(0).args[0]
+
+      expect(mailOptions.from).to.equal(
+        `SPL Feedback <${process.env.EMAIL_AUTH_USER}>`
+      )
+      expect(mailOptions.text).to.eq(expectedText)
+    })
   })
 })
