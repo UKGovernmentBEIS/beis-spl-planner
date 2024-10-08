@@ -3,7 +3,7 @@ const sinon = require('sinon')
 const chai = require('chai')
 const expect = chai.expect
 const nodemailer = require('nodemailer')
-const sendMail = require('../../app/node-email')
+const sendMail = require('../../../app/node-email')
 
 describe('sendMail', function () {
   let createTransportStub, sendMailStub
@@ -49,8 +49,7 @@ describe('sendMail', function () {
     })
 
     it('should have the correctly formatted text', async function () {
-      const expectedText =
-      `
+      const expectedText = `
       What was your experience of the service:
       ${experience}
 

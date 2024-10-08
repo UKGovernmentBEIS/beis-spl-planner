@@ -3,7 +3,7 @@
 const { describe, it, beforeEach } = require('mocha')
 const { expect } = require('chai')
 
-const Day = require('../common/lib/day')
+const Day = require('../../../common/lib/day')
 
 describe('filters', () => {
   let filters, environment
@@ -13,7 +13,7 @@ describe('filters', () => {
         return args => {}
       }
     }
-    filters = require('./spl-common-filters')(environment)
+    filters = require('../../../common/spl-common-filters')(environment)
   })
 
   describe('offsetWeeks', () => {

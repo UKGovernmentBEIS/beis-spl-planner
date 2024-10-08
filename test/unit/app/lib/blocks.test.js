@@ -2,13 +2,13 @@ const { describe, it } = require('mocha')
 const assert = require('chai').assert
 const _ = require('lodash')
 
-const blocks = require('../../../app/lib/blocks')
-const unfilledVisualPlannerJSON = require('../../data/unfilledVisualPlannerData')
-const unfilledQuestionPlannerJSON = require('../../data/unfilledQuestionPlannerData')
-const filledVisualPlannerJSON = require('../../data/filledVisualPlannerData')
-const filledQuestionPlannerJSON = require('../../data/filledQuestionPlannerData')
-const filledQBPLargeWeeksData = require('../../data/filledQBPLargeWeeksData.json')
-const filledLeaveBlocks = require('../../data/filledLeaveBlocks.json')
+const blocks = require('../../../../app/lib/blocks')
+const unfilledVisualPlannerJSON = require('../../../data/unfilledQuestionPlannerData')
+const unfilledQuestionPlannerJSON = require('../../../data/unfilledQuestionPlannerData')
+const filledVisualPlannerJSON = require('../../../data/filledVisualPlannerData')
+const filledQuestionPlannerJSON = require('../../../data/filledQuestionPlannerData')
+const filledQBPLargeWeeksData = require('../../../data/filledQBPLargeWeeksData')
+const filledLeaveBlocks = require('../../../data/filledLeaveBlocks')
 
 describe('Blocks', () => {
   describe('getBlocks', () => {

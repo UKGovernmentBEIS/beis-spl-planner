@@ -2,7 +2,7 @@ const express = require('express')
 const request = require('supertest')
 const { expect } = require('chai')
 const { describe, it } = require('mocha')
-const healthcheckRouter = require('../../../app/lib/healthcheck')
+const healthcheckRouter = require('../../../../app/lib/healthcheck')
 
 const app = express()
 app.use(healthcheckRouter)

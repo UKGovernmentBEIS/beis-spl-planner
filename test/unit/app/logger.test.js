@@ -43,7 +43,7 @@ describe('Logger transport check', () => {
     beforeEach(() => {
       stdMocks.use()
       process.env.NODE_ENV = 'production'
-      logger = require('../test-app')
+      logger = require('../../test-app')
     })
 
     it('should log info in JSON format', function () {
@@ -79,7 +79,7 @@ describe('Logger transport check', () => {
   describe('In non-production environment', () => {
     beforeEach(() => {
       process.env.NODE_ENV = 'development'
-      logger = require('../test-app')
+      logger = require('../../test-app')
       stdMocks.use()
     })
 
