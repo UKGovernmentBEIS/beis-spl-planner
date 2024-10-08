@@ -1,18 +1,18 @@
 const { describe, it } = require('mocha')
 const assert = require('chai').assert
 // const LeaveTracker = require('../../../app/lib/leaveTracker')
-const { earliestPrimaryLeaveWeek } = require('../../../common/lib/dataUtils')
+const { earliestPrimaryLeaveWeek } = require('../../../../common/lib/dataUtils')
 // const _ = require('lodash')
 
-const Weeks = require('../../../app/lib/weeks')
+const Weeks = require('../../../../app/lib/weeks')
 
 // Test data
-const birthWithSpl = require('../../data/weeksTestOptions/birthWithSpl')
-const surrogacyWithSpl = require('../../data/weeksTestOptions/surrogacyWithSpl')
-const birthSplStartsCorrectly = require('../../data/weeksTestOptions/birthSplStartsCorrectly')
-const birthPrimaryLeaveStatutoryPay = require('../../data/weeksTestOptions/birthPrimaryLeaveStatutoryPay')
-const birthMaternityAllowanceOnly = require('../../data/weeksTestOptions/birthMaternityAllowanceOnly')
-const birthShppOnly = require('../../data/weeksTestOptions/birthShppOnly')
+const birthWithSpl = require('../../../data/weeksTestOptions/birthWithSpl')
+const surrogacyWithSpl = require('../../../data/weeksTestOptions/surrogacyWithSpl')
+const birthSplStartsCorrectly = require('../../../data/weeksTestOptions/birthSplStartsCorrectly')
+const birthPrimaryLeaveStatutoryPay = require('../../../data/weeksTestOptions/birthPrimaryLeaveStatutoryPay')
+const birthMaternityAllowanceOnly = require('../../../data/weeksTestOptions/birthMaternityAllowanceOnly')
+const birthShppOnly = require('../../../data/weeksTestOptions/birthShppOnly')
 
 describe('Weeks Class', function () {
   describe('Constructor', function () {

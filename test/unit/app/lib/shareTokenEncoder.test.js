@@ -1,7 +1,7 @@
 const { describe, it } = require('mocha')
 const { expect } = require('chai')
 
-const ShareTokenEncoder = require('../../../app/lib/shareToken/shareTokenEncoder')
+const ShareTokenEncoder = require('../../../../app/lib/shareToken/shareTokenEncoder')
 
 describe('shareTokenEncoder', () => {
   describe('#encode, not version 1', () => {
