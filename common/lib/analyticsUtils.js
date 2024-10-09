@@ -9,9 +9,11 @@ function getGaFields (element) {
   }, {})
 }
 
-function getNatureOfParenthood () {
-  const field = document.querySelector('[name=nature-of-parenthood]:checked') ||
-                document.querySelector('[name=nature-of-parenthood]')
+function getNatureOfParenthood (doc = document) {
+  const field =
+    doc.querySelector('[name=nature-of-parenthood]:checked') ||
+    doc.querySelector('[name=nature-of-parenthood]')
+
   return field ? field.value : null
 }
 
