@@ -49,13 +49,7 @@ describe('sendMail', function () {
     })
 
     it('should have the correctly formatted text', async function () {
-      const expectedText = `
-      What was your experience of the service:
-      ${experience}
-
-      How could we improve this service:
-      ${moreDetails}
-      `
+      const expectedText = `What was your experience of the service: ${experience}\n\nHow could we improve this service: ${moreDetails}`
 
       await sendMail(experience, moreDetails)
       const mailOptions = sendMailStub.getCall(0).args[0]
