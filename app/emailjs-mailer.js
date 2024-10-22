@@ -2,10 +2,26 @@ require('dotenv').config()
 const emailjs = require('@emailjs/nodejs')
 
 const sendMail = async (experience, moreDetails, reqHeaders) => {
+  const currentDateTime = new Date().toLocaleString('en-GB', {
+    timeZone: 'Europe/London',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })
+
+  let formattedHeaders = ''
+  for (const [key, value] of Object.entries(reqHeaders)) {
+    formattedHeaders += `${key}: ${value}\n`
+  }
+
   const templateParams = {
     experience: experience,
     moreDetails: moreDetails,
-    reqHeaders: reqHeaders
+    reqHeaders: formattedHeaders,
+    dateTime: currentDateTime
   }
 
   const options = {
