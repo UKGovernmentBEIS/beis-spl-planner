@@ -3,7 +3,9 @@ const sinon = require('sinon')
 const chai = require('chai')
 const expect = chai.expect
 const nodemailer = require('nodemailer')
-const sendMail = require('../../../app/node-email')
+const sendMail = require('../../../app/emailjs-mailer')
+
+// TODO: Update this for EmailJS
 
 describe('sendMail', function () {
   let createTransportStub, sendMailStub

@@ -1,7 +1,7 @@
 const delve = require('dlv')
 const { dset } = require('dset')
 const express = require('express')
-const nodeEmail = require('./node-email')
+const emailJSEmail = require('./emailjs-mailer')
 const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
@@ -415,7 +415,7 @@ router
     }
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
-    nodeEmail(experience, moreDetail).then(() =>
+    emailJSEmail(experience, moreDetail, req.headers).then(() =>
       res.redirect('/feedback/confirmation')
     )
   })
