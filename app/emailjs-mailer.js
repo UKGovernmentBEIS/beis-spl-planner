@@ -1,5 +1,6 @@
 require('dotenv').config()
 const emailjs = require('@emailjs/nodejs')
+const logger = require('./logger')
 
 const sendMail = async (experience, moreDetails, reqHeaders) => {
   const currentDateTime = new Date().toLocaleString('en-GB', {
@@ -35,13 +36,27 @@ const sendMail = async (experience, moreDetails, reqHeaders) => {
   try {
     await emailjs.send(serviceID, templateID, templateParams, options)
       .then((response) => {
-        console.log('Email sent successfully!', response.status, response.text)
+        logger.info({
+          message: `Email sent successfully! ${response.status} ${response.text}`,
+          eventType: 'MailEvent',
+          eventResult: 'Success'
+        })
       })
       .catch((err) => {
-        console.error('Failed to send email. Error:', err)
+        logger.error({
+          message: `Failed to send email. Error: ${err.text}`,
+          eventType: 'MailEvent',
+          eventResult: 'Failure',
+          errorDetails: err.text
+        })
       })
   } catch (err) {
-    console.error('Error sending feedback email:', err)
+    logger.error({
+      message: `Error sending feedback email: ${err.text}`,
+      eventType: 'MailEvent',
+      eventResult: 'Failure',
+      errorDetails: err.text
+    })
   }
 }
 
