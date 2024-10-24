@@ -12,12 +12,6 @@ const sendMail = async (experience, moreDetails, emailjsIds, options) => {
     second: '2-digit'
   })
 
-  // // For later use (add 'reqHeaders' as a param):
-  // let formattedHeaders = ''
-  // for (const [key, value] of Object.entries(reqHeaders || {})) {
-  //   formattedHeaders += `${key}: ${value}\n`
-  // }
-
   const templateParams = {
     experience: experience,
     moreDetails: moreDetails,
