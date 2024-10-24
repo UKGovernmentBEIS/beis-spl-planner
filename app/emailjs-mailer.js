@@ -1,4 +1,3 @@
-require('dotenv').config()
 const emailjs = require('@emailjs/nodejs')
 const logger = require('./logger')
 

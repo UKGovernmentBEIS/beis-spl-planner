@@ -6,7 +6,6 @@ const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
 const skip = require('./skip')
-require('dotenv').config()
 const {
   getBlocks,
   getRemainingLeaveAllowance,
