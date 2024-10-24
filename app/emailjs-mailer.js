@@ -1,7 +1,7 @@
 const emailjs = require('@emailjs/nodejs')
 const logger = require('./logger')
 
-const sendMail = async (experience, moreDetails, reqHeaders, emailjsIds, options) => {
+const sendMail = async (experience, moreDetails, emailjsIds, options) => {
   const currentDateTime = new Date().toLocaleString('en-GB', {
     timeZone: 'Europe/London',
     year: 'numeric',
@@ -12,15 +12,15 @@ const sendMail = async (experience, moreDetails, reqHeaders, emailjsIds, options
     second: '2-digit'
   })
 
-  let formattedHeaders = ''
-  for (const [key, value] of Object.entries(reqHeaders || {})) {
-    formattedHeaders += `${key}: ${value}\n`
-  }
+  // // For later use (add 'reqHeaders' as a param):
+  // let formattedHeaders = ''
+  // for (const [key, value] of Object.entries(reqHeaders || {})) {
+  //   formattedHeaders += `${key}: ${value}\n`
+  // }
 
   const templateParams = {
     experience: experience,
     moreDetails: moreDetails,
-    reqHeaders: formattedHeaders,
     dateTime: currentDateTime
   }
 
