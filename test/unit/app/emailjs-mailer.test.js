@@ -30,12 +30,12 @@ describe('sendMail', function () {
   describe('successful email sending', function () {
     const experience = 'Great service!'
     const moreDetails = 'No additional feedback'
-    const reqHeaders = { 'User-Agent': 'test-agent' }
+    // const reqHeaders = { 'User-Agent': 'test-agent' }
     const emailjsIds = { serviceID: 'test_service', templateID: 'test_template' }
     const options = { publicKey: 'test_public', privateKey: 'test_private' }
 
     it('should call emailjs.send with correct parameters', async function () {
-      await sendMail(experience, moreDetails, reqHeaders, emailjsIds, options)
+      await sendMail(experience, moreDetails, emailjsIds, options)
 
       expect(emailjsSendStub.calledOnce).to.equal(true)
       const args = emailjsSendStub.getCall(0).args
@@ -44,13 +44,12 @@ describe('sendMail', function () {
       const templateParams = args[2]
       expect(templateParams.experience).to.equal(experience)
       expect(templateParams.moreDetails).to.equal(moreDetails)
-      expect(templateParams.reqHeaders).to.equal('User-Agent: test-agent\n')
       expect(templateParams).to.have.property('dateTime')
       expect(args[3]).to.equal(options)
     })
 
     it('should log success message when email is sent successfully', async function () {
-      await sendMail(experience, moreDetails, reqHeaders, emailjsIds, options)
+      await sendMail(experience, moreDetails, emailjsIds, options)
 
       expect(loggerInfoStub.calledOnce).to.equal(true)
       const logArgs = loggerInfoStub.getCall(0).args[0]
@@ -59,26 +58,26 @@ describe('sendMail', function () {
       expect(logArgs.eventResult).to.equal('Success')
     })
 
-    it('should handle undefined reqHeaders gracefully', async function () {
-      const experience = 'Great service!'
-      const moreDetails = 'No additional feedback'
-      const reqHeaders = undefined
-      const emailjsIds = { serviceID: 'test_service', templateID: 'test_template' }
-      const options = { publicKey: 'test_public', privateKey: 'test_private' }
-
-      await sendMail(experience, moreDetails, reqHeaders, emailjsIds, options)
-
-      expect(emailjsSendStub.calledOnce).to.equal(true)
-      const args = emailjsSendStub.getCall(0).args
-      expect(args[0]).to.equal(emailjsIds.serviceID)
-      expect(args[1]).to.equal(emailjsIds.templateID)
-      const templateParams = args[2]
-      expect(templateParams.experience).to.equal(experience)
-      expect(templateParams.moreDetails).to.equal(moreDetails)
-      expect(templateParams.reqHeaders).to.equal('')
-      expect(templateParams).to.have.property('dateTime')
-      expect(args[3]).to.equal(options)
-    })
+    // it('should handle undefined reqHeaders gracefully', async function () {
+    //   const experience = 'Great service!'
+    //   const moreDetails = 'No additional feedback'
+    //   const reqHeaders = undefined
+    //   const emailjsIds = { serviceID: 'test_service', templateID: 'test_template' }
+    //   const options = { publicKey: 'test_public', privateKey: 'test_private' }
+    //
+    //   await sendMail(experience, moreDetails, reqHeaders, emailjsIds, options)
+    //
+    //   expect(emailjsSendStub.calledOnce).to.equal(true)
+    //   const args = emailjsSendStub.getCall(0).args
+    //   expect(args[0]).to.equal(emailjsIds.serviceID)
+    //   expect(args[1]).to.equal(emailjsIds.templateID)
+    //   const templateParams = args[2]
+    //   expect(templateParams.experience).to.equal(experience)
+    //   expect(templateParams.moreDetails).to.equal(moreDetails)
+    //   expect(templateParams.reqHeaders).to.equal('')
+    //   expect(templateParams).to.have.property('dateTime')
+    //   expect(args[3]).to.equal(options)
+    // })
   })
 
   describe('failed email sending', function () {
