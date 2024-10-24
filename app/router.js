@@ -1,7 +1,7 @@
 const delve = require('dlv')
 const { dset } = require('dset')
 const express = require('express')
-const nodeEmail = require('./node-email')
+const emailJSEmail = require('./emailjs-mailer')
 const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
@@ -28,6 +28,14 @@ const {
 const dataUtils = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
 const healthcheck = require('./lib/healthcheck')
+const options = {
+  publicKey: process.env.EMAILJS_PUBLIC_KEY,
+  privateKey: process.env.EMAILJS_PRIVATE_KEY
+}
+const emailjsIds = {
+  serviceID: process.env.EMAILJS_SERVICE_ID,
+  templateID: process.env.EMAILJS_TEMPLATE_ID
+}
 
 router.use(healthcheck)
 
@@ -415,7 +423,7 @@ router
     }
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
-    nodeEmail(experience, moreDetail).then(() =>
+    emailJSEmail(experience, moreDetail, emailjsIds, options).then(() =>
       res.redirect('/feedback/confirmation')
     )
   })
