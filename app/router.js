@@ -6,6 +6,7 @@ const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
 const skip = require('./skip')
+require('dotenv').config()
 const {
   getBlocks,
   getRemainingLeaveAllowance,
@@ -28,6 +29,14 @@ const {
 const dataUtils = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
 const healthcheck = require('./lib/healthcheck')
+const options = {
+  publicKey: process.env.EMAILJS_PUBLIC_KEY,
+  privateKey: process.env.EMAILJS_PRIVATE_KEY
+}
+const emailjsIds = {
+  serviceID: process.env.EMAILJS_SERVICE_ID,
+  templateID: process.env.EMAILJS_TEMPLATE_ID
+}
 
 router.use(healthcheck)
 
@@ -415,7 +424,7 @@ router
     }
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
-    emailJSEmail(experience, moreDetail, req.headers).then(() =>
+    emailJSEmail(experience, moreDetail, req.headers, emailjsIds, options).then(() =>
       res.redirect('/feedback/confirmation')
     )
   })
