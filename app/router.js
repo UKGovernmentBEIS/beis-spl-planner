@@ -6,6 +6,7 @@ const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
 const skip = require('./skip')
+const config = require('./config')
 const {
   getBlocks,
   getRemainingLeaveAllowance,
@@ -29,12 +30,12 @@ const dataUtils = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
 const healthcheck = require('./lib/healthcheck')
 const options = {
-  publicKey: process.env.EMAILJS_PUBLIC_KEY,
-  privateKey: process.env.EMAILJS_PRIVATE_KEY
+  publicKey: config.emailJSPublicKey,
+  privateKey: config.emailJSPrivateKey
 }
 const emailjsIds = {
-  serviceID: process.env.EMAILJS_SERVICE_ID,
-  templateID: process.env.EMAILJS_TEMPLATE_ID
+  serviceID: config.emailJSServiceID,
+  templateID: config.emailJSTemplateID
 }
 
 router.use(healthcheck)

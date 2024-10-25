@@ -1,5 +1,6 @@
 const emailjs = require('@emailjs/nodejs')
 const logger = require('./logger')
+const plannerText = 'Planner'
 
 const sendMail = async (experience, moreDetails, emailjsIds, options) => {
   const currentDateTime = new Date().toLocaleString('en-GB', {
@@ -15,7 +16,8 @@ const sendMail = async (experience, moreDetails, emailjsIds, options) => {
   const templateParams = {
     experience,
     moreDetails,
-    dateTime: currentDateTime
+    dateTime: currentDateTime,
+    plannerOrEligibility: plannerText
   }
 
   try {
