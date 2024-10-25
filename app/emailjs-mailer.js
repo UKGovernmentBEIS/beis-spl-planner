@@ -13,8 +13,8 @@ const sendMail = async (experience, moreDetails, emailjsIds, options) => {
   })
 
   const templateParams = {
-    experience: experience,
-    moreDetails: moreDetails,
+    experience,
+    moreDetails,
     dateTime: currentDateTime
   }
 

@@ -5,6 +5,9 @@
     "server.js"
       ],
   "exclude": [
+    "app/assets/images",
+    "app/assets/sass",
+    "app/forms",
     "common/assets"
   ],
   "reporter": [
