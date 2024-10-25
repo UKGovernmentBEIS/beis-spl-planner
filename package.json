@@ -55,7 +55,7 @@
     "staticify": "^3.3.4",
     "stickyfill": "^1.1.1-strict",
     "throng": "4.0.x",
-    "vue": "^2.6.14",
+    "vue": "^3.0.0",
     "winston": "^3.14.2",
     "xml": "^1.0.1"
   },
