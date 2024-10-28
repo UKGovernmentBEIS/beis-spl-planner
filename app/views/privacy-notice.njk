@@ -1,0 +1,95 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "radios/macro.njk" import govukRadios %}
+{% from "button/macro.njk" import govukButton %}
+{% from "table/macro.njk" import govukTable %}
+
+{% extends "layout.njk" %}
+
+{% block pageTitle -%}
+    {{ "Privacy notice" | pageTitle }}
+{%- endblock %}
+
+{% block beforeContent %}
+    {{ super() }}
+
+    {{ govukBackLink({
+        text: "Back",
+        href: withData(referrer)
+    }) }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <h1 class="govuk-heading-xl">
+                Privacy notice
+            </h1>
+
+            <p>This privacy notice explains how the Department for Business and Trade (DBT), as a ‘data controller’, processes personal data for the ‘Check if you can get Shared Parental Leave and Pay’ service on GOV.UK. </p>
+            <p>This notice is supplemented by our <a href="https://www.great.gov.uk/privacy-and-cookies/">main privacy notice</a> which provides further information on how DBT processes personal data and sets out your rights in respect of that personal data.</p>
+
+            <h2 class="govuk-heading-m">Personal data DBT collects</h2>
+            <p>In this service, DBT collects information about individuals planning Shared Parental Leave and their family members. This service does not collect any personal data that allows the direct identification of an individual (for example names).</p>
+            <p>The following categories of personal data are collected:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>Dates of birth</li>
+                <li>Salary and employment information</li>
+                <li>Details of a child’s birth, adoption or surrogacy</li>
+            </ul>
+
+            <h2 class="govuk-heading-m">Why DBT asks for this information and what happens if it is not provided</h2>
+            <p>Personal data is collected through the ‘Check if you can get Shared Parental Leave and Pay’ service to enable individuals to check their eligibility for Shared Parental Leave and Shared Parental Pay. This is an optional service that individuals are not required to use.</p>
+            <p>DBT collects this information to support individuals and their employers with planning their Shared Parental Leave and Pay, linked to the department’s obligations under the Children and Families Act 2014.</p>
+
+            <h2 class="govuk-heading-m">The legal basis for processing your personal data</h2>
+            <p>The legal bases for processing your personal data under (Article 6(1) UK General Data Protection Regulation (GDPR)) are that:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>processing is necessary for compliance with a legal obligation to which the controller is subject</li>
+                <li>processing is necessary for a task carried out in the public interest or in the exercise of official authority vested in the controller</li>
+            </ul>
+
+            <h2 class="govuk-heading-m">How DBT processes personal data it receives</h2>
+            <p>Data entered into the ‘Check if you can get Shared Parental Leave and Pay’ service is not stored in any database. It is only held temporarily to enable you to complete your use of the service.</p>
+
+            <h2 class="govuk-heading-m">Third-party processors</h2>
+            <p>We use the following third-party processors to operate the service:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>Amazon Web Services – DBT’s contracted cloud-hosting service provider</li>
+                <li>Government Digital Service – provides the GOV.UK Notify service, used for confirmation and reminder emails</li>
+                <li>Google Analytics – used to monitor usage and the performance of DBT digital services</li>
+            </ul>
+
+            <h2 class="govuk-heading-m">Information sharing</h2>
+            <p>The service does not store your personal data, so there is no onward sharing of information with others.</p>
+            <p>You can find out more detailed information about how we share data and further processing in the <a href="https://www.great.gov.uk/privacy-and-cookies/">main privacy notice</a>.</p>
+
+            <h2 class="govuk-heading-m">How long will DBT hold your data for</h2>
+            <p>Data you enter into the service is only held until you close your internet browser window.</p>
+
+            <h2 class="govuk-heading-l">Your rights</h2>
+            <p>You have rights under UK data protection legislation, including:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>the right to request copies of the personal data we hold about you</li>
+                <li>the right to request that we rectify information about you which you think is inaccurate or incomplete</li>
+                <li>the right to request that we restrict your data from further processing (in certain circumstances)</li>
+                <li>the right to object to the processing of your data (in certain circumstances)</li>
+                <li>the right to data portability (in certain circumstances)</li>
+                <li>the right to request that we erase your data (in certain circumstances)</li> <!-- OG document has typo, says "the right to request that we *erasure* your data" -->
+                <li>the right not to be subject to a decision based on solely automated data processing</li>
+            </ul>
+
+            <p>You can contact DBT’s Data Protection Officer for further information about how your data has been processed by the department or to make a complaint about how your data has been used. Please contact: <a href="mailto:data.protection@businessandtrade.gov.uk">data.protection@businessandtrade.gov.uk</a></p>
+            <p>You can also submit a complaint to the Information Commissioner’s Office (ICO) at:</p>
+            <p>Information Commissioner's Office<br>
+                Wycliffe House<br>
+                Water Lane<br>
+                Wilmslow<br>
+                Cheshire<br>
+                SK9 5AF</p>
+            <p>Website: <a href="https://ico.org.uk ">https://ico.org.uk</a></p>
+            <p>Telephone: 0303 123 1113</p>
+            <p>You can find out more about your rights as a data subject, and details of how to contact our Data Protection Officer and the ICO in our <a href="https://www.great.gov.uk/privacy-and-cookies/">main privacy notice</a>.</p>
+
+        </div>
+    </div>
+{% endblock %}
