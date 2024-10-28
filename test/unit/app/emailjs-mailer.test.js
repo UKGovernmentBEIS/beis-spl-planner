@@ -30,6 +30,7 @@ describe('sendMail', function () {
   describe('successful email sending', function () {
     const experience = 'Great service!'
     const moreDetails = 'No additional feedback'
+    const plannerText = 'Planner'
     const emailjsIds = { serviceID: 'test_service', templateID: 'test_template' }
     const options = { publicKey: 'test_public', privateKey: 'test_private' }
 
@@ -43,6 +44,7 @@ describe('sendMail', function () {
       const templateParams = args[2]
       expect(templateParams.experience).to.equal(experience)
       expect(templateParams.moreDetails).to.equal(moreDetails)
+      expect(templateParams.plannerOrEligibility).to.equal(plannerText)
       expect(templateParams).to.have.property('dateTime')
       expect(args[3]).to.equal(options)
     })
