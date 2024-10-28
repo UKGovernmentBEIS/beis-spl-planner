@@ -267,7 +267,7 @@ function getRemainingPayAllowance (leaveBlocks) {
 }
 
 function getBlockLength (block) {
-  if (!block || isNaN(block.start) || isNaN(block.end)) {
+  if (!block || isNaN(block.start) || isNaN(block.end) || block.start >= block.end) {
     return 0
   }
   return parseInt(block.end) - parseInt(block.start) + 1

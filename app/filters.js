@@ -2,7 +2,14 @@ const delve = require('dlv')
 const { getWeeksArray, parseWeeksFromData } = require('./utils')
 const Day = require('../common/lib/day')
 const { parseEligibilityFromData } = require('./lib/eligibility')
-const { getBlockLength, getPaternalBlockLength, getRemainingLeaveAllowance, getRemainingPayAllowance, parseLeaveBlocks, parseSplLeaveBlocks } = require('./lib/blocks')
+const {
+  getBlockLength,
+  getPaternalBlockLength,
+  getRemainingLeaveAllowance,
+  getRemainingPayAllowance,
+  parseLeaveBlocks,
+  parseSplLeaveBlocks
+} = require('./lib/blocks')
 const _ = require('lodash')
 
 // Existing filters can be imported from env using env.getFilter(name)
@@ -15,15 +22,25 @@ module.exports = function (env) {
   }
 
   function hasStartDateError (errors, partOfDate) {
-    return errors && errors['start-date'] && errors['start-date'].dateParts.includes(partOfDate)
+    return (
+      errors &&
+      errors['start-date'] &&
+      errors['start-date'].dateParts.includes(partOfDate)
+    )
   }
 
   function hasCalendarError (errors) {
-    return errors && Object.keys(errors).some(key => key.startsWith('calendar.'))
+    return (
+      errors && Object.keys(errors).some((key) => key.startsWith('calendar.'))
+    )
   }
 
   function startDay (data) {
-    return new Day(data['start-date-year'], data['start-date-month'], data['start-date-day'])
+    return new Day(
+      data['start-date-year'],
+      data['start-date-month'],
+      data['start-date-day']
+    )
   }
 
   function startOfWeek (day) {
@@ -39,7 +56,10 @@ module.exports = function (env) {
   }
 
   function hasEitherSalary (data) {
-    return !!delve(data, ['primary', 'salary-amount']) || !!delve(data, ['secondary', 'salary-amount'])
+    return (
+      !!delve(data, ['primary', 'salary-amount']) ||
+      !!delve(data, ['secondary', 'salary-amount'])
+    )
   }
 
   function zeroWeek (data) {
@@ -48,7 +68,8 @@ module.exports = function (env) {
 
   function totalBlockPay (block) {
     const primaryPay = block.primary && parseFloat(block.primary.substring(1))
-    const secondaryPay = block.secondary && parseFloat(block.secondary.substring(1))
+    const secondaryPay =
+      block.secondary && parseFloat(block.secondary.substring(1))
     return '£' + ((primaryPay || 0) + (secondaryPay || 0)).toFixed(2)
   }
 
@@ -59,9 +80,11 @@ module.exports = function (env) {
 
   function displayPayBlockTotal (data) {
     const eligibility = parseEligibilityFromData(data)
-    return eligibility.primary.statutoryPay && // Cannot get exact value for Maternity Allowance.
-           !isNaN(data.primary['salary-amount']) &&
-           !isNaN(data.secondary['salary-amount'])
+    return (
+      eligibility.primary.statutoryPay && // Cannot get exact value for Maternity Allowance.
+      !isNaN(data.primary['salary-amount']) &&
+      !isNaN(data.secondary['salary-amount'])
+    )
   }
 
   function shouldDisplayPrimaryLeaveAndPayForm (data) {
@@ -75,9 +98,15 @@ module.exports = function (env) {
   function shouldDisplayPrimaryCurtailmentForm (data) {
     if (data.visualPlanner) {
       const weeks = parseWeeksFromData(data)
-      return !weeks.hasPrimarySharedPayOrLeave() && weeks.hasSecondarySharedPayOrLeave()
+      return (
+        !weeks.hasPrimarySharedPayOrLeave() &&
+        weeks.hasSecondarySharedPayOrLeave()
+      )
     } else {
-      return !delve(data, ['leave-blocks', 'primary', 'spl']) && !!delve(data, ['leave-blocks', 'secondary', 'spl'])
+      return (
+        !delve(data, ['leave-blocks', 'primary', 'spl']) &&
+        !!delve(data, ['leave-blocks', 'secondary', 'spl'])
+      )
     }
   }
 
@@ -90,7 +119,7 @@ module.exports = function (env) {
   }
 
   function formTemplate (text, options) {
-    const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1)
+    const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1)
 
     return text
       .replace(/\$parentOrPartner/g, options.parentOrPartner)
@@ -111,7 +140,10 @@ module.exports = function (env) {
   }
 
   function countWeeks (blocks) {
-    return blocks.reduce((total, block) => total + block.end - block.start + 1, 0)
+    return blocks.reduce(
+      (total, block) => total + block.end - block.start + 1,
+      0
+    )
   }
 
   function blocksToDates (data, blocks) {
@@ -165,12 +197,13 @@ module.exports = function (env) {
     return values.map((value, i) => ({
       value,
       text: textMacro(value, i),
-      selected: value === parseInt(selected) || (selected === undefined && i === 0)
+      selected:
+        value === parseInt(selected) || (selected === undefined && i === 0)
     }))
   }
 
   function errorMessages (errors) {
-    return _.values(errors).map(e => e.text)
+    return _.values(errors).map((e) => e.text)
   }
 
   return {
