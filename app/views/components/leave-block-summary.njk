@@ -10,6 +10,15 @@
         },
         value: {
           text: "week starting " + options.data | startDay | startOfWeek | offsetWeeks(options.block[0].start) | formatForDisplay
+        },
+        actions: {
+          items: [
+            {
+              href: "/planner",
+              text: "Change",
+              visuallyHiddenText: "maternity leave start date"
+            }
+          ]
         }
       },
       {
@@ -18,6 +27,15 @@
         },
         value: {
           text: "week ending " + options.data | startDay | startOfWeek | offsetWeeks(options.block[0].end) | endOfWeek | formatForDisplay
+        },
+        actions: {
+          items: [
+            {
+              href: "/planner",
+              text: "Change",
+              visuallyHiddenText: "maternity leave end date"
+            }
+          ]
         }
       },
       {

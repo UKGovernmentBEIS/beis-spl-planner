@@ -10,6 +10,15 @@
         },
         value: {
           text: "week starting " + options.data | startDay | startOfWeek | offsetWeeks(options.block[0].start) | formatForDisplay
+        },
+        actions: {
+          items: [
+            {
+              href: "/planner",
+              text: "Change",
+              visuallyHiddenText: "paternity leave start date"
+            }
+          ]
         }
       },
       {
