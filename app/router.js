@@ -211,7 +211,7 @@ router.route(paths.getPath('notEligible')).get(function (req, res) {
 router
   .route(paths.getPath('startDate'))
   .get(function (req, res) {
-    const data = req.session.data;
+    const data = req.session.data
     if (req.query.edit === 'true') {
       res.render('start-date', { data })
     } else {
