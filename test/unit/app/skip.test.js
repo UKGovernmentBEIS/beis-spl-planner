@@ -4,7 +4,7 @@ const { typeOfAdoption, initialLeaveAndPay, maternityAllowance, paternityLeaveAn
 
 const req = (data) => ({ session: { data } })
 
-describe('dataUtils Functions', () => {
+describe('skip.js', () => {
   describe('typeOfAdoption', () => {
     it('should return false if session data indicates adoption', () => {
       const result = typeOfAdoption(req({ 'nature-of-parenthood': 'adoption' }))
