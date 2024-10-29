@@ -211,7 +211,12 @@ router.route(paths.getPath('notEligible')).get(function (req, res) {
 router
   .route(paths.getPath('startDate'))
   .get(function (req, res) {
-    res.render('start-date')
+    const data = req.session.data;
+    if (req.query.edit === 'true') {
+      res.render('start-date', { data })
+    } else {
+      res.render('start-date')
+    }
   })
   .post(function (req, res) {
     if (!validate.startDate(req)) {
@@ -245,7 +250,11 @@ router
     }
     // Remove any data from the question based planner.
     delete data['leave-blocks']
-    res.render('planner')
+    if (req.query.edit === 'true') {
+      res.render('planner', { data })
+    } else {
+      res.render('planner')
+    }
   })
   .post(function (req, res) {
     req.session.data.visualPlanner = true
