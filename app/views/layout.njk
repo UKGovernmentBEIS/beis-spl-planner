@@ -10,10 +10,9 @@
 {% endblock %}
 
 {% block header %}
-  <div class="govuk-width-container">
-    <header id="cookie_banner">
+  <header id="cookie_banner" class="cookie-banner">
       {% set html %}
-        <h1 class="govuk-cookie-banner__heading govuk-heading-m">Cookies on {{ service_name }}</h1>
+        <h1 class="govuk-heading-m">Cookies on {{ service_name }}</h1>
         <p>We use some essential cookies to make this service work.</p>
         <p>We’d like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.</p>
       {% endset %}
@@ -26,7 +25,6 @@
       {{
         govukCookieBanner({
           ariaLabel: "Cookies on "+ service_name,
-          class: "cookie-banner",
           messages: [
             {
               html: html,
@@ -48,34 +46,11 @@
                   href: "/cookies"
                 }
               ]
-            },
-            {
-              html: acceptHtml,
-              actions: [
-                {
-                  text: "Hide cookie message",
-                  type: "submit",
-                  name: "cookies[hide]",
-                  value: "yes"
-                }
-              ]
-            },
-            {
-              html: rejectedHtml,
-              actions: [
-                {
-                  text: "Hide cookie message",
-                  type: "submit",
-                  name: "cookies[hide]",
-                  value: "yes"
-                }
-              ]
             }
           ]
         })
       }}
     </header>
-  </div>
   {{ govukHeader({
     serviceName: service_name,
     serviceUrl: "https://www.gov.uk/plan-shared-parental-leave-pay"
