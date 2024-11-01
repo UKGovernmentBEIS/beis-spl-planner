@@ -56,7 +56,7 @@
           block: block,
           data: data,
           notify: {
-            date: data | startDay | startOfWeek | offsetWeeks(block[0].start) | offsetWeeks(-8),
+            date: data | startDay | startOfWeek | offsetWeeks(block.start) | offsetWeeks(-8),
             explanation: "8 weeks before block starts",
             asterisk: false
           }
