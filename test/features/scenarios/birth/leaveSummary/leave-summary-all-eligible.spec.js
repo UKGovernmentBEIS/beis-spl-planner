@@ -153,8 +153,9 @@ test.describe('Leave summary page', () => {
       setupLeavePage: page
     }) => {
       const notifyByDate = calculatedLeaveDate
-        .subtract(8, 'weeks')
+        .add(2, 'weeks')
         .startOf('isoWeek')
+        .subtract(8, 'weeks')
       await assertDateLabel(
         page,
         leaveSummarySelectors.notifyEmployerShared,
