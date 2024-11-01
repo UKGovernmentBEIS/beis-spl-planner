@@ -393,9 +393,14 @@ module.exports = {
   secondarySharedParentalLeaveAndPay,
   paternityLeaveAndPay,
   startDate,
+  addStartDateError,
   parentSalaries,
   planner,
   paternityLeaveQuestion,
   splQuestions,
-  feedback
+  feedback,
+  hasBreakBeforeEnd,
+  getLeaveWeeksCount,
+  getPayWeeksCount,
+  addCalendarError
 }
