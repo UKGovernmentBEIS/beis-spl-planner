@@ -61,6 +61,11 @@
   }) }}
 {% endblock %}
 
+{% block body %}
+  {% include "./includes/ga.njk" %}
+  {{ block('content') }}
+{% endblock %}
+
 {% block contactUs %}
 
 {% endblock %}
