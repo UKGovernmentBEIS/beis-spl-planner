@@ -3,7 +3,7 @@ const test = require('./fixtures/select-cookies')
 const checkUrl = require('./helpers/general')
 
 test.describe('cookies', () => {
-    test.beforeEach(async ({ setUpCookiesPage }) => {})
+  test.beforeEach(async ({ setUpCookiesPage }) => {})
 
   test('has title', async ({ setUpCookiesPage: page }) => {
     await expect(page).toHaveTitle(
@@ -29,7 +29,7 @@ test.describe('cookies', () => {
   })
 
   test('should enable cookies when accepted', async ({ page }) => {
-    await page.check("input[value='on']") 
+    await page.check("input[value='on']")
 
     await expect(page.locator("input[value='on']")).toBeChecked()
 
@@ -41,7 +41,7 @@ test.describe('cookies', () => {
   })
 
   test('should display success message after accepting cookies', async ({ page }) => {
-    await page.check("input[value='on']") 
+    await page.check("input[value='on']")
 
     await expect(page.locator("input[value='on']")).toBeChecked()
 
