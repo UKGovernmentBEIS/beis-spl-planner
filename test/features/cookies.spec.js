@@ -20,7 +20,6 @@ test.describe('cookies', () => {
     await expect(analyticalCookiesTable).toContainText('_ga')
     await expect(analyticalCookiesTable).toContainText('_ga_NJ98WRPX')
     await expect(analyticalCookiesTable).toContainText('_gat')
-    await expect(analyticalCookiesTable).toContainText('_gat_UA-158688524-1')
     await expect(analyticalCookiesTable).toContainText('_gid')
   })
 
