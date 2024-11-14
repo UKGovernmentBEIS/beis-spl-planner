@@ -5,7 +5,7 @@ const envify = require('envify/custom')
 module.exports = function (grunt) {
   const env = {
     dev: {
-      GOOGLE_ANALYTICS_ID: 'G-653ZR7YS40',
+      GOOGLE_ANALYTICS_ID: 'GTM-NJ98WRPX',
       NODE_ENV: 'development'
     }
   }

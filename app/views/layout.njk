@@ -61,6 +61,11 @@
   }) }}
 {% endblock %}
 
+{% block body %}
+  {% include "./includes/ga.njk" %}
+  {{ block('content') }}
+{% endblock %}
+
 {% block contactUs %}
 
 {% endblock %}
@@ -81,6 +86,10 @@
           {
             href: "/accessibility-statement",
             text: 'Accessibility statement'
+          },
+          {
+            href: "/privacy-notice",
+            text: 'Privacy notice'
           }
         ]
       }
