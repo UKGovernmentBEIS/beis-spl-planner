@@ -1,4 +1,4 @@
-window.GOVUKFrontend = require('govuk-frontend/govuk/all')
+window.GOVUKFrontend = require('../../node_modules/govuk-frontend/dist/govuk/all.bundle.js')
 window.GOVUKFrontend.initAll()
 
 const cookieManager = require('../../node_modules/@dvsa/cookie-manager/cookie-manager.js')
