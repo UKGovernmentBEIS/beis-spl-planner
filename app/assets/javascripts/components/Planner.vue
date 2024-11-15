@@ -117,7 +117,7 @@
 </script>
 
 <style lang="scss">
-  @import "node_modules/govuk-frontend/dist/govuk/settings/colours-applied";
+  @import "node_modules/govuk-frontend/govuk/settings/colours-applied";
 
   @mixin sticky() {
     @media not print {

@@ -239,10 +239,11 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "node_modules/govuk-frontend/dist/govuk/settings/colours-applied";
+  @import "node_modules/govuk-frontend/govuk/settings/colours-applied";
 
   .govuk-error-summary__body {
     color: $govuk-error-colour;
     font-weight: bold;
   }
 </style>
+

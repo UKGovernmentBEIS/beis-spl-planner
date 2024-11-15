@@ -1,19 +1,16 @@
 {% from "select/macro.njk" import govukSelect %}
-{% from "input/macro.njk" import govukInput %}
+{% from "hmcts-currency-input/macro.njk" import hmctsCurrencyInput %}
 
 {% macro salaryInput(options) %}
   {% set salaryPeriodId = options.parent + "[salary-period]" %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
-      {{ govukInput({
+      {{ hmctsCurrencyInput({
         id: options.parent + "-salary-amount",
         name: options.parent + "[salary-amount]",
         classes: "govuk-input--width-20 salary-value-input",
         label: {
           text: options.labelText
-        },
-        prefix: {
-          text: "£"
         },
         pattern: "[0-9]+(\.[0-9]{1,2})?",
         errorMessage: options.amountError if options.amountError,
