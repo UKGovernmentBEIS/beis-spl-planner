@@ -78,9 +78,21 @@ function initialiseGlobalMiddleware (app) {
 
   app.use((req, res, next) => {
     res.locals.asset_path = '/public/' // eslint-disable-line camelcase
-    const cmUserPreferences = req.cookies['cm-user-preferences']
-    if (cmUserPreferences) {
-      res.locals.cmUserPreferences = JSON.parse(cmUserPreferences)
+    if (req.cookies['cookie_preferences_set']) {
+      console.log("HELLO")
+      const cookiePolicy = {
+        essential: true,
+        settings: true,
+        usage: true,
+        campaigns: true
+      }
+      res.cookie('cookie_preferences_set', 'true', {maxAge: oneYear})
+      res.cookie('cookies_policy', JSON.stringify(cookiePolicy), {maxAge: maxAge})
+      res.cookie('_ga', {maxAge: oneYear*2})
+      res.cookie('_ga_NJ98WRPX', {maxAge: oneYear*2})
+      res.cookie('_gat', {maxAge: 10000})
+      res.cookie('_gid', {maxAge: 86400000})
+
     }
     noCache(res)
     next()

@@ -3,6 +3,7 @@ window.GOVUKFrontend.initAll()
 
 const cookieManager = require('../../node_modules/@dvsa/cookie-manager/cookie-manager.js')
 cookieManager.init({
+  'user-preference-cookie-name': "cookie_preferences_set",
   'cookie-banner-id': 'cookie_banner',
   'cookie-banner-saved-callback': function () {
     const banner = document.querySelector('#cookie_banner')
