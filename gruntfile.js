@@ -38,7 +38,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: 'common/assets/',
           src: ['**/*', '!sass/**', '!javascripts/**'],
-          dest: 'public/'
+          dest: 'public/assets/'
         }
       ]
     },
@@ -48,7 +48,17 @@ module.exports = function (grunt) {
           expand: true,
           cwd: 'app/assets/',
           src: ['**/*', '!sass/**', '!javascripts/**'],
-          dest: 'public/'
+          dest: 'public/assets/'
+        }
+      ]
+    },
+    govukFrontendAssets: {
+      files: [
+        {
+          expand: true,
+          cwd: 'node_modules/govuk-frontend/dist/govuk/assets/',
+          src: ['**/*' ],
+          dest: 'public/assets/'
         }
       ]
     }
