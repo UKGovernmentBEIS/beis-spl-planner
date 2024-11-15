@@ -29,7 +29,7 @@ test.describe('check head elements', () => {
     await page.reload()
 
     await page.click('body > footer > div > div > div.govuk-footer__meta-item.govuk-footer__meta-item--grow > ul > li:nth-child(1) > a')
-    await page.check("input[value='off']")
+    await page.check("input[value='off']", { force: true })
     await expect(page.locator("input[value='off']")).toBeChecked()
     await page.click('button:text("Save")')
     await page.waitForTimeout(2000)

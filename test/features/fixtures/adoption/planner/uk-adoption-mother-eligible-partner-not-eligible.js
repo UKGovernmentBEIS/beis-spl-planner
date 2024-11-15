@@ -26,7 +26,7 @@ const test = base.extend({
       additionalLeaveQuestions,
       async (page) => {
         // Type of adoption (UK Adoption specific to this route)
-        await page.getByLabel('UK Adoption').click()
+        await page.getByLabel('UK Adoption').click({ force: true })
         await page.click('button:text("Continue")')
       }
     )

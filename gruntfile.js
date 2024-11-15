@@ -57,7 +57,7 @@ module.exports = function (grunt) {
         {
           expand: true,
           cwd: 'node_modules/govuk-frontend/dist/govuk/assets/',
-          src: ['**/*' ],
+          src: ['**/*'],
           dest: 'public/assets/'
         }
       ]
