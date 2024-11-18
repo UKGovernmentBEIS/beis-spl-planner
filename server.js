@@ -47,6 +47,7 @@ const APP_VIEWS = [
 const cookieParser = require('cookie-parser')
 
 function initialiseGlobalMiddleware (app) {
+  app.use('/common/browsered', express.static(path.join(__dirname, 'common/browsered')))
   app.set('settings', { getVersionedPath: staticify.getVersionedPath })
   app.use(
     favicon(

@@ -1,8 +1,34 @@
-import('govuk-frontend').then(() => { 
-  window.GOVUKFrontend.initAll()
-})
+import('../../node_modules/@hmcts/cookie-manager/dist/cookie-manager.js').then((module) => {
+  const cookieManager = module.default
 
-import('@hmcts/cookie-manager').then((cookieManager) => {
+  cookieManager.on('CookieBannerAction', (actionName) => {
+    const acceptMessage = document.querySelector('.cookie-banner-accept-message')
+    const rejectMessage = document.querySelector('.cookie-banner-reject-message')
+    const cookieBanner = document.querySelector('.cookie-banner')
+    if(actionName === 'accept'){
+      console.log('User accepted cookies')
+      cookieBanner.hidden = true
+      acceptMessage.hidden = false
+    } else if (actionName === 'reject') {
+      console.log('User rejected cookies')
+      cookieBanner.hidden = true
+      rejectMessage.hidden = false
+    } else if (actionName === 'hide') {
+      acceptMessage.hidden = true
+      rejectMessage.hidden = true
+    }
+  })
+
+  cookieManager.on('CookieBannerInitialized', () => {
+    console.log('Cookie banner has been initialized')
+    const cookieBanner = document.querySelector('.cookie-banner')
+    cookieBanner.hidden = false
+  })
+  
+  cookieManager.on('CookieManagerLoaded', () => {
+    console.log('Cookie manager has finished loading and adding event listeners')
+  })
+
   cookieManager.on('UserPreferencesLoaded', (preferences) => {
     const dataLayer = window.dataLayer || []
     dataLayer.push({'event': 'Cookies Policy', 'cookies_policy': preferences})
@@ -11,9 +37,7 @@ import('@hmcts/cookie-manager').then((cookieManager) => {
   cookieManager.on('UserPreferencesSaved', (preferences) => {
     const dataLayer = window.dataLayer || []
     const dtrum = window.dtrum
-
     dataLayer.push({'event': 'Cookies Policy', 'cookies_policy': preferences})
-
     if(dtrum !== undefined) {
       if(preferences.apm === 'on'){
         dtrum.enable()
