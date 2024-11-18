@@ -7,6 +7,7 @@
   "exclude": [
     "app/assets/images",
     "app/assets/sass",
+    "app/assets/javascripts",
     "app/forms",
     "common/assets"
   ],
