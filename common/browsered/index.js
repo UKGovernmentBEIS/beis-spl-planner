@@ -1,4 +1,4 @@
-window.GOVUKFrontend = require('govuk-frontend/govuk/all')
+window.GOVUKFrontend = require('../../node_modules/govuk-frontend/dist/govuk/all.bundle.js')
 window.GOVUKFrontend.initAll()
 
 const cookieManager = require('../../node_modules/@dvsa/cookie-manager/cookie-manager.js')
@@ -29,8 +29,10 @@ cookieManager.init({
     optional: true,
     cookies: [
       '_ga',
-      '_gid',
-      '_gat_UA-158688524-1'
+      '_ga_NJ98WRPX',
+      '_gat',
+      '_gat_UA-158688524-1',
+      '_gid'
     ]
   }
   ]

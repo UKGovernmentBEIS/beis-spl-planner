@@ -54,11 +54,16 @@
 {% block beforeContent %}
   {{ govukPhaseBanner({
     tag: {
-      text: "beta"
+      text: "Beta"
     },
     classes: "print-hide",
     html: "This is a new service – your <a class=\"govuk-link\" href=\"/feedback\">feedback</a> will help us to improve it."
   }) }}
+{% endblock %}
+
+{% block body %}
+  {% include "./includes/ga.njk" %}
+  {{ block('content') }}
 {% endblock %}
 
 {% block contactUs %}
@@ -81,6 +86,10 @@
           {
             href: "/accessibility-statement",
             text: 'Accessibility statement'
+          },
+          {
+            href: "/privacy-notice",
+            text: 'Privacy notice'
           }
         ]
       }
