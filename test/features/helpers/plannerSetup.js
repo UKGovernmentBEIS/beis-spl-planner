@@ -9,7 +9,9 @@ async function commonSetup (
 ) {
   // Nature of parenthood (birth/adoption/surrogacy)
   await page.goto(`${baseURL}`)
-  await page.check(`input[value='${natureOfParenthoodValue}']`)
+  await page.check(`input[value='${natureOfParenthoodValue}']`, {
+    force: true
+  })
   await page.click('button:text("Continue")')
 
   // Call the additional setup steps specific to each route
@@ -24,13 +26,13 @@ async function commonSetup (
       name: `Is the ${primaryParent.name} eligible for Shared Parental Leave?`
     })
     .getByLabel(primaryParent.splEligible)
-    .click()
+    .click({ force: true })
   await page
     .getByRole('group', {
       name: `Is the ${primaryParent.name} eligible for Statutory Shared Parental Pay?`
     })
     .getByLabel(primaryParent.splPayEligible)
-    .click()
+    .click({ force: true })
   await page.click('button:text("Continue")')
 
   if (
@@ -43,13 +45,13 @@ async function commonSetup (
         name: `Is the ${primaryParent.name} eligible for Maternity Leave?`
       })
       .getByLabel('No')
-      .click()
+      .click({ force: true })
     await page
       .getByRole('group', {
         name: `Is the ${primaryParent.name} eligible for Statutory Maternity Pay?`
       })
       .getByLabel('No')
-      .click()
+      .click({ force: true })
     await page.click('button:text("Continue")')
 
     // eligibility/mother/maternity-allowance
@@ -58,7 +60,7 @@ async function commonSetup (
         name: `Is the ${primaryParent.name} eligible for Maternity Allowance?`
       })
       .getByLabel(primaryParent.materinitAllowanceEligible)
-      .click()
+      .click({ force: true })
     await page.click('button:text("Continue")')
   }
 
@@ -69,13 +71,13 @@ async function commonSetup (
       name: `Is the ${secondaryParent.name} eligible for Shared Parental Leave?`
     })
     .getByLabel(secondaryParent.splEligible)
-    .click()
+    .click({ force: true })
   await page
     .getByRole('group', {
       name: `Is the ${secondaryParent.name} eligible for Statutory Shared Parental Pay?`
     })
     .getByLabel(secondaryParent.splPayEligible)
-    .click()
+    .click({ force: true })
   await page.click('button:text("Continue")')
 
   if (
@@ -88,13 +90,13 @@ async function commonSetup (
         name: `Is the ${secondaryParent.name} eligible for Paternity Leave?`
       })
       .getByLabel('No')
-      .click()
+      .click({ force: true })
     await page
       .getByRole('group', {
         name: `Is the ${secondaryParent.name} eligible for Statutory Paternity Pay?`
       })
       .getByLabel('No')
-      .click()
+      .click({ force: true })
     await page.click('button:text("Continue")')
   }
 

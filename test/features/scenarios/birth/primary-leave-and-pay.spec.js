@@ -34,7 +34,7 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the mother eligible for Shared Parental Leave?'
         })
         .getByLabel('Yes')
-        .click() // <- Click on Yes
+        .click({ force: true }) // <- Click on Yes
       await expect(
         page
           .getByRole('group', {
@@ -48,7 +48,7 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the mother eligible for Shared Parental Leave?'
         })
         .getByLabel('No')
-        .click() // <- Click on No
+        .click({ force: true }) // <- Click on No
       await expect(
         page
           .getByRole('group', {
@@ -62,7 +62,7 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the mother eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('Yes')
-        .click() // <- Click on Yes
+        .click({ force: true }) // <- Click on Yes
       await expect(
         page
           .getByRole('group', {
@@ -76,7 +76,7 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the mother eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('No')
-        .click() // <- Click on No
+        .click({ force: true }) // <- Click on No
       await expect(
         page
           .getByRole('group', {
@@ -94,13 +94,13 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the mother eligible for Shared Parental Leave?'
         })
         .getByLabel('Yes')
-        .click() // <- Click on Yes
+        .click({ force: true }) // <- Click on Yes
       await page
         .getByRole('group', {
           name: 'Is the mother eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('Yes')
-        .click() // <- Click on Yes
+        .click({ force: true }) // <- Click on Yes
 
       await page.click('button:text("Continue")') // <- Click on continue button
 
@@ -119,7 +119,7 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the mother eligible for Shared Parental Leave?'
         })
         .getByLabel('Yes')
-        .click() // <- Click on Yes
+        .click({ force: true }) // <- Click on Yes
 
       await page.click('button:text("Continue")') // <- Click on continue button
 
@@ -158,13 +158,13 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the mother eligible for Shared Parental Leave?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the mother eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
     })
 
@@ -176,13 +176,13 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the mother eligible for Maternity Leave?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the mother eligible for Statutory Maternity Pay?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
@@ -198,13 +198,13 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the mother eligible for Maternity Leave?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the mother eligible for Statutory Maternity Pay?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
@@ -222,13 +222,13 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the mother eligible for Shared Parental Leave?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the mother eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
     })
 
@@ -240,13 +240,13 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the partner eligible for Shared Parental Leave?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the partner eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
@@ -264,13 +264,13 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the partner eligible for Shared Parental Leave?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the partner eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
@@ -288,13 +288,13 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the partner eligible for Shared Parental Leave?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the partner eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
@@ -310,13 +310,13 @@ test.describe('when "birth" is selected on "nature-of-parenthood"', () => {
           name: 'Is the partner eligible for Shared Parental Leave?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the partner eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
