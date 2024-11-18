@@ -29,6 +29,7 @@
     "@babel/polyfill": "^7.8.7",
     "@dvsa/cookie-manager": "^1.1.2",
     "@emailjs/nodejs": "^5.0.2",
+    "@hmcts/cookie-manager": "^1.0.0",
     "body-parser": "^2.0.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.7",
