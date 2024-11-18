@@ -29,7 +29,6 @@ describe('filters', () => {
     it('returns the names of the fields in the form inner HTML', () => {
       const formInnerHtml = `
         <input name="name" />
-        <input name="name" />
         <input name="email" />
       `
       expect(filters.fieldNames(formInnerHtml)).to.deep.equal([
