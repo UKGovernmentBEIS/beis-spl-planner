@@ -13,9 +13,15 @@ test.describe('nature-of-parenthood', () => {
   })
 
   test('should allow me to check birth and continue', async ({ page }) => {
-    await page.check("input[value='birth']") // <- Click on birth
+    await page.check(
+      '#main-content > div > div > form > div > fieldset > div.govuk-radios.govuk-radios > div:nth-child(1) > label'
+    ) // <- Click on birth
 
-    await expect(page.locator("input[value='birth']")).toBeChecked()
+    await expect(
+      page.locator(
+        '#main-content > div > div > form > div > fieldset > div.govuk-radios.govuk-radios > div:nth-child(1) > label'
+      )
+    ).toBeChecked()
 
     await page.click('button:text("Continue")') // <- Click on continue button
 
@@ -25,9 +31,15 @@ test.describe('nature-of-parenthood', () => {
   })
 
   test('should allow me to check adoption and continue', async ({ page }) => {
-    await page.check("input[value='adoption']") // <- Click on adoption
+    await page.check(
+      '#main-content > div > div > form > div > fieldset > div.govuk-radios.govuk-radios > div:nth-child(2) > label'
+    ) // <- Click on adoption
 
-    await expect(page.locator("input[value='adoption']")).toBeChecked()
+    await expect(
+      page.locator(
+        '#main-content > div > div > form > div > fieldset > div.govuk-radios.govuk-radios > div:nth-child(2) > label'
+      )
+    ).toBeChecked()
 
     await page.click('button:text("Continue")') // <- Click on continue button
 
@@ -39,9 +51,15 @@ test.describe('nature-of-parenthood', () => {
   })
 
   test('should allow me to check surrogacy and continue', async ({ page }) => {
-    await page.check("input[value='surrogacy']") // <- Click on surrogacy
+    await page.check(
+      '#main-content > div > div > form > div > fieldset > div.govuk-radios.govuk-radios > div:nth-child(3) > label'
+    ) // <- Click on surrogacy
 
-    await expect(page.locator("input[value='surrogacy']")).toBeChecked()
+    await expect(
+      page.locator(
+        '#main-content > div > div > form > div > fieldset > div.govuk-radios.govuk-radios > div:nth-child(3) > label'
+      )
+    ).toBeChecked()
 
     await page.click('button:text("Continue")') // <- Click on continue button
 

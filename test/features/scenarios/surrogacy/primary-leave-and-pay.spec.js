@@ -29,7 +29,7 @@ test.describe('when "surrogacy" is selected on "nature-of-parenthood"', () => {
           name: 'Is the parental order parent eligible for Shared Parental Leave?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await expect(
         page
           .getByRole('group', {
@@ -43,7 +43,7 @@ test.describe('when "surrogacy" is selected on "nature-of-parenthood"', () => {
           name: 'Is the parental order parent eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await expect(
         page
           .getByRole('group', {
@@ -61,13 +61,13 @@ test.describe('when "surrogacy" is selected on "nature-of-parenthood"', () => {
           name: 'Is the parental order parent eligible for Shared Parental Leave?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the parental order parent eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
@@ -104,13 +104,13 @@ test.describe('when "surrogacy" is selected on "nature-of-parenthood"', () => {
         name: 'Is the parental order parent eligible for Shared Parental Leave?'
       })
       .getByLabel('No')
-      .click()
+      .click({ force: true })
     await page
       .getByRole('group', {
         name: 'Is the parental order parent eligible for Statutory Shared Parental Pay?'
       })
       .getByLabel('No')
-      .click()
+      .click({ force: true })
     await page.click('button:text("Continue")')
 
     await expect(
@@ -128,13 +128,13 @@ test.describe('when "surrogacy" is selected on "nature-of-parenthood"', () => {
         name: 'Is the parental order parent eligible for Shared Parental Leave?'
       })
       .getByLabel('Yes')
-      .click()
+      .click({ force: true })
     await page
       .getByRole('group', {
         name: 'Is the parental order parent eligible for Statutory Shared Parental Pay?'
       })
       .getByLabel('No')
-      .click()
+      .click({ force: true })
     await page.click('button:text("Continue")')
 
     await expect(
@@ -152,13 +152,13 @@ test.describe('when "surrogacy" is selected on "nature-of-parenthood"', () => {
         name: 'Is the parental order parent eligible for Shared Parental Leave?'
       })
       .getByLabel('No')
-      .click()
+      .click({ force: true })
     await page
       .getByRole('group', {
         name: 'Is the parental order parent eligible for Statutory Shared Parental Pay?'
       })
       .getByLabel('Yes')
-      .click()
+      .click({ force: true })
     await page.click('button:text("Continue")')
 
     await expect(
