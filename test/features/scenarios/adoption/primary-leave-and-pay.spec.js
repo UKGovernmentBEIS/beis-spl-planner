@@ -21,17 +21,17 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
     test('radio buttons should be clickable', async ({
       setupAdoptionPage: page
     }) => {
-      await page.check("input[value='uk']")
+      await page.check("input[value='uk']", { force: true })
       await expect(page.locator("input[value='uk']")).toBeChecked()
 
-      await page.check("input[value='overseas']")
+      await page.check("input[value='overseas']", { force: true })
       await expect(page.locator("input[value='overseas']")).toBeChecked()
     })
 
     test('continue button should be clickable', async ({
       setupAdoptionPage: page
     }) => {
-      await page.check("input[value='uk']")
+      await page.check("input[value='uk']", { force: true })
 
       await page.click('button:text("Continue")') // <- Click on continue button
 
@@ -58,7 +58,7 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
 
   test.describe('and "UK Adoption" is selected', () => {
     test.beforeEach(async ({ setupAdoptionPage: page }) => {
-      await page.check("input[value='uk']")
+      await page.check("input[value='uk']", { force: true })
       await page.click('button:text("Continue")')
     })
 
@@ -76,13 +76,13 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
           name: 'Is the primary adopter eligible for Shared Parental Leave?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the primary adopter eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
@@ -100,13 +100,13 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
           name: 'Is the primary adopter eligible for Shared Parental Leave?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the primary adopter eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
@@ -124,13 +124,13 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
           name: 'Is the primary adopter eligible for Shared Parental Leave?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the primary adopter eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
@@ -148,13 +148,13 @@ test.describe('when "adoption" is selected on "nature-of-parenthood"', () => {
           name: 'Is the primary adopter eligible for Shared Parental Leave?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the primary adopter eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(

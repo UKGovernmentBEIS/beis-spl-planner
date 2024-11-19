@@ -259,6 +259,9 @@ class Paths {
       accessibilityStatement: {
         workFlowPage: false,
         url: '/accessibility-statement'
+      },
+      privacyNotice: {
+        url: '/privacy-notice'
       }
     }
   }

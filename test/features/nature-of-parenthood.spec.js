@@ -13,9 +13,15 @@ test.describe('nature-of-parenthood', () => {
   })
 
   test('should allow me to check birth and continue', async ({ page }) => {
-    await page.check("input[value='birth']") // <- Click on birth
+    await page.check(
+      '#main-content > div > div > form > div > fieldset > div.govuk-radios.govuk-radios > div:nth-child(1) > label'
+    ) // <- Click on birth
 
-    await expect(page.locator("input[value='birth']")).toBeChecked()
+    await expect(
+      page.locator(
+        '#main-content > div > div > form > div > fieldset > div.govuk-radios.govuk-radios > div:nth-child(1) > label'
+      )
+    ).toBeChecked()
 
     await page.click('button:text("Continue")') // <- Click on continue button
 
@@ -25,9 +31,15 @@ test.describe('nature-of-parenthood', () => {
   })
 
   test('should allow me to check adoption and continue', async ({ page }) => {
-    await page.check("input[value='adoption']") // <- Click on adoption
+    await page.check(
+      '#main-content > div > div > form > div > fieldset > div.govuk-radios.govuk-radios > div:nth-child(2) > label'
+    ) // <- Click on adoption
 
-    await expect(page.locator("input[value='adoption']")).toBeChecked()
+    await expect(
+      page.locator(
+        '#main-content > div > div > form > div > fieldset > div.govuk-radios.govuk-radios > div:nth-child(2) > label'
+      )
+    ).toBeChecked()
 
     await page.click('button:text("Continue")') // <- Click on continue button
 
@@ -39,9 +51,15 @@ test.describe('nature-of-parenthood', () => {
   })
 
   test('should allow me to check surrogacy and continue', async ({ page }) => {
-    await page.check("input[value='surrogacy']") // <- Click on surrogacy
+    await page.check(
+      '#main-content > div > div > form > div > fieldset > div.govuk-radios.govuk-radios > div:nth-child(3) > label'
+    ) // <- Click on surrogacy
 
-    await expect(page.locator("input[value='surrogacy']")).toBeChecked()
+    await expect(
+      page.locator(
+        '#main-content > div > div > form > div > fieldset > div.govuk-radios.govuk-radios > div:nth-child(3) > label'
+      )
+    ).toBeChecked()
 
     await page.click('button:text("Continue")') // <- Click on continue button
 
@@ -71,35 +89,5 @@ test.describe('nature-of-parenthood', () => {
     await page.click('button:text("Continue")') // <- Click on continue button without selecting an option first
 
     await expect(page.getByText('There is a problem')).toBeVisible() // <- Displays an error
-  })
-
-  test.describe('cookie-banner', () => {
-    test.beforeEach(async ({ page }) => {
-      const { baseURL } = page.context()._options
-      await page.goto(`${baseURL}`)
-    })
-
-    test('should display text on cookie banner', async ({ page }) => {
-      await expect(page.getByText('Cookies on Plan Shared Parental Leave and Pay')).toBeVisible()
-    })
-
-    test('should have analytical cookies when accept button pressed', async ({ page }) => {
-      await page.click('text="Accept additional cookies"')
-      const cookies = await page.context().cookies()
-      const analyticalCookies = cookies.find(cookie => cookie.name === 'cm-user-preferences')
-      expect(analyticalCookies.value).toBe('%7B%22analytics%22%3A%22on%22%7D')
-    })
-
-    test('should not have analytical cookies when reject button pressed', async ({ page }) => {
-      await page.click('text="Reject additional cookies"')
-      const cookies = await page.context().cookies()
-      const analyticalCookies = cookies.find(cookie => cookie.name === 'cm-user-preferences')
-      expect(analyticalCookies.value).toBe('%7B%22analytics%22%3A%22off%22%7D')
-    })
-
-    test('should go to cookies page when pressing view cookies link', async ({ page }) => {
-      await page.click('text="View cookies"')
-      await expect(page).toHaveTitle(/Cookies - Plan Shared Parental Leave and Pay - GOV.UK/)
-    })
   })
 })

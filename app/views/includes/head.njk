@@ -1,5 +1,6 @@
-<link href="{{ css_path }}" media="screen" rel="stylesheet" type="text/css" />
-<link href="{{ css_path }}" media="print" rel="stylesheet" type="text/css" />
+{% include "./ga_head.njk" %}
+<link href="{{ css_path }}" media="screen" rel="stylesheet" type="text/css"/>
+<link href="{{ css_path }}" media="print" rel="stylesheet" type="text/css"/>
 <style>
   body.js-enabled .js-hide {
     display: none !important;
@@ -8,24 +9,3 @@
     display: none !important;
   }
 </style>
-<script>
-dataLayer = [];
-</script>
-<!-- Google Tag Manager -->
-{% if cmUserPreferences['analytics'] === 'on' %}
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTICS_ID }}"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag () {
-    dataLayer.push(arguments);
-  }
-  gtag('js', new Date());
-  gtag('config', '{{ GOOGLE_ANALYTICS_ID }}');
-</script>
-{% endif %}
-<!-- End Google Tag Manager -->
-<script>
-  function gtag () {
-    dataLayer.push(arguments)
-  }
-</script>

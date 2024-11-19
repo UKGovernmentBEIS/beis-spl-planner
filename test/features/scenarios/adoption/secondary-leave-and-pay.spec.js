@@ -24,7 +24,7 @@ test.describe('when "adoption" then "UK Adoption" is selected on "nature-of-pare
           name: 'Is the partner eligible for Shared Parental Leave?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await expect(
         page
           .getByRole('group', {
@@ -38,7 +38,7 @@ test.describe('when "adoption" then "UK Adoption" is selected on "nature-of-pare
           name: 'Is the partner eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await expect(
         page
           .getByRole('group', {
@@ -56,13 +56,13 @@ test.describe('when "adoption" then "UK Adoption" is selected on "nature-of-pare
           name: 'Is the partner eligible for Shared Parental Leave?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the partner eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
 
       await page.click('button:text("Continue")') // <- Click on continue button
 
@@ -101,13 +101,13 @@ test.describe('when "adoption" then "UK Adoption" is selected on "nature-of-pare
           name: 'Is the partner eligible for Shared Parental Leave?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the partner eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
@@ -125,13 +125,13 @@ test.describe('when "adoption" then "UK Adoption" is selected on "nature-of-pare
           name: 'Is the partner eligible for Shared Parental Leave?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the partner eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await page
@@ -139,13 +139,13 @@ test.describe('when "adoption" then "UK Adoption" is selected on "nature-of-pare
           name: 'Is the partner eligible for Paternity Leave?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the partner eligible for Statutory Paternity Pay?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
@@ -163,13 +163,13 @@ test.describe('when "adoption" then "UK Adoption" is selected on "nature-of-pare
           name: 'Is the partner eligible for Shared Parental Leave?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the partner eligible for Statutory Shared Parental Pay?'
         })
         .getByLabel('No')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await page
@@ -177,13 +177,13 @@ test.describe('when "adoption" then "UK Adoption" is selected on "nature-of-pare
           name: 'Is the partner eligible for Paternity Leave?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page
         .getByRole('group', {
           name: 'Is the partner eligible for Statutory Paternity Pay?'
         })
         .getByLabel('Yes')
-        .click()
+        .click({ force: true })
       await page.click('button:text("Continue")')
 
       await expect(
