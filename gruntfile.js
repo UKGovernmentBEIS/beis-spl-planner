@@ -5,7 +5,7 @@ const envify = require('envify/custom')
 module.exports = function (grunt) {
   const env = {
     dev: {
-      GOOGLE_ANALYTICS_ID: 'G-653ZR7YS40',
+      GOOGLE_ANALYTICS_ID: 'GTM-NJ98WRPX',
       NODE_ENV: 'development'
     }
   }
@@ -38,7 +38,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: 'common/assets/',
           src: ['**/*', '!sass/**', '!javascripts/**'],
-          dest: 'public/'
+          dest: 'public/assets/'
         }
       ]
     },
@@ -48,7 +48,17 @@ module.exports = function (grunt) {
           expand: true,
           cwd: 'app/assets/',
           src: ['**/*', '!sass/**', '!javascripts/**'],
-          dest: 'public/'
+          dest: 'public/assets/'
+        }
+      ]
+    },
+    govukFrontendAssets: {
+      files: [
+        {
+          expand: true,
+          cwd: 'node_modules/govuk-frontend/dist/govuk/assets/',
+          src: ['**/*'],
+          dest: 'public/assets/'
         }
       ]
     }

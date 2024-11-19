@@ -1,8 +1,6 @@
 // App specific sass should be written or imported here.
 // Sass will be browserified via /common/assets/sass/application.scss and served from the /public folder.
 
-@import "@hmcts/frontend/all";
-
 @import './components/salary-input';
 @import './components/get-help';
 @import "file-download";
@@ -18,4 +16,8 @@
 
 .govuk-tabs__title {
   font-weight: bold;
+}
+
+.cookie-banner {
+  padding: 0px;
 }

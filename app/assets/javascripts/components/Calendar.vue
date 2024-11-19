@@ -29,7 +29,7 @@
                   Untick <span v-html="formatWeeks(-payRemaining, 'pay')"></span> .
                 </div>
               </div>
-            </div>          
+            </div>
           </div>
         </th>
       </tr>
@@ -438,9 +438,9 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "node_modules/govuk-frontend/govuk/settings/media-queries";
-  @import "node_modules/govuk-frontend/govuk/helpers/media-queries";
-  @import "node_modules/govuk-frontend/govuk/settings/colours-applied";
+  @import "node_modules/govuk-frontend/dist/govuk/settings/media-queries";
+  @import "node_modules/govuk-frontend/dist/govuk/helpers/media-queries";
+  @import "node_modules/govuk-frontend/dist/govuk/settings/colours-applied";
 
   $header-colour: govuk-colour("light-grey");
   $cell-border: 1px solid govuk-colour("light-grey");
@@ -665,7 +665,7 @@
 </style>
 
 <style lang="scss" scoped>
-  @import "node_modules/govuk-frontend/govuk/settings/colours-applied";
+  @import "node_modules/govuk-frontend/dist/govuk/settings/colours-applied";
 
   .govuk-error-summary__body {
     color: $govuk-error-colour;

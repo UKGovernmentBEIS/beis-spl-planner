@@ -2,21 +2,43 @@ const { test: base } = require('@playwright/test')
 
 // Utility function to select a leave week for a given parent
 async function selectLeave (page, parent, week) {
-  await page.click(`td[data-row="${week}"][data-column="${parent === 'mother' ? 0 : 2}"]`)
+  await page.click(
+    `td[data-row="${week}"][data-column="${parent === 'mother' ? 0 : 2}"]`
+  )
 }
 
 const test = base.extend({
   setupLeavePage: async ({ page, baseURL }, use) => {
     await page.goto(`${baseURL}`)
-    await page.check("input[value='birth']")
+    await page.check("input[value='birth']", { force: true })
     await page.click('button:text("Continue")')
 
-    await page.getByRole('group', { name: 'Is the mother eligible for Shared Parental Leave?' }).getByLabel('Yes').click()
-    await page.getByRole('group', { name: 'Is the mother eligible for Statutory Shared Parental Pay?' }).getByLabel('Yes').click()
+    await page
+      .getByRole('group', {
+        name: 'Is the mother eligible for Shared Parental Leave?'
+      })
+      .getByLabel('Yes')
+      .click({ force: true })
+    await page
+      .getByRole('group', {
+        name: 'Is the mother eligible for Statutory Shared Parental Pay?'
+      })
+      .getByLabel('Yes')
+      .click({ force: true })
     await page.click('button:text("Continue")')
 
-    await page.getByRole('group', { name: 'Is the partner eligible for Shared Parental Leave?' }).getByLabel('Yes').click()
-    await page.getByRole('group', { name: 'Is the partner eligible for Statutory Shared Parental Pay?' }).getByLabel('Yes').click()
+    await page
+      .getByRole('group', {
+        name: 'Is the partner eligible for Shared Parental Leave?'
+      })
+      .getByLabel('Yes')
+      .click({ force: true })
+    await page
+      .getByRole('group', {
+        name: 'Is the partner eligible for Statutory Shared Parental Pay?'
+      })
+      .getByLabel('Yes')
+      .click({ force: true })
     await page.click('button:text("Continue")')
 
     // -------------------------------------------------------------------
@@ -37,7 +59,9 @@ const test = base.extend({
 
     await page.click('button:text("Continue")')
 
-    await page.getByRole('link', { name: 'Skip this question' }).click()
+    await page
+      .getByRole('link', { name: 'Skip this question' })
+      .click({ force: true })
 
     // -------------------------------------------------------------------
 

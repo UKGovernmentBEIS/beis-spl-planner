@@ -37,9 +37,9 @@ const { SERVICE_NAME, STATUTORY_MAXIMUM_PAY } = require('./app/constants')
 
 // Define app views
 const APP_VIEWS = [
-  path.join(__dirname, 'node_modules/govuk-frontend/govuk/'),
-  path.join(__dirname, 'node_modules/govuk-frontend/govuk/components/'),
-  path.join(__dirname, 'node_modules/@hmcts/frontend/components/'),
+  path.join(__dirname, 'node_modules/govuk-frontend/dist/govuk/'),
+  path.join(__dirname, 'node_modules/govuk-frontend/dist/govuk/components/'),
+  path.join(__dirname, 'node_modules/@hmcts/frontend/dist/components/'),
   path.join(__dirname, 'app/views/'),
   path.join(__dirname, 'common/macros/')
 ]
@@ -52,7 +52,7 @@ function initialiseGlobalMiddleware (app) {
     favicon(
       path.join(
         __dirname,
-        'node_modules/govuk-frontend/govuk/assets/',
+        'node_modules/govuk-frontend/dist/govuk/assets/',
         'images',
         'favicon.ico'
       )
