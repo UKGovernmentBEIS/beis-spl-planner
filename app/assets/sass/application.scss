@@ -21,22 +21,3 @@
 .cookie-banner {
   padding: 0px;
 }
-
-.govuk-tag{
-  background-color: #bbd4ea;
-  font-weight: 400;
-  padding: 2px 8px 3px; 
-  color: #0c2d4a;
-  text-transform: none;
-  margin-top: -2px;
-  margin-bottom: -3px;
-  overflow-wrap: break-word;
-  letter-spacing: 0px;
-  max-width: 160px;
-}
-
-@media (min-width: 40.0625em) {
-  .govuk-tag {
-      line-height: 1.25;
-  }
-}
