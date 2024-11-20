@@ -61,6 +61,16 @@ module.exports = function (grunt) {
           dest: 'public/assets/'
         }
       ]
+    },
+    javasctipts: {
+      files: [
+        {
+          expand: true,
+          cwd: 'app/assets/javascripts/',
+          src: ['cookie-manager-1.0.0.min.js'],
+          dest: 'public/javascript/'
+        }
+      ]
     }
   }
 
@@ -143,6 +153,10 @@ module.exports = function (grunt) {
             { global: true },
             envify({ NODE_ENV: process.env.NODE_ENV })
           )
+          .transform("babelify", {
+            presets: ["@babel/preset-env"],
+            sourceType: 'module'
+          })
           .bundle()
       }
     }
