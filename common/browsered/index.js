@@ -1,52 +1,52 @@
-window.GOVUKFrontend = require("../../node_modules/govuk-frontend/dist/govuk/all.bundle.js");
-window.GOVUKFrontend.initAll();
+import cookieManager from '../../app/assets/javascripts/cookie-manager-1.0.0.min.js'
 
-import cookieManager from '../../app/assets/javascripts/cookie-manager-1.0.0.min.js';
+window.GOVUKFrontend = require('../../node_modules/govuk-frontend/dist/govuk/all.bundle.js')
+window.GOVUKFrontend.initAll()
 
 const config = {
   userPreferences: {
-    cookieName: "cookie_preferences_set",
-    cookieExpiry: 365,
+    cookieName: 'cookie_preferences_set',
+    cookieExpiry: 365
   },
   cookieBanner: {
-    class: "cookie-banner",
+    class: 'cookie-banner',
     actions: [
       {
-        name: "accept",
-        buttonClass: "cookie-banner-accept-button",
-        confirmationClass: "cookie-banner-accept-message",
-        consent: true,
+        name: 'accept',
+        buttonClass: 'cookie-banner-accept-button',
+        confirmationClass: 'cookie-banner-accept-message',
+        consent: true
       },
       {
-        name: "reject",
-        buttonClass: "cookie-banner-reject-button",
-        confirmationClass: "cookie-banner-reject-message",
-        consent: false,
+        name: 'reject',
+        buttonClass: 'cookie-banner-reject-button',
+        confirmationClass: 'cookie-banner-reject-message',
+        consent: false
       },
       {
-        name: "hide",
-        buttonClass: "cookie-banner-hide-button",
-      },
-    ],
+        name: 'hide',
+        buttonClass: 'cookie-banner-hide-button'
+      }
+    ]
   },
   preferencesForm: {
-    class: "cookie-preferences-form",
+    class: 'cookie-preferences-form'
   },
   cookieManifest: [
     {
-      categoryName: "essential",
+      categoryName: 'essential',
       optional: false,
-      matchBy: "exact",
-      cookies: ["application"],
+      matchBy: 'exact',
+      cookies: ['application']
     },
     {
-      categoryName: "analytics",
+      categoryName: 'analytics',
       optional: true,
-      cookies: ["_ga", "_ga_NJ98WRPX", "_gat", "_gid"],
-    },
-  ],
-};
+      cookies: ['_ga', '_ga_NJ98WRPX', '_gat', '_gid']
+    }
+  ]
+}
 
-cookieManager.init(config);
+cookieManager.init(config)
 
-require("../../app/assets/javascripts/index");
+require('../../app/assets/javascripts/index')
