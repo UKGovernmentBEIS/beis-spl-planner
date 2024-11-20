@@ -6,7 +6,7 @@ window.GOVUKFrontend.initAll()
 const config = {
   userPreferences: {
     cookieName: 'cookie_preferences_set',
-    cookieExpiry: 365
+    cookieExpiry: 365,
   },
   cookieBanner: {
     class: 'cookie-banner',
