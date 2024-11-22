@@ -141,7 +141,7 @@ module.exports = function (grunt) {
           .transform(
             // Required in order to process node_modules files
             { global: true },
-            envify({ NODE_ENV: process.env.NODE_ENV })
+            envify({ NODE_ENV: 'production' })
           )
           .bundle()
       }
