@@ -2,7 +2,7 @@ const emailjs = require('@emailjs/nodejs')
 const logger = require('./logger')
 const plannerText = 'Planner'
 
-const sendMail = async (experience, moreDetails, emailjsIds, options) => {
+const sendMail = async (experience, moreDetails, emailjsIds, options, reqHeaders) => {
   const currentDateTime = new Date().toLocaleString('en-GB', {
     timeZone: 'Europe/London',
     year: 'numeric',
@@ -13,11 +13,14 @@ const sendMail = async (experience, moreDetails, emailjsIds, options) => {
     second: '2-digit'
   })
 
+  const userAgent = `${reqHeaders['user-agent']}\n`
+
   const templateParams = {
     experience,
     moreDetails,
     dateTime: currentDateTime,
-    plannerOrEligibility: plannerText
+    plannerOrEligibility: plannerText,
+    userAgent
   }
 
   try {
@@ -36,7 +39,7 @@ const sendMail = async (experience, moreDetails, emailjsIds, options) => {
       })
       .catch((err) => {
         logger.error({
-          message: `Failed to send email. Error: ${err.text}`,
+          message: `Failed to send email. Error: ${err}`,
           eventType: 'MailEvent',
           eventResult: 'Failure',
           errorDetails: err.text

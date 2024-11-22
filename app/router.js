@@ -424,7 +424,7 @@ router
     }
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
-    emailJSEmail(experience, moreDetail, emailjsIds, options).then(() =>
+    emailJSEmail(experience, moreDetail, emailjsIds, options, req.headers).then(() =>
       res.redirect('/feedback/confirmation')
     )
   })
