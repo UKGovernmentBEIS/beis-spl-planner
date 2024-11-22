@@ -80,7 +80,7 @@ describe('sendMail', function () {
       expect(templateParams.userAgent).to.equal('')
       expect(templateParams).to.have.property('dateTime')
       expect(args[3]).to.equal(options)
-})
+    })
   })
 
   describe('failed email sending', function () {
