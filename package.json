@@ -9,6 +9,7 @@
   },
   "scripts": {
     "compile": "grunt generate-assets",
+    "compile:prod": "NODE_ENV=production grunt generate-assets",
     "clean": "grunt clean",
     "dev": "grunt",
     "server": "node ./start.js",
@@ -23,7 +24,8 @@
     "test:feature": "npx playwright test"
   },
   "browserslist": [
-    "defaults or IE 11"
+    "defaults",
+    "IE 11"
   ],
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
