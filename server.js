@@ -78,9 +78,10 @@ function initialiseGlobalMiddleware (app) {
 
   app.use((req, res, next) => {
     res.locals.asset_path = '/public/' // eslint-disable-line camelcase
-    const cmUserPreferences = req.cookies['cm-user-preferences']
-    if (cmUserPreferences) {
-      res.locals.cmUserPreferences = JSON.parse(cmUserPreferences)
+    const cookiePreferencesSet = req.cookies['cookie_preferences_set']
+    if (cookiePreferencesSet) {
+      res.locals.cookiePreferencesSet = JSON.parse(cookiePreferencesSet)
+
     }
     noCache(res)
     next()
