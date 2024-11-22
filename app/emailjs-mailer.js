@@ -13,7 +13,7 @@ const sendMail = async (experience, moreDetails, emailjsIds, options, reqHeaders
     second: '2-digit'
   })
 
-  const userAgent = `${reqHeaders['user-agent']}\n`
+  const userAgent = `${reqHeaders?.['user-agent'] || ''}`
 
   const templateParams = {
     experience,
@@ -39,7 +39,7 @@ const sendMail = async (experience, moreDetails, emailjsIds, options, reqHeaders
       })
       .catch((err) => {
         logger.error({
-          message: `Failed to send email. Error: ${err}`,
+          message: `Failed to send email. Error: ${err.text}`,
           eventType: 'MailEvent',
           eventResult: 'Failure',
           errorDetails: err.text
