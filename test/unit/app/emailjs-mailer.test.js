@@ -86,7 +86,6 @@ describe('sendMail', function () {
   describe('failed email sending', function () {
     const experience = 'Great service!'
     const moreDetails = 'No additional feedback'
-    const reqHeaders = { 'User-Agent': 'test-agent' }
     const emailjsIds = { serviceID: 'test_service', templateID: 'test_template' }
     const options = { publicKey: 'test_public', privateKey: 'test_private' }
     const userAgent = { 'user-agent': 'test-agent' }
@@ -95,7 +94,7 @@ describe('sendMail', function () {
       const error = { text: 'Error sending email' }
       emailjsSendStub.rejects(error)
 
-      await sendMail(experience, moreDetails, reqHeaders, emailjsIds, options, userAgent)
+      await sendMail(experience, moreDetails, emailjsIds, options, userAgent)
 
       expect(loggerErrorStub.calledOnce).to.equal(true)
       const logArgs = loggerErrorStub.getCall(0).args[0]
@@ -109,7 +108,7 @@ describe('sendMail', function () {
       const error = { text: 'Unexpected error' }
       emailjsSendStub.throws(error)
 
-      await sendMail(experience, moreDetails, reqHeaders, emailjsIds, options)
+      await sendMail(experience, moreDetails, emailjsIds, options)
 
       expect(loggerErrorStub.calledOnce).to.equal(true)
       const logArgs = loggerErrorStub.getCall(0).args[0]
