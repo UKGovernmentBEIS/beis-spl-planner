@@ -13,7 +13,7 @@ const sendMail = async (experience, moreDetails, emailjsIds, options, reqHeaders
     second: '2-digit'
   })
 
-  const userAgent = `${reqHeaders?.['user-agent'] || ''}`
+  const userAgent = reqHeaders?.['user-agent'] || ''
 
   const templateParams = {
     experience,
