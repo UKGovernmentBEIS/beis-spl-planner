@@ -6,7 +6,7 @@ module.exports = function (grunt) {
   const env = {
     dev: {
       GOOGLE_ANALYTICS_ID: 'GTM-NJ98WRPX',
-      NODE_ENV: 'development'
+      NODE_ENV: process.env.NODE_ENV || 'development'
     }
   }
 
