@@ -33,9 +33,10 @@ describe('sendMail', function () {
     const plannerText = 'Planner'
     const emailjsIds = { serviceID: 'test_service', templateID: 'test_template' }
     const options = { publicKey: 'test_public', privateKey: 'test_private' }
+    const userAgent = { 'user-agent': 'test-agent' }
 
     it('should call emailjs.send with correct parameters', async function () {
-      await sendMail(experience, moreDetails, emailjsIds, options)
+      await sendMail(experience, moreDetails, emailjsIds, options, userAgent)
 
       expect(emailjsSendStub.calledOnce).to.equal(true)
       const args = emailjsSendStub.getCall(0).args
@@ -45,12 +46,13 @@ describe('sendMail', function () {
       expect(templateParams.experience).to.equal(experience)
       expect(templateParams.moreDetails).to.equal(moreDetails)
       expect(templateParams.plannerOrEligibility).to.equal(plannerText)
+      expect(templateParams.userAgent).to.equal(userAgent['user-agent'])
       expect(templateParams).to.have.property('dateTime')
       expect(args[3]).to.equal(options)
     })
 
     it('should log success message when email is sent successfully', async function () {
-      await sendMail(experience, moreDetails, emailjsIds, options)
+      await sendMail(experience, moreDetails, emailjsIds, options, userAgent)
 
       expect(loggerInfoStub.calledOnce).to.equal(true)
       const logArgs = loggerInfoStub.getCall(0).args[0]
@@ -58,20 +60,41 @@ describe('sendMail', function () {
       expect(logArgs.eventType).to.equal('MailEvent')
       expect(logArgs.eventResult).to.equal('Success')
     })
+
+    it('should handle undefined userAgent gracefully', async function () {
+      const experience = 'Great service!'
+      const moreDetails = 'No additional feedback'
+      const emailjsIds = { serviceID: 'test_service', templateID: 'test_template' }
+      const options = { publicKey: 'test_public', privateKey: 'test_private' }
+      const userAgent = undefined
+
+      await sendMail(experience, moreDetails, emailjsIds, options, userAgent)
+
+      expect(emailjsSendStub.calledOnce).to.equal(true)
+      const args = emailjsSendStub.getCall(0).args
+      expect(args[0]).to.equal(emailjsIds.serviceID)
+      expect(args[1]).to.equal(emailjsIds.templateID)
+      const templateParams = args[2]
+      expect(templateParams.experience).to.equal(experience)
+      expect(templateParams.moreDetails).to.equal(moreDetails)
+      expect(templateParams.userAgent).to.equal('')
+      expect(templateParams).to.have.property('dateTime')
+      expect(args[3]).to.equal(options)
+    })
   })
 
   describe('failed email sending', function () {
     const experience = 'Great service!'
     const moreDetails = 'No additional feedback'
-    const reqHeaders = { 'User-Agent': 'test-agent' }
     const emailjsIds = { serviceID: 'test_service', templateID: 'test_template' }
     const options = { publicKey: 'test_public', privateKey: 'test_private' }
+    const userAgent = { 'user-agent': 'test-agent' }
 
     it('should log error message when emailjs.send rejects', async function () {
       const error = { text: 'Error sending email' }
       emailjsSendStub.rejects(error)
 
-      await sendMail(experience, moreDetails, reqHeaders, emailjsIds, options)
+      await sendMail(experience, moreDetails, emailjsIds, options, userAgent)
 
       expect(loggerErrorStub.calledOnce).to.equal(true)
       const logArgs = loggerErrorStub.getCall(0).args[0]
@@ -85,7 +108,7 @@ describe('sendMail', function () {
       const error = { text: 'Unexpected error' }
       emailjsSendStub.throws(error)
 
-      await sendMail(experience, moreDetails, reqHeaders, emailjsIds, options)
+      await sendMail(experience, moreDetails, emailjsIds, options)
 
       expect(loggerErrorStub.calledOnce).to.equal(true)
       const logArgs = loggerErrorStub.getCall(0).args[0]
