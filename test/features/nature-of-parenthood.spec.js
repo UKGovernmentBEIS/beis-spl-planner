@@ -70,6 +70,19 @@ test.describe('nature-of-parenthood', () => {
     ).toBeVisible()
   })
 
+  test('should see beta phase banner', async ({ page }) => {
+    await expect(page.locator('text="This is a new service. Help us improve it and"')).toBeVisible()
+  })
+
+  test('should see feedback link', async ({ page }) => {
+    await expect(page.locator('text="give your feedback (opens in new tab)"')).toBeVisible()
+  })
+
+  test('should go to feedback page when pressing feedback link', async ({ page }) => {
+    await page.click('text="give your feedback (opens in new tab)"')
+    await expect(page).toHaveTitle(/Feedback - Plan Shared Parental Leave and Pay - GOV.UK/)
+  })
+
   test('should display an error if click continue without selecting an option', async ({
     page
   }) => {
