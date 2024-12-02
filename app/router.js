@@ -29,6 +29,9 @@ const {
 const dataUtils = require('../common/lib/dataUtils')
 const ShareTokenEncoder = require('./lib/shareToken/shareTokenEncoder')
 const healthcheck = require('./lib/healthcheck')
+const logger = require('./logger')
+
+// EmailJS configuration
 const options = {
   publicKey: config.emailJSPublicKey,
   privateKey: config.emailJSPrivateKey
@@ -420,13 +423,30 @@ router
   })
   .post(function (req, res) {
     if (!validate.feedback(req)) {
+      logger.error({
+        message: `Feedback form validation failed: ${JSON.stringify(req.body)}`,
+        eventType: 'ValidationFailure',
+        eventResult: 'ValidationFailure',
+        EventSeverity: 'Medium'
+      })
       return res.redirect(req.path)
     }
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
-    emailJSEmail(experience, moreDetail, emailjsIds, options, req.headers).then(() =>
-      res.redirect('/feedback/confirmation')
-    )
+
+    emailJSEmail(experience, moreDetail, emailjsIds, options, req.headers)
+      .then(() => {
+        res.redirect('/feedback/confirmation')
+      })
+      .catch((err) => {
+        logger.error({
+          message: `Error sending feedback email: ${err.message}`,
+          eventType: 'MailEvent',
+          eventResult: 'Failure',
+          errorDetails: err.message
+        })
+        res.redirect('/feedback/confirmation')
+      })
   })
 
 router.route(paths.getPath('cookies')).get(function (req, res) {

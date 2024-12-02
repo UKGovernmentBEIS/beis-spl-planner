@@ -52,6 +52,7 @@ const sendMail = async (experience, moreDetails, emailjsIds, options, reqHeaders
       eventResult: 'Failure',
       errorDetails: err.text
     })
+    throw new Error(`Failed to send email: ${err.text}`)
   }
 }
 
