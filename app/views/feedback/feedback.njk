@@ -108,6 +108,19 @@
           } if errors["spam-filter"]
         }) }}
 
+        <!-- Honeypot Field -->
+        <div style="display: none;">
+          {{ govukInput({
+            id: "url",
+            name: "url",
+            value: "",
+            label: {
+              text: "url",
+              classes: "govuk-label--s"
+            }
+          }) }}
+        </div>
+
         {{ govukButton({
           text: "Send Feedback",
           preventDoubleClick: true

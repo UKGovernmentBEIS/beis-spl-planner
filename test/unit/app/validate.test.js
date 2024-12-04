@@ -1097,6 +1097,17 @@ describe('validate.js', () => {
       expect(error).to.have.property('href', '#spam-filter')
     })
 
+    it('should return false if url is provided in feedback', () => {
+      req.session.data = {
+        url: 'www.bot-test.com',
+        feedback: 'Great service!',
+        'spam-filter': 'yes'
+      }
+
+      const result = validate.feedback(req)
+      expect(result).to.equal(false)
+    })
+
     it('should return true if feedback is provided and spam-filter value is valid', () => {
       req.session.data = {
         feedback: 'Great service!',

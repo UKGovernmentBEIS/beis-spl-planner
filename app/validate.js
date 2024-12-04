@@ -135,6 +135,10 @@ function feedback (req) {
     valid = false
   }
 
+  if (req.session.data.url) {
+    valid = false
+  }
+
   const value = req.session.data['spam-filter'].toLowerCase()
   if (!value.length) {
     addError(req, 'spam-filter', 'Prove you are not a robot.', '#spam-filter')
