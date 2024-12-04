@@ -31,7 +31,10 @@ describe('sendMail', function () {
     const experience = 'Great service!'
     const moreDetails = 'No additional feedback'
     const plannerText = 'Planner'
-    const emailjsIds = { serviceID: 'test_service', templateID: 'test_template' }
+    const emailjsIds = {
+      serviceID: 'test_service',
+      templateID: 'test_template'
+    }
     const options = { publicKey: 'test_public', privateKey: 'test_private' }
     const userAgent = { 'user-agent': 'test-agent' }
 
@@ -64,7 +67,10 @@ describe('sendMail', function () {
     it('should handle undefined userAgent gracefully', async function () {
       const experience = 'Great service!'
       const moreDetails = 'No additional feedback'
-      const emailjsIds = { serviceID: 'test_service', templateID: 'test_template' }
+      const emailjsIds = {
+        serviceID: 'test_service',
+        templateID: 'test_template'
+      }
       const options = { publicKey: 'test_public', privateKey: 'test_private' }
       const userAgent = undefined
 
@@ -86,7 +92,10 @@ describe('sendMail', function () {
   describe('failed email sending', function () {
     const experience = 'Great service!'
     const moreDetails = 'No additional feedback'
-    const emailjsIds = { serviceID: 'test_service', templateID: 'test_template' }
+    const emailjsIds = {
+      serviceID: 'test_service',
+      templateID: 'test_template'
+    }
     const options = { publicKey: 'test_public', privateKey: 'test_private' }
     const userAgent = { 'user-agent': 'test-agent' }
 
@@ -98,7 +107,9 @@ describe('sendMail', function () {
 
       expect(loggerErrorStub.calledOnce).to.equal(true)
       const logArgs = loggerErrorStub.getCall(0).args[0]
-      expect(logArgs.message).to.equal('Failed to send email. Error: Error sending email')
+      expect(logArgs.message).to.equal(
+        'Failed to send email. Error: Error sending email'
+      )
       expect(logArgs.eventType).to.equal('MailEvent')
       expect(logArgs.eventResult).to.equal('Failure')
       expect(logArgs.errorDetails).to.equal('Error sending email')
@@ -113,10 +124,25 @@ describe('sendMail', function () {
       } catch (err) {
         expect(loggerErrorStub.calledOnce).to.equal(true)
         const logArgs = loggerErrorStub.getCall(0).args[0]
-        expect(logArgs.message).to.equal('Error sending feedback email: Error sending email')
+        expect(logArgs.message).to.equal(
+          'Error sending feedback email: Error sending email'
+        )
         expect(logArgs.eventType).to.equal('MailEvent')
         expect(logArgs.eventResult).to.equal('Failure')
         expect(logArgs.errorDetails).to.equal('Error sending email')
+      }
+    })
+
+    it('should throw an error when emailjs.send rejects', async function () {
+      const error = { text: 'Error sending email' }
+      emailjsSendStub.rejects(error)
+
+      try {
+        await sendMail(experience, moreDetails, emailjsIds, options, userAgent)
+      } catch (err) {
+        expect(err.message).to.equal(
+          'Failed to send email: Error sending email'
+        )
       }
     })
   })
