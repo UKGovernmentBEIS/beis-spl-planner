@@ -1,4 +1,5 @@
 $govuk-global-styles: true;
+$govuk-new-typography-scale: true;
 @import "govuk-frontend/dist/govuk/all";
 
 @import "components/cookie-message";
