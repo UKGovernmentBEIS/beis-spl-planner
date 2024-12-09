@@ -10,6 +10,15 @@
         },
         value: {
           text: "week starting " + options.data | startDay | startOfWeek | offsetWeeks(options.block.start) | formatForDisplay
+        },
+        actions: {
+          items: [
+            {
+              href: "/planner?edit=true",
+              text: "Change",
+              visuallyHiddenText: "shared leave start date"
+            }
+          ]
         }
       },
       {
