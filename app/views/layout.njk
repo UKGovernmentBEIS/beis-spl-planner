@@ -1,7 +1,5 @@
 {% from "footer/macro.njk" import govukFooter %}
 {% from "header/macro.njk" import govukHeader %}
-{% from "phase-banner/macro.njk" import govukPhaseBanner %}
-{% from "cookie-banner/macro.njk" import govukCookieBanner %}
 
 {% extends "template.njk" %}
 
@@ -10,58 +8,16 @@
 {% endblock %}
 
 {% block header %}
-  <header id="cookie_banner" class="cookie-banner">
-      {% set html %}
-        <h1 class="govuk-heading-m">Cookies on {{ service_name }}</h1>
-        <p>We use some essential cookies to make this service work.</p>
-        <p>We’d like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.</p>
-      {% endset %}
-      {{
-        govukCookieBanner({
-          ariaLabel: "Cookies on "+ service_name,
-          messages: [
-            {
-              html: html,
-              actions: [
-                {
-                  text: "Accept additional cookies",
-                  type: "submit",
-                  name: "cookies[additional]",
-                  value: "accept"
-                },
-                {
-                  text: "Reject additional cookies",
-                  type: "submit",
-                  name: "cookies[additional]",
-                  value: "reject"
-                },
-                {
-                  text: "View cookies",
-                  href: "/cookies"
-                }
-              ]
-            }
-          ]
-        })
-      }}
-    </header>
+  {% include "./includes/ga-noscript.njk" %}
+  {% include "./includes/cookie-banner.njk" %}
   {{ govukHeader({
     serviceName: service_name,
     serviceUrl: "https://www.gov.uk/plan-shared-parental-leave-pay"
   }) }}
-{% endblock %}
-
-{% block beforeContent %}
-  {{ govukPhaseBanner({
-    tag: {
-      text: "Beta"
-    },
-    html: 'This is a new service. Help us improve it and <a class="govuk-link" href="/feedback">give your feedback (opens in new tab)</a>.'
-  }) }}
+  {% include "./includes/phase-banner.njk" %}
 {% endblock %}
 
 {% block body %}
-  {% include "./includes/ga.njk" %}
   {{ block('content') }}
 {% endblock %}
 
