@@ -78,7 +78,7 @@
 
       {% set examples %}
         <span class="govuk-hint">
-          Examples will open in a new page.
+          Examples will open in a new tab.
         </span>
         {% set examplePath = "/planner/examples/" + data["nature-of-parenthood"] %}
         <ul class="govuk-list govuk-list--bullet">
@@ -86,16 +86,19 @@
             <a class="govuk-link" target="_blank" href="{{ examplePath }}/managing-parenting-and-work">
               partner takes leave and {{ primaryName }} returns to work
             </a>
+            (Opens in a new tab)
           </li>
           <li>
             <a class="govuk-link" target="_blank" href="{{ examplePath }}/extending-time-as-a-family">
               partner takes extended leave after {{ "placement" if isAdoption else "birth" }}
             </a>
+            (Opens in a new tab)
           </li>
           <li>
             <a class="govuk-link" target="_blank" href="{{ examplePath }}/sharing-primary-care-responsibility">
               sharing multiple blocks of leave
             </a>
+            (Opens in a new tab)
           </li>
         </ul>
       {% endset %}
