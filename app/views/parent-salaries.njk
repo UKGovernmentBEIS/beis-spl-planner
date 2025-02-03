@@ -58,8 +58,19 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-l">
-        Earnings from work
+        Earnings from work (Optional)
       </h1>
+      <a
+        id="skip-this-question"
+        href="{{ withData('/planner') }}"
+        class="govuk-link--no-visited-state govuk-body"
+        data-ga-hit-type="pay_skipped"
+        data-ga-field-event_category="planner_questions"
+        data-ga-field-event_action="pay_skipped"
+      >
+        Skip this question
+      </a>
+      <br></br>
       <p>
         Enter salaries to plan how much statutory pay you could get - your employers will confirm the exact amount.
       </p>
@@ -107,16 +118,6 @@
           }
         }) }}
       </form>
-      <a
-        id="skip-this-question"
-        href="{{ withData('/planner') }}"
-        class="govuk-link--no-visited-state govuk-body"
-        data-ga-hit-type="pay_skipped"
-        data-ga-field-event_category="planner_questions"
-        data-ga-field-event_action="pay_skipped"
-      >
-        Skip this question
-      </a>
     </div>
   </div>
 

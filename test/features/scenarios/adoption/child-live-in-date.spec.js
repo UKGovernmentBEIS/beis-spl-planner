@@ -1,6 +1,7 @@
 const { expect } = require('@playwright/test')
 const test = require('../../fixtures/adoption/select-partners-leave-and-pay')
 const checkUrl = require('../../helpers/general')
+const currentYear = new Date().getFullYear()
 
 test.describe('child live-in date page', () => {
   test.beforeEach(async ({ setupPartnersLeaveAndPay }) => {})
@@ -34,7 +35,7 @@ test.describe('child live-in date page', () => {
     }) => {
       await page.getByRole('textbox', { name: 'Day' }).fill('1')
       await page.getByRole('textbox', { name: 'Month' }).fill('1')
-      await page.getByRole('textbox', { name: 'Year' }).fill('2024')
+      await page.getByRole('textbox', { name: 'Year' }).fill(currentYear.toString())
 
       await page.click('button:text("Continue")')
 
@@ -50,7 +51,7 @@ test.describe('child live-in date page', () => {
     }) => {
       await page.getByRole('textbox', { name: 'Day' }).fill('50')
       await page.getByRole('textbox', { name: 'Month' }).fill('1')
-      await page.getByRole('textbox', { name: 'Year' }).fill('2024')
+      await page.getByRole('textbox', { name: 'Year' }).fill(currentYear.toString())
 
       await page.click('button:text("Continue")')
 
