@@ -307,6 +307,7 @@
           const cell = this.$refs.calendar.querySelector('[data-row="' + row + '"][data-column="' + column + '"]')
           if (cell) {
             cell.focus()
+            cell.scrollIntoView({ behavior: 'smooth', block: 'center' })
           }
         }
       },
