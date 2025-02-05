@@ -8,7 +8,7 @@
           :interactive="interactive" :eligibility="eligibility"/>
       </div>
       <div id="sidebar" class="govuk-grid-column-one-third-from-desktop govuk-grid-column-full print-hide">
-        <div id="sidebar-information">
+        <div id="sidebar-information" tabindex="1">
           <Sidebar :weeks="leaveAndPay.weeks"
             :natureOfParenthood="natureOfParenthood" :typeOfAdoption="typeOfAdoption"
             :primaryLeaveType="primaryLeaveType" :names="names"
