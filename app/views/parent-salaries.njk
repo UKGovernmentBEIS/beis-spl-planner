@@ -17,7 +17,8 @@
 
   {{ govukBackLink({
     text: "Back",
-    href: backPath()
+    href: backPath(),
+    attributes: { "aria-label": "Go back to the previous step" }
   }) }}
 {% endblock %}
 

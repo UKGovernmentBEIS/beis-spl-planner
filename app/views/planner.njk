@@ -19,7 +19,8 @@
 
   {{ govukBackLink({
     text: "Back",
-    href: backPath()
+    href: backPath(),
+    attributes: { "aria-label": "Go back to previous page" }
   }) }}
 {% endblock %}
 
@@ -67,7 +68,7 @@
         Plan shared parental leave and pay
       </h1>
       <p class="print-hide">
-        Use this calendar to plan how you'll take shared leave and pay. Alternatively, you can plan by  <a href="/planner/maternity-leave/start">answering questions</a>.
+        Use this calendar to plan how you'll take shared leave and pay. Alternatively, you can plan by  <a href="/planner/maternity-leave/start" aria-label="Plan your leave by answering questions on the accessible planner">answering questions</a>.
       </p>
       <p class="print-hide">
         To add and remove weeks, or change the type of leave, select the option you want in the leave column. To choose paid or unpaid weeks, select in the pay column.
@@ -83,17 +84,17 @@
         {% set examplePath = "/planner/examples/" + data["nature-of-parenthood"] %}
         <ul class="govuk-list govuk-list--bullet">
           <li>
-            <a class="govuk-link" target="_blank" href="{{ examplePath }}/managing-parenting-and-work">
+            <a class="govuk-link" target="_blank" href="{{ examplePath }}/managing-parenting-and-work" aria-label="example of parent taking leave and managing partner returns to work">
               partner takes leave and {{ primaryName }} returns to work
             </a>
           </li>
           <li>
-            <a class="govuk-link" target="_blank" href="{{ examplePath }}/extending-time-as-a-family">
+            <a class="govuk-link" target="_blank" href="{{ examplePath }}/extending-time-as-a-family" aria-label="example of partner taking extended leave after birth">
               partner takes extended leave after {{ "placement" if isAdoption else "birth" }}
             </a>
           </li>
           <li>
-            <a class="govuk-link" target="_blank" href="{{ examplePath }}/sharing-primary-care-responsibility">
+            <a class="govuk-link" target="_blank" href="{{ examplePath }}/sharing-primary-care-responsibility" aria-label="example of sharing multiple blocks of leave">
               sharing multiple blocks of leave
             </a>
           </li>
