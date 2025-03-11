@@ -60,13 +60,13 @@
         </tr>
         <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner" aria-hidden="true">
           <th colspan="5" v-if="natureOfParenthood !== 'adoption'" id="first-week-with-child-header">
-            Birth week
+            Birth week | Paternity Leave can start in this week
           </th>
           <th colspan="5" v-else-if="typeOfAdoption === 'uk'" id="first-week-with-child-header">
-            First week the child lives with you
+            First week the child lives with you | Paternity Leave can start in this week
           </th>
           <th colspan="5" v-else id="first-week-with-child-header">
-            Week the child arrives in the UK
+            Week the child arrives in the UK | Paternity Leave can start in this week
           </th>
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mousemove="onRowMouseEnter(week)">
