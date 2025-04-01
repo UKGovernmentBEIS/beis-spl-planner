@@ -76,11 +76,11 @@
           </th>
           <template v-for="(parent, j) in ['primary', 'secondary']">
             <template v-if="week[parent].outOfPermittedRange">
-              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-leave week-${i}-date`">
+              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-leave week-${i}-date`" :aria-label="natureOfParenthood === 'birth' ? 'Cannot select - prior to birth' : 'Cannot select - prior to adoption'">
                 <span v-if="natureOfParenthood === 'birth'">Cannot select - prior to birth</span>
                 <span v-else-if="natureOfParenthood === 'adoption'">Cannot select - prior to adoption</span>
               </td>
-              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-pay week-${i}-date`">
+              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-pay week-${i}-date`" :aria-label="natureOfParenthood === 'birth' ? 'Cannot select - prior to birth' : 'Cannot select - prior to adoption'">
                 <span v-if="natureOfParenthood === 'birth'">Cannot select - prior to birth</span>
                 <span v-else-if="natureOfParenthood === 'adoption'">Cannot select - prior to adoption</span>
               </td>
