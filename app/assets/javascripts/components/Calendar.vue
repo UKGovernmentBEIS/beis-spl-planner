@@ -97,7 +97,7 @@
                       week[parent].compulsory ? 'compulsory' : week[parent].leave.text,
                       { 'disabled': hasNoEligibility(parent) }
                     ]"
-                  tabindex="0" :data-row="i" :data-column="2*j"
+                  tabindex="2" :data-row="i" :data-column="2*j"
                   @keydown.tab="onCellTab($event)"
                   @keydown.up.stop.prevent="focusCell(i - 1, 2*j)"
                   @keydown.down.stop.prevent="focusCell(i + 1, 2*j)"
@@ -127,7 +127,7 @@
                     'unpaid': cellIsEligible(week, parent, 'pay') && week[parent].leave.text && !week[parent].pay.text,
                     'ineligible': !cellIsEligible(week, parent, 'pay')
                   }"
-                  tabindex="0" :data-row="i" :data-column="2*j + 1"
+                  tabindex="2" :data-row="i" :data-column="2*j + 1"
                   @keydown.tab="onCellTab($event)"
                   @keydown.up.stop.prevent="focusCell(i - 1, 2*j + 1)"
                   @keydown.down.stop.prevent="focusCell(i + 1, 2*j + 1)"
