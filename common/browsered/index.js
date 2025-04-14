@@ -1,6 +1,8 @@
 window.GOVUKFrontend = require('../../node_modules/govuk-frontend/dist/govuk/all.bundle.js')
 window.GOVUKFrontend.initAll()
 
+document.querySelectorAll('.govuk-skip-link').forEach(link => link.remove())
+
 const cookieManager = require('../../node_modules/@dvsa/cookie-manager/cookie-manager.js')
 cookieManager.init({
   'cookie-banner-id': 'cookie_banner',
