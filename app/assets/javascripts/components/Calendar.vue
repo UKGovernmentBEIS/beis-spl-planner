@@ -60,13 +60,13 @@
         </tr>
         <tr :key="'first-week-with-child-' + week.id" v-if="week.number === 0" class="row-banner" aria-hidden="true">
           <th colspan="5" v-if="natureOfParenthood !== 'adoption'" id="first-week-with-child-header">
-            Birth week
+            Birth week | Paternity leave can now be taken
           </th>
           <th colspan="5" v-else-if="typeOfAdoption === 'uk'" id="first-week-with-child-header">
-            First week the child lives with you
+            First week the child lives with you | Paternity leave can now be taken
           </th>
           <th colspan="5" v-else id="first-week-with-child-header">
-            Week the child arrives in the UK
+            Week the child arrives in the UK | Paternity leave can now be taken
           </th>
         </tr>
         <tr :key="week.id" class="govuk-table__row" @mousemove="onRowMouseEnter(week)">
@@ -76,8 +76,14 @@
           </th>
           <template v-for="(parent, j) in ['primary', 'secondary']">
             <template v-if="week[parent].outOfPermittedRange">
-              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-leave week-${i}-date`"></td>
-              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-pay week-${i}-date`"></td>
+              <td :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-leave week-${i}-date`" :aria-label="natureOfParenthood === 'birth' ? 'Cannot select - prior to birth' : 'Cannot select - prior to adoption'">
+                <span v-if="natureOfParenthood === 'birth'">Cannot select - prior to birth</span>
+                <span v-else-if="natureOfParenthood === 'adoption'">Cannot select - prior to adoption</span>
+              </td>
+              <td :key="parent + '-pay'" class="govuk-table__cell pay disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-pay week-${i}-date`" :aria-label="natureOfParenthood === 'birth' ? 'Cannot select - prior to birth' : 'Cannot select - prior to adoption'">
+                <span v-if="natureOfParenthood === 'birth'">Cannot select - prior to birth</span>
+                <span v-else-if="natureOfParenthood === 'adoption'">Cannot select - prior to adoption</span>
+              </td>
             </template>
             <template v-else>
               <td v-if="isDisabledCell(week, parent)" :key="parent + '-leave'" class="govuk-table__cell leave disabled" :headers="`info-alert month-header-${week.day.format('MMMM')} earliest-leave-week-header first-week-with-child-header ${parent}-name ${parent}-leave week-${i}-date`">
@@ -91,7 +97,7 @@
                       week[parent].compulsory ? 'compulsory' : week[parent].leave.text,
                       { 'disabled': hasNoEligibility(parent) }
                     ]"
-                  tabindex="0" :data-row="i" :data-column="2*j"
+                  tabindex="2" :data-row="i" :data-column="2*j"
                   @keydown.tab="onCellTab($event)"
                   @keydown.up.stop.prevent="focusCell(i - 1, 2*j)"
                   @keydown.down.stop.prevent="focusCell(i + 1, 2*j)"
@@ -121,7 +127,7 @@
                     'unpaid': cellIsEligible(week, parent, 'pay') && week[parent].leave.text && !week[parent].pay.text,
                     'ineligible': !cellIsEligible(week, parent, 'pay')
                   }"
-                  tabindex="0" :data-row="i" :data-column="2*j + 1"
+                  tabindex="2" :data-row="i" :data-column="2*j + 1"
                   @keydown.tab="onCellTab($event)"
                   @keydown.up.stop.prevent="focusCell(i - 1, 2*j + 1)"
                   @keydown.down.stop.prevent="focusCell(i + 1, 2*j + 1)"
@@ -307,6 +313,7 @@
           const cell = this.$refs.calendar.querySelector('[data-row="' + row + '"][data-column="' + column + '"]')
           if (cell) {
             cell.focus()
+            cell.scrollIntoView({ behavior: 'smooth', block: 'center' })
           }
         }
       },

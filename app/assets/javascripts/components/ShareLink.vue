@@ -2,7 +2,7 @@
   <span>
     <div class="govuk-form-group" id="share-link-form">
       <label class="govuk-label govuk-!-font-weight-bold" for="save-share-link">
-        <span class="govuk-heading-m">Save and share your {{ pageType }}</span>
+        <h2 class="govuk-heading-m">Save and share your {{ pageType }}</h2>
       </label>
       <span class="govuk-hint">
         <p>
