@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const skipLink = document.querySelector('.govuk-skip-link')
   if (skipLink) {
     skipLink.setAttribute('tabindex', '-1')
+    skipLink.setAttribute('aria-hidden', 'true')
   }
 })
 
