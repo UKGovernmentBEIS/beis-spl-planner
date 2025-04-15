@@ -1,6 +1,13 @@
 window.GOVUKFrontend = require('../../node_modules/govuk-frontend/dist/govuk/all.bundle.js')
 window.GOVUKFrontend.initAll()
 
+document.addEventListener('DOMContentLoaded', () => {
+  const skipLink = document.querySelector('.govuk-skip-link')
+  if (skipLink) {
+    skipLink.setAttribute('tabindex', '-1')
+  }
+})
+
 const cookieManager = require('../../node_modules/@dvsa/cookie-manager/cookie-manager.js')
 cookieManager.init({
   'cookie-banner-id': 'cookie_banner',
