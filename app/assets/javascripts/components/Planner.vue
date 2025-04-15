@@ -23,7 +23,7 @@
           data-ga-hit-type="planner_reset"
           data-ga-field-event_category="planner"
           data-ga-field-event_action="reset"
-        >
+          aria-label="Reset the calendar and remove all changes">
           Reset to start again
         </button>
       </div>

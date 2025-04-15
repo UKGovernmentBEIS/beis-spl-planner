@@ -30,8 +30,8 @@
           class="govuk-button"
           :aria-label="
             isCopied
-              ? 'Copy link to save and share :copied'
-              : 'Copy link to save and share'
+              ? 'Copy link to save and share plan :copied'
+              : 'Copy link to save and share plan'
           "
           @click.prevent="copyToken()"
           @mouseleave="onMouseLeave()"
