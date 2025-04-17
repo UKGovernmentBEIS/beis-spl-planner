@@ -1,8 +1,8 @@
-# BEIS SPL Planner
+# DBT SPL Planner
 
 This repository contains the code for the Shared Parental Leave (SPL) and Stautory Shared Parental Pay (ShPP) planner service.
 
-It is built on top of the [BEIS SPL common](https://github.com/UKGovernmentBEIS/beis-spl-common) baseline project, which in turn is forked from the [GDS Node.js boilerplate](https://github.com/alphagov/gds-nodejs-boilerplate) project.
+It is built on top of the [DBT SPL common](https://github.com/UKGovernmentBEIS/beis-spl-common) baseline project, which in turn is forked from the [GDS Node.js boilerplate](https://github.com/alphagov/gds-nodejs-boilerplate) project.
 
 ## Architecture
 The application is is purely frontend. There is no backend, no database. An example architecture diagram can be seen in the root folder.
@@ -27,9 +27,10 @@ The application is is purely frontend. There is no backend, no database. An exam
 
 Clone this code with Git:
 ```
-git clone git@github.com:UKGovernmentBEIS/beis-spl-planner.git
+git@github.com:businessandtrade-partners/spl-planner.git
 ```
 
+> Step below no longer required but keeping it here for info
 Add the common project as a second remote in Git, to pull changes from there when needed:
 ```
 git remote add common git@github.com:UKGovernmentBEIS/beis-spl-common.git
