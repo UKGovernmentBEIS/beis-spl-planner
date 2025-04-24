@@ -1,4 +1,4 @@
-repository: beis-spl-planner
+repository: spl-planner
 builder:
   name: paketobuildpacks/builder-jammy-base
   version: 0.4.240
