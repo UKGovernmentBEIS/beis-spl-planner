@@ -2,6 +2,7 @@
 
 # Exit early if something goes wrong
 set -e
+npm install
 npx grunt generate-assets
 echo "Static assets generated successfully."
 
