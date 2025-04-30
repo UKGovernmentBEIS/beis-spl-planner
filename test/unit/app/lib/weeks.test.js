@@ -1,7 +1,9 @@
 const { describe, it } = require('mocha')
 const assert = require('chai').assert
 // const LeaveTracker = require('../../../app/lib/leaveTracker')
-const { earliestPrimaryLeaveWeek } = require('../../../../common/lib/dataUtils')
+const {
+  earliestPrimaryLeaveWeek
+} = require('../../../../common/lib/dataUtils')
 // const _ = require('lodash')
 
 const Weeks = require('../../../../app/lib/weeks')
@@ -29,7 +31,13 @@ describe('Weeks Class', function () {
       assert.deepEqual(weeks.eligibility, birthWithSpl.eligibility)
 
       // Check computed properties
-      assert.equal(weeks.minimumWeek, earliestPrimaryLeaveWeek({ 'nature-of-parenthood': 'birth', 'type-of-adoption': undefined }))
+      assert.equal(
+        weeks.minimumWeek,
+        earliestPrimaryLeaveWeek({
+          'nature-of-parenthood': 'birth',
+          'type-of-adoption': undefined
+        })
+      )
       assert.isObject(weeks.payRates)
     })
   })
@@ -49,7 +57,7 @@ describe('Weeks Class', function () {
       const week13 = result.weeks[12]
 
       assert.equal(week13.primary.leave.text, 'shared')
-      assert.equal(week13.primary.pay.text, 'Up to £184.03')
+      assert.equal(week13.primary.pay.text, 'Up to £187.18')
     })
   })
 
@@ -59,37 +67,49 @@ describe('Weeks Class', function () {
     const weeks3 = new Weeks(birthShppOnly)
 
     it('should return true for eligible primary leave week', function () {
-      const result = weeks._weekEligibleForPrimaryLeave({ primary: { leave: { text: 'maternity' } } })
+      const result = weeks._weekEligibleForPrimaryLeave({
+        primary: { leave: { text: 'maternity' } }
+      })
 
       assert.isTrue(result)
     })
 
     it('should return true for eligible statutory leave week', function () {
-      const result = weeks2._weekEligibleForPrimaryLeave({ primary: { leave: { text: 'maternity' } } })
+      const result = weeks2._weekEligibleForPrimaryLeave({
+        primary: { leave: { text: 'maternity' } }
+      })
 
       assert.isTrue(result)
     })
 
     it('should return false for ineligible statutory leave week', function () {
-      const result = weeks3._weekEligibleForPrimaryLeave({ primary: { leave: { text: 'maternity' } } })
+      const result = weeks3._weekEligibleForPrimaryLeave({
+        primary: { leave: { text: 'maternity' } }
+      })
 
       assert.isFalse(result)
     })
 
     it('should return false for ineligible secondary leave week', function () {
-      const result = weeks._weekEligibleForSecondaryLeave({ secondary: { leave: { text: 'paternity' } } })
+      const result = weeks._weekEligibleForSecondaryLeave({
+        secondary: { leave: { text: 'paternity' } }
+      })
 
       assert.isFalse(result)
     })
 
     it('should return false for ineligible secondary statutory leave week', function () {
-      const result = weeks2._weekEligibleForSecondaryLeave({ secondary: { leave: { text: 'paternity' } } })
+      const result = weeks2._weekEligibleForSecondaryLeave({
+        secondary: { leave: { text: 'paternity' } }
+      })
 
       assert.isFalse(result)
     })
 
     it('should return true for eligible primary pay week', function () {
-      const result = weeks2._weekEligibleForPrimaryPay({ primary: { leave: { text: 'maternity' } } })
+      const result = weeks2._weekEligibleForPrimaryPay({
+        primary: { leave: { text: 'maternity' } }
+      })
 
       assert.isTrue(result)
     })
