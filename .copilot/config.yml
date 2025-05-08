@@ -1,7 +1,7 @@
 repository: spl-planner
 builder:
   name: paketobuildpacks/builder-jammy-base
-  version: 0.4.240
+  version: 0.4.398
 packages:
   - libpq-dev
   - libsqlite3-dev
