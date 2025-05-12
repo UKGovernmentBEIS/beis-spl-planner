@@ -37,18 +37,14 @@ describe('Blocks', () => {
       const expectedResults = {
         leaveBlocks: {
           primary: {
-            initial: [
-              { start: 0, end: 1, leave: 'maternity' }
-            ],
+            initial: [{ start: 0, end: 1, leave: 'maternity' }],
             spl: [
               { start: 3, end: 4, leave: 'shared' },
               { start: 8, end: 9, leave: 'shared' }
             ]
           },
           secondary: {
-            initial: [
-              { start: 0, end: 1, leave: 'paternity' }
-            ],
+            initial: [{ start: 0, end: 1, leave: 'paternity' }],
             spl: [
               { start: 3, end: 4, leave: 'shared' },
               { start: 6, end: 7, leave: 'shared' }
@@ -56,10 +52,10 @@ describe('Blocks', () => {
           }
         },
         payBlocks: [
-          { start: 0, end: 1, primary: '£432.69', secondary: '£184.03' },
-          { start: 3, end: 4, primary: '£184.03', secondary: '£184.03' },
-          { start: 6, end: 7, primary: undefined, secondary: '£184.03' },
-          { start: 8, end: 9, primary: '£184.03', secondary: undefined }
+          { start: 0, end: 1, primary: '£432.69', secondary: '£187.18' },
+          { start: 3, end: 4, primary: '£187.18', secondary: '£187.18' },
+          { start: 6, end: 7, primary: undefined, secondary: '£187.18' },
+          { start: 8, end: 9, primary: '£187.18', secondary: undefined }
         ]
       }
 
@@ -68,46 +64,44 @@ describe('Blocks', () => {
       assert.equal(JSON.stringify(results), JSON.stringify(expectedResults))
     })
 
-    it('should retrieve only compulsory leave and pay blocks block for question planner data',
-      () => {
-        const expectedResults = {
-          leaveBlocks: {
-            primary: {
-              initial: [
-                { start: 0, end: 0, leave: 'maternity' }
-              ],
-              spl: []
-            },
-            secondary: {
-              initial: [],
-              spl: []
-            }
+    it('should retrieve only compulsory leave and pay blocks block for question planner data', () => {
+      const expectedResults = {
+        leaveBlocks: {
+          primary: {
+            initial: [{ start: 0, end: 0, leave: 'maternity' }],
+            spl: []
           },
-          payBlocks: [
-            { start: 0, end: 0, primary: '90% of weekly pay', secondary: undefined }
-          ]
-        }
-        const results = blocks.getBlocks(unfilledQuestionPlannerJSON)
+          secondary: {
+            initial: [],
+            spl: []
+          }
+        },
+        payBlocks: [
+          {
+            start: 0,
+            end: 0,
+            primary: '90% of weekly pay',
+            secondary: undefined
+          }
+        ]
+      }
+      const results = blocks.getBlocks(unfilledQuestionPlannerJSON)
 
-        assert.equal(JSON.stringify(results), JSON.stringify(expectedResults))
-      })
+      assert.equal(JSON.stringify(results), JSON.stringify(expectedResults))
+    })
 
     it('should retrieve leave and pay block for question planner data', function () {
       const expectedResults = {
         leaveBlocks: {
           primary: {
-            initial: [
-              { start: 0, end: 1, leave: 'maternity' }
-            ],
+            initial: [{ start: 0, end: 1, leave: 'maternity' }],
             spl: [
               { start: 3, end: 4, leave: 'shared' },
               { start: 8, end: 9, leave: 'shared' }
             ]
           },
           secondary: {
-            initial: [
-              { start: 0, end: 1, leave: 'paternity' }
-            ],
+            initial: [{ start: 0, end: 1, leave: 'paternity' }],
             spl: [
               { start: 3, end: 4, leave: 'shared' },
               { start: 6, end: 7, leave: 'shared' }
@@ -115,10 +109,10 @@ describe('Blocks', () => {
           }
         },
         payBlocks: [
-          { start: 0, end: 1, primary: '£432.69', secondary: '£184.03' },
-          { start: 3, end: 4, primary: '£184.03', secondary: '£184.03' },
-          { start: 6, end: 7, primary: undefined, secondary: '£184.03' },
-          { start: 8, end: 9, primary: '£184.03', secondary: undefined }
+          { start: 0, end: 1, primary: '£432.69', secondary: '£187.18' },
+          { start: 3, end: 4, primary: '£187.18', secondary: '£187.18' },
+          { start: 6, end: 7, primary: undefined, secondary: '£187.18' },
+          { start: 8, end: 9, primary: '£187.18', secondary: undefined }
         ]
       }
 
