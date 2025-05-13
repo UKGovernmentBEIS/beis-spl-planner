@@ -107,6 +107,7 @@
     "vueify": "^9.4.1"
   },
   "overrides": {
-    "grunt": "^1.5.2"
+    "grunt": "^1.5.2",
+    "elliptic": "6.6.1"
   }
 }
