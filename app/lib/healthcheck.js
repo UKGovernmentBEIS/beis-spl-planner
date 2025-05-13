@@ -13,12 +13,12 @@ router.get('/pingdom/ping.xml', (req, res) => {
   const isHealthy = Object.values(healthStatus).every((check) => check.success)
   const status = isHealthy ? 'OK' : 'FAIL'
 
-  let responseTime = '0.000000'
+  let responseTime = '0.000'
 
   try {
     const diff = process.hrtime(start)
     if (diff && typeof diff[0] === 'number' && typeof diff[1] === 'number') {
-      responseTime = (diff[0] + diff[1] / 1e9).toFixed(6)
+      responseTime = (diff[0] + diff[1] / 1e9).toFixed(3)
     } else {
       throw new Error('Invalid hrtime result')
     }
