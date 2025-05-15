@@ -8,7 +8,7 @@
     "npm": ">8.5"
   },
   "scripts": {
-    "build": "grunt generate-assets",
+    "build": "NODE_ENV=production grunt generate-assets",
     "compile": "grunt generate-assets",
     "compile:prod": "NODE_ENV=production grunt generate-assets",
     "clean": "grunt clean",
