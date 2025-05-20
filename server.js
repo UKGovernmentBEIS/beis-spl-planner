@@ -48,7 +48,7 @@ const APP_VIEWS = [
 const cookieParser = require('cookie-parser')
 
 function initialiseGlobalMiddleware (app) {
-  app.set('trust proxy', 1)
+  app.set('trust proxy', true)
   app.set('settings', { getVersionedPath: staticify.getVersionedPath })
   app.use(
     favicon(
