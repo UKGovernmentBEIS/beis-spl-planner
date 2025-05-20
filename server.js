@@ -48,6 +48,7 @@ const APP_VIEWS = [
 const cookieParser = require('cookie-parser')
 
 function initialiseGlobalMiddleware (app) {
+  app.set('trust proxy', 1)
   app.set('settings', { getVersionedPath: staticify.getVersionedPath })
   app.use(
     favicon(
@@ -100,7 +101,12 @@ function initialiseGlobalMiddleware (app) {
         checkPeriod: maxAge
       }),
       resave: false,
-      saveUninitialized: false
+      saveUninitialized: false,
+      cookie: {
+        secure: true,
+        httpOnly: true,
+        sameSite: 'lax'
+      }
     })
   )
 
