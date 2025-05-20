@@ -101,12 +101,7 @@ function initialiseGlobalMiddleware (app) {
         checkPeriod: maxAge
       }),
       resave: false,
-      saveUninitialized: false,
-      cookie: {
-        secure: true,
-        httpOnly: true,
-        sameSite: 'lax'
-      }
+      saveUninitialized: false
     })
   )
 
