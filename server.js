@@ -12,7 +12,6 @@ const staticify = require('staticify')(path.join(__dirname, 'public'))
 const compression = require('compression')
 const nunjucks = require('nunjucks')
 const MemoryStore = require('memorystore')(session)
-const helmet = require('helmet')
 
 // Local dependencies
 const router = require('./app/router')
@@ -104,12 +103,6 @@ function initialiseGlobalMiddleware (app) {
       saveUninitialized: false
     })
   )
-
-  app.use(helmet.hsts({
-    maxAge: 31536000,
-    includeSubDomains: true,
-    preload: true
-  }))
 
   app.use(sessionData)
 
