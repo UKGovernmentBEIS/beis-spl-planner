@@ -1,22 +1,3 @@
-app.use((req, res, next) => {
-  console.log('--- BEGIN PROD REQUEST DIAGNOSTICS ---');
-  console.log(`Timestamp: ${new Date().toISOString()}`);
-  console.log(`Request Path: ${req.originalUrl}`);
-  console.log('Headers:');
-  console.log(`  Host: ${req.headers.host}`);
-  console.log(`  X-Forwarded-For: ${req.headers['x-forwarded-for']}`);
-  console.log(`  X-Forwarded-Proto: ${req.headers['x-forwarded-proto']}`);
-  console.log(`  X-Forwarded-Host: ${req.headers['x-forwarded-host']}`);
-  console.log(`  X-Forwarded-Port: ${req.headers['x-forwarded-port']}`);
-  console.log(`  User-Agent: ${req.headers['user-agent']}`);
-  console.log('Express Interpreted Properties (after trust proxy):');
-  console.log(`  req.protocol: ${req.protocol}`);
-  console.log(`  req.hostname: ${req.hostname}`);
-  console.log(`  req.ip: ${req.ip}`);
-  console.log('--- END PROD REQUEST DIAGNOSTICS ---');
-  next();
-});
-
 // Node.js core dependencies
 const path = require('path')
 
