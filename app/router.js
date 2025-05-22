@@ -152,6 +152,7 @@ registerEligibilityRouteForPrimaryParents(router, 'initialLeaveAndPay', {
 
 registerEligibilityRouteForBirthMother(router, 'maternityAllowance', {
   get: function (req, res) {
+    console.log('skip.maternityAllowance(req)', req.session);
     if (skip.maternityAllowance(req)) {
       return res.redirect(
         paths.getPreviousWorkflowPath(req.url, req.session.data)
@@ -193,6 +194,7 @@ router
 router
   .route(paths.getPath('eligibility.partner.paternityLeaveAndPay'))
   .get(function (req, res) {
+    console.log('skip.maternityAllowance(req)', req.session);
     if (skip.paternityLeaveAndPay(req)) {
       return res.redirect(
         paths.getPreviousWorkflowPath(req.url, req.session.data)
