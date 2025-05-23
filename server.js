@@ -124,7 +124,7 @@ function initialiseGlobalMiddleware (app) {
 }
 
 function initialiseProxy (app) {
-  app.enable('trust proxy')
+  app.set('trust proxy', 2)
 }
 
 function initialiseTemplateEngine (app) {

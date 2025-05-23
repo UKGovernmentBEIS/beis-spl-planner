@@ -14,15 +14,14 @@ describe('Health Check Endpoint', () => {
       expect(response.status).to.equal(200)
     })
 
-    it('should return correctly formed XML', async () => {
+    it('should return XML with <status>OK</status> and <response_time>', async () => {
       const response = await request(app).get('/pingdom/ping.xml')
       expect(response.type).to.equal('application/xml')
 
-      const expectedXml =
-        '<?xml version="1.0" encoding="UTF-8"?><pingdom_http_custom_check><status>OK</status></pingdom_http_custom_check>'
+      const xml = response.text.trim()
 
-      const actualXml = response.text.trim()
-      expect(actualXml).to.equal(expectedXml)
+      expect(xml).to.include('<status>OK</status>')
+      expect(xml).to.match(/<response_time>.*<\/response_time>/)
     })
   })
 })
