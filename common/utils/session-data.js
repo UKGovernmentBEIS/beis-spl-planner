@@ -36,9 +36,13 @@ module.exports = function (req, res, next) {
     return `${path}?${qs.stringify(queryData, { arrayFormat: 'brackets' })}`
   }
   res.locals.backPath = function () {
-    return res.locals.withData(
-      paths.getPreviousWorkflowPath(req.path, req.session.data)
-    )
+    const previousPath = paths.getPreviousWorkflowPath(req.path, req.session.data);
+    if (!previousPath) {
+      console.warn(`[backPath] Unable to determine previous path from current path: '${req.path}' with session data:`, req.session.data);
+      // Fallback to a default path if previousPath is undefined
+      return '/start';
+    }
+    return res.locals.withData(previousPath);
   }
   next()
 }
